@@ -530,7 +530,7 @@ namespace FishNet.Transporting.UTP
             return true;
         }
 
-        private void SetProtocol(ProtocolType inProtocol)
+        public void SetProtocol(ProtocolType inProtocol)
         {
             m_ProtocolType = inProtocol;
         }
