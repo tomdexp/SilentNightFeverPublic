@@ -1,0 +1,11 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/BootstrapDebuMenuStyle.uss?fileID=7433441132597879392&amp;guid=5324e2ef1cbc0d644bb6d9d6059825b1&amp;type=3#BootstrapDebuMenuStyle" />
+    <engine:VisualElement name="container" style="flex-grow: initial; background-color: rgba(0, 0, 0, 0.59); flex-shrink: initial; height: 389px; width: 305px; flex-direction: column; align-items: stretch; justify-content: flex-start; align-self: stretch; margin-left: 5px; margin-top: 5px;">
+        <engine:Label text="Debug Menu" name="header" class="header" style="-unity-text-align: upper-left; white-space: nowrap;" />
+        <engine:Label text="Join Code : UNKNOWN" name="current-join-code" class="normal" style="-unity-text-align: upper-left;" />
+        <engine:Button text="HOST RELAY" name="host-relay" focusable="true" class="simpleButton" />
+        <engine:TextField label="Join Code" placeholder-text="..." name="join-code-input-field" hide-placeholder-on-focus="true" class="unity-text-field my-text-field" style="background-color: rgba(241, 42, 42, 0);" />
+        <engine:Button text="JOIN RELAY" name="join-relay" focusable="true" class="simpleButton" />
+        <engine:Button text="SPAWN PLAYER" name="spawn-player" class="simpleButton" />
+    </engine:VisualElement>
+</engine:UXML>

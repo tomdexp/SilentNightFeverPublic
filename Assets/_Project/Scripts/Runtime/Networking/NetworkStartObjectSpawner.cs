@@ -1,25 +1,37 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using FishNet;
+using FishNet.Connection;
 using FishNet.Managing;
 using FishNet.Object;
+using FishNet.Transporting;
 using FishNet.Transporting.UTP;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Project.Scripts.Runtime.Networking
 {
-    public class NetworkStartObjectSpawner : NetworkBehaviour
+    [DefaultExecutionOrder(-1000)]
+    public class NetworkStartObjectSpawner : MonoBehaviour
     {
         [SerializeField] private NetworkObject[] _networkObjects;
-        
-        public override void OnStartServer()
+
+        private void Awake()
         {
-            if (!IsServerStarted) return;
-            if (_networkObjects == null) return;
-            foreach (var networkObject in _networkObjects)
+            InstanceFinder.ServerManager.OnServerConnectionState += OnServerConnectionState;
+        }
+
+        private void OnServerConnectionState(ServerConnectionStateArgs args)
+        {
+            Debug.Log($"Server connection state changed to {args.ConnectionState}");
+            if (args.ConnectionState == LocalConnectionState.Started)
             {
-                var go = Instantiate(networkObject.gameObject);
-                InstanceFinder.ServerManager.Spawn(go, null);
+                // Spawn network objects
+                foreach (var networkObject in _networkObjects)
+                {
+                    var go = Instantiate(networkObject);
+                    InstanceFinder.ServerManager.Spawn(go);
+                }
             }
         }
     }

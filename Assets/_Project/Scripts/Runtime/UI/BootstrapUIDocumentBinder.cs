@@ -1,0 +1,51 @@
+﻿using System;
+using _Project.Scripts.Runtime.Networking;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace _Project.Scripts.Runtime.UI
+{
+    public class BootstrapUIDocumentBinder : MonoBehaviour
+    {
+        private UIDocument _uiDocument;
+
+        private void Start()
+        {
+            _uiDocument = GetComponent<UIDocument>();
+            
+            BootstrapManager.Instance.OnJoinCodeReceived += code =>
+            {
+                var joinCodeInput = _uiDocument.rootVisualElement.Q("join-code-input-field") as TextField;
+                joinCodeInput.value = code;
+                var joinCodeLabel = _uiDocument.rootVisualElement.Q("current-join-code") as Label;
+                joinCodeLabel.text = "Join Code : " + code;
+            };
+            
+            if (_uiDocument == null)
+            {
+                Debug.LogError("No UIDocument found on BootstrapUIDocumentBinder.");
+                return;
+            }
+
+            Button hostButton = (Button)_uiDocument.rootVisualElement.Q("host-relay");
+            if (hostButton != null)
+            {
+                hostButton.clicked += () => BootstrapManager.Instance.TryStartHostWithRelay();
+            }
+            
+            TextField joinCodeInput = (TextField)_uiDocument.rootVisualElement.Q("join-code-input-field");
+            
+            Button joinButton = (Button)_uiDocument.rootVisualElement.Q("join-relay");
+            if (joinButton != null)
+            {
+                joinButton.clicked += () => BootstrapManager.Instance.TryJoinAsClientWithRelay(joinCodeInput.value);
+            }
+            
+            Button spawnPlayerButton = (Button)_uiDocument.rootVisualElement.Q("spawn-player");
+            if (spawnPlayerButton != null)
+            {
+                spawnPlayerButton.clicked += () => PlayerManager.Instance.TrySpawnPlayer();
+            }
+        }
+    }
+}

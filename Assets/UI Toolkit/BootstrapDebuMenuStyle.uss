@@ -1,0 +1,27 @@
+.header {
+    font-size: 31px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/Plugins/QFSW/Quantum%20Console/Source/Fonts/OfficeCodePro-Light.ttf?fileID=12800000&guid=4b7d48f1a9584dc4a978e5413f2f0cdc&type=3#OfficeCodePro-Light");
+}
+
+.normal {
+    -unity-font-definition: url("project://database/Assets/Plugins/QFSW/Quantum%20Console/Source/Fonts/OfficeCodePro-Regular.ttf?fileID=12800000&guid=eb42c3b8bd49c574bb98289bb3ea122c&type=3#OfficeCodePro-Regular");
+    color: rgb(255, 255, 255);
+    font-size: 21px;
+}
+
+.simpleButton {
+    margin-top: 10px;
+    font-size: 24px;
+    margin-right: 10px;
+    margin-left: 10px;
+    -unity-font-style: bold;
+}
+
+.my-text-field > .unity-label {
+    color: rgb(255, 255, 255);
+    -unity-font-style: normal;
+    -unity-font-definition: url("project://database/Assets/Plugins/QFSW/Quantum%20Console/Source/Fonts/OfficeCodePro-Regular.ttf?fileID=12800000&guid=eb42c3b8bd49c574bb98289bb3ea122c&type=3#OfficeCodePro-Regular");
+    font-size: 27px;
+}
