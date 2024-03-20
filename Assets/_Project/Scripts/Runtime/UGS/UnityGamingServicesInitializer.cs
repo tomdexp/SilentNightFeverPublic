@@ -28,7 +28,15 @@ namespace _Project.Scripts.Runtime.UGS
                 var options = new InitializationOptions();
 #if UNITY_EDITOR
                 var mppmTag = CurrentPlayer.ReadOnlyTags();
-                var playerNumber = mppmTag.ToList().Find(playerNumber => playerNumber.StartsWith("Player"));
+                string playerNumber = "Player1";
+                if (mppmTag.Length == 0)
+                {
+                    Debug.LogWarning("No Multiplayer Playmode tag detected. We consider this instance is Player1, but no other instances will be able to join. Please add a tag to each in the Multiplayer Playmode window.");
+                }
+                else
+                {
+                    playerNumber = mppmTag.ToList().Find(number => number.StartsWith("Player"));
+                }
                 options.SetProfile(playerNumber);
                 Debug.Log($"Editor detected. Setting profile to {playerNumber}");
 #endif
