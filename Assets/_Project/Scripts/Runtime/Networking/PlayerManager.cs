@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet;
@@ -19,12 +20,14 @@ namespace _Project.Scripts.Runtime.Networking
         [SerializeField] private NetworkObject _playerPrefab;
         [SerializeField] private InputAction _joinInputAction;
         [SerializeField] private InputAction _leaveInputAction;
-        //private List<RealPlayerInfo> _realPlayerInfos = new List<RealPlayerInfo>();
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
+        public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
 
         public override void OnStartClient()
         {
             base.OnStartClient();
+            _realPlayerInfos.Clear();
+            _realPlayerInfos.OnChange += OnChangedRealPlayerInfos;
             _joinInputAction.performed += JoinInputActionPerformed;
             _leaveInputAction.performed += LeaveInputActionPerformed;
             _joinInputAction.Enable();
@@ -34,10 +37,17 @@ namespace _Project.Scripts.Runtime.Networking
         public override void OnStopClient()
         {
             base.OnStopClient();
+            _realPlayerInfos.Clear();
+            _realPlayerInfos.OnChange -= OnChangedRealPlayerInfos;
             _joinInputAction.Disable();
             _leaveInputAction.Disable();
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
+        }
+        
+        private void OnChangedRealPlayerInfos(SyncListOperation op, int index, RealPlayerInfo oldItem, RealPlayerInfo newItem, bool asServer)
+        {
+            OnRealPlayerInfosChanged?.Invoke(_realPlayerInfos.Collection);
         }
 
         private void JoinInputActionPerformed(InputAction.CallbackContext context)
@@ -59,7 +69,6 @@ namespace _Project.Scripts.Runtime.Networking
                 if (!IsServerStarted)
                 {
                     TryAddRealPlayerServerRpc(newRealPlayerInfo.ClientId, newRealPlayerInfo.DevicePath);
-                    TrySpawnPlayer();
                     return;
                 }
                 else
@@ -205,7 +214,7 @@ namespace _Project.Scripts.Runtime.Networking
         {
             if (_realPlayerInfos.Count >= 4)
             {
-                Debug.LogError("Cannot add more than 4 players.");
+                Debug.Log("Cannot add more than 4 players.");
                 return;
             }
             
@@ -236,7 +245,6 @@ namespace _Project.Scripts.Runtime.Networking
                 DevicePath = devicePath,
                 PlayerIndexType = freePlayerIndexType
             });
-            _realPlayerInfos.DirtyAll();
             Debug.Log("+ RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " added. There are now " + _realPlayerInfos.Count + " players.");
             // make sure there is no duplicate PlayerIndexType
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
@@ -258,11 +266,66 @@ namespace _Project.Scripts.Runtime.Networking
                 if (_realPlayerInfos[i].ClientId == clientId && _realPlayerInfos[i].DevicePath == devicePath)
                 {
                     _realPlayerInfos.RemoveAt(i);
-                    _realPlayerInfos.DirtyAll();
                     Debug.Log("- RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " removed. There are now " + _realPlayerInfos.Count + " players.");
                     return;
                 }
             }
+        }
+        
+        public void TryAddFakePlayer()
+        {
+            if (!IsServerStarted)
+            {
+                AddFakePlayerServerRpc();
+            }
+            else
+            {
+                AddFakePlayer();
+            }
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void AddFakePlayerServerRpc()
+        {
+            AddFakePlayer();
+        }
+
+        private void AddFakePlayer()
+        {
+            var randomString = Guid.NewGuid().ToString();
+            randomString = randomString.Substring(0, 6);
+            var fakePlayerInfo = new RealPlayerInfo
+            {
+                ClientId = 255,
+                DevicePath = "/FakeDevice(" + randomString + ")"
+            };
+            Debug.Log("Adding fake player with clientId " + fakePlayerInfo.ClientId + " and devicePath " + fakePlayerInfo.DevicePath);
+            TryAddRealPlayer(fakePlayerInfo.ClientId, fakePlayerInfo.DevicePath);
+        }
+        
+        public void TryRemoveFakePlayer()
+        {
+            if (!IsServerStarted)
+            {
+                RemoveFakePlayerServerRpc();
+            }
+            else
+            {
+                RemoveFakePlayer();
+            }
+        }
+
+        [ServerRpc]
+        private void RemoveFakePlayerServerRpc()
+        {
+            RemoveFakePlayer();
+        }
+        
+        private void RemoveFakePlayer()
+        {
+            var fakePlayer = _realPlayerInfos.Collection.Last(x => x.ClientId == 255);
+            if (fakePlayer.ClientId == 0) return;
+            TryRemoveRealPlayer(fakePlayer.ClientId, fakePlayer.DevicePath);
         }
     }
 }

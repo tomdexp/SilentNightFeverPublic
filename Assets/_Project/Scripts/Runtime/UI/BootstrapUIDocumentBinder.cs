@@ -46,6 +46,18 @@ namespace _Project.Scripts.Runtime.UI
             {
                 spawnPlayerButton.clicked += () => PlayerManager.Instance.TrySpawnPlayer();
             }
+            
+            Button addFakePlayerButton = (Button)_uiDocument.rootVisualElement.Q("add-fake-player");
+            if (addFakePlayerButton != null)
+            {
+                addFakePlayerButton.clicked += () => PlayerManager.Instance.TryAddFakePlayer();
+            }
+            
+            Button removeFakePlayerButton = (Button)_uiDocument.rootVisualElement.Q("remove-fake-player");
+            if (removeFakePlayerButton != null)
+            {
+                removeFakePlayerButton.clicked += () => PlayerManager.Instance.TryRemoveFakePlayer();
+            }
         }
     }
 }
