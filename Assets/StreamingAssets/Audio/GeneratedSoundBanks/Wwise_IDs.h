@@ -13,7 +13,9 @@ namespace AK
 {
     namespace EVENTS
     {
-        static const AkUniqueID PLAY_NEW_RANDOM_CONTAINER = 2236244990U;
+        static const AkUniqueID DGSFG = 359948424U;
+        static const AkUniqueID PLAY_HONK = 2486471960U;
+        static const AkUniqueID PLAY_LKJHLH = 2131287587U;
     } // namespace EVENTS
 
     namespace GAME_PARAMETERS
@@ -39,8 +41,7 @@ namespace AK
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID T = 84696427U;
-        static const AkUniqueID TEST = 3157003241U;
+        static const AkUniqueID PATXIJTM = 2156304272U;
     } // namespace BANKS
 
     namespace BUSSES
