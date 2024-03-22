@@ -51,6 +51,56 @@ MonoBehaviour:
   AutoUnparentOnAwake: 1
   _playerPrefab: {fileID: 4900480838594670772, guid: 423285e0b8398bf4a88cddf5f374be68,
     type: 3}
+  _joinInputAction:
+    m_Name: Join Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e62bba66-68b8-4814-87a4-f7f310f07d0c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 99d515d8-a821-403f-a9e3-e8573d167d1c
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 0afe81ab-85e7-466c-bf49-d9e24b9f0cf9
+      m_Path: <Keyboard>/j
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join Input
+      m_Flags: 0
+    m_Flags: 0
+  _leaveInputAction:
+    m_Name: Leave Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 5bb65f30-aaba-46b1-aff6-5d4b3c186bf2
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c6b0ad96-66ca-49f8-9949-c709edd2dcdd
+      m_Path: <Gamepad>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Leave Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 1d59e66e-474e-44a1-bc37-7f5956e2f6e5
+      m_Path: <Keyboard>/l
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Leave Input
+      m_Flags: 0
+    m_Flags: 0
 --- !u!114 &6486713339912833431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +132,6 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 2410887677
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7358383279312370827
