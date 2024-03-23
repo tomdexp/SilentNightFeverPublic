@@ -21,6 +21,7 @@ namespace _Project.Scripts.Runtime.Networking
         [SerializeField] private InputAction _joinInputAction;
         [SerializeField] private InputAction _leaveInputAction;
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
+        public int NumberOfPlayers => _realPlayerInfos.Count;
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
 
         public override void OnStartClient()
@@ -326,6 +327,30 @@ namespace _Project.Scripts.Runtime.Networking
             var fakePlayer = _realPlayerInfos.Collection.Last(x => x.ClientId == 255);
             if (fakePlayer.ClientId == 0) return;
             TryRemoveRealPlayer(fakePlayer.ClientId, fakePlayer.DevicePath);
+        }
+        
+        public void SpawnAllPlayers()
+        {
+            // ONLY CALLED BY THE SERVER
+            if (!IsServerStarted)
+            {
+                Debug.LogError("This method should only be called on the server, if you see this message, it's not normal.");
+                return;
+            }
+            if (_realPlayerInfos.Count != 4)
+            {
+                Debug.LogError("Not enough real players to spawn all players.");
+                return;
+            }
+            foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
+            {
+                var nob = Instantiate(_playerPrefab);
+                InstanceFinder.ServerManager.Spawn(nob);
+                nob.GetComponent<NetworkPlayer>().SetRealPlayerInfo(realPlayerInfo);
+                if (realPlayerInfo.ClientId == 255) continue; // No need to give ownership to fake players
+                var conn = InstanceFinder.ServerManager.Clients[realPlayerInfo.ClientId];
+                nob.GiveOwnership(conn);
+            }
         }
     }
 }

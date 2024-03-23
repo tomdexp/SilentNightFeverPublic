@@ -1,12 +1,11 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/BootstrapDebuMenuStyle.uss?fileID=7433441132597879392&amp;guid=5324e2ef1cbc0d644bb6d9d6059825b1&amp;type=3#BootstrapDebuMenuStyle" />
-    <engine:VisualElement name="container" style="flex-grow: initial; background-color: rgb(0, 0, 0); flex-shrink: initial; height: 590px; width: 362px; flex-direction: column; align-items: stretch; justify-content: flex-start; align-self: stretch; margin-left: 5px; margin-top: 5px;">
+    <engine:VisualElement name="container" style="flex-grow: initial; background-color: rgb(0, 0, 0); flex-shrink: initial; height: 605px; width: 362px; flex-direction: column; align-items: stretch; justify-content: flex-start; align-self: stretch; margin-left: 5px; margin-top: 5px;">
         <engine:Label text="Debug Menu" name="header" class="header" style="-unity-text-align: upper-left; white-space: nowrap;" />
         <engine:Label text="Join Code : UNKNOWN" name="current-join-code" class="normal" style="-unity-text-align: upper-left;" />
         <engine:TextField label="Join Code" placeholder-text="..." name="join-code-input-field" hide-placeholder-on-focus="true" focusable="true" class="unity-text-field my-text-field" style="background-color: rgba(241, 42, 42, 0);" />
         <engine:Button text="HOST RELAY" name="host-relay" focusable="false" class="simpleButton" />
         <engine:Button text="JOIN RELAY" name="join-relay" focusable="false" class="simpleButton" />
-        <engine:Button text="SPAWN PLAYER" name="spawn-player" focusable="false" class="simpleButton" />
         <engine:Button text="ADD FAKE PLAYER" name="add-fake-player" focusable="false" class="simpleButton" />
         <engine:Button text="REMOVE FAKE PLAYER" name="remove-fake-player" focusable="false" class="simpleButton" />
         <engine:VisualElement name="playerInfosA" style="flex-grow: 1; flex-direction: row;">
@@ -25,5 +24,6 @@
             <engine:Label text="Player D :" name="playerLabel" class="playerSlot" />
             <engine:Label text="EMPTY" name="playerValue" class="playerSlot" />
         </engine:VisualElement>
+        <engine:Button text="START GAME" name="start-game" focusable="false" class="simpleButton" />
     </engine:VisualElement>
 </engine:UXML>

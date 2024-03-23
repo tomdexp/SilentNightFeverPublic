@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,5 +30,7 @@ namespace _Project.Scripts.Runtime.Inputs
         /// To Get the movement input, scripts should provide their own implementation
         /// </summary>
         public Vector2 GetMovementInput();
+        
+        public void SetRealPlayerInfo(RealPlayerInfo realPlayerInfo);
     }
 }
