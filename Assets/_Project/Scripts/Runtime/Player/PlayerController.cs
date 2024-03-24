@@ -1,6 +1,7 @@
 ﻿using System;
 using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Networking;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -71,6 +72,28 @@ namespace _Project.Scripts.Runtime.Player
             if (_inputProvider != null)
             {
                 _inputProvider.SetRealPlayerInfo(realPlayerInfo);
+            }
+            BindToPlayerCamera(realPlayerInfo);
+        }
+
+        private void BindToPlayerCamera(RealPlayerInfo realPlayerInfo)
+        {
+            var playerCameras = FindObjectsByType<PlayerCamera>(FindObjectsSortMode.None);
+            foreach (var playerCamera in playerCameras)
+            {
+                if (playerCamera.PlayerIndexType == realPlayerInfo.PlayerIndexType)
+                {
+                    // get the associated CinemachineCamera
+                    var cinemachineCamera = playerCamera.GetComponent<CinemachineCamera>();
+                    if (cinemachineCamera != null)
+                    {
+                        // Bind the player controller to the Cinemachine Camera
+                        cinemachineCamera.Follow = transform;
+                        cinemachineCamera.LookAt = transform;
+                        Debug.Log("Bound player " + realPlayerInfo.PlayerIndexType + " to camera " + cinemachineCamera.name);
+                    }
+                    return;
+                }
             }
         }
     }
