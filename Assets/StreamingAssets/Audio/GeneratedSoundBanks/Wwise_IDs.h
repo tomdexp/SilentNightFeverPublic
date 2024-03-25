@@ -13,10 +13,23 @@ namespace AK
 {
     namespace EVENTS
     {
-        static const AkUniqueID DGSFG = 359948424U;
-        static const AkUniqueID PLAY_HONK = 2486471960U;
-        static const AkUniqueID PLAY_LKJHLH = 2131287587U;
+        static const AkUniqueID PLAY_AMB_JGL_DAY = 2299425631U;
     } // namespace EVENTS
+
+    namespace SWITCHES
+    {
+        namespace GRD_MATERIAL
+        {
+            static const AkUniqueID GROUP = 815511118U;
+
+            namespace SWITCH
+            {
+                static const AkUniqueID GRASS = 4248645337U;
+                static const AkUniqueID LEAF = 54442137U;
+            } // namespace SWITCH
+        } // namespace GRD_MATERIAL
+
+    } // namespace SWITCHES
 
     namespace GAME_PARAMETERS
     {
@@ -41,11 +54,12 @@ namespace AK
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID PATXIJTM = 2156304272U;
+        static const AkUniqueID AMB = 1117531639U;
     } // namespace BANKS
 
     namespace BUSSES
     {
+        static const AkUniqueID AMB = 1117531639U;
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
     } // namespace BUSSES
 
