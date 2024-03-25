@@ -188,12 +188,22 @@ namespace _Project.Scripts.Runtime.Networking
         public async void TryStartHostWithRelay()
         {
             Debug.Log("Trying to start host with relay...");
+            if (GameManager.Instance.IsGameStarted.Value)
+            {
+                Debug.LogWarning("Game already started, cannot start a new host.");
+                return;
+            }
             await StartHostWithRelay();
         }
         
         public async void TryJoinAsClientWithRelay(string joinCode)
         {
             Debug.Log("Trying to join as client to a relay...");
+            if (GameManager.Instance.IsGameStarted.Value)
+            {
+                Debug.LogWarning("Game already started, cannot join as client.");
+                return;
+            }
             bool result = await StartClientWithRelay(joinCode);
             if (result)
             {

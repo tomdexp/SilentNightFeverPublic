@@ -1,11 +1,14 @@
 ﻿using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
 
 namespace _Project.Scripts.Runtime.Networking
 {
     public class GameManager : NetworkPersistentSingleton<GameManager>
     {
+        public readonly SyncVar<bool> IsGameStarted = new SyncVar<bool>();
+        
         // Entry point
         public void TryStartGame()
         {
@@ -27,6 +30,11 @@ namespace _Project.Scripts.Runtime.Networking
         
         private void StartGame()
         {
+            if (IsGameStarted.Value)
+            {
+                Debug.Log("Game already started !");
+                return;
+            }
             Debug.Log("Attempting to start game...");
             if (!PlayerManager.HasInstance)
             {
@@ -40,6 +48,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             PlayerManager.Instance.SpawnAllPlayers();
             Debug.Log("Game started !");
+            IsGameStarted.Value = true;
         }
     }
 }

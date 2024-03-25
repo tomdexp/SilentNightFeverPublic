@@ -41,6 +41,7 @@ namespace _Project.Scripts.Runtime.Player
         
         private void Update()
         {
+            if (_inputProvider == null) return;
             // Very very simple movement, no character controller, no physics, just for testing
             var movementInput = _inputProvider.GetMovementInput();
             movementInput *= _networkPlayer.PlayerData.PlayerMovementSpeed;
@@ -60,6 +61,16 @@ namespace _Project.Scripts.Runtime.Player
             _inputProvider.OnActionInteractPerformed += OnInteractPerformed;
             
             Debug.Log("Bound input provider : " + _inputProvider.GetType().Name);
+        }
+        
+        public void ClearInputProvider()
+        {
+            if (_inputProvider != null)
+            {
+                _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
+                _inputProvider = null;
+                Debug.Log("Cleared input provider.");
+            }
         }
         
         private void OnInteractPerformed(InputAction.CallbackContext obj)

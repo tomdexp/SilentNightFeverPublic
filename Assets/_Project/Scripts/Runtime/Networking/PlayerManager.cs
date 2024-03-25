@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet;
+using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
@@ -23,6 +25,8 @@ namespace _Project.Scripts.Runtime.Networking
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
         public int NumberOfPlayers => _realPlayerInfos.Count;
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
+        public event Action<RealPlayerInfo,RealPlayerInfo> OnRealPlayerPossessed; // source, target
+        public event Action<RealPlayerInfo> OnRealPlayerUnpossessed; 
 
         public override void OnStartClient()
         {
@@ -106,6 +110,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         public void SetPlayerJoiningEnabled(bool value)
         {
+            Debug.Log("SetPlayerJoiningEnabled: " + value);
             if (value)
             {
                 _joinInputAction.Enable();
@@ -116,8 +121,15 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
         
+        [ObserversRpc]
+        private void SetPlayerJoiningEnabledClientRpc(bool value)
+        {
+            SetPlayerJoiningEnabled(value);
+        }
+        
         public void SetPlayerLeavingEnabled(bool value)
         {
+            Debug.Log("SetPlayerLeavingEnabled: " + value);
             if (value)
             {
                 _leaveInputAction.Enable();
@@ -128,6 +140,11 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
         
+        [ObserversRpc]
+        private void SetPlayerLeavingEnabledClientRpc(bool value)
+        {
+            SetPlayerLeavingEnabled(value);
+        }
         
         private void LeaveInputActionPerformed(InputAction.CallbackContext context)
         {
@@ -213,6 +230,8 @@ namespace _Project.Scripts.Runtime.Networking
         
         private void TryAddRealPlayer(byte clientId, string devicePath)
         {
+            if (GameManager.Instance.IsGameStarted.Value) return;
+            
             if (_realPlayerInfos.Count >= 4)
             {
                 Debug.Log("Cannot add more than 4 players.");
@@ -293,6 +312,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void AddFakePlayer()
         {
+            if (GameManager.Instance.IsGameStarted.Value) return;
             var randomString = Guid.NewGuid().ToString();
             randomString = randomString.Substring(0, 6);
             var fakePlayerInfo = new RealPlayerInfo
@@ -316,7 +336,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void RemoveFakePlayerServerRpc()
         {
             RemoveFakePlayer();
@@ -324,6 +344,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         private void RemoveFakePlayer()
         {
+            if (GameManager.Instance.IsGameStarted.Value) return;
             var fakePlayer = _realPlayerInfos.Collection.Last(x => x.ClientId == 255);
             if (fakePlayer.ClientId == 0) return;
             TryRemoveRealPlayer(fakePlayer.ClientId, fakePlayer.DevicePath);
@@ -342,6 +363,8 @@ namespace _Project.Scripts.Runtime.Networking
                 Debug.LogError("Not enough real players to spawn all players.");
                 return;
             }
+            SetPlayerJoiningEnabledClientRpc(false);
+            SetPlayerLeavingEnabledClientRpc(false);
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
             {
                 var nob = Instantiate(_playerPrefab);
@@ -351,6 +374,84 @@ namespace _Project.Scripts.Runtime.Networking
                 var conn = InstanceFinder.ServerManager.Clients[realPlayerInfo.ClientId];
                 nob.GiveOwnership(conn);
             }
+        }
+        
+        public void TryPossessPlayer(PlayerIndexType sourcePlayerIndexType, PlayerIndexType targetPlayerIndexType)
+        {
+            if (!IsServerStarted)
+            {
+                PossessPlayerServerRpc(sourcePlayerIndexType, targetPlayerIndexType);
+            }
+            else
+            {
+                PossessPlayer(sourcePlayerIndexType, targetPlayerIndexType);
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void PossessPlayerServerRpc(PlayerIndexType sourcePlayerIndexType, PlayerIndexType targetPlayerIndexType)
+        {
+            PossessPlayer(sourcePlayerIndexType, targetPlayerIndexType);
+        }
+
+        private void PossessPlayer(PlayerIndexType sourcePlayerIndexType, PlayerIndexType targetPlayerIndexType)
+        {
+            // TODO NETWORKING : This method only works if the source and target player are on the same client
+            var sourceNetworkPlayer = GetNetworkPlayer(sourcePlayerIndexType);
+            var targetNetworkPlayer = GetNetworkPlayer(targetPlayerIndexType);
+            if (targetNetworkPlayer.GetRealPlayerInfo().ClientId != 255)
+            {
+                Debug.LogError("Cannot possess a real player.");
+                return;
+            }
+            var conn = InstanceFinder.ServerManager.Clients[sourceNetworkPlayer.OwnerId];
+            targetNetworkPlayer.GiveOwnership(conn);
+            targetNetworkPlayer.GetComponent<PlayerController>().BindInputProvider(sourceNetworkPlayer.GetComponent<HardwareInputProvider>());
+            sourceNetworkPlayer.GetComponent<PlayerController>().ClearInputProvider();
+            Debug.Log("Player " + targetPlayerIndexType + " possessed by player " + sourcePlayerIndexType);
+            OnRealPlayerPossessed?.Invoke(sourceNetworkPlayer.GetRealPlayerInfo(), targetNetworkPlayer.GetRealPlayerInfo());
+        }
+        
+        public void TryUnpossessPlayer(PlayerIndexType playerIndexType)
+        {
+            if (!IsServerStarted)
+            {
+                UnpossessPlayerServerRpc(playerIndexType);
+            }
+            else
+            {
+                UnpossessPlayer(playerIndexType);
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void UnpossessPlayerServerRpc(PlayerIndexType playerIndexType)
+        {
+            UnpossessPlayer(playerIndexType);
+        }
+
+        private void UnpossessPlayer(PlayerIndexType playerIndexType)
+        {
+            var networkPlayer = GetNetworkPlayer(playerIndexType);
+            if (networkPlayer.GetRealPlayerInfo().ClientId != 255)
+            {
+                Debug.LogError("Cannot unpossess a real player.");
+                return;
+            }
+            networkPlayer.RemoveOwnership();
+            networkPlayer.GetComponent<PlayerController>().ClearInputProvider();
+            OnRealPlayerUnpossessed?.Invoke(networkPlayer.GetRealPlayerInfo());
+            Debug.Log("Player " + playerIndexType + " unpossessed.");
+        }
+
+        public NetworkPlayer GetNetworkPlayer(PlayerIndexType playerIndexType)
+        {
+            return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None).ToList().Find(x => x.GetPlayerIndexType() == playerIndexType);
+        }
+        
+        public List<RealPlayerInfo> GetRealPlayerInfos()
+        {
+            return _realPlayerInfos.Collection;
         }
     }
 }

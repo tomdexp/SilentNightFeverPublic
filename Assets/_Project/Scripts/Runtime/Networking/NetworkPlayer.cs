@@ -45,5 +45,15 @@ namespace _Project.Scripts.Runtime.Networking
        {
            _realPlayerInfo.Value = realPlayerInfo;
        }
+       
+       public PlayerIndexType GetPlayerIndexType()
+       {
+           return _realPlayerInfo.Value.PlayerIndexType;
+       }
+       
+       public RealPlayerInfo GetRealPlayerInfo()
+       {
+           return _realPlayerInfo.Value;
+       }
     }
 }
