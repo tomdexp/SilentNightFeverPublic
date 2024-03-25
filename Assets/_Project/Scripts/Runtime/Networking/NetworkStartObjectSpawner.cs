@@ -18,14 +18,30 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void Awake()
         {
-            InstanceFinder.ServerManager.OnServerConnectionState += OnServerConnectionState;
+            //InstanceFinder.ServerManager.OnServerConnectionState += OnServerConnectionState;
+            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+        }
+
+        private void OnClientConnectionState(ClientConnectionStateArgs args)
+        {
+            if (args.ConnectionState == LocalConnectionState.Started)
+            {
+                if (InstanceFinder.IsServerStarted == false) return; // Only the server should spawn network objects
+                // Spawn network objects
+                foreach (var networkObject in _networkObjects)
+                {
+                    Debug.Log("Spawning network object " + networkObject.name);
+                    var go = Instantiate(networkObject);
+                    InstanceFinder.ServerManager.Spawn(go);
+                }
+            }
         }
 
         private void OnServerConnectionState(ServerConnectionStateArgs args)
         {
-            Debug.Log($"Server connection state changed to {args.ConnectionState}");
             if (args.ConnectionState == LocalConnectionState.Started)
             {
+                if (InstanceFinder.IsServerStarted == false) return; // Only the server should spawn network objects
                 // Spawn network objects
                 foreach (var networkObject in _networkObjects)
                 {

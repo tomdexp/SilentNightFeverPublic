@@ -41,10 +41,22 @@ namespace _Project.Scripts.Runtime.UI
                 joinButton.clicked += () => BootstrapManager.Instance.TryJoinAsClientWithRelay(joinCodeInput.value);
             }
             
-            Button spawnPlayerButton = (Button)_uiDocument.rootVisualElement.Q("spawn-player");
-            if (spawnPlayerButton != null)
+            Button addFakePlayerButton = (Button)_uiDocument.rootVisualElement.Q("add-fake-player");
+            if (addFakePlayerButton != null)
             {
-                spawnPlayerButton.clicked += () => PlayerManager.Instance.TrySpawnPlayer();
+                addFakePlayerButton.clicked += () => PlayerManager.Instance.TryAddFakePlayer();
+            }
+            
+            Button removeFakePlayerButton = (Button)_uiDocument.rootVisualElement.Q("remove-fake-player");
+            if (removeFakePlayerButton != null)
+            {
+                removeFakePlayerButton.clicked += () => PlayerManager.Instance.TryRemoveFakePlayer();
+            }
+            
+            Button startGameButton = (Button)_uiDocument.rootVisualElement.Q("start-game");
+            if (startGameButton != null)
+            {
+                startGameButton.clicked += () => GameManager.Instance.TryStartGame();
             }
         }
     }

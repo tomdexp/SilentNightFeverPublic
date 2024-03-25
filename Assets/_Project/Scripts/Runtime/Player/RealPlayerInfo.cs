@@ -1,4 +1,6 @@
-﻿namespace _Project.Scripts.Runtime.Player
+﻿using System;
+
+namespace _Project.Scripts.Runtime.Player
 {
     /// <summary>
     /// This struct represent a Real player since our game can have multiple players on the same client

@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet;
-using FishNet.Object;
 using FishNet.Transporting.UTP;
 using Sirenix.OdinInspector;
 using Unity.Networking.Transport.Relay;
@@ -184,41 +183,6 @@ namespace _Project.Scripts.Runtime.Networking
             if (AuthenticationService.Instance.IsSignedIn) return true;
             Debug.LogError("User is not signed in, cannot continue.");
             return false;
-        }
-        
-        // Add a button with OnGui to the upper right corner of the screen
-        private void OnGUI()
-        {
-            if (GUI.Button(new Rect(Screen.width - 100, 0, 100, 50), "Host Relay"))
-            {
-                TryStartHostWithRelay();
-            }
-            // create input field for join code, if current join code is not empty, fill it with the current join code
-            if (HasJoinCode)
-            {
-                // write a label with the current join code
-                GUI.Label(new Rect(Screen.width - 200, 0, 100, 50), CurrentJoinCode);
-            }
-            else
-            {
-                _inputFieldJoinCode = GUI.TextField(new Rect(Screen.width - 200, 0, 100, 50), _inputFieldJoinCode);
-            }
-            if (GUI.Button(new Rect(Screen.width - 300, 0, 100, 50), "Join Relay"))
-            {
-                if (SanitizeJoinCode(ref _inputFieldJoinCode))
-                {
-                    Debug.Log("Join code sanitized: " + _inputFieldJoinCode);
-                    TryJoinAsClientWithRelay(_inputFieldJoinCode);
-                }
-                else
-                {
-                    Debug.LogError("Invalid join code input.");
-                }
-            }
-            if (GUI.Button(new Rect(Screen.width - 400, 0, 100, 50), "Spawn Player"))
-            {
-                PlayerManager.Instance.TrySpawnPlayer();
-            }
         }
         
         public async void TryStartHostWithRelay()
