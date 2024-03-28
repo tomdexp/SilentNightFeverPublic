@@ -37,10 +37,8 @@ namespace _Project.Scripts.Runtime.Player
             {
                 Debug.LogError("No CharacterController found on PlayerController.");
             }
-
-            _characterController.enabled = true;          
         }
-
+        
         private void OnDestroy()
         {
             if (_inputProvider != null)
@@ -53,6 +51,7 @@ namespace _Project.Scripts.Runtime.Player
         {
             if (_inputProvider == null) return;
             if (!Owner.IsLocalClient) return;
+            _characterController.enabled = true;
             // Very very simple movement, no character controller, no physics, just for testing
             var movementInput = _inputProvider.GetMovementInput();
             movementInput *= _networkPlayer.PlayerData.PlayerMovementSpeed;
