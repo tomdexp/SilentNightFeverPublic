@@ -14,6 +14,7 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID PLAY_AMB_JGL_DAY = 2299425631U;
+        static const AkUniqueID PLAY_WALK_TEST = 1273048044U;
     } // namespace EVENTS
 
     namespace SWITCHES
@@ -55,6 +56,7 @@ namespace AK
     {
         static const AkUniqueID INIT = 1355168291U;
         static const AkUniqueID AMB = 1117531639U;
+        static const AkUniqueID CHAR = 4140304029U;
     } // namespace BANKS
 
     namespace BUSSES
