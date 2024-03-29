@@ -41,5 +41,12 @@ namespace _Project.Scripts.Runtime.UI
             _navigationHistory.RevertLastInstruction();
         }
 
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
+
+
+
     }
 }
