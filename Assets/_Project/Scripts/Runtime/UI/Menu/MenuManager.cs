@@ -1,3 +1,6 @@
+using _Project.Scripts.Runtime.Networking;
+using FishNet;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +11,6 @@ namespace _Project.Scripts.Runtime.UI
     public class MenuManager : MonoBehaviour
     {
         private NavigationHistory _navigationHistory;
-
         private PlayerInputActions _input = null;
 
         private void Awake()
@@ -24,14 +26,25 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnEnable()
         {
-            _input.Enable();
-            _input.UI.Cancel.performed += RevertLastInstruction;
+            EnableBackButton();
         }
 
         private void OnDisable()
         {
+            DisableBackButton();
+        }
+
+        #region NavigationHistory
+        public void DisableBackButton()
+        {
             _input.Disable();
             _input.UI.Cancel.performed -= RevertLastInstruction;
+        }
+
+        public void EnableBackButton()
+        {
+            _input.Enable();
+            _input.UI.Cancel.performed += RevertLastInstruction;
         }
 
         private void RevertLastInstruction(InputAction.CallbackContext val)
@@ -40,13 +53,13 @@ namespace _Project.Scripts.Runtime.UI
 
             _navigationHistory.RevertLastInstruction();
         }
+        #endregion
+
 
         public void QuitGame()
         {
             Application.Quit();
         }
-
-
 
     }
 }
