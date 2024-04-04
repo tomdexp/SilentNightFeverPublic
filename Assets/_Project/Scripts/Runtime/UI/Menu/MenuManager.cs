@@ -1,5 +1,7 @@
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Player;
 using FishNet;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +14,8 @@ namespace _Project.Scripts.Runtime.UI
     {
         private NavigationHistory _navigationHistory;
         private PlayerInputActions _input = null;
+
+        [SerializeField] private Menu _mainMenu;
 
         private void Awake()
         {
@@ -32,6 +36,7 @@ namespace _Project.Scripts.Runtime.UI
         private void OnDisable()
         {
             DisableBackButton();
+            PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
         }
 
         #region NavigationHistory
@@ -55,11 +60,33 @@ namespace _Project.Scripts.Runtime.UI
         }
         #endregion
 
-
         public void QuitGame()
         {
             Application.Quit();
         }
 
+        public void EnablePlayerDisconnectedEvent(bool enable)
+        {
+            if (enable)
+                PlayerManager.Instance.OnRealPlayerInfosChanged += OnRealPlayerInfosChanged;
+            else
+                PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
+        }
+
+        private void OnRealPlayerInfosChanged(List<RealPlayerInfo> realPlayerInfos)
+        {
+            if (realPlayerInfos.Count < 4)
+            {
+                ReturnToMainMenu();
+            }
+        }
+
+        public void ReturnToMainMenu()
+        {
+            // TODO : disconect from server
+            _mainMenu.OpenMenu();
+            _navigationHistory.CloseLastMenu();
+            _navigationHistory.ClearHistory();
+        }
     }
 }

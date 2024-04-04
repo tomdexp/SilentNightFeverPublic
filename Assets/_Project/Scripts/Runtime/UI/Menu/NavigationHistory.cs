@@ -39,6 +39,22 @@ namespace _Project.Scripts.Runtime.UI
 
             Instructions.Remove(lastInstruction);
         }
+
+        public void ClearHistory()
+        {
+            Instructions.Clear();
+        }
+
+        public void CloseLastMenu()
+        {
+            if (Instructions.Count == 0) return;
+
+            HistoryInstruction2 lastInstruction = Instructions.Last();
+            if (lastInstruction.selectedMenu)
+                lastInstruction.selectedMenu.ExitMenu();
+
+            Instructions.Remove(lastInstruction);
+        }
     }
 
     public struct HistoryInstruction2
