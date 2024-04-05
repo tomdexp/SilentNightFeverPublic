@@ -16,5 +16,6 @@ namespace _Project.Scripts.Runtime.Player
         public float TongueSpeed = 10f;
         public float MaxTongueDistance = 10f;
         public float TongueForce = 10f;
+        public float TongueSphereCastRadius = 0.5f;
     }
 }

@@ -10,7 +10,7 @@ namespace _Project.Scripts.Runtime.Player
         public bool HasFreeSpace => _currentNumberOfTongues.Value < MaxTonguesAtOnce;
         private readonly SyncVar<byte> _currentNumberOfTongues = new SyncVar<byte>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner));
         
-        public void TryBindTongue()
+        public void TryBindTongue(PlayerStickyTongue tongue, RaycastHit hitInfo)
         {
             // SOURCE CLIENT BIND TO TONGUE AND TELL SERVER
             Debug.Log("TryBindTongue");

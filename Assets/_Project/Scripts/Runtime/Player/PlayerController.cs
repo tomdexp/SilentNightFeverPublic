@@ -15,6 +15,7 @@ namespace _Project.Scripts.Runtime.Player
         private IInputProvider _inputProvider;
         private NetworkPlayer _networkPlayer;
         private CharacterController _characterController;
+        private PlayerStickyTongue _playerStickyTongue;
 
         private void Awake()
         {
@@ -36,6 +37,11 @@ namespace _Project.Scripts.Runtime.Player
             if (_characterController == null)
             {
                 Debug.LogError("No CharacterController found on PlayerController.");
+            }
+            _playerStickyTongue = GetComponentInChildren<PlayerStickyTongue>();
+            if (_playerStickyTongue == null)
+            {
+                Debug.LogError("No PlayerStickyTongue found on PlayerController or its children.");
             }
         }
         
@@ -92,6 +98,7 @@ namespace _Project.Scripts.Runtime.Player
         private void OnInteractPerformed(InputAction.CallbackContext obj)
         {
             Debug.Log("Interact performed locally !");
+            _playerStickyTongue.TryUseTongue();
         }
 
         public void SetRealPlayerInfo(RealPlayerInfo realPlayerInfo)
