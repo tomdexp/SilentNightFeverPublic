@@ -6,30 +6,37 @@ using FishNet.Component.Transforming;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Micosmo.SensorToolkit;
+using Obi;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.Runtime.Player
 {
     public class PlayerStickyTongue : NetworkBehaviour
     {
+        [Title("References")]
         [SerializeField,Required] private Transform _tongueThrowDirection;
+        [SerializeField,Required] private Transform _tongueOrigin;
         [SerializeField,Required] private NetworkPlayer _networkPlayer;
         [SerializeField,Required] private Transform _tongueTip;
         [SerializeField,Required] private RaySensor _raySensor;
+        [SerializeField,Required] private ObiSolver _obiSolver;
+        [SerializeField,Required] private ObiRope _obiRope;
+        [SerializeField,Required] private Rigidbody _tongueTipRigidbody;
         
+        [Title("Debug (Read-Only)")]
         [SerializeField,ReadOnly] private bool _isTongueOut;
         [SerializeField,ReadOnly] private bool _canThrowTongue = true;
         [SerializeField,ReadOnly] private bool _canRetractTongue = true;
-        [SerializeField,ReadOnly] private Vector3 _tongueOriginalPosition;
         public event Action OnTongueOut;
         public event Action OnTongueIn;
 
         public override void OnStartClient()
         {
             base.OnStartClient();
-            _tongueOriginalPosition = _tongueTip.position;
             ApplyPlayerDataToRaySensor();
+            RetractTongue();
         }
 
         protected override void OnValidate()
@@ -72,27 +79,37 @@ namespace _Project.Scripts.Runtime.Player
         {
             if (_isTongueOut || !_canThrowTongue) yield break;
             Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Throwing tongue locally");
-            float sphereCastRadius = _networkPlayer.PlayerData.TongueSphereCastRadius;
-            float maxDistance = _networkPlayer.PlayerData.MaxTongueDistance;
 
-            bool didHit = Physics.SphereCast(_tongueThrowDirection.position, sphereCastRadius, _tongueThrowDirection.forward, out var hitInfo, maxDistance);
+            var didHit = _raySensor.IsObstructed;
 
             if (didHit)
             {
-                var tongueAnchor = hitInfo.collider.GetComponent<TongueAnchor>();
-                if (tongueAnchor != null)
+                RayHit hitInfo = _raySensor.GetObstructionRayHit();
+                Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Hit something with tongue: " + hitInfo.GameObject.name, hitInfo.GameObject);
+                var tongueCollider = hitInfo.Collider.GetComponent<TongueCollider>();
+                if (tongueCollider != null)
                 {
-                    Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue anchor");
-                    tongueAnchor.TryBindTongue(this, hitInfo);
+                    Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue collider");
+                    var tongueAnchor = tongueCollider.GetComponentInParent<TongueAnchor>();
+                    if (tongueAnchor != null)
+                    {
+                        Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue anchor");
+                        tongueAnchor.TryBindTongue(this, hitInfo);
+                        yield return BindTongueToAnchorCoroutine(tongueAnchor);
+                    }
+                    else
+                    {
+                        var tonguePushable = tongueCollider.GetComponentInParent<TongueInteractable>();
+                        if (tonguePushable != null)
+                        {
+                            Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue pushable");
+                            tonguePushable.TryInteract(this, hitInfo);
+                        }
+                    }
                 }
                 else
                 {
-                    var tonguePushable = hitInfo.collider.GetComponent<TongueInteractable>();
-                    if (tonguePushable != null)
-                    {
-                        Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue pushable");
-                        tonguePushable.TryInteract(this, hitInfo);
-                    }
+                    Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : hit something else but it has no tongue collider");
                 }
             }
             else
@@ -123,16 +140,34 @@ namespace _Project.Scripts.Runtime.Player
             OnTongueIn?.Invoke();
         }
         
+        private IEnumerator BindTongueToAnchorCoroutine(TongueAnchor tongueAnchor)
+        {
+            _tongueTipRigidbody.isKinematic = true;
+            _tongueTipRigidbody.velocity = Vector3.zero;
+            _tongueTipRigidbody.angularVelocity = Vector3.zero;
+            _tongueTip.position = _tongueOrigin.position;
+            _obiSolver.enabled = true;
+            yield return ThrowTo(tongueAnchor.Target.position);
+            // create a fixed joint between the tongue tip rigidbody and the tongue anchor rigidbody
+            // var fixedJoint = _tongueTip.gameObject.AddComponent<FixedJoint>();
+            // fixedJoint.connectedBody = tongueAnchor.GetRigidbody();
+            // fixedJoint.autoConfigureConnectedAnchor = false;
+            // fixedJoint.connectedAnchor = Vector3.zero;
+            // fixedJoint.anchor = Vector3.zero;
+            // _tongueTipRigidbody.isKinematic = false;
+        }
+        
         private IEnumerator ThrowTo(Vector3 targetPosition)
         {
             var duration = Vector3.Distance(_tongueTip.position, targetPosition) / _networkPlayer.PlayerData.TongueThrowSpeed;
+            _tongueTip.position = _tongueOrigin.position;
             yield return _tongueTip.DOMove(targetPosition, duration).SetEase(_networkPlayer.PlayerData.TongueThrowEase);
         }
 
         private IEnumerator Retract()
         {
-            var duration = Vector3.Distance(_tongueTip.position, _tongueOriginalPosition) / _networkPlayer.PlayerData.TongueRetractSpeed;
-            yield return _tongueTip.DOMove(_tongueOriginalPosition, duration).SetEase(_networkPlayer.PlayerData.TongueRetractEase);
+            var duration = Vector3.Distance(_tongueTip.position, _tongueOrigin.position) / _networkPlayer.PlayerData.TongueRetractSpeed;
+            yield return _tongueTip.DOMove(_tongueOrigin.position, duration).SetEase(_networkPlayer.PlayerData.TongueRetractEase);
         }
     }
 }

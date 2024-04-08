@@ -369,7 +369,7 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 var nob = Instantiate(_playerPrefab);
                 InstanceFinder.ServerManager.Spawn(nob);
-                nob.GetComponent<NetworkPlayer>().SetRealPlayerInfo(realPlayerInfo);
+                nob.GetComponentInChildren<NetworkPlayer>().SetRealPlayerInfo(realPlayerInfo);
                 if (realPlayerInfo.ClientId == 255)
                 {
                     // If the player is a fake player, give ownership to the first client

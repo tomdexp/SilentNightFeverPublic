@@ -14,7 +14,7 @@ namespace _Project.Scripts.Runtime.Player
     {
         private IInputProvider _inputProvider;
         private NetworkPlayer _networkPlayer;
-        private CharacterController _characterController;
+        private Rigidbody _rigidbody;
         private PlayerStickyTongue _playerStickyTongue;
 
         private void Awake()
@@ -33,10 +33,10 @@ namespace _Project.Scripts.Runtime.Player
             {
                 Debug.LogError("No NetworkPlayer found on PlayerController.");
             }
-            _characterController = GetComponent<CharacterController>();
-            if (_characterController == null)
+            _rigidbody = GetComponent<Rigidbody>();
+            if (_rigidbody == null)
             {
-                Debug.LogError("No CharacterController found on PlayerController.");
+                Debug.LogError("No Rigidbody found on PlayerController.");
             }
             _playerStickyTongue = GetComponentInChildren<PlayerStickyTongue>();
             if (_playerStickyTongue == null)
@@ -57,12 +57,12 @@ namespace _Project.Scripts.Runtime.Player
         {
             if (_inputProvider == null) return;
             if (!Owner.IsLocalClient) return;
-            _characterController.enabled = true;
+            _rigidbody.isKinematic = false;
             // Very very simple movement, no character controller, no physics, just for testing
             var movementInput = _inputProvider.GetMovementInput();
             movementInput *= _networkPlayer.PlayerData.PlayerMovementSpeed;
             Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y);
-            _characterController.Move(movement * Time.deltaTime);
+            _rigidbody.velocity = movement;
             // rotate the foward to the movement direction based on the velocity
             if (movementInput.magnitude > 0.1f)
             {
