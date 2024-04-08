@@ -1,17 +1,21 @@
 ﻿using System;
 using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Networking;
+using FishNet;
+using FishNet.Connection;
+using FishNet.Object;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Runtime.Player
 {
-    // Player controller should only be local, it just moves the Client NetworkTransform, we trust the client here
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : NetworkBehaviour
     {
         private IInputProvider _inputProvider;
         private NetworkPlayer _networkPlayer;
+        private CharacterController _characterController;
+        private PlayerStickyTongue _playerStickyTongue;
 
         private void Awake()
         {
@@ -29,6 +33,16 @@ namespace _Project.Scripts.Runtime.Player
             {
                 Debug.LogError("No NetworkPlayer found on PlayerController.");
             }
+            _characterController = GetComponent<CharacterController>();
+            if (_characterController == null)
+            {
+                Debug.LogError("No CharacterController found on PlayerController.");
+            }
+            _playerStickyTongue = GetComponentInChildren<PlayerStickyTongue>();
+            if (_playerStickyTongue == null)
+            {
+                Debug.LogError("No PlayerStickyTongue found on PlayerController or its children.");
+            }
         }
         
         private void OnDestroy()
@@ -38,14 +52,22 @@ namespace _Project.Scripts.Runtime.Player
                 _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
             }
         }
-        
+
         private void Update()
         {
             if (_inputProvider == null) return;
+            if (!Owner.IsLocalClient) return;
+            _characterController.enabled = true;
             // Very very simple movement, no character controller, no physics, just for testing
             var movementInput = _inputProvider.GetMovementInput();
             movementInput *= _networkPlayer.PlayerData.PlayerMovementSpeed;
-            transform.position += new Vector3(movementInput.x, 0, movementInput.y) * Time.deltaTime;
+            Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y);
+            _characterController.Move(movement * Time.deltaTime);
+            // rotate the foward to the movement direction based on the velocity
+            if (movementInput.magnitude > 0.1f)
+            {
+                transform.forward = new Vector3(movementInput.x, 0, movementInput.y);
+            }
         }
 
         public void BindInputProvider(IInputProvider inputProvider)
@@ -76,6 +98,7 @@ namespace _Project.Scripts.Runtime.Player
         private void OnInteractPerformed(InputAction.CallbackContext obj)
         {
             Debug.Log("Interact performed locally !");
+            _playerStickyTongue.TryUseTongue();
         }
 
         public void SetRealPlayerInfo(RealPlayerInfo realPlayerInfo)
