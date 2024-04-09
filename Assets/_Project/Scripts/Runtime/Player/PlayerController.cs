@@ -61,13 +61,21 @@ namespace _Project.Scripts.Runtime.Player
             // Very very simple movement, no character controller, no physics, just for testing
             var movementInput = _inputProvider.GetMovementInput();
             movementInput *= _networkPlayer.PlayerData.PlayerMovementSpeed;
+            if (_playerStickyTongue.IsTongueBind())
+            {
+                // rotate the forward toward the tongue tip
+                var direction = _playerStickyTongue.GetTongueTipPosition() - transform.position;
+                transform.forward = direction.normalized;
+            }
+            else
+            {
+                if (movementInput.magnitude > 0.1f)
+                {
+                    transform.forward = new Vector3(movementInput.x, 0, movementInput.y);
+                }
+            }
             Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y);
             _rigidbody.velocity = movement;
-            // rotate the foward to the movement direction based on the velocity
-            if (movementInput.magnitude > 0.1f)
-            {
-                transform.forward = new Vector3(movementInput.x, 0, movementInput.y);
-            }
         }
 
         public void BindInputProvider(IInputProvider inputProvider)
@@ -76,29 +84,40 @@ namespace _Project.Scripts.Runtime.Player
             if (_inputProvider != null)
             {
                 _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
+                _inputProvider.OnActionInteractCanceled -= OnInteractCanceled;
             }
             
             // Bind the new input provider
             _inputProvider = inputProvider;
             _inputProvider.OnActionInteractPerformed += OnInteractPerformed;
+            _inputProvider.OnActionInteractCanceled += OnInteractCanceled;
             
             Debug.Log("Bound input provider : " + _inputProvider.GetType().Name);
         }
+
         
+
         public void ClearInputProvider()
         {
             if (_inputProvider != null)
             {
                 _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
+                _inputProvider.OnActionInteractCanceled -= OnInteractCanceled;
                 _inputProvider = null;
                 Debug.Log("Cleared input provider.");
             }
         }
         
-        private void OnInteractPerformed(InputAction.CallbackContext obj)
+        private void OnInteractPerformed(InputAction.CallbackContext context)
         {
             Debug.Log("Interact performed locally !");
             _playerStickyTongue.TryUseTongue();
+        }
+        
+        private void OnInteractCanceled(InputAction.CallbackContext context)
+        {
+            Debug.Log("Interact performed locally !");
+            _playerStickyTongue.TryRetractTongue();
         }
 
         public void SetRealPlayerInfo(RealPlayerInfo realPlayerInfo)

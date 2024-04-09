@@ -101,6 +101,31 @@ MonoBehaviour:
       m_Action: Leave Input
       m_Flags: 0
     m_Flags: 0
+  _joinAndFullFakePlayerInputAction:
+    m_Name: Join And Full Fake Player Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 8681d2f1-b8ab-4838-b5b1-dbb20737532d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: aa12588c-9b10-45c4-83ac-d449621c4e83
+      m_Path: <Keyboard>/f2
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join And Full Fake Player Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: bca07c06-526c-42cf-a930-9b538af01198
+      m_Path: <Gamepad>/select
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join And Full Fake Player Input
+      m_Flags: 0
+    m_Flags: 0
 --- !u!114 &6486713339912833431
 MonoBehaviour:
   m_ObjectHideFlags: 0

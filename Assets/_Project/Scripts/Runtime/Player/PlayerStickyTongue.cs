@@ -29,6 +29,8 @@ namespace _Project.Scripts.Runtime.Player
         [SerializeField,ReadOnly] private bool _isTongueOut;
         [SerializeField,ReadOnly] private bool _canThrowTongue = true;
         [SerializeField,ReadOnly] private bool _canRetractTongue = true;
+        [SerializeField,ReadOnly] private bool _isTongueBind = false;
+        [SerializeField,ReadOnly] private TongueAnchor _currentBindTongueAnchor;
         public event Action OnTongueOut;
         public event Action OnTongueIn;
 
@@ -60,13 +62,18 @@ namespace _Project.Scripts.Runtime.Player
         public void TryUseTongue()
         {
             Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} is trying to use tongue.");
+            if (!_isTongueOut)
+            {
+                ThrowTongue();
+            }
+        }
+        
+        public void TryRetractTongue()
+        {
+            Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} is trying to retract tongue.");
             if (_isTongueOut)
             {
                 RetractTongue();
-            }
-            else
-            {
-                ThrowTongue();
             }
         }
         
@@ -143,11 +150,11 @@ namespace _Project.Scripts.Runtime.Player
         private IEnumerator BindTongueToAnchorCoroutine(TongueAnchor tongueAnchor)
         {
             _tongueTipRigidbody.isKinematic = true;
-            _tongueTipRigidbody.velocity = Vector3.zero;
-            _tongueTipRigidbody.angularVelocity = Vector3.zero;
             _tongueTip.position = _tongueOrigin.position;
             _obiSolver.enabled = true;
             yield return ThrowTo(tongueAnchor.Target.position);
+            _isTongueBind = true;
+            _currentBindTongueAnchor = tongueAnchor;
             // create a fixed joint between the tongue tip rigidbody and the tongue anchor rigidbody
             // var fixedJoint = _tongueTip.gameObject.AddComponent<FixedJoint>();
             // fixedJoint.connectedBody = tongueAnchor.GetRigidbody();
@@ -155,6 +162,15 @@ namespace _Project.Scripts.Runtime.Player
             // fixedJoint.connectedAnchor = Vector3.zero;
             // fixedJoint.anchor = Vector3.zero;
             // _tongueTipRigidbody.isKinematic = false;
+        }
+        
+        private IEnumerator UnbindTongueFromAnchorCoroutine()
+        {
+            _isTongueBind = false;
+            _currentBindTongueAnchor = null;
+            _obiSolver.enabled = false;
+            _tongueTipRigidbody.isKinematic = true;
+            yield return Retract();
         }
         
         private IEnumerator ThrowTo(Vector3 targetPosition)
@@ -168,6 +184,16 @@ namespace _Project.Scripts.Runtime.Player
         {
             var duration = Vector3.Distance(_tongueTip.position, _tongueOrigin.position) / _networkPlayer.PlayerData.TongueRetractSpeed;
             yield return _tongueTip.DOMove(_tongueOrigin.position, duration).SetEase(_networkPlayer.PlayerData.TongueRetractEase);
+        }
+
+        public bool IsTongueBind()
+        {
+            return _isTongueBind;
+        }
+        
+        public Vector3 GetTongueTipPosition()
+        {
+            return _tongueTip.position;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
@@ -23,6 +24,23 @@ namespace _Project.Scripts.Runtime.Player
                 Target = transform;
             }
             _rigidbody = GetComponent<Rigidbody>();
+        }
+
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            Debug.Log("TongueAnchor : Server started and rigidbody is set to kinematic==false");
+            _rigidbody.isKinematic = false;
+        }
+
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+            if (!InstanceFinder.IsServerStarted)
+            {
+                Debug.Log("TongueAnchor : Client started and rigidbody is set to kinematic==true");
+                _rigidbody.isKinematic = true;
+            }
         }
 
         public void TryBindTongue(PlayerStickyTongue tongue, RayHit hitInfo)
