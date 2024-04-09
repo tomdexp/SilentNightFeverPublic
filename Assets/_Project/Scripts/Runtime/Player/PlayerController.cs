@@ -16,6 +16,7 @@ namespace _Project.Scripts.Runtime.Player
         private NetworkPlayer _networkPlayer;
         private Rigidbody _rigidbody;
         private PlayerStickyTongue _playerStickyTongue;
+        private Quaternion _targetRotation;
 
         private void Awake()
         {
@@ -53,7 +54,7 @@ namespace _Project.Scripts.Runtime.Player
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (_inputProvider == null) return;
             if (!Owner.IsLocalClient) return;
@@ -65,17 +66,22 @@ namespace _Project.Scripts.Runtime.Player
             {
                 // rotate the forward toward the tongue tip
                 var direction = _playerStickyTongue.GetTongueTipPosition() - transform.position;
-                transform.forward = direction.normalized;
+                direction.y = 0;
+                _targetRotation = Quaternion.LookRotation(direction);
             }
             else
             {
                 if (movementInput.magnitude > 0.1f)
                 {
-                    transform.forward = new Vector3(movementInput.x, 0, movementInput.y);
+                    var direction = new Vector3(movementInput.x, 0, movementInput.y);
+                    _targetRotation = Quaternion.LookRotation(direction);
                 }
             }
             Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y);
             _rigidbody.velocity = movement;
+            
+            // lerp the quaternion rotation
+            transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, Time.deltaTime * _networkPlayer.PlayerData.PlayerRotationSpeed);
         }
 
         public void BindInputProvider(IInputProvider inputProvider)

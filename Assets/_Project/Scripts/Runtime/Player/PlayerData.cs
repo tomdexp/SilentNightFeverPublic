@@ -9,8 +9,8 @@ namespace _Project.Scripts.Runtime.Player
     public class PlayerData : ScriptableObject
     {
         [Title("Player Movement Settings")]
-        [PropertyRange(0,100)]
-        public float PlayerMovementSpeed = 5f;
+        [PropertyRange(0,100)] public float PlayerMovementSpeed = 5f;
+        [PropertyRange(0,100)] public float PlayerRotationSpeed = 5f;
         
         [Title("Tongue Settings")]
         [Tooltip("Minimum time between tongue uses in seconds")]
@@ -22,5 +22,6 @@ namespace _Project.Scripts.Runtime.Player
         public float TongueSphereCastRadius = 0.5f;
         public Ease TongueThrowEase = Ease.Linear;
         public Ease TongueRetractEase = Ease.Linear;
+        public float SmoothPlayerMassChangeOnTongueMoveDuration = 0.5f;
     }
 }
