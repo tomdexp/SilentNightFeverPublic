@@ -22,6 +22,7 @@ namespace _Project.Scripts.Runtime.Networking
         [SerializeField] private NetworkObject _playerPrefab;
         [SerializeField] private InputAction _joinInputAction;
         [SerializeField] private InputAction _leaveInputAction;
+        [SerializeField] private InputAction _joinAndFullFakePlayerInputAction;
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
         public int NumberOfPlayers => _realPlayerInfos.Count;
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
@@ -35,10 +36,12 @@ namespace _Project.Scripts.Runtime.Networking
             _realPlayerInfos.OnChange += OnChangedRealPlayerInfos;
             _joinInputAction.performed += JoinInputActionPerformed;
             _leaveInputAction.performed += LeaveInputActionPerformed;
+            _joinAndFullFakePlayerInputAction.performed += JoinAndFullFakePlayerInputActionOnPerformed;
             _joinInputAction.Enable();
             _leaveInputAction.Enable();
+            _joinAndFullFakePlayerInputAction.Enable();
         }
-        
+
         public override void OnStopClient()
         {
             base.OnStopClient();
@@ -46,8 +49,10 @@ namespace _Project.Scripts.Runtime.Networking
             _realPlayerInfos.OnChange -= OnChangedRealPlayerInfos;
             _joinInputAction.Disable();
             _leaveInputAction.Disable();
+            _joinAndFullFakePlayerInputAction.Disable();
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
+            _joinAndFullFakePlayerInputAction.performed -= JoinAndFullFakePlayerInputActionOnPerformed;
         }
         
         private void OnChangedRealPlayerInfos(SyncListOperation op, int index, RealPlayerInfo oldItem, RealPlayerInfo newItem, bool asServer)
@@ -106,6 +111,15 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 TryAddRealPlayer(newRealPlayerInfo.ClientId, newRealPlayerInfo.DevicePath);
             }
+        }
+        
+        private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
+        {
+            JoinInputActionPerformed(context);
+            AddFakePlayer();
+            AddFakePlayer();
+            AddFakePlayer();
+            GameManager.Instance.TryStartGame();
         }
         
         public void SetPlayerJoiningEnabled(bool value)
@@ -369,7 +383,7 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 var nob = Instantiate(_playerPrefab);
                 InstanceFinder.ServerManager.Spawn(nob);
-                nob.GetComponent<NetworkPlayer>().SetRealPlayerInfo(realPlayerInfo);
+                nob.GetComponentInChildren<NetworkPlayer>().SetRealPlayerInfo(realPlayerInfo);
                 if (realPlayerInfo.ClientId == 255)
                 {
                     // If the player is a fake player, give ownership to the first client
