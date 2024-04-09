@@ -1,17 +1,49 @@
-﻿using FishNet.Connection;
+﻿using System;
+using FishNet;
+using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using Micosmo.SensorToolkit;
 using UnityEngine;
 
 namespace _Project.Scripts.Runtime.Player
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class TongueAnchor : NetworkBehaviour
     {
         [field: SerializeField] public byte MaxTonguesAtOnce { get; private set; } = 1;
+        public Transform Target;
         public bool HasFreeSpace => _currentNumberOfTongues.Value < MaxTonguesAtOnce;
         private readonly SyncVar<byte> _currentNumberOfTongues = new SyncVar<byte>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner));
-        
-        public void TryBindTongue(PlayerStickyTongue tongue, RaycastHit hitInfo)
+        private Rigidbody _rigidbody;
+
+        private void Awake()
+        {
+            if (Target == null)
+            {
+                Target = transform;
+            }
+            _rigidbody = GetComponent<Rigidbody>();
+        }
+
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            Debug.Log("TongueAnchor : Server started and rigidbody is set to kinematic==false");
+            _rigidbody.isKinematic = false;
+        }
+
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+            if (!InstanceFinder.IsServerStarted)
+            {
+                Debug.Log("TongueAnchor : Client started and rigidbody is set to kinematic==true");
+                _rigidbody.isKinematic = true;
+            }
+        }
+
+        public void TryBindTongue(PlayerStickyTongue tongue, RayHit hitInfo)
         {
             // SOURCE CLIENT BIND TO TONGUE AND TELL SERVER
             Debug.Log("TryBindTongue");
@@ -42,6 +74,11 @@ namespace _Project.Scripts.Runtime.Player
         {
             Debug.Log("ForceRetractTongueTargetRpc on " + connection.ClientId);
             tongue.ForceRetractTongue();
+        }
+        
+        public Rigidbody GetRigidbody()
+        {
+            return _rigidbody;
         }
     }
 }
