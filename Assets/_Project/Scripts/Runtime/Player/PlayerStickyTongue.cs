@@ -130,6 +130,11 @@ namespace _Project.Scripts.Runtime.Player
                     if (tongueAnchor != null)
                     {
                         Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue anchor");
+                        if (!tongueAnchor.HasFreeSpace)
+                        {
+                            Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue anchor has no free space");
+                            yield break;
+                        }
                         tongueAnchor.TryBindTongue(this, hitInfo);
                         yield return BindTongueToAnchorCoroutine(tongueAnchor);
                     }

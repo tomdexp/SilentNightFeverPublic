@@ -41,6 +41,12 @@ namespace _Project.Scripts.Runtime.Player
         public override void OnStartServer()
         {
             base.OnStartServer();
+            StartCoroutine(WaitAndActivateRigidbody());
+        }
+        
+        private IEnumerator WaitAndActivateRigidbody()
+        {
+            yield return new WaitForSeconds(1f);
             Debug.Log("TongueAnchor : Server started and rigidbody is set to kinematic==false");
             _rigidbody.isKinematic = false;
         }
