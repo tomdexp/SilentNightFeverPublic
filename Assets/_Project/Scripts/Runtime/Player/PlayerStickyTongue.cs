@@ -47,6 +47,7 @@ namespace _Project.Scripts.Runtime.Player
             {
                 Debug.LogError("No mesh renderer found on tongue renderer.", this);
             }
+
             _tongueRenderer.enabled = false;
             _defaultPlayerMass = _playerRigidbody.mass;
             ApplyPlayerDataToRaySensor();
@@ -186,12 +187,11 @@ namespace _Project.Scripts.Runtime.Player
             _isTongueOut = true;
             _tongueTipRigidbody.isKinematic = true;
             _tongueTip.position = _tongueOrigin.position;
-            _obiSolver.enabled = true;
-            _tongueRenderer.enabled = true;
+            SetTongueVisibilityServerRpc(true);
             yield return ThrowTo(tongueAnchor.Target.position);
             _isTongueBind = true;
             _currentBindTongueAnchor = tongueAnchor;
-            // create a fixed joint between the tongue tip rigidbody and the tongue anchor rigidbody
+
             var fixedJoint = _tongueTip.gameObject.AddComponent<FixedJoint>();
             fixedJoint.connectedBody = tongueAnchor.GetRigidbody();
             fixedJoint.autoConfigureConnectedAnchor = false;
@@ -203,6 +203,7 @@ namespace _Project.Scripts.Runtime.Player
         private IEnumerator UnbindTongueFromAnchorCoroutine()
         {
             _isTongueBind = false;
+            _currentBindTongueAnchor.TryUnbindTongue(this);
             _currentBindTongueAnchor = null;
             _tongueTipRigidbody.isKinematic = true;
             var fixedJoint = _tongueTip.gameObject.GetComponent<FixedJoint>();
@@ -210,9 +211,9 @@ namespace _Project.Scripts.Runtime.Player
             {
                 Destroy(fixedJoint);
             }
+
             yield return Retract();
-            _tongueRenderer.enabled = false;
-            _obiSolver.enabled = false;
+            SetTongueVisibilityServerRpc(false);
             Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Hiding tongue and disabling solver");
             _isTongueOut = false;
         }
@@ -241,6 +242,7 @@ namespace _Project.Scripts.Runtime.Player
                     .SetEase(_networkPlayer.PlayerData.TongueRetractEase);
                 yield return tween.WaitForCompletion();
             }
+
             StartCoroutine(SmoothMassChangeDown());
             Debug.Log($"Player {_networkPlayer.GetPlayerIndexType()} : Retracted tongue to origin position");
         }
@@ -269,6 +271,21 @@ namespace _Project.Scripts.Runtime.Player
             var duration = _networkPlayer.PlayerData.SmoothPlayerMassChangeOnTongueMoveDuration;
             var tween = DOTween.To(() => _playerRigidbody.mass, x => _playerRigidbody.mass = x, targetMass, duration);
             yield return tween.WaitForCompletion();
+        }
+
+        [ServerRpc(RequireOwnership = true, RunLocally = true)]
+        private void SetTongueVisibilityServerRpc(bool value)
+        {
+            _obiSolver.enabled = value;
+            _tongueRenderer.enabled = value;
+            SetTongueVisibilityClientRpc(value);
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void SetTongueVisibilityClientRpc(bool value)
+        {
+            _obiSolver.enabled = value;
+            _tongueRenderer.enabled = value;
         }
     }
 }

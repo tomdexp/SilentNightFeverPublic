@@ -53,6 +53,7 @@ namespace _Project.Scripts.Runtime.Player
                 return;
             }
             BindTongueServerRpc(tongue);
+            SyncRigidbodyAuthorityServerRpc();
         }
         
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
@@ -69,6 +70,20 @@ namespace _Project.Scripts.Runtime.Player
             NetworkObject.GiveOwnership(connection);
         }
         
+        public void TryUnbindTongue(PlayerStickyTongue tongue)
+        {
+            // SOURCE CLIENT UNBIND TO TONGUE AND TELL SERVER
+            Debug.Log("TryUnbindTongue");
+            UnbindTongueServerRpc(tongue);
+        }
+
+        private void UnbindTongueServerRpc(PlayerStickyTongue tongue)
+        {
+            Debug.Log("UnbindTongueServerRpc");
+            _currentNumberOfTongues.Value--;
+            NetworkObject.RemoveOwnership();
+        }
+
         [TargetRpc]
         private void ForceRetractTongueTargetRpc(NetworkConnection connection, PlayerStickyTongue tongue)
         {
@@ -79,6 +94,43 @@ namespace _Project.Scripts.Runtime.Player
         public Rigidbody GetRigidbody()
         {
             return _rigidbody;
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void SyncRigidbodyAuthorityServerRpc(NetworkConnection connection = null)
+        {
+            if (connection != null)
+            {
+                Debug.Log("SyncRigidbodyAuthorityServerRpc : client id " + connection.ClientId + " asking for authority");
+            }
+            else
+            {
+                Debug.Log("SyncRigidbodyAuthorityServerRpc : connection is null");
+            }
+            if (connection == InstanceFinder.ClientManager.Connection)
+            {
+                _rigidbody.isKinematic = false;
+            }
+            else
+            {
+                _rigidbody.isKinematic = true;
+            }
+            Debug.Log("SyncRigidbodyAuthorityServerRpc : rigidbody isKinematic = " + _rigidbody.isKinematic);
+            SyncRigidbodyAuthorityClientRpc(connection);
+        }
+        
+        [ObserversRpc(ExcludeServer = true)]
+        private void SyncRigidbodyAuthorityClientRpc(NetworkConnection connection)
+        {
+            if (connection == InstanceFinder.ClientManager.Connection)
+            {
+                _rigidbody.isKinematic = false;
+            }
+            else
+            {
+                _rigidbody.isKinematic = true;
+            }
+            Debug.Log("SyncRigidbodyAuthorityClientRpc : rigidbody isKinematic = " + _rigidbody.isKinematic);
         }
     }
 }
