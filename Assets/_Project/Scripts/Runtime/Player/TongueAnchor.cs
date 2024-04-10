@@ -56,7 +56,7 @@ namespace _Project.Scripts.Runtime.Player
             SyncRigidbodyAuthorityServerRpc();
         }
         
-        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        [ServerRpc(RequireOwnership = false)]
         private void BindTongueServerRpc(PlayerStickyTongue tongue, NetworkConnection connection = null)
         {
             Debug.Log("BindTongueServerRpc");
@@ -77,11 +77,14 @@ namespace _Project.Scripts.Runtime.Player
             UnbindTongueServerRpc(tongue);
         }
 
+        [ServerRpc(RequireOwnership = false)]
         private void UnbindTongueServerRpc(PlayerStickyTongue tongue)
         {
             Debug.Log("UnbindTongueServerRpc");
             _currentNumberOfTongues.Value--;
             NetworkObject.RemoveOwnership();
+            SyncRigidbodyAuthorityServerRpc();
+
         }
 
         [TargetRpc]

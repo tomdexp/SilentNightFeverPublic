@@ -56,7 +56,7 @@ namespace _Project.Scripts.Runtime.Player
 
         private void Update()
         {
-            if (!_isTongueOut)
+            if (!_isTongueOut && IsOwner)
             {
                 _tongueTip.position = _tongueOrigin.position;
             }
@@ -278,7 +278,7 @@ namespace _Project.Scripts.Runtime.Player
         {
             _obiSolver.enabled = value;
             _tongueRenderer.enabled = value;
-            SetTongueVisibilityClientRpc(value);
+            if (IsServerStarted) SetTongueVisibilityClientRpc(value);
         }
         
         [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
