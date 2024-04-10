@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Micosmo.SensorToolkit;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Project.Scripts.Runtime.Player
@@ -11,8 +13,13 @@ namespace _Project.Scripts.Runtime.Player
     [RequireComponent(typeof(Rigidbody))]
     public class TongueAnchor : NetworkBehaviour
     {
+        [Title("Settings")]
         [field: SerializeField] public byte MaxTonguesAtOnce { get; private set; } = 1;
         public Transform Target;
+        
+        [Title("Debug (Read-Only)")]
+        [SerializeField, ReadOnly] private float _rigidbodySpeed;
+        
         public bool HasFreeSpace => _currentNumberOfTongues.Value < MaxTonguesAtOnce;
         private readonly SyncVar<byte> _currentNumberOfTongues = new SyncVar<byte>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner));
         private Rigidbody _rigidbody;
@@ -24,6 +31,11 @@ namespace _Project.Scripts.Runtime.Player
                 Target = transform;
             }
             _rigidbody = GetComponent<Rigidbody>();
+        }
+
+        private void Update()
+        {
+            _rigidbodySpeed = _rigidbody.velocity.magnitude;
         }
 
         public override void OnStartServer()
@@ -82,9 +94,18 @@ namespace _Project.Scripts.Runtime.Player
         {
             Debug.Log("UnbindTongueServerRpc");
             _currentNumberOfTongues.Value--;
+            StartCoroutine(WaitForRigidbodyStabilization());
+        }
+        
+        private IEnumerator WaitForRigidbodyStabilization()
+        {
+            while (_rigidbodySpeed > 0.01f)
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return new WaitForSeconds(3f);
             NetworkObject.RemoveOwnership();
             SyncRigidbodyAuthorityServerRpc();
-
         }
 
         [TargetRpc]
