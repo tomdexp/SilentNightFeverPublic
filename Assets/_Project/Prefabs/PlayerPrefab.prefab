@@ -68,6 +68,14 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _enableTeleport: 0
+  _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
@@ -185,7 +193,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -305,10 +313,14 @@ MonoBehaviour:
   _obiSolver: {fileID: 5565621000412893459}
   _obiRope: {fileID: 3279326397771827430}
   _tongueTipRigidbody: {fileID: 2345534338065883269}
+  _playerRigidbody: {fileID: 6006380999208137596}
   _isTongueOut: 0
   _canThrowTongue: 1
   _canRetractTongue: 1
   _isTongueBind: 0
+  _defaultPlayerMass: 0
+  _currentBindTongueAnchor: {fileID: 0}
+  _tongueRenderer: {fileID: 0}
 --- !u!1 &5554505616590805676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,7 +1506,7 @@ MonoBehaviour:
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 3667370609337106282}
   _networkObjectCache: {fileID: 3667370609337106282}
-  _componentConfiguration: 1
+  _componentConfiguration: 2
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -1548,7 +1560,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!136 &565583427948159049
@@ -1558,7 +1570,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9104645510343224822}
-  m_Material: {fileID: 13400000, guid: 2e28fe66a22b3264b9d52b1fd341445e, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
