@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
 using FishNet.Object;
 using Micosmo.SensorToolkit;
@@ -32,6 +33,7 @@ namespace _Project.Scripts.Runtime.Player
         [SerializeField, ReadOnly] private float _defaultPlayerMass;
         [SerializeField, ReadOnly] private TongueAnchor _currentBindTongueAnchor;
         [SerializeField, ReadOnly] private MeshRenderer _tongueRenderer;
+        [SerializeField, ReadOnly] private bool _isTongueActionPressed;
         public event Action OnTongueOut;
         public event Action OnTongueIn;
         public event Action OnTongueRetractStart;
@@ -71,9 +73,15 @@ namespace _Project.Scripts.Runtime.Player
 
         private void Update()
         {
-            if (!_isTongueOut && IsOwner)
+            if(!IsOwner) return;
+            if (!_isTongueOut)
             {
                 _tongueTip.position = _tongueOrigin.position;
+            }
+
+            if (GameOptions.HoldButtonToAnchorTongue && _isTongueBind && !_isTongueActionPressed)
+            {
+                RetractTongue();
             }
         }
 
@@ -98,15 +106,22 @@ namespace _Project.Scripts.Runtime.Player
 
         public void TryUseTongue()
         {
-           Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} is trying to use tongue.", Logger.LogType.Client, NetworkObject);
+            _isTongueActionPressed = true;
+            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} is trying to use tongue.", Logger.LogType.Client, NetworkObject);
             if (!_isTongueOut)
             {
                 ThrowTongue();
+            }
+            else if (_isTongueOut && !GameOptions.HoldButtonToAnchorTongue)
+            {
+                RetractTongue();
             }
         }
 
         public void TryRetractTongue()
         {
+            _isTongueActionPressed = false;
+            if (!GameOptions.HoldButtonToAnchorTongue) return;
             Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} is trying to retract tongue.", Logger.LogType.Client, NetworkObject);
             if (_isTongueOut)
             {
