@@ -1,7 +1,7 @@
 ﻿using _Project.Scripts.Runtime.Player;
 using UnityEditor;
 using UnityEngine;
-using System.Reflection;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Editor
 {
@@ -18,7 +18,7 @@ namespace _Project.Scripts.Editor
             }
             else
             {
-                Debug.LogError("PlayerData could not be loaded. Please make sure the path is correct.");
+                Logger.LogError("PlayerData could not be loaded. Please make sure the path is correct.");
             }
         }
     }

@@ -48,7 +48,7 @@ namespace _Project.Scripts.Runtime.Utils.Singletons
                 }
                 else
                 {
-                    Debug.LogError("NetworkPersistentSingleton: " + typeof(T).Name + " does not have a NetworkObject component");
+                    Logger.LogError("NetworkPersistentSingleton: " + typeof(T).Name + " does not have a NetworkObject component");
                 }
             } else {
                 if (instance != this) {

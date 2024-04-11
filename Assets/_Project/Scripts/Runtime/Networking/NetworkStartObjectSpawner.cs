@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections;
-using FishNet;
-using FishNet.Connection;
-using FishNet.Managing;
+﻿using FishNet;
 using FishNet.Object;
 using FishNet.Transporting;
-using FishNet.Transporting.UTP;
-using Sirenix.OdinInspector;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Networking
 {
@@ -30,7 +25,7 @@ namespace _Project.Scripts.Runtime.Networking
                 // Spawn network objects
                 foreach (var networkObject in _networkObjects)
                 {
-                    Debug.Log("Spawning network object " + networkObject.name);
+                    Logger.LogTrace("Spawning network object " + networkObject.name, Logger.LogType.Server);
                     var go = Instantiate(networkObject);
                     InstanceFinder.ServerManager.Spawn(go);
                 }

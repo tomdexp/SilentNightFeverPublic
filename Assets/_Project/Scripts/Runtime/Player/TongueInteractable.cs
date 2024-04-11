@@ -1,5 +1,6 @@
 ﻿using Micosmo.SensorToolkit;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Player
 {
@@ -7,7 +8,7 @@ namespace _Project.Scripts.Runtime.Player
     {
         public void TryInteract(PlayerStickyTongue tongue, RayHit hitInfo)
         {
-            Debug.Log("Push");
+            Logger.LogTrace("Push");
         }
     }
 }

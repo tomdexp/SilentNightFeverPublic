@@ -16,7 +16,7 @@ namespace _Project.Scripts.Runtime.UI
             _uiDocument = GetComponent<UIDocument>();
             if (_uiDocument == null)
             {
-                Debug.LogError("No UIDocument found on BootstrapUIDocumentBinder.");
+                Utils.Logger.LogError("No UIDocument found on BootstrapUIDocumentBinder.");
                 return;
             }
             
@@ -33,7 +33,7 @@ namespace _Project.Scripts.Runtime.UI
             
             if (_uiDocument == null)
             {
-                Debug.LogError("No UIDocument found on BootstrapUIDocumentBinder.");
+                Utils.Logger.LogError("No UIDocument found on BootstrapUIDocumentBinder.");
                 return;
             }
 

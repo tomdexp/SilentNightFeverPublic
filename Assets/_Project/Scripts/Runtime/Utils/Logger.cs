@@ -146,7 +146,7 @@ namespace _Project.Scripts.Runtime.Utils
         {
             string logTypeColor = logTypeColors.GetValueOrDefault(logType, "<color=white>");
             string logLevelColor = logLevelColors.GetValueOrDefault(logLevel, "<color=white>");
-            string ownerIdTag = networkObject != null ? $" [OwnerId:{networkObject.OwnerId}]" : "";
+            string ownerIdTag = networkObject != null ? $" <color=#FFC0D9>[OwnerId:{networkObject.OwnerId}]</color>" : "";
 
             // Apply color only to the log type and log level tags, leaving the message in the default color.
             return $"{logTypeColor}[{logType}]</color> {logLevelColor}[{logLevel}]</color>{ownerIdTag} {message}";
