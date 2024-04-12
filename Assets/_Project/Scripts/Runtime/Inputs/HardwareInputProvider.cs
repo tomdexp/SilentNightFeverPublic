@@ -92,7 +92,7 @@ namespace _Project.Scripts.Runtime.Inputs
             InputDevice inputDevice = InputSystem.GetDevice(deviceName);
             if (inputDevice == null)
             {
-                Logger.LogError("No input device found with name: " + deviceName);
+                Logger.LogError("No input device found with name: " + deviceName, context:this);
                 return;
             }
             
@@ -111,7 +111,7 @@ namespace _Project.Scripts.Runtime.Inputs
             _inputActions.Player.Move.canceled += OnMoveInputAction;
             _inputActions.Player.DebugPossess.performed += OnDebugPossess;
             _inputActions.Enable();
-            Logger.LogTrace("Bound input provider with device: " + deviceName + " for clientID: " + _playerInfo.ClientId);
+            Logger.LogTrace("Bound input provider with device: " + deviceName + " for clientID: " + _playerInfo.ClientId, context:this);
         }
 
         private void OnDebugPossess(InputAction.CallbackContext context)
@@ -161,7 +161,7 @@ namespace _Project.Scripts.Runtime.Inputs
                     }
                     else
                     {
-                        Logger.LogTrace("No fake player found to possess");
+                        Logger.LogTrace("No fake player found to possess", context:this);
                     }
 
                     return;

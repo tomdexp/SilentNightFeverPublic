@@ -19,14 +19,14 @@ namespace _Project.Scripts.Runtime.Networking
            _playerController = GetComponent<PlayerController>();
            if (PlayerData == null)
            {
-               Logger.LogError("PlayerData is null on NetworkPlayer. Set it on the prefab.", Logger.LogType.Local, NetworkObject);
-           }
+               Logger.LogError("PlayerData is null on NetworkPlayer. Set it on the prefab.", context: this);
+           } 
        }
 
        public override void OnStartClient()
        { 
            base.OnStartClient(); 
-           Logger.LogTrace("Player spawned on client", Logger.LogType.Client, NetworkObject);
+           Logger.LogTrace("Player spawned on client", Logger.LogType.Client, this);
            _realPlayerInfo.OnChange += OnRealPlayerInfoChange;
        }
 
@@ -38,7 +38,7 @@ namespace _Project.Scripts.Runtime.Networking
 
        private void OnRealPlayerInfoChange(RealPlayerInfo prev, RealPlayerInfo next, bool asServer)
        { 
-           Logger.LogTrace("RealPlayerInfo changed for player " + next.PlayerIndexType + " (" + next.ClientId + "|" + next.DevicePath + ")", Logger.LogType.Client, NetworkObject);
+           Logger.LogTrace("RealPlayerInfo changed for player " + next.PlayerIndexType + " (" + next.ClientId + "|" + next.DevicePath + ")", Logger.LogType.Client, this);
            _playerController.SetRealPlayerInfo(next);
        }
 

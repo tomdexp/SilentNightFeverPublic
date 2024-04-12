@@ -18,7 +18,7 @@ namespace _Project.Scripts.Runtime.UGS
             var unityGamingServicesInitializer = UnityGamingServicesInitializer.TryGetInstance();
             if (unityGamingServicesInitializer == null)
             {
-                Utils.Logger.LogError("UnityGamingServicesInitializer not found. Make sure it is present in the scene.");
+                Utils.Logger.LogError("UnityGamingServicesInitializer not found. Make sure it is present in the scene.", context:this);
                 return;
             }
             unityGamingServicesInitializer.OnInitializationSuccess += OnInitializationSuccess;
@@ -34,10 +34,10 @@ namespace _Project.Scripts.Runtime.UGS
             try
             {
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                Utils.Logger.LogInfo("Sign in anonymously succeeded!");
+                Utils.Logger.LogInfo("Sign in anonymously succeeded!", context:this);
         
                 // Shows how to get the playerID
-                Utils.Logger.LogTrace($"PlayerID: {AuthenticationService.Instance.PlayerId}");
+                Utils.Logger.LogTrace($"PlayerID: {AuthenticationService.Instance.PlayerId}", context:this);
                 OnAuthenticationSuccess?.Invoke();
 
             }
@@ -45,20 +45,20 @@ namespace _Project.Scripts.Runtime.UGS
             {
                 // Compare error code to AuthenticationErrorCodes
                 // Notify the player with the proper error message
-                Utils.Logger.LogError(ex.ToString());
+                Utils.Logger.LogError(ex.ToString(), context:this);
                 OnAuthenticationFailed?.Invoke(ex);
             }
             catch (RequestFailedException ex)
             {
                 // Compare error code to CommonErrorCodes
                 // Notify the player with the proper error message
-                Utils.Logger.LogError(ex.ToString());
+                Utils.Logger.LogError(ex.ToString(), context:this);
                 OnAuthenticationFailed?.Invoke(ex);
             }
             catch (Exception ex)
             {
                 // Notify the player with the proper error message
-                Utils.Logger.LogError(ex.ToString());
+                Utils.Logger.LogError(ex.ToString(), context:this);
                 OnAuthenticationFailed?.Invoke(ex);
             }
         }
