@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using FishNet;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using UnityEngine.InputSystem.Users;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
+using PlayerController = _Project.Scripts.Runtime.Player.PlayerController;
 
 namespace _Project.Scripts.Runtime.Inputs
 {
@@ -23,6 +28,7 @@ namespace _Project.Scripts.Runtime.Inputs
         private PlayerInputActions _inputActions;
         private Vector2 _movementInput;
         private RealPlayerInfo _playerInfo;
+        private RealPlayerInfo _currentPossessedPlayer;
         
         private void OnDestroy()
         {
@@ -86,7 +92,7 @@ namespace _Project.Scripts.Runtime.Inputs
             InputDevice inputDevice = InputSystem.GetDevice(deviceName);
             if (inputDevice == null)
             {
-                Debug.LogError("No input device found with name: " + deviceName);
+                Logger.LogError("No input device found with name: " + deviceName);
                 return;
             }
             
@@ -103,8 +109,71 @@ namespace _Project.Scripts.Runtime.Inputs
             _inputActions.Player.Interact.canceled += OnInteractInputActionCanceled;
             _inputActions.Player.Move.performed += OnMoveInputAction;
             _inputActions.Player.Move.canceled += OnMoveInputAction;
+            _inputActions.Player.DebugPossess.performed += OnDebugPossess;
             _inputActions.Enable();
-            Debug.Log("Bound input provider with device: " + deviceName + " for clientID: " + _playerInfo.ClientId);
+            Logger.LogTrace("Bound input provider with device: " + deviceName + " for clientID: " + _playerInfo.ClientId);
+        }
+
+        private void OnDebugPossess(InputAction.CallbackContext context)
+        {
+            if(!InstanceFinder.IsServerStarted) return; // only the host can possess players
+            
+            // check if hold or press interact
+            if (context.interaction is HoldInteraction)
+            {
+                // UNPOSSSESS
+                if (_currentPossessedPlayer.ClientId == 255)
+                {
+                    PlayerManager.Instance.TryUnpossessPlayer(_currentPossessedPlayer.PlayerIndexType);
+                    GetComponent<PlayerController>().BindInputProvider(this);
+                    _currentPossessedPlayer = new RealPlayerInfo();
+                }
+            }
+            else if (context.interaction is PressInteraction)
+            {
+                // POSSESS
+                List<RealPlayerInfo> realPlayerInfos = PlayerManager.Instance.GetRealPlayerInfos();
+                RealPlayerInfo nextPlayer = new RealPlayerInfo();
+                bool foundNextPlayer = false;
+                foreach (var realPlayerInfo in realPlayerInfos)
+                {
+                    if (realPlayerInfo.ClientId == 255 &&
+                        realPlayerInfo.PlayerIndexType != _currentPossessedPlayer.PlayerIndexType)
+                    {
+                        // Cycle through all fake players
+                        if (realPlayerInfo.PlayerIndexType > _currentPossessedPlayer.PlayerIndexType)
+                        {
+                            nextPlayer = realPlayerInfo;
+                            foundNextPlayer = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!foundNextPlayer)
+                {
+                    if (_currentPossessedPlayer.ClientId == 255)
+                    {
+                        // If no other fake player is found and we are currently possessing a player, unpossess
+                        PlayerManager.Instance.TryUnpossessPlayer(_currentPossessedPlayer.PlayerIndexType);
+                        GetComponent<PlayerController>().BindInputProvider(this);
+                        _currentPossessedPlayer = new RealPlayerInfo();
+                    }
+                    else
+                    {
+                        Logger.LogTrace("No fake player found to possess");
+                    }
+
+                    return;
+                }
+                // Unpossess the current player
+                if (_currentPossessedPlayer.ClientId == 255)
+                {
+                    PlayerManager.Instance.TryUnpossessPlayer(_currentPossessedPlayer.PlayerIndexType);
+                }
+                PlayerManager.Instance.TryPossessPlayer(_playerInfo.PlayerIndexType, nextPlayer.PlayerIndexType);
+                _currentPossessedPlayer = nextPlayer;
+            }
         }
     }
 }

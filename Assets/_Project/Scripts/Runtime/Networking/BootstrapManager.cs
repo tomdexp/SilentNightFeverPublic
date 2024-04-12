@@ -14,6 +14,7 @@ using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Networking
 {
@@ -61,10 +62,10 @@ namespace _Project.Scripts.Runtime.Networking
             // Setup random ports for the server to avoid conflicts with other local servers (multiple instances of the game on the same computer)
             var udp = new UdpClient(0, AddressFamily.InterNetwork);
             int port = ((IPEndPoint)udp.Client.LocalEndPoint).Port;
-            Debug.Log("Found free port for local server: " + port, this);
+            Logger.LogDebug("Found free port for local server: " + port, Logger.LogType.Server);
             var transport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
             transport.ConnectionData.Port = (ushort)port;
-            Debug.Log("Setting local server port to: " + transport.ConnectionData.Port, this);
+            Logger.LogDebug("Setting local server port to: " + transport.ConnectionData.Port, Logger.LogType.Server);
             if (InstanceFinder.ServerManager.StartConnection())
             {
                 yield return new WaitForSecondsRealtime(.1f);
@@ -72,7 +73,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
-                Debug.LogError("Failed to start local server", this);
+                Logger.LogError("Failed to start local server", Logger.LogType.Server);
             }
         }
 
@@ -116,13 +117,13 @@ namespace _Project.Scripts.Runtime.Networking
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(SilentNightFeverSettings.MAX_PLAYERS);
             CurrentJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             OnJoinCodeReceived?.Invoke(CurrentJoinCode);
-            Debug.Log("Join code received : " + CurrentJoinCode);
+            Logger.LogDebug("Join code received : " + CurrentJoinCode, Logger.LogType.Server);
             
             // Configure transport
             var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
             if (fishyUnityTransport == null)
             {
-                Debug.LogError("FishyUnityTransport not found, cannot start a host with relay service.");
+                Logger.LogError("FishyUnityTransport not found, cannot start a host with relay service.", Logger.LogType.Server);
                 return;
             }
             fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.RelayUnityTransport);
@@ -136,7 +137,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
-                Debug.LogError("Failed to start host with relay service.");
+                Logger.LogError("Failed to start host with relay service.", Logger.LogType.Server);
             }
         }
 
@@ -168,7 +169,7 @@ namespace _Project.Scripts.Runtime.Networking
             var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
             if (fishyUnityTransport == null)
             {
-                Debug.LogError("FishyUnityTransport not found, cannot start a host with relay service.");
+                Logger.LogError("FishyUnityTransport not found, cannot start a host with relay service.", Logger.LogType.Client);
                 return false;
             }
             fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.RelayUnityTransport);
@@ -181,19 +182,29 @@ namespace _Project.Scripts.Runtime.Networking
         {
             // Make sure the user is signed in
             if (AuthenticationService.Instance.IsSignedIn) return true;
-            Debug.LogError("User is not signed in, cannot continue.");
+            Logger.LogError("User is not signed in, cannot continue.", Logger.LogType.Local);
             return false;
         }
         
         public async void TryStartHostWithRelay()
         {
-            Debug.Log("Trying to start host with relay...");
+            Logger.LogTrace("Trying to start host with relay...", Logger.LogType.Server);
+            if (GameManager.Instance.IsGameStarted.Value)
+            {
+                Logger.LogWarning("Game already started, cannot start a new host.", Logger.LogType.Server);
+                return;
+            }
             await StartHostWithRelay();
         }
         
         public async void TryJoinAsClientWithRelay(string joinCode)
         {
-            Debug.Log("Trying to join as client to a relay...");
+            Logger.LogTrace("Trying to join as client to a relay...", Logger.LogType.Client);
+            if (GameManager.Instance.IsGameStarted.Value)
+            {
+                Logger.LogWarning("Game already started, cannot join as client.", Logger.LogType.Client);
+                return;
+            }
             bool result = await StartClientWithRelay(joinCode);
             if (result)
             {
@@ -207,20 +218,20 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 // TODO : Localization, english hardcoded for now
                 OnInvalidJoinCodeInput?.Invoke("JoinCode cannot be empty.");
-                Debug.LogError("JoinCode cannot be empty.");
+                Logger.LogError("JoinCode cannot be empty.");
                 return false;
             }
-            Debug.Log("Join code before sanitize: " + joinCode);
+            Logger.LogTrace("Join code before sanitize: " + joinCode);
             joinCode = joinCode.Trim().ToUpper();
             // Remove any non-alphanumeric characters
             joinCode = Regex.Replace(joinCode, "[^A-Z0-9]", "");
-            Debug.Log("Join code after sanitize: " + joinCode);
+            Logger.LogTrace("Join code after sanitize: " + joinCode);
             if (joinCode.Length != 6)
             {
                 // TODO : Localization, english hardcoded for now
                 string errorMessage = "JoinCode are expected to be 6 characters long, but the input was " + joinCode.Length + " characters long.";
                 OnInvalidJoinCodeInput?.Invoke(errorMessage);
-                Debug.LogError(errorMessage);
+                Logger.LogError(errorMessage);
                 return false;
             }
             // that doesn't mean the join code exists, but at least it's sanitized

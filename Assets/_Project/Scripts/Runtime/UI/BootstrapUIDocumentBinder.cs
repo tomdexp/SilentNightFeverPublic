@@ -1,17 +1,27 @@
 ﻿using System;
 using _Project.Scripts.Runtime.Networking;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 namespace _Project.Scripts.Runtime.UI
 {
     public class BootstrapUIDocumentBinder : MonoBehaviour
     {
+        [SerializeField] private InputAction _toggleVisibilityInputAction;
         private UIDocument _uiDocument;
 
         private void Start()
         {
             _uiDocument = GetComponent<UIDocument>();
+            if (_uiDocument == null)
+            {
+                Utils.Logger.LogError("No UIDocument found on BootstrapUIDocumentBinder.");
+                return;
+            }
+            
+            _toggleVisibilityInputAction.performed += OnToggleVisibilityInputAction;
+            _toggleVisibilityInputAction.Enable();
             
             BootstrapManager.Instance.OnJoinCodeReceived += code =>
             {
@@ -23,7 +33,7 @@ namespace _Project.Scripts.Runtime.UI
             
             if (_uiDocument == null)
             {
-                Debug.LogError("No UIDocument found on BootstrapUIDocumentBinder.");
+                Utils.Logger.LogError("No UIDocument found on BootstrapUIDocumentBinder.");
                 return;
             }
 
@@ -58,6 +68,17 @@ namespace _Project.Scripts.Runtime.UI
             {
                 startGameButton.clicked += () => GameManager.Instance.TryStartGame();
             }
+        }
+
+        private void OnDestroy()
+        {
+            _toggleVisibilityInputAction.Disable();
+            _toggleVisibilityInputAction.performed -= OnToggleVisibilityInputAction;
+        }
+
+        private void OnToggleVisibilityInputAction(InputAction.CallbackContext context)
+        {
+            _uiDocument.enabled = !_uiDocument.enabled;
         }
     }
 }

@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DebugPossess",
+                    "type": "Button",
+                    "id": "14ead87b-ebd9-4423-b4fa-a68e483dd92f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold,Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -209,6 +218,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3dee83d8-fada-4b56-befb-9064a65bcb64",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "DebugPossess",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "68ae0bfe-06d1-4a08-a2ab-1378aaf0dd0d",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "DebugPossess",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
