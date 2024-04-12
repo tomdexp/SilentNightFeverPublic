@@ -33,22 +33,22 @@ namespace _Project.Scripts.Runtime.Player
             }
             else
             {
-                Logger.LogError("No input provider found on PlayerController.");
+                Logger.LogError("No input provider found on PlayerController.", context:this);
             }
             _networkPlayer = GetComponent<NetworkPlayer>();
             if (_networkPlayer == null)
             {
-                Logger.LogError("No NetworkPlayer found on PlayerController.");
+                Logger.LogError("No NetworkPlayer found on PlayerController.", context:this);
             }
             _rigidbody = GetComponent<Rigidbody>();
             if (_rigidbody == null)
             {
-                Logger.LogError("No Rigidbody found on PlayerController.");
+                Logger.LogError("No Rigidbody found on PlayerController.", context:this);
             }
             _playerStickyTongue = GetComponentInChildren<PlayerStickyTongue>();
             if (_playerStickyTongue == null)
             {
-                Logger.LogError("No PlayerStickyTongue found on PlayerController or its children.");
+                Logger.LogError("No PlayerStickyTongue found on PlayerController or its children.", context:this);
             }
         }
 
@@ -128,7 +128,7 @@ namespace _Project.Scripts.Runtime.Player
             _inputProvider.OnActionInteractPerformed += OnInteractPerformed;
             _inputProvider.OnActionInteractCanceled += OnInteractCanceled;
             
-            Logger.LogDebug("Bound input provider : " + _inputProvider.GetType().Name);
+            Logger.LogDebug("Bound input provider : " + _inputProvider.GetType().Name, context:this);
         }
 
         public void ClearInputProvider()
@@ -138,19 +138,19 @@ namespace _Project.Scripts.Runtime.Player
                 _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
                 _inputProvider.OnActionInteractCanceled -= OnInteractCanceled;
                 _inputProvider = null;
-                Logger.LogDebug("Cleared input provider.");
+                Logger.LogDebug("Cleared input provider.", context:this);
             }
         }
         
         private void OnInteractPerformed(InputAction.CallbackContext context)
         {
-            Logger.LogTrace("Interact performed locally !");
+            Logger.LogTrace("Interact performed locally !", context:this);
             _playerStickyTongue.TryUseTongue();
         }
         
         private void OnInteractCanceled(InputAction.CallbackContext context)
         {
-            Logger.LogTrace("Interact canceled locally !");
+            Logger.LogTrace("Interact canceled locally !", context:this);
             _playerStickyTongue.TryRetractTongue();
         }
 
@@ -177,7 +177,7 @@ namespace _Project.Scripts.Runtime.Player
                         // Bind the player controller to the Cinemachine Camera
                         cinemachineCamera.Follow = transform;
                         cinemachineCamera.LookAt = transform;
-                        Logger.LogDebug("Bound player " + realPlayerInfo.PlayerIndexType + " to camera " + cinemachineCamera.name);
+                        Logger.LogDebug("Bound player " + realPlayerInfo.PlayerIndexType + " to camera " + cinemachineCamera.name, context:this);
                     }
                     return;
                 }
@@ -186,13 +186,13 @@ namespace _Project.Scripts.Runtime.Player
         
         private void DisablePlayerRotation()
         {
-            Logger.LogTrace("DisablePlayerRotation");
+            Logger.LogTrace("DisablePlayerRotation", context:this);
             _canRotate = false;
         }
         
         private void EnablePlayerRotation()
         {
-            Logger.LogTrace("EnablePlayerRotation");
+            Logger.LogTrace("EnablePlayerRotation", context:this);
             _canRotate = true;
         }
     }

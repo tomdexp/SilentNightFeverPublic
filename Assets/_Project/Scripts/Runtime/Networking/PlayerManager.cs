@@ -71,12 +71,12 @@ namespace _Project.Scripts.Runtime.Networking
                 DevicePath = context.control.device.path
             };
             Logger.LogTrace("JoinInputActionPerformed with clientId " + newRealPlayerInfo.ClientId + " and devicePath " +
-                      newRealPlayerInfo.DevicePath + " received.");
+                      newRealPlayerInfo.DevicePath + " received.", context:this);
             if (_realPlayerInfos.Count == 0)
             {
                 // We know this player is not in the list since its empty
                 Logger.LogTrace("RealPlayer with clientId " + newRealPlayerInfo.ClientId + " and devicePath " +
-                                newRealPlayerInfo.DevicePath + " not in the list. Adding it...");
+                                newRealPlayerInfo.DevicePath + " not in the list. Adding it...", context:this);
                 if (!IsServerStarted)
                 {
                     TryAddRealPlayerServerRpc(newRealPlayerInfo.ClientId, newRealPlayerInfo.DevicePath);
@@ -96,14 +96,14 @@ namespace _Project.Scripts.Runtime.Networking
                 {
                     // This Real Player is already in the list
                     Logger.LogTrace("RealPlayer with clientId " + newRealPlayerInfo.ClientId + " and devicePath " +
-                                    newRealPlayerInfo.DevicePath + " already in the list.");
+                                    newRealPlayerInfo.DevicePath + " already in the list.", context:this);
                     return;
                 }
             }
 
             // This Real Player is not in the list
             Logger.LogTrace("RealPlayer with clientId " + newRealPlayerInfo.ClientId + " and devicePath " +
-                            newRealPlayerInfo.DevicePath + " not in the list. Adding it...");
+                            newRealPlayerInfo.DevicePath + " not in the list. Adding it...", context:this);
             if (!IsServerStarted)
             {
                 TryAddRealPlayerServerRpc(newRealPlayerInfo.ClientId, newRealPlayerInfo.DevicePath);
@@ -125,7 +125,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         public void SetPlayerJoiningEnabled(bool value)
         {
-            Logger.LogTrace("SetPlayerJoiningEnabled: " + value);
+            Logger.LogTrace("SetPlayerJoiningEnabled: " + value, context:this);
             if (value)
             {
                 _joinInputAction.Enable();
@@ -144,7 +144,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         public void SetPlayerLeavingEnabled(bool value)
         {
-            Logger.LogTrace("SetPlayerLeavingEnabled: " + value);
+            Logger.LogTrace("SetPlayerLeavingEnabled: " + value, context:this);
             if (value)
             {
                 _leaveInputAction.Enable();
@@ -170,12 +170,12 @@ namespace _Project.Scripts.Runtime.Networking
                 DevicePath = context.control.device.path
             };
             Logger.LogTrace("LeaveInputActionPerformed with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                            realPlayerInfo.DevicePath + " received.");
+                            realPlayerInfo.DevicePath + " received.", context:this);
             if (_realPlayerInfos.Count == 0)
             {
                 // We know this player is not in the list since its empty
                 Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                                realPlayerInfo.DevicePath + " not in the list. Nothing to remove.");
+                                realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context:this);
                 return;
             }
 
@@ -186,7 +186,7 @@ namespace _Project.Scripts.Runtime.Networking
                 {
                     // This Real Player is in the list
                     Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                                    realPlayerInfo.DevicePath + " found in the list. Removing it...");
+                                    realPlayerInfo.DevicePath + " found in the list. Removing it...", context:this);
                     if (!IsServerStarted)
                     {
                         TryRemoveRealPlayerServerRpc(realPlayerInfo.ClientId, realPlayerInfo.DevicePath);
@@ -202,7 +202,7 @@ namespace _Project.Scripts.Runtime.Networking
 
             // This Real Player is not in the list
             Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                            realPlayerInfo.DevicePath + " not in the list. Nothing to remove.");
+                            realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context:this);
         }
 
         
@@ -211,7 +211,7 @@ namespace _Project.Scripts.Runtime.Networking
         {
             if (!IsServerStarted)
             {
-                Logger.LogTrace("TrySpawnPlayer request denied locally because not server, ignore this if you are a client-only player.");
+                Logger.LogTrace("TrySpawnPlayer request denied locally because not server, ignore this if you are a client-only player.", context:this);
                 SpawnPlayerServerRpc();
             }
             else
@@ -228,10 +228,10 @@ namespace _Project.Scripts.Runtime.Networking
         
         private void SpawnPlayer()
         {
-            Logger.LogTrace("Attempting to spawn player...", Logger.LogType.Server);
+            Logger.LogTrace("Attempting to spawn player...", Logger.LogType.Server, context:this);
             if (!IsServerStarted)
             {
-                Logger.LogError("This method should only be called on the server, if you see this message, it's not normal.");
+                Logger.LogError("This method should only be called on the server, if you see this message, it's not normal.", context:this);
             }
             var go = Instantiate(_playerPrefab);
             InstanceFinder.ServerManager.Spawn(go);
@@ -249,7 +249,7 @@ namespace _Project.Scripts.Runtime.Networking
             
             if (_realPlayerInfos.Count >= 4)
             {
-                Logger.LogTrace("Cannot add more than 4 players.", Logger.LogType.Server);
+                Logger.LogTrace("Cannot add more than 4 players.", Logger.LogType.Server, context:this);
                 return;
             }
             
@@ -280,11 +280,11 @@ namespace _Project.Scripts.Runtime.Networking
                 DevicePath = devicePath,
                 PlayerIndexType = freePlayerIndexType
             });
-            Logger.LogTrace("+ RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " added. There are now " + _realPlayerInfos.Count + " players.", Logger.LogType.Server);
+            Logger.LogTrace("+ RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " added. There are now " + _realPlayerInfos.Count + " players.", Logger.LogType.Server, context:this);
             // make sure there is no duplicate PlayerIndexType
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
             {
-                Logger.LogTrace("PlayerIndexType: " + realPlayerInfo.PlayerIndexType + " for clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server);
+                Logger.LogTrace("PlayerIndexType: " + realPlayerInfo.PlayerIndexType + " for clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context:this);
                 // TODO Investigate : why is this loop still required
             }
         }
@@ -302,7 +302,7 @@ namespace _Project.Scripts.Runtime.Networking
                 if (_realPlayerInfos[i].ClientId == clientId && _realPlayerInfos[i].DevicePath == devicePath)
                 {
                     _realPlayerInfos.RemoveAt(i);
-                    Logger.LogTrace("- RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " removed. There are now " + _realPlayerInfos.Count + " players.", Logger.LogType.Server);
+                    Logger.LogTrace("- RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " removed. There are now " + _realPlayerInfos.Count + " players.", Logger.LogType.Server, context:this);
                     return;
                 }
             }
@@ -336,7 +336,7 @@ namespace _Project.Scripts.Runtime.Networking
                 ClientId = 255,
                 DevicePath = "/FakeDevice(" + randomString + ")"
             };
-            Logger.LogTrace("Adding fake player with clientId " + fakePlayerInfo.ClientId + " and devicePath " + fakePlayerInfo.DevicePath, Logger.LogType.Server);
+            Logger.LogTrace("Adding fake player with clientId " + fakePlayerInfo.ClientId + " and devicePath " + fakePlayerInfo.DevicePath, Logger.LogType.Server, context:this);
             TryAddRealPlayer(fakePlayerInfo.ClientId, fakePlayerInfo.DevicePath);
         }
         
@@ -371,12 +371,12 @@ namespace _Project.Scripts.Runtime.Networking
             // ONLY CALLED BY THE SERVER
             if (!IsServerStarted)
             {
-                Logger.LogError("This method should only be called on the server, if you see this message, it's not normal.", Logger.LogType.Server);
+                Logger.LogError("This method should only be called on the server, if you see this message, it's not normal.", Logger.LogType.Server, context:this);
                 return;
             }
             if (_realPlayerInfos.Count != 4)
             {
-                Logger.LogWarning("Not enough real players to spawn all players.", Logger.LogType.Server);
+                Logger.LogWarning("Not enough real players to spawn all players.", Logger.LogType.Server, context:this);
                 return;
             }
             SetPlayerJoiningEnabledClientRpc(false);
@@ -425,14 +425,14 @@ namespace _Project.Scripts.Runtime.Networking
             var targetNetworkPlayer = GetNetworkPlayer(targetPlayerIndexType);
             if (targetNetworkPlayer.GetRealPlayerInfo().ClientId != 255)
             {
-                Logger.LogError("Cannot possess a real player.");
+                Logger.LogError("Cannot possess a real player.", context:this);
                 return;
             }
             var conn = InstanceFinder.ServerManager.Clients[sourceNetworkPlayer.OwnerId];
             targetNetworkPlayer.GiveOwnership(conn);
             targetNetworkPlayer.GetComponent<PlayerController>().BindInputProvider(sourceNetworkPlayer.GetComponent<HardwareInputProvider>());
             sourceNetworkPlayer.GetComponent<PlayerController>().ClearInputProvider();
-            Logger.LogDebug("Player " + targetPlayerIndexType + " possessed by player " + sourcePlayerIndexType);
+            Logger.LogDebug("Player " + targetPlayerIndexType + " possessed by player " + sourcePlayerIndexType, context:this);
             OnRealPlayerPossessed?.Invoke(sourceNetworkPlayer.GetRealPlayerInfo(), targetNetworkPlayer.GetRealPlayerInfo());
         }
         
@@ -459,13 +459,13 @@ namespace _Project.Scripts.Runtime.Networking
             var networkPlayer = GetNetworkPlayer(playerIndexType);
             if (networkPlayer.GetRealPlayerInfo().ClientId != 255)
             {
-                Logger.LogError("Cannot unpossess a real player.");
+                Logger.LogError("Cannot unpossess a real player.", context:this);
                 return;
             }
             networkPlayer.RemoveOwnership();
             networkPlayer.GetComponent<PlayerController>().ClearInputProvider();
             OnRealPlayerUnpossessed?.Invoke(networkPlayer.GetRealPlayerInfo());
-            Logger.LogDebug("Player " + playerIndexType + " unpossessed.");
+            Logger.LogDebug("Player " + playerIndexType + " unpossessed.", context:this);
         }
 
         public NetworkPlayer GetNetworkPlayer(PlayerIndexType playerIndexType)

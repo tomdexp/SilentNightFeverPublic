@@ -25,7 +25,7 @@ namespace _Project.Scripts.Runtime.Networking
                 // Spawn network objects
                 foreach (var networkObject in _networkObjects)
                 {
-                    Logger.LogTrace("Spawning network object " + networkObject.name, Logger.LogType.Server);
+                    Logger.LogTrace("Spawning network object " + networkObject.name, context:this);
                     var go = Instantiate(networkObject);
                     InstanceFinder.ServerManager.Spawn(go);
                 }

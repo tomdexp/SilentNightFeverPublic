@@ -33,22 +33,22 @@ namespace _Project.Scripts.Runtime.Networking
         {
             if (IsGameStarted.Value)
             {
-                Logger.LogDebug("Game already started !", Logger.LogType.Server, NetworkObject);
+                Logger.LogDebug("Game already started !", Logger.LogType.Server, this);
                 return;
             }
-            Logger.LogTrace("Attempting to start game...", Logger.LogType.Server, NetworkObject);
+            Logger.LogTrace("Attempting to start game...", Logger.LogType.Server, this);
             if (!PlayerManager.HasInstance)
             {
-                Logger.LogError("No player manager instance found ! It should be spawned by the Default Spawn Objects script", Logger.LogType.Server, NetworkObject);
+                Logger.LogError("No player manager instance found ! It should be spawned by the Default Spawn Objects script", Logger.LogType.Server, this);
                 return;
             }
             if (PlayerManager.Instance.NumberOfPlayers != 4)
             {
-                Logger.LogWarning("Not enough players to start the game ! (current : " + PlayerManager.Instance.NumberOfPlayers +"/4)", Logger.LogType.Server, NetworkObject);
+                Logger.LogWarning("Not enough players to start the game ! (current : " + PlayerManager.Instance.NumberOfPlayers +"/4)", Logger.LogType.Server, this);
                 return;
             }
             PlayerManager.Instance.SpawnAllPlayers();
-            Logger.LogInfo("Game started !", Logger.LogType.Server, NetworkObject);
+            Logger.LogInfo("Game started !", Logger.LogType.Server, this);
             IsGameStarted.Value = true;
         }
     }
