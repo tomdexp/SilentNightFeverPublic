@@ -34,7 +34,10 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID CP_ACCESS_LP = 2166846796U;
         static const AkUniqueID DENSITY_FA_SSGRAIN = 2715217995U;
+        static const AkUniqueID GP_ACCESS_HP = 2745718364U;
+        static const AkUniqueID GP_ACCESS_NOTCH = 3319484834U;
         static const AkUniqueID IMMERSION_FA_SSGRAIN = 2481728872U;
         static const AkUniqueID INSTRUMENT_FA_SSGRAIN = 2317409760U;
         static const AkUniqueID PROXIMITY_FA_SSGRAIN = 1791284502U;
