@@ -23,5 +23,6 @@ namespace _Project.Scripts.Runtime.Player
         public Ease TongueThrowEase = Ease.Linear;
         public Ease TongueRetractEase = Ease.Linear;
         public float SmoothPlayerMassChangeOnTongueMoveDuration = 0.5f;
+        public float TongueInteractDuration = 0.5f;
     }
 }

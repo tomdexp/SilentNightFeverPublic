@@ -26,7 +26,7 @@ namespace _Project.Scripts.Runtime.Player
 
         private void Awake()
         {
-            if (Target == null)
+            if (!Target)
             {
                 Target = transform;
             }

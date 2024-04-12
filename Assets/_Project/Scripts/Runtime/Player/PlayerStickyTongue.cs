@@ -40,7 +40,6 @@ namespace _Project.Scripts.Runtime.Player
 
         public override void OnStartClient()
         {
-            base.OnStartClient();
             _tongueRenderer = _obiRope.GetComponent<MeshRenderer>();
             if (_tongueRenderer == null)
             {
@@ -60,7 +59,7 @@ namespace _Project.Scripts.Runtime.Player
             }
         }
 
-        private void OnDestroy()
+        public override void OnStopClient()
         {
             if (IsOwner)
             {
@@ -153,11 +152,11 @@ namespace _Project.Scripts.Runtime.Player
                     $"Player {_networkPlayer.GetPlayerIndexType()} : Hit something with tongue: " +
                     hitInfo.GameObject.name, Logger.LogType.Client, context:this);
                 var tongueCollider = hitInfo.Collider.GetComponent<TongueCollider>();
-                if (tongueCollider != null)
+                if (tongueCollider)
                 {
                     Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue collider", Logger.LogType.Client, this);
                     var tongueAnchor = tongueCollider.GetComponentInParent<TongueAnchor>();
-                    if (tongueAnchor != null)
+                    if (tongueAnchor)
                     {
                         Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue anchor", Logger.LogType.Client, this);
                         if (!tongueAnchor.HasFreeSpace)
@@ -170,11 +169,17 @@ namespace _Project.Scripts.Runtime.Player
                     }
                     else
                     {
-                        var tonguePushable = tongueCollider.GetComponentInParent<TongueInteractable>();
-                        if (tonguePushable != null)
+                        var tongueInteractable = tongueCollider.GetComponentInParent<TongueInteractable>();
+                        if (tongueInteractable)
                         {
-                            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue pushable", Logger.LogType.Client, this);
-                            tonguePushable.TryInteract(this, hitInfo);
+                            if (!tongueInteractable.IsInteractable.Value)
+                            {
+                                Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue interactable is not interactable", Logger.LogType.Client, this);
+                                yield break;
+                            }
+                            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue interactable", Logger.LogType.Client, this);
+                            tongueInteractable.TryInteract(this, hitInfo);
+                            yield return ThrowToInteractable(tongueInteractable);
                         }
                     }
                 }
@@ -245,6 +250,19 @@ namespace _Project.Scripts.Runtime.Player
                 Destroy(fixedJoint);
             }
 
+            yield return Retract();
+            SetTongueVisibilityServerRpc(false);
+            _isTongueOut = false;
+        }
+        
+        private IEnumerator ThrowToInteractable(TongueInteractable tongueInteractable)
+        {
+            _isTongueOut = true;
+            _tongueTipRigidbody.isKinematic = true;
+            _tongueTip.position = _tongueOrigin.position;
+            SetTongueVisibilityServerRpc(true);
+            yield return ThrowTo(tongueInteractable.Target.position);
+            yield return new WaitForSeconds(_networkPlayer.PlayerData.TongueInteractDuration);
             yield return Retract();
             SetTongueVisibilityServerRpc(false);
             _isTongueOut = false;
