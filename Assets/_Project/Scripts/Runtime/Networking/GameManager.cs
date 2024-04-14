@@ -48,6 +48,7 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             PlayerManager.Instance.SpawnAllPlayers();
+            PlayerManager.Instance.SetCanChangeTeam(false);
             Logger.LogInfo("Game started !", Logger.LogType.Server, this);
             IsGameStarted.Value = true;
         }

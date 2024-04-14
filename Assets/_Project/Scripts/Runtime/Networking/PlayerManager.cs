@@ -8,6 +8,7 @@ using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -23,10 +24,15 @@ namespace _Project.Scripts.Runtime.Networking
         [SerializeField] private NetworkObject _playerPrefab;
         [SerializeField] private InputAction _joinInputAction;
         [SerializeField] private InputAction _leaveInputAction;
+        [SerializeField] private InputAction _goToLeftTeamInputAction;
+        [SerializeField] private InputAction _goToRightTeamInputAction;
         [SerializeField] private InputAction _joinAndFullFakePlayerInputAction;
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
+        private readonly SyncList<PlayerTeamInfo> _playerTeamInfos = new SyncList<PlayerTeamInfo>();
+        private readonly SyncVar<bool> _canChangeTeam = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner));
         public int NumberOfPlayers => _realPlayerInfos.Count;
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
+        public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;
         public event Action<RealPlayerInfo,RealPlayerInfo> OnRealPlayerPossessed; // source, target
         public event Action<RealPlayerInfo> OnRealPlayerUnpossessed; 
 
@@ -34,12 +40,18 @@ namespace _Project.Scripts.Runtime.Networking
         {
             base.OnStartClient();
             _realPlayerInfos.Clear();
+            _playerTeamInfos.Clear();
             _realPlayerInfos.OnChange += OnChangedRealPlayerInfos;
+            _playerTeamInfos.OnChange += OnChangedPlayerTeamInfos;
             _joinInputAction.performed += JoinInputActionPerformed;
+            _goToRightTeamInputAction.performed += GoToRightTeamInputActionPerformed;
+            _goToLeftTeamInputAction.performed += GoToLeftTeamInputActionPerformed;
             _leaveInputAction.performed += LeaveInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed += JoinAndFullFakePlayerInputActionOnPerformed;
             _joinInputAction.Enable();
             _leaveInputAction.Enable();
+            _goToRightTeamInputAction.Enable();
+            _goToLeftTeamInputAction.Enable();
             _joinAndFullFakePlayerInputAction.Enable();
         }
 
@@ -48,17 +60,38 @@ namespace _Project.Scripts.Runtime.Networking
             base.OnStopClient();
             _realPlayerInfos.Clear();
             _realPlayerInfos.OnChange -= OnChangedRealPlayerInfos;
+            _playerTeamInfos.Clear();
+            _playerTeamInfos.OnChange -= OnChangedPlayerTeamInfos;
             _joinInputAction.Disable();
             _leaveInputAction.Disable();
+            _goToRightTeamInputAction.Disable();
+            _goToLeftTeamInputAction.Disable();
             _joinAndFullFakePlayerInputAction.Disable();
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
+            _goToRightTeamInputAction.performed -= GoToRightTeamInputActionPerformed;
+            _goToLeftTeamInputAction.performed -= GoToLeftTeamInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed -= JoinAndFullFakePlayerInputActionOnPerformed;
         }
         
         private void OnChangedRealPlayerInfos(SyncListOperation op, int index, RealPlayerInfo oldItem, RealPlayerInfo newItem, bool asServer)
         {
             OnRealPlayerInfosChanged?.Invoke(_realPlayerInfos.Collection);
+        }
+        
+        private void OnChangedPlayerTeamInfos(SyncListOperation op, int index, PlayerTeamInfo oldItem, PlayerTeamInfo newItem, bool asServer)
+        { 
+            OnPlayerTeamInfosChanged?.Invoke(_playerTeamInfos.Collection);
+            if (op == SyncListOperation.Set)
+            {
+                // Debug the current teams in a single log
+                string teams = "";
+                foreach (PlayerTeamInfo playerTeamInfo in _playerTeamInfos.Collection)
+                {
+                    teams += "Player " +playerTeamInfo.PlayerIndexType + " : Team " + playerTeamInfo.PlayerTeamType + " | ";
+                }
+                Logger.LogTrace("Teams: " + teams, Logger.LogType.Server, this);
+            }
         }
 
         private void JoinInputActionPerformed(InputAction.CallbackContext context)
@@ -114,6 +147,95 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
         
+        private void GoToLeftTeamInputActionPerformed(InputAction.CallbackContext context)
+        {
+            TryChangeTeam(context, true);
+        }
+        
+        private void GoToRightTeamInputActionPerformed(InputAction.CallbackContext context)
+        {
+            TryChangeTeam(context, false);
+        }
+
+        private void TryChangeTeam(InputAction.CallbackContext context, bool goToLeft)
+        {
+            if (!_canChangeTeam.Value)
+            {
+                Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context:this);
+                return;
+            }
+            // Reconstruct the RealPlayerInfo
+            var realPlayerInfo = new RealPlayerInfo
+            {
+                ClientId = (byte)LocalConnection.ClientId,
+                DevicePath = context.control.device.path
+            };
+            var exist = DoesRealPlayerExist(realPlayerInfo);
+            if (!exist)
+            {
+                Logger.LogWarning("Can't change team for RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath + " as it does not exist.", context:this);
+                return;
+            }
+            var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
+            if (!IsServerStarted)
+            {
+                ChangeTeamServerRpc(playerIndexType, goToLeft);
+            }
+            else
+            {
+                ChangeTeam(playerIndexType, goToLeft);
+            }
+        }
+        
+        public void ForceChangeTeam(PlayerIndexType playerIndexType, bool goToLeft)
+        {
+            if (!_canChangeTeam.Value)
+            {
+                Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context:this);
+                return;
+            }
+            if (!IsServerStarted)
+            {
+                ChangeTeamServerRpc(playerIndexType, goToLeft);
+            }
+            else
+            {
+                ChangeTeam(playerIndexType, goToLeft);
+            }
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void ChangeTeamServerRpc(PlayerIndexType playerIndexType, bool goToLeft)
+        {
+            ChangeTeam(playerIndexType, goToLeft);
+        }
+
+        private void ChangeTeam(PlayerIndexType playerIndexType, bool goToLeft)
+        {
+            // Structures cannot have their values modified when they reside within a collection. You must instead create a local variable for the collection index you wish to modify, change values on the local copy, then set the local copy back into the collection
+            PlayerTeamType newTeam = PlayerTeamType.Z;
+            if (goToLeft)
+            {
+                newTeam = PlayerTeamType.A;
+            }
+            else
+            {
+                newTeam = PlayerTeamType.B;
+            }
+            // get the index of the player in the list
+            var playerTeamInfo = _playerTeamInfos.Collection.First(x => x.PlayerIndexType == playerIndexType);
+            var index = _playerTeamInfos.IndexOf(playerTeamInfo);
+            PlayerTeamInfo copy = _playerTeamInfos[index];
+            if (copy.PlayerTeamType == newTeam)
+            {
+                Logger.LogTrace("Player " + playerIndexType + " is already in team " + newTeam, Logger.LogType.Server, this);
+                return;
+            }
+            copy.PlayerTeamType = newTeam;
+            _playerTeamInfos[index] = copy;
+            Logger.LogDebug("Player " + playerIndexType + " changed team to " + newTeam, Logger.LogType.Server, this);
+        }
+
         private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
         {
             JoinInputActionPerformed(context);
@@ -161,6 +283,27 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerLeavingEnabled(value);
         }
         
+        [ObserversRpc]
+        private void SetPlayerChangingTeamEnabledClientRpc(bool value)
+        {
+            SetPlayerChangingTeamEnabled(value);
+        }
+        
+        public void SetPlayerChangingTeamEnabled(bool value)
+        {
+            Logger.LogTrace("SetPlayerChangingTeamEnabled: " + value, context:this);
+            if (value)
+            {
+                _goToLeftTeamInputAction.Enable();
+                _goToRightTeamInputAction.Enable();
+            }
+            else
+            {
+                _goToLeftTeamInputAction.Disable();
+                _goToRightTeamInputAction.Disable();
+            }
+        }
+        
         private void LeaveInputActionPerformed(InputAction.CallbackContext context)
         {
             // This method is always call locally
@@ -204,9 +347,7 @@ namespace _Project.Scripts.Runtime.Networking
             Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
                             realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context:this);
         }
-
         
-
         public void TrySpawnPlayer()
         {
             if (!IsServerStarted)
@@ -381,6 +522,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             SetPlayerJoiningEnabledClientRpc(false);
             SetPlayerLeavingEnabledClientRpc(false);
+            SetPlayerChangingTeamEnabledClientRpc(false);
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
             {
                 var nob = Instantiate(_playerPrefab);
@@ -476,6 +618,66 @@ namespace _Project.Scripts.Runtime.Networking
         public List<RealPlayerInfo> GetRealPlayerInfos()
         {
             return _realPlayerInfos.Collection;
+        }
+        
+        [ServerRpc(RunLocally = true, RequireOwnership = false)]
+        public void SetCanChangeTeam(bool value)
+        {
+            _canChangeTeam.Value = value;
+        }
+        
+        [Button(ButtonSizes.Medium)]
+        public void TryStartTeamManagement()
+        {
+            if (_realPlayerInfos.Collection.Count != 4)
+            {
+                Logger.LogWarning("Not enough real players to start team management.", context:this);
+                return;
+            }
+            
+            if (!IsServerStarted)
+            {
+                StartTeamManagementServerRpc();
+            }
+            else
+            {
+                StartTeamManagement();
+            }
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void StartTeamManagementServerRpc()
+        {
+            StartTeamManagement();
+        }
+        
+        private void StartTeamManagement()
+        {
+            SetPlayerLeavingEnabledClientRpc(false);
+            SetPlayerJoiningEnabledClientRpc(false);
+            Logger.LogInfo("Team management started", Logger.LogType.Server, context:this);
+            List<PlayerTeamInfo> playerTeamInfos = new List<PlayerTeamInfo>();
+            for (int i = 0; i < _realPlayerInfos.Count; i++)
+            {
+                playerTeamInfos.Add(new PlayerTeamInfo
+                {
+                    PlayerIndexType = _realPlayerInfos[i].PlayerIndexType,
+                    PlayerTeamType = PlayerTeamType.Z
+                });
+            }
+            _playerTeamInfos.AddRange(playerTeamInfos);
+            SetCanChangeTeam(true);
+        }
+        
+        public bool DoesRealPlayerExist(RealPlayerInfo realPlayerInfo)
+        {
+            return _realPlayerInfos.Collection.Any(x => x.ClientId == realPlayerInfo.ClientId && x.DevicePath == realPlayerInfo.DevicePath);
+        }
+
+        public PlayerIndexType GetPlayerIndexTypeFromRealPlayerInfo(RealPlayerInfo realPlayerInfo)
+        {
+            // We can't just use realPlayerInfo.PlayerIndexType because it's not the same instance, we have to take the sync list of the server
+            return _realPlayerInfos.Collection.First(x => x.ClientId == realPlayerInfo.ClientId && x.DevicePath == realPlayerInfo.DevicePath).PlayerIndexType;
         }
     }
 }

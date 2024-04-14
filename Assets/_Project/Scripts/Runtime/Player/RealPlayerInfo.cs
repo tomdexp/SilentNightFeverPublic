@@ -7,6 +7,7 @@ namespace _Project.Scripts.Runtime.Player
     /// We should have four of these, one for each player
     /// The PlayerManager should create all four players from these infos
     /// </summary>
+    [Serializable]
     public struct RealPlayerInfo
     {
         public byte ClientId;
