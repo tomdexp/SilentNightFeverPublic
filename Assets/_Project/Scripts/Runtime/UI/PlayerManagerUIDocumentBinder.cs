@@ -29,7 +29,7 @@ namespace _Project.Scripts.Runtime.UI
             _root = _uiDocument.rootVisualElement;
             if (_uiDocument == null)
             {
-                Debug.LogError("No UIDocument found on PlayerManagerUIDocumentBinder.");
+                Utils.Logger.LogError("No UIDocument found on PlayerManagerUIDocumentBinder.", context:this);
                 return;
             }
 
@@ -41,12 +41,12 @@ namespace _Project.Scripts.Runtime.UI
             
             if (_playerA == null || _playerB == null || _playerC == null || _playerD == null)
             {
-                Debug.LogError("PlayerManagerUIDocumentBinder: One of the player labels is null.");
+                Utils.Logger.LogError("PlayerManagerUIDocumentBinder: One of the player labels is null.", context:this);
                 return;
             }
             if (_possessedPlayersLabel == null)
             {
-                Debug.LogError("PlayerManagerUIDocumentBinder: Possessed players label is null.");
+                Utils.Logger.LogError("PlayerManagerUIDocumentBinder: Possessed players label is null.", context:this);
                 return;
             }
             
@@ -77,7 +77,7 @@ namespace _Project.Scripts.Runtime.UI
             PlayerManager.Instance.OnRealPlayerInfosChanged += OnRealPlayerInfosChanged;
             PlayerManager.Instance.OnRealPlayerPossessed += OnRealPlayerPossessed;
             PlayerManager.Instance.OnRealPlayerUnpossessed += OnRealPlayerUnpossessed;
-            Debug.Log("PlayerManagerUIDocumentBinder: PlayerManager found. Binding events.");
+            Utils.Logger.LogTrace("PlayerManagerUIDocumentBinder: PlayerManager found. Binding events.", context:this);
         }
 
         private void UnbindEvents()
@@ -86,7 +86,7 @@ namespace _Project.Scripts.Runtime.UI
             PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
             PlayerManager.Instance.OnRealPlayerPossessed -= OnRealPlayerPossessed;
             PlayerManager.Instance.OnRealPlayerUnpossessed -= OnRealPlayerUnpossessed;
-            Debug.Log("PlayerManagerUIDocumentBinder: Unbinding events.");
+            Utils.Logger.LogTrace("PlayerManagerUIDocumentBinder: Unbinding events.", context:this);
         }
 
         private void OnRealPlayerInfosChanged(List<RealPlayerInfo> realPlayerInfos)

@@ -138,7 +138,8 @@ PlayerSettings:
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
   bundleVersion: 0.1.0
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: -944628639613478452, guid: 7d3c0a9a0e0829a4b94bf75bdd876f10, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -813,7 +814,22 @@ PlayerSettings:
   webGLWebAssemblyBigInt: 0
   webGLCloseOnQuit: 0
   scriptingDefineSymbols:
-    Standalone: FISHNET;FISHNET_V4;FISHNET_DISABLE_V3TOV4_HELPERS;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;WWISE_ADDRESSABLES_POST_2023
+    Android: DOTWEEN;OBI_ONI_SUPPORTED
+    Bratwurst: DOTWEEN
+    EmbeddedLinux: DOTWEEN
+    GameCoreScarlett: DOTWEEN
+    GameCoreXboxOne: DOTWEEN
+    LinuxHeadlessSimulation: DOTWEEN
+    Nintendo Switch: DOTWEEN
+    PS4: DOTWEEN
+    PS5: DOTWEEN
+    QNX: DOTWEEN
+    Standalone: FISHNET;FISHNET_V4;FISHNET_DISABLE_V3TOV4_HELPERS;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;WWISE_ADDRESSABLES_POST_2023;DOTWEEN;OBI_ONI_SUPPORTED
+    WebGL: DOTWEEN
+    Windows Store Apps: DOTWEEN
+    XboxOne: DOTWEEN
+    iPhone: DOTWEEN;OBI_ONI_SUPPORTED
+    tvOS: DOTWEEN
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

@@ -3,6 +3,7 @@ using _Project.Scripts.Runtime.Player;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Networking
 {
@@ -18,14 +19,14 @@ namespace _Project.Scripts.Runtime.Networking
            _playerController = GetComponent<PlayerController>();
            if (PlayerData == null)
            {
-               Debug.LogError("PlayerData is null on NetworkPlayer. Set it on the prefab.", this);
-           }
+               Logger.LogError("PlayerData is null on NetworkPlayer. Set it on the prefab.", context: this);
+           } 
        }
 
        public override void OnStartClient()
        { 
            base.OnStartClient(); 
-           Debug.Log("Player spawned on client");
+           Logger.LogTrace("Player spawned on client", Logger.LogType.Client, this);
            _realPlayerInfo.OnChange += OnRealPlayerInfoChange;
        }
 
@@ -37,7 +38,7 @@ namespace _Project.Scripts.Runtime.Networking
 
        private void OnRealPlayerInfoChange(RealPlayerInfo prev, RealPlayerInfo next, bool asServer)
        { 
-           Debug.Log("RealPlayerInfo changed for player " + next.PlayerIndexType + " (" + next.ClientId + "|" + next.DevicePath + ")");
+           Logger.LogTrace("RealPlayerInfo changed for player " + next.PlayerIndexType + " (" + next.ClientId + "|" + next.DevicePath + ")", Logger.LogType.Client, this);
            _playerController.SetRealPlayerInfo(next);
        }
 
