@@ -18,7 +18,7 @@ public class ProcGenVisualizer : MonoBehaviour
 
     [Range(1, 50)] private int _rejectionSamples;
     [MinValue(1)] private int _maxFailedAttempts;
-    private List<Vector2> points;
+    public List<Vector2> points;
 
     [Button]
     void CalculateMaximumRadius()
@@ -58,7 +58,7 @@ public class ProcGenVisualizer : MonoBehaviour
 
     [Title("     GO !!!")]
     [Button]
-    void Generate()
+    public void Generate()
     {
         _rejectionSamples = 360;
         _maxFailedAttempts = 10000;
@@ -74,7 +74,8 @@ public class ProcGenVisualizer : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = _objectColor;
-        Gizmos.DrawWireCube(Vector3.zero, _regionSize);
+
+        Gizmos.DrawWireCube(transform.position, _regionSize);
         if (points != null)
         {
             foreach (Vector2 point in points)
@@ -82,7 +83,12 @@ public class ProcGenVisualizer : MonoBehaviour
                 
                 Vector3 pointCenter = point;
                 pointCenter.x -= _regionSize.x/2;
+                pointCenter.x += transform.position.x;
+
                 pointCenter.y -= _regionSize.y/2;
+                pointCenter.y += transform.position.y;
+
+                pointCenter.z += transform.position.z;
                 Gizmos.DrawSphere(pointCenter, _objectRadius);
             }
         }
