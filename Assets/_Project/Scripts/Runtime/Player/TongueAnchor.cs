@@ -110,6 +110,11 @@ namespace _Project.Scripts.Runtime.Player
                 yield return new WaitForSeconds(0.1f);
             }
             yield return new WaitForSeconds(3f);
+            if (_currentNumberOfTongues.Value > 0)
+            {
+                Logger.LogDebug("Rigidbody stabilization aborted because someone has bind their tongue before the end", Logger.LogType.Server, this);
+                yield break;
+            }
             NetworkObject.RemoveOwnership();
             SyncRigidbodyAuthorityServerRpc();
         }
