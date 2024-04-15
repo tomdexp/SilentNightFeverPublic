@@ -16,6 +16,8 @@ namespace _Project.Scripts.Runtime.Player
         [Title("Settings")]
         [field: SerializeField] public byte MaxTonguesAtOnce { get; private set; } = 1;
         public Transform Target;
+        [Tooltip("If not, its the server that will own the Rigidbody.")]
+        public bool DefaultOwnershipIsParentNetworkObject = false;
         
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private float _rigidbodySpeed;
@@ -41,13 +43,13 @@ namespace _Project.Scripts.Runtime.Player
         public override void OnStartServer()
         {
             base.OnStartServer();
-            StartCoroutine(WaitAndActivateRigidbody());
+            if(!DefaultOwnershipIsParentNetworkObject) StartCoroutine(WaitAndActivateRigidbody());
         }
         
         private IEnumerator WaitAndActivateRigidbody()
         {
             yield return new WaitForSeconds(1f);
-            Logger.LogTrace("TongueAnchor : Server started and rigidbody is set to kinematic==false", Logger.LogType.Server, this);
+            Logger.LogTrace("Server started and rigidbody is set to kinematic==false", Logger.LogType.Server, this);
             _rigidbody.isKinematic = false;
         }
 
@@ -56,8 +58,22 @@ namespace _Project.Scripts.Runtime.Player
             base.OnStartClient();
             if (!InstanceFinder.IsServerStarted)
             {
-                Logger.LogTrace("TongueAnchor : Client started and rigidbody is set to kinematic==true", Logger.LogType.Client, this);
+                Logger.LogTrace("Client started and rigidbody is set to kinematic==true", Logger.LogType.Client, this);
                 _rigidbody.isKinematic = true;
+            }
+
+            if (DefaultOwnershipIsParentNetworkObject)
+            {
+                if (IsOwner) // TODO : It doesn't work for now
+                {
+                    Logger.LogTrace("Client started and DefaultOwnershipIsParentNetworkObject so rigidbody is set to kinematic==false", Logger.LogType.Client, this);
+                    _rigidbody.isKinematic = false;
+                }
+                else
+                {
+                    Logger.LogTrace("Client started and DefaultOwnershipIsParentNetworkObject but not Owner so rigidbody is set to kinematic==true", Logger.LogType.Client, this);
+                    _rigidbody.isKinematic = true;
+                }
             }
         }
 
@@ -115,7 +131,16 @@ namespace _Project.Scripts.Runtime.Player
                 Logger.LogDebug("Rigidbody stabilization aborted because someone has bind their tongue before the end", Logger.LogType.Server, this);
                 yield break;
             }
-            NetworkObject.RemoveOwnership();
+
+            if (DefaultOwnershipIsParentNetworkObject)
+            {
+                NetworkObject.GiveOwnership(NetworkObject.Owner);
+            }
+            else
+            {
+                NetworkObject.RemoveOwnership();
+            }
+            
             SyncRigidbodyAuthorityServerRpc();
         }
 

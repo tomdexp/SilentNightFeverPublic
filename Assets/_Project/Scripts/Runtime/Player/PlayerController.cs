@@ -74,6 +74,7 @@ namespace _Project.Scripts.Runtime.Player
                 _playerStickyTongue.OnTongueRetractStart -= DisablePlayerRotation;
                 _playerStickyTongue.OnTongueIn -= EnablePlayerRotation;
             }
+            
         }
 
         private void FixedUpdate()
