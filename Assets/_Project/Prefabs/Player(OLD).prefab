@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 4622808258666967131}
   - component: {fileID: 5261471094774281275}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player(OLD)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -376,11 +376,19 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _enableTeleport: 0
+  _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 6062414839442130076
+  <AssetPathHash>k__BackingField: 12056821488702696914
 --- !u!114 &4514777238750369655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,6 +448,8 @@ MonoBehaviour:
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 4900480838594670772}
   _networkObjectCache: {fileID: 4900480838594670772}
+  _canRotate: 1
+  _canMove: 1
 --- !u!114 &6804934399838740969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,13 +719,22 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4900480838594670772}
   _networkObjectCache: {fileID: 4900480838594670772}
   _tongueThrowDirection: {fileID: 1541126006418899191}
+  _tongueOrigin: {fileID: 0}
   _networkPlayer: {fileID: -1664300026626732811}
   _tongueTip: {fileID: 7670377725380464358}
   _raySensor: {fileID: 3380176250326506043}
+  _obiSolver: {fileID: 0}
+  _obiRope: {fileID: 0}
+  _tongueTipRigidbody: {fileID: 0}
+  _playerRigidbody: {fileID: 0}
   _isTongueOut: 0
   _canThrowTongue: 1
   _canRetractTongue: 1
-  _tongueOriginalPosition: {x: 0, y: 0, z: 0}
+  _isTongueBind: 0
+  _defaultPlayerMass: 0
+  _currentBindTongueAnchor: {fileID: 0}
+  _tongueRenderer: {fileID: 0}
+  _isTongueActionPressed: 0
 --- !u!1 &4192189725699195159
 GameObject:
   m_ObjectHideFlags: 0
