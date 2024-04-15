@@ -64,10 +64,17 @@ namespace _Project.Scripts.Runtime.Networking
        
        public void GiveEffect<T>() where T : PlayerEffect
        {
-           Logger.LogTrace("NetworkPlayer : Giving effect " + typeof(T).Name, Logger.LogType.Client, this);
-           var effect = ScriptableObject.CreateInstance<T>();
-           _appliedPlayerEffects.Add(effect);
-           effect.ApplyEffect(this);
+           Logger.LogDebug("Giving effect " + typeof(T).Name, Logger.LogType.Client, this);
+           T effect = PlayerEffectHelper.LoadPlayerEffect<T>();
+           if (effect)
+           {
+               _appliedPlayerEffects.Add(effect);
+               effect.ApplyEffect(this);
+           }
+           else
+           {
+               Logger.LogError("Failed to load PlayerEffect of type " + typeof(T).Name, Logger.LogType.Client, this);
+           }
        }
     }
 }

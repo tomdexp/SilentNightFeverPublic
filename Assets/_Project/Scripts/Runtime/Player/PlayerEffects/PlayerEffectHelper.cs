@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
+
 
 namespace _Project.Scripts.Runtime.Player.PlayerEffects
 {
@@ -44,8 +46,20 @@ namespace _Project.Scripts.Runtime.Player.PlayerEffects
             {
                 return type;
             }
-            throw new KeyNotFoundException($"No PlayerEffect type found for byte {effectByte}.");
-        }
 
+            Logger.LogError($"No PlayerEffect type found for byte {effectByte}.", Logger.LogType.Client);
+            return null;
+        }
+        
+        public static T LoadPlayerEffect<T>() where T : PlayerEffect
+        {
+            string path = "PlayerEffects/" + typeof(T).Name;
+            T effect = Resources.Load<T>(path);
+            if (!effect)
+            {
+                Logger.LogError("PlayerEffect of type " + typeof(T).Name + " not found at path: " + path, Logger.LogType.Client);
+            }
+            return effect;
+        }
     }
 }
