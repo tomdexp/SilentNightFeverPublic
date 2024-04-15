@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Player.PlayerEffects;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet;
 using FishNet.Connection;
@@ -678,6 +680,52 @@ namespace _Project.Scripts.Runtime.Networking
         {
             // We can't just use realPlayerInfo.PlayerIndexType because it's not the same instance, we have to take the sync list of the server
             return _realPlayerInfos.Collection.First(x => x.ClientId == realPlayerInfo.ClientId && x.DevicePath == realPlayerInfo.DevicePath).PlayerIndexType;
+        }
+        
+        public void TryGiveEffectToPlayer<T>(PlayerIndexType playerIndexType) where T : PlayerEffect
+        {
+            Logger.LogTrace("TryGiveEffectToPlayer " + playerIndexType, context:this);
+            if (!IsServerStarted)
+            {
+                GiveEffectToPlayerServerRpc(playerIndexType, PlayerEffectHelper.EffectToByte<T>());
+            }
+            else
+            {
+                GiveEffectToPlayerClientRpc(playerIndexType, PlayerEffectHelper.EffectToByte<T>());
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void GiveEffectToPlayerServerRpc(PlayerIndexType playerIndexType, byte effectIndex)
+        {
+            Logger.LogTrace("GiveEffectToPlayerServerRpc " + playerIndexType, Logger.LogType.Server, this);
+            GiveEffectToPlayerClientRpc(playerIndexType,effectIndex);
+        }
+        
+        [ObserversRpc]
+        private void GiveEffectToPlayerClientRpc(PlayerIndexType playerIndexType, byte effectIndex)
+        {
+            Logger.LogTrace("GiveEffectToPlayerClientRpc " + playerIndexType, context: this);
+            Type effectType = PlayerEffectHelper.ByteToEffect(effectIndex);
+
+            // Use reflection to call the generic method GiveEffectToPlayer
+            MethodInfo giveEffectMethod = typeof(PlayerManager).GetMethod("GiveEffectToPlayer", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo genericMethod = giveEffectMethod.MakeGenericMethod(effectType);
+
+            // Invoke the generic method with the specific type
+            genericMethod.Invoke(this, new object[] { playerIndexType });
+        }
+
+        
+        private void GiveEffectToPlayer<T>(PlayerIndexType playerIndexType) where T : PlayerEffect
+        {
+            var networkPlayer = GetNetworkPlayer(playerIndexType);
+            if (networkPlayer == null)
+            {
+                Logger.LogWarning("NetworkPlayer not found for playerIndexType " + playerIndexType, context:this);
+                return;
+            }
+            networkPlayer.GiveEffect<T>();
         }
     }
 }

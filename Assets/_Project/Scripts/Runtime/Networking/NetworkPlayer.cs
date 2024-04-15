@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Player.PlayerEffects;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
@@ -13,6 +15,7 @@ namespace _Project.Scripts.Runtime.Networking
        [field: SerializeField] public PlayerData PlayerData { get; private set; }
        private readonly SyncVar<RealPlayerInfo> _realPlayerInfo = new SyncVar<RealPlayerInfo>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
        private PlayerController _playerController;
+       private List<PlayerEffect> _appliedPlayerEffects = new List<PlayerEffect>();
 
        private void Awake()
        { 
@@ -20,7 +23,9 @@ namespace _Project.Scripts.Runtime.Networking
            if (PlayerData == null)
            {
                Logger.LogError("PlayerData is null on NetworkPlayer. Set it on the prefab.", context: this);
-           } 
+           }
+           var copy = Instantiate(PlayerData);
+           PlayerData = copy;
        }
 
        public override void OnStartClient()
@@ -55,6 +60,14 @@ namespace _Project.Scripts.Runtime.Networking
        public RealPlayerInfo GetRealPlayerInfo()
        {
            return _realPlayerInfo.Value;
+       }
+       
+       public void GiveEffect<T>() where T : PlayerEffect
+       {
+           Logger.LogTrace("NetworkPlayer : Giving effect " + typeof(T).Name, Logger.LogType.Client, this);
+           var effect = ScriptableObject.CreateInstance<T>();
+           _appliedPlayerEffects.Add(effect);
+           effect.ApplyEffect(this);
        }
     }
 }
