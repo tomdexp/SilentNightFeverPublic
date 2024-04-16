@@ -36,13 +36,23 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
         public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;
         public event Action<RealPlayerInfo,RealPlayerInfo> OnRealPlayerPossessed; // source, target
-        public event Action<RealPlayerInfo> OnRealPlayerUnpossessed; 
+        public event Action<RealPlayerInfo> OnRealPlayerUnpossessed;
+
+        public override void OnStartServer()
+        {
+            _realPlayerInfos.Clear();
+            _playerTeamInfos.Clear();
+        }
+
+        public override void OnStopServer()
+        {
+            _realPlayerInfos.Clear();
+            _playerTeamInfos.Clear();
+        }
 
         public override void OnStartClient()
         {
             base.OnStartClient();
-            _realPlayerInfos.Clear();
-            _playerTeamInfos.Clear();
             _realPlayerInfos.OnChange += OnChangedRealPlayerInfos;
             _playerTeamInfos.OnChange += OnChangedPlayerTeamInfos;
             _joinInputAction.performed += JoinInputActionPerformed;
@@ -60,9 +70,7 @@ namespace _Project.Scripts.Runtime.Networking
         public override void OnStopClient()
         {
             base.OnStopClient();
-            _realPlayerInfos.Clear();
             _realPlayerInfos.OnChange -= OnChangedRealPlayerInfos;
-            _playerTeamInfos.Clear();
             _playerTeamInfos.OnChange -= OnChangedPlayerTeamInfos;
             _joinInputAction.Disable();
             _leaveInputAction.Disable();
@@ -534,12 +542,22 @@ namespace _Project.Scripts.Runtime.Networking
                 {
                     // If the player is a fake player, give ownership to the first client
                     var conn = InstanceFinder.ServerManager.Clients[1];
-                    nob.GiveOwnership(conn); 
+                    nob.GiveOwnership(conn);
+                    NetworkObject[] networkObjects = nob.GetComponentsInChildren<NetworkObject>();
+                    foreach (NetworkObject networkObject in networkObjects)
+                    {
+                        networkObject.GiveOwnership(conn);
+                    }
                 }
                 else
                 {
                     var conn = InstanceFinder.ServerManager.Clients[realPlayerInfo.ClientId];
                     nob.GiveOwnership(conn);
+                    NetworkObject[] networkObjects = nob.GetComponentsInChildren<NetworkObject>();
+                    foreach (NetworkObject networkObject in networkObjects)
+                    {
+                        networkObject.GiveOwnership(conn);
+                    }
                 }
             }
         }
