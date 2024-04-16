@@ -19,7 +19,7 @@ namespace _Project.Scripts.Runtime.UGS
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
-                Logger.LogWarning("No internet connection detected. Unity Gaming Services will not be initialized.");
+                Logger.LogWarning("No internet connection detected. Unity Gaming Services will not be initialized.", context:this);
                 OnInitializationFailed?.Invoke(new Exception("No internet connection detected."));
                 return;
             }
@@ -32,28 +32,28 @@ namespace _Project.Scripts.Runtime.UGS
                 string playerNumber = "Player1";
                 if (mppmTag.Length == 0)
                 {
-                    Logger.LogWarning("No Multiplayer Playmode tag detected. We consider this instance is Player1, but no other instances will be able to join. Please add a tag to each in the Multiplayer Playmode window.");
+                    Logger.LogWarning("No Multiplayer Playmode tag detected. We consider this instance is Player1, but no other instances will be able to join. Please add a tag to each in the Multiplayer Playmode window.", context:this);
                 }
                 else
                 {
                     playerNumber = mppmTag.ToList().Find(number => number.StartsWith("Player"));
                 }
                 options.SetProfile(playerNumber);
-                Logger.LogDebug($"Editor detected. Setting profile to {playerNumber}");
+                Logger.LogDebug($"Editor detected. Setting profile to {playerNumber}", context:this);
 #endif
 #if DEVELOPMENT_BUILD
                 // set a random alphanumeric profile for development builds
                 var randomString = Guid.NewGuid().ToString("N").Substring(0, 8);
                 options.SetProfile(randomString);
-                Logger.LogDebug($"Development build detected. Setting profile to {randomString}");
+                Logger.LogDebug($"Development build detected. Setting profile to {randomString}", context:this);
 #endif
                 await UnityServices.InitializeAsync(options);
-                Logger.LogDebug("Unity Gaming Services initialized successfully.");
+                Logger.LogDebug("Unity Gaming Services initialized successfully.", context:this);
                 OnInitializationSuccess?.Invoke();
             }
             catch (Exception e)
             {
-                Logger.LogError($"Unity Gaming Services initialization failed : {e}");
+                Logger.LogError($"Unity Gaming Services initialization failed : {e}", context:this);
                 OnInitializationFailed?.Invoke(e);
             }
         }

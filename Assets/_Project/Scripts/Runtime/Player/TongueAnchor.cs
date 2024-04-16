@@ -26,7 +26,7 @@ namespace _Project.Scripts.Runtime.Player
 
         private void Awake()
         {
-            if (Target == null)
+            if (!Target)
             {
                 Target = transform;
             }
@@ -47,7 +47,7 @@ namespace _Project.Scripts.Runtime.Player
         private IEnumerator WaitAndActivateRigidbody()
         {
             yield return new WaitForSeconds(1f);
-            Logger.LogTrace("TongueAnchor : Server started and rigidbody is set to kinematic==false", Logger.LogType.Server, NetworkObject);
+            Logger.LogTrace("TongueAnchor : Server started and rigidbody is set to kinematic==false", Logger.LogType.Server, this);
             _rigidbody.isKinematic = false;
         }
 
@@ -56,7 +56,7 @@ namespace _Project.Scripts.Runtime.Player
             base.OnStartClient();
             if (!InstanceFinder.IsServerStarted)
             {
-                Logger.LogTrace("TongueAnchor : Client started and rigidbody is set to kinematic==true", Logger.LogType.Client, NetworkObject);
+                Logger.LogTrace("TongueAnchor : Client started and rigidbody is set to kinematic==true", Logger.LogType.Client, this);
                 _rigidbody.isKinematic = true;
             }
         }
@@ -64,10 +64,10 @@ namespace _Project.Scripts.Runtime.Player
         public void TryBindTongue(PlayerStickyTongue tongue, RayHit hitInfo)
         {
             // SOURCE CLIENT BIND TO TONGUE AND TELL SERVER
-            Logger.LogTrace("TryBindTongue to TongueAnchor", Logger.LogType.Client, NetworkObject);
+            Logger.LogTrace("TryBindTongue to TongueAnchor", Logger.LogType.Client, this);
             if (!HasFreeSpace)
             {
-                Logger.LogTrace("No free space on tongue anchor.",Logger.LogType.Client, NetworkObject);
+                Logger.LogTrace("No free space on tongue anchor.",Logger.LogType.Client, this);
                 return;
             }
             BindTongueServerRpc(tongue);
@@ -77,10 +77,10 @@ namespace _Project.Scripts.Runtime.Player
         [ServerRpc(RequireOwnership = false)]
         private void BindTongueServerRpc(PlayerStickyTongue tongue, NetworkConnection connection = null)
         {
-            Logger.LogTrace("BindTongueServerRpc", Logger.LogType.Server, NetworkObject);
+            Logger.LogTrace("BindTongueServerRpc", Logger.LogType.Server, this);
             if (!HasFreeSpace)
             {
-                Logger.LogTrace("No free space on tongue anchor.", Logger.LogType.Server, NetworkObject);
+                Logger.LogTrace("No free space on tongue anchor.", Logger.LogType.Server, this);
                 ForceRetractTongueTargetRpc(connection, tongue);
                 return;
             }
@@ -91,14 +91,14 @@ namespace _Project.Scripts.Runtime.Player
         public void TryUnbindTongue(PlayerStickyTongue tongue)
         {
             // SOURCE CLIENT UNBIND TO TONGUE AND TELL SERVER
-            Logger.LogTrace("TryUnbindTongue", Logger.LogType.Client, NetworkObject);
+            Logger.LogTrace("TryUnbindTongue", Logger.LogType.Client, this);
             UnbindTongueServerRpc(tongue);
         }
 
         [ServerRpc(RequireOwnership = false)]
         private void UnbindTongueServerRpc(PlayerStickyTongue tongue)
         {
-            Logger.LogTrace("UnbindTongueServerRpc", Logger.LogType.Server, NetworkObject);
+            Logger.LogTrace("UnbindTongueServerRpc", Logger.LogType.Server, this);
             _currentNumberOfTongues.Value--;
             StartCoroutine(WaitForRigidbodyStabilization());
         }
@@ -110,6 +110,11 @@ namespace _Project.Scripts.Runtime.Player
                 yield return new WaitForSeconds(0.1f);
             }
             yield return new WaitForSeconds(3f);
+            if (_currentNumberOfTongues.Value > 0)
+            {
+                Logger.LogDebug("Rigidbody stabilization aborted because someone has bind their tongue before the end", Logger.LogType.Server, this);
+                yield break;
+            }
             NetworkObject.RemoveOwnership();
             SyncRigidbodyAuthorityServerRpc();
         }
@@ -117,7 +122,7 @@ namespace _Project.Scripts.Runtime.Player
         [TargetRpc]
         private void ForceRetractTongueTargetRpc(NetworkConnection connection, PlayerStickyTongue tongue)
         {
-            Logger.LogTrace("ForceRetractTongueTargetRpc on " + connection.ClientId, Logger.LogType.Client, NetworkObject);
+            Logger.LogTrace("ForceRetractTongueTargetRpc on " + connection.ClientId, Logger.LogType.Client, this);
             tongue.ForceRetractTongue();
         }
         
@@ -131,11 +136,11 @@ namespace _Project.Scripts.Runtime.Player
         {
             if (connection != null)
             {
-                Logger.LogTrace("SyncRigidbodyAuthorityServerRpc : client id " + connection.ClientId + " asking for authority", Logger.LogType.Server, NetworkObject);
+                Logger.LogTrace("SyncRigidbodyAuthorityServerRpc : client id " + connection.ClientId + " asking for authority", Logger.LogType.Server, this);
             }
             else
             {
-                Logger.LogWarning("SyncRigidbodyAuthorityServerRpc : connection is null", Logger.LogType.Server, NetworkObject);
+                Logger.LogWarning("SyncRigidbodyAuthorityServerRpc : connection is null", Logger.LogType.Server, this);
             }
             if (connection == InstanceFinder.ClientManager.Connection)
             {
@@ -145,7 +150,7 @@ namespace _Project.Scripts.Runtime.Player
             {
                 _rigidbody.isKinematic = true;
             }
-            Logger.LogTrace("SyncRigidbodyAuthorityServerRpc : rigidbody isKinematic = " + _rigidbody.isKinematic, Logger.LogType.Server, NetworkObject);
+            Logger.LogTrace("SyncRigidbodyAuthorityServerRpc : rigidbody isKinematic = " + _rigidbody.isKinematic, Logger.LogType.Server, this);
             SyncRigidbodyAuthorityClientRpc(connection);
         }
         
@@ -160,7 +165,7 @@ namespace _Project.Scripts.Runtime.Player
             {
                 _rigidbody.isKinematic = true;
             }
-            Logger.LogTrace("SyncRigidbodyAuthorityClientRpc : rigidbody isKinematic = " + _rigidbody.isKinematic, Logger.LogType.Client, NetworkObject);
+            Logger.LogTrace("SyncRigidbodyAuthorityClientRpc : rigidbody isKinematic = " + _rigidbody.isKinematic, Logger.LogType.Client, this);
         }
     }
 }

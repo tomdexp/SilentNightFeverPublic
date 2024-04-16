@@ -1,5 +1,8 @@
-﻿namespace _Project.Scripts.Runtime.Player
+﻿using System;
+
+namespace _Project.Scripts.Runtime.Player
 {
+    [Serializable]
     public enum PlayerIndexType
     {
         A, // upper right player

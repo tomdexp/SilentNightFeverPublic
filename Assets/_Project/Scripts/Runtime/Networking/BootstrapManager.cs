@@ -24,27 +24,32 @@ namespace _Project.Scripts.Runtime.Networking
     public class BootstrapManager : PersistentSingleton<BootstrapManager>
     {
         [field: SerializeField] public string CurrentJoinCode { get; private set; }
-        
+
         [field: SerializeField] public int CurrentAllocationId { get; private set; }
-        
+
         public bool HasJoinCode => !string.IsNullOrEmpty(CurrentJoinCode);
-        
+
         private string _inputFieldJoinCode;
-        
+
         /// <summary>
         /// Called when we switch from local server to relay connection
         /// </summary>
         public event Action OnServerMigrationStarted;
-        
+
+        /// <summary>
+        /// Called when we failed to change server
+        /// </summary>
+        public event Action OnServerMigrationFailed;
+
         /// <summary>
         /// Called when the server migration is finished, so the relay server is ready to accept connections
         /// or client has connected to the relay server
         /// </summary>
         public event Action OnServerMigrationFinished;
-        
+
         public event Action<string> OnJoinCodeReceived;
         public event Action<string> OnInvalidJoinCodeInput;
-        
+
         protected override void Awake()
         {
             base.Awake();
@@ -62,18 +67,18 @@ namespace _Project.Scripts.Runtime.Networking
             // Setup random ports for the server to avoid conflicts with other local servers (multiple instances of the game on the same computer)
             var udp = new UdpClient(0, AddressFamily.InterNetwork);
             int port = ((IPEndPoint)udp.Client.LocalEndPoint).Port;
-            Logger.LogDebug("Found free port for local server: " + port, Logger.LogType.Server);
+            Logger.LogDebug("Found free port for local server: " + port, Logger.LogType.Server, this);
             var transport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
             transport.ConnectionData.Port = (ushort)port;
-            Logger.LogDebug("Setting local server port to: " + transport.ConnectionData.Port, Logger.LogType.Server);
+            Logger.LogDebug("Setting local server port to: " + transport.ConnectionData.Port, Logger.LogType.Server, this);
             if (InstanceFinder.ServerManager.StartConnection())
             {
                 yield return new WaitForSecondsRealtime(.1f);
-                InstanceFinder.ClientManager.StartConnection(); 
+                InstanceFinder.ClientManager.StartConnection();
             }
             else
             {
-                Logger.LogError("Failed to start local server", Logger.LogType.Server);
+                Logger.LogError("Failed to start local server", Logger.LogType.Server, context:this);
             }
         }
 
@@ -107,37 +112,46 @@ namespace _Project.Scripts.Runtime.Networking
         /// <exception cref="ArgumentNullException">Thrown when the UnityTransport component cannot be found.</exception>
         public async Task StartHostWithRelay()
         {
-            if (!EnsureUnityGamingServicesAreInitialized()) return;
-            
-            // Stop local server
-            InstanceFinder.ServerManager.StopConnection(false);
-            OnServerMigrationStarted?.Invoke();
-            
-            // Request allocation and join code
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(SilentNightFeverSettings.MAX_PLAYERS);
-            CurrentJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            OnJoinCodeReceived?.Invoke(CurrentJoinCode);
-            Logger.LogDebug("Join code received : " + CurrentJoinCode, Logger.LogType.Server);
-            
-            // Configure transport
-            var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
-            if (fishyUnityTransport == null)
+            try
             {
-                Logger.LogError("FishyUnityTransport not found, cannot start a host with relay service.", Logger.LogType.Server);
-                return;
-            }
-            fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.RelayUnityTransport);
-            fishyUnityTransport.SetRelayServerData(new RelayServerData(allocation, SilentNightFeverSettings.RELAY_CONNECTION_TYPE));
+                if (!EnsureUnityGamingServicesAreInitialized()) return;
+                
+                // Stop local server
+                InstanceFinder.ServerManager.StopConnection(false);
+                OnServerMigrationStarted?.Invoke();
+                
+                // Request allocation and join code
+                Allocation allocation = await RelayService.Instance.CreateAllocationAsync(SilentNightFeverSettings.MAX_PLAYERS);
+                CurrentJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+                OnJoinCodeReceived?.Invoke(CurrentJoinCode);
+                Logger.LogDebug("Join code received : " + CurrentJoinCode, Logger.LogType.Server, this);
+                
+                // Configure transport
+                var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
+                if (fishyUnityTransport == null)
+                {
+                    Logger.LogError("FishyUnityTransport not found, cannot start a host with relay service.", Logger.LogType.Server, this);
+                    throw new Exception("FishyUnityTransport not found, cannot start a host with relay service.");
+                }
+                fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.RelayUnityTransport);
+                fishyUnityTransport.SetRelayServerData(new RelayServerData(allocation, SilentNightFeverSettings.RELAY_CONNECTION_TYPE));
 
-            // Start host
-            if (InstanceFinder.ServerManager.StartConnection()) // Server is successfully started.
-            {
-                InstanceFinder.ClientManager.StartConnection();
-                OnServerMigrationFinished?.Invoke();
+                // Start host
+                if (InstanceFinder.ServerManager.StartConnection()) // Server is successfully started.
+                {
+                    InstanceFinder.ClientManager.StartConnection();
+                    OnServerMigrationFinished?.Invoke();
+                }
+                else
+                {
+                    Logger.LogError("Failed to start host with relay service.", Logger.LogType.Server, this);
+                    throw new Exception("Failed to start host with relay service.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Logger.LogError("Failed to start host with relay service.", Logger.LogType.Server);
+                Logger.LogError("Failed to start host with relay service.", Logger.LogType.Server, context:this);
+                OnServerMigrationFailed?.Invoke();
             }
         }
 
@@ -156,53 +170,65 @@ namespace _Project.Scripts.Runtime.Networking
         /// <exception cref="ArgumentNullException">Thrown when the UnityTransport component cannot be found.</exception>
         public async Task<bool> StartClientWithRelay(string joinCode)
         {
-            if (!EnsureUnityGamingServicesAreInitialized()) return false;
-
-            // Stop local server
-            InstanceFinder.ServerManager.StopConnection(false);
-            OnServerMigrationStarted?.Invoke();
-            
-            // Join allocation
-            var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);
-            CurrentJoinCode = joinCode;
-            // Configure transport
-            var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
-            if (fishyUnityTransport == null)
+            try
             {
-                Logger.LogError("FishyUnityTransport not found, cannot start a host with relay service.", Logger.LogType.Client);
+                if (!EnsureUnityGamingServicesAreInitialized()) return false;
+
+                // Stop local server
+                InstanceFinder.ServerManager.StopConnection(false);
+                OnServerMigrationStarted?.Invoke();
+
+                // Join allocation
+                var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);
+                CurrentJoinCode = joinCode;
+                // Configure transport
+                var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
+                if (fishyUnityTransport == null)
+                {
+                    throw new Exception("FishyUnityTransport not found, cannot start a host with relay service.");
+                }
+                fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.RelayUnityTransport);
+                fishyUnityTransport.SetRelayServerData(new RelayServerData(joinAllocation, SilentNightFeverSettings.RELAY_CONNECTION_TYPE));
+                // Start client
+                bool result = !string.IsNullOrEmpty(joinCode) && InstanceFinder.NetworkManager.ClientManager.StartConnection();
+                if (!result) throw new Exception("Couldn't start connection.");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("FishyUnityTransport not found, cannot start a host with relay service.", Logger.LogType.Client, context:this);
+                OnServerMigrationFailed?.Invoke();
+
                 return false;
             }
-            fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.RelayUnityTransport);
-            fishyUnityTransport.SetRelayServerData(new RelayServerData(joinAllocation, SilentNightFeverSettings.RELAY_CONNECTION_TYPE));
-            // Start client
-            return !string.IsNullOrEmpty(joinCode) && InstanceFinder.NetworkManager.ClientManager.StartConnection();
+
         }
-        
+
         private bool EnsureUnityGamingServicesAreInitialized()
         {
             // Make sure the user is signed in
             if (AuthenticationService.Instance.IsSignedIn) return true;
-            Logger.LogError("User is not signed in, cannot continue.", Logger.LogType.Local);
+            Logger.LogError("User is not signed in, cannot continue.", Logger.LogType.Local, context:this);
             return false;
         }
-        
+
         public async void TryStartHostWithRelay()
         {
-            Logger.LogTrace("Trying to start host with relay...", Logger.LogType.Server);
+            Logger.LogTrace("Trying to start host with relay...", Logger.LogType.Server, context:this);
             if (GameManager.Instance.IsGameStarted.Value)
             {
-                Logger.LogWarning("Game already started, cannot start a new host.", Logger.LogType.Server);
+                Logger.LogWarning("Game already started, cannot start a new host.", Logger.LogType.Server, context:this);
                 return;
             }
             await StartHostWithRelay();
         }
-        
+
         public async void TryJoinAsClientWithRelay(string joinCode)
         {
-            Logger.LogTrace("Trying to join as client to a relay...", Logger.LogType.Client);
+            Logger.LogTrace("Trying to join as client to a relay...", Logger.LogType.Client, context:this);
             if (GameManager.Instance.IsGameStarted.Value)
             {
-                Logger.LogWarning("Game already started, cannot join as client.", Logger.LogType.Client);
+                Logger.LogWarning("Game already started, cannot join as client.", Logger.LogType.Client, context:this);
                 return;
             }
             bool result = await StartClientWithRelay(joinCode);
@@ -211,27 +237,27 @@ namespace _Project.Scripts.Runtime.Networking
                 OnServerMigrationFinished?.Invoke();
             }
         }
-        
+
         public bool SanitizeJoinCode(ref string joinCode)
         {
             if (string.IsNullOrEmpty(joinCode))
             {
                 // TODO : Localization, english hardcoded for now
                 OnInvalidJoinCodeInput?.Invoke("JoinCode cannot be empty.");
-                Logger.LogError("JoinCode cannot be empty.");
+                Logger.LogError("JoinCode cannot be empty.", context:this);
                 return false;
             }
-            Logger.LogTrace("Join code before sanitize: " + joinCode);
+            Logger.LogTrace("Join code before sanitize: " + joinCode, context:this);
             joinCode = joinCode.Trim().ToUpper();
             // Remove any non-alphanumeric characters
             joinCode = Regex.Replace(joinCode, "[^A-Z0-9]", "");
-            Logger.LogTrace("Join code after sanitize: " + joinCode);
+            Logger.LogTrace("Join code after sanitize: " + joinCode, context:this);
             if (joinCode.Length != 6)
             {
                 // TODO : Localization, english hardcoded for now
                 string errorMessage = "JoinCode are expected to be 6 characters long, but the input was " + joinCode.Length + " characters long.";
                 OnInvalidJoinCodeInput?.Invoke(errorMessage);
-                Logger.LogError(errorMessage);
+                Logger.LogError(errorMessage, context:this);
                 return false;
             }
             // that doesn't mean the join code exists, but at least it's sanitized
