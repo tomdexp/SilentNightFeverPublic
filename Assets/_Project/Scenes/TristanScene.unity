@@ -148,13 +148,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9445564f62db245b60d64dd257b7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minDistance: 220
+  _minDistance: 269
+  _maxDistance: 269
   _regionSize: {x: 500, y: 500}
-  edgeDistance: 75
+  edgeDistance: 25
   _numOfPoints: 2
   _objectRadius: 5
   _objectColor: {r: 1, g: 0, b: 0, a: 1}
-  _startMinDistance: 600
+  _startMinDistance: 300
 --- !u!4 &371317919
 Transform:
   m_ObjectHideFlags: 0
@@ -200,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _minDistance: 10
+  _maxDistance: 20
   _regionSize: {x: 500, y: 500}
   edgeDistance: 0
   _numOfPoints: 2000
@@ -250,13 +252,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9445564f62db245b60d64dd257b7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minDistance: 114
+  _minDistance: 107
+  _maxDistance: 107
   _regionSize: {x: 500, y: 500}
-  edgeDistance: 40
+  edgeDistance: 15
   _numOfPoints: 12
   _objectRadius: 5
   _objectColor: {r: 0.11885846, g: 1, b: 0, a: 1}
-  _startMinDistance: 150
+  _startMinDistance: 140
 --- !u!4 &1213229123
 Transform:
   m_ObjectHideFlags: 0
@@ -498,8 +501,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _minDistance: 220
+  _maxDistance: 220
   _regionSize: {x: 500, y: 500}
-  edgeDistance: 75
+  edgeDistance: 25
   _numOfPoints: 2
   _objectRadius: 5
   _objectColor: {r: 0.013798714, g: 0, b: 1, a: 1}

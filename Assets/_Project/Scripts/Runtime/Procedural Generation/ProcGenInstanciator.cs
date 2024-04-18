@@ -49,10 +49,10 @@ public class ProcGenInstanciator : MonoBehaviour
     private List<Vector2> GeneratePoints(ProcGenParameters parameters, bool forceExactNumber)
     {
         Vector2 newRegionSize = _regionSize;
-        newRegionSize.x -= parameters.edgeDistance * 2;
-        newRegionSize.y -= parameters.edgeDistance * 2;
+        newRegionSize.x *= (100 - parameters._edgeDistance) / 100;
+        newRegionSize.y *= (100 - parameters._edgeDistance) / 100;
 
-        List<Vector2> points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, newRegionSize, parameters._numOfPoints, 360, 10000);
+        List<Vector2> points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, parameters._maxDistance, newRegionSize, parameters._numOfPoints, 720, 10000);
         if (points.Count < parameters._numOfPoints && forceExactNumber)
         {
             Debug.Log("Not enougth points, something went wrong? \n Number of spawned objects : " + points.Count);
@@ -61,8 +61,8 @@ public class ProcGenInstanciator : MonoBehaviour
         for (int i = 0; i < points.Count; i++)
         {
             Vector2 point = points[i];
-            point.x += parameters.edgeDistance;
-            point.y += parameters.edgeDistance;
+            point.x += parameters._edgeDistance;
+            point.y += parameters._edgeDistance;
             points[i] = point;
         }
 
