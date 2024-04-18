@@ -8,7 +8,8 @@ public class ProcGenInstanciator : MonoBehaviour
 {
 
     [SerializeField] private ProcGenVisualizer _procGenVisualizer;
-    [SerializeField] private Vector2 _regionSize; 
+    [SerializeField] private Vector2 _regionSize;
+    [SerializeField] private GameObject _ground;
 
     [Title("    Team A")]
     [SerializeField] private ProcGenParameters _teamAParameters;
@@ -30,6 +31,8 @@ public class ProcGenInstanciator : MonoBehaviour
     private void GenerateMap()
     {
         // Generate Map ground
+        GameObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -2, _regionSize.y / 2), Quaternion.identity);
+        ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 100, 1, _regionSize.y / 10 + _regionSize.y / 100) ;
 
         List<Vector2> tmpPoints;
         tmpPoints = GeneratePoints(_teamAParameters, true);
