@@ -99,7 +99,7 @@ public static class PoissonDiscSampling
         List<Vector2> spawnPoints = new List<Vector2>();
 
         int failedAttempts = 0;
-        spawnPoints.Add(new Vector2(Random.Range(0, sampleRegionSize.x), Random.Range(0, sampleRegionSize.y)));
+        spawnPoints.Add(new Vector2(Random.Range(1, sampleRegionSize.x-1), Random.Range(1, sampleRegionSize.y-1)));
         bool firstSpawnPoint = true;
         while (points.Count < numOfPoints && failedAttempts < maxFailedAttempts)
         {
@@ -124,6 +124,12 @@ public static class PoissonDiscSampling
             }
             if (!candidateAccepted)
             {
+                if (firstSpawnPoint)
+                {
+                    spawnPoints.RemoveAt(spawnIndex);
+                    spawnPoints.Add(new Vector2(Random.Range(1, sampleRegionSize.x - 1), Random.Range(1, sampleRegionSize.y - 1)));
+                }
+
                 if (spawnPoints.Count > 1)
                 {
                     spawnPoints.RemoveAt(spawnIndex);
