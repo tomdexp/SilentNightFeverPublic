@@ -7,6 +7,6 @@ using UnityEngine;
 public class ProcGenParameters : ScriptableObject
 {
     [SerializeField, MinValue(1)] public float _minDistance = 1;
-    [SerializeField, MinValue(1)] public Vector2 _regionSize = Vector2.one;
+    [SerializeField, MinValue(0)] public float edgeDistance = 0;
     [SerializeField, MinValue(1)] public int _numOfPoints = 1;
 }
