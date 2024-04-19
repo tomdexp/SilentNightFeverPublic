@@ -13,9 +13,28 @@ namespace AK
 {
     namespace EVENTS
     {
-        static const AkUniqueID PLAY_AMB_JGL_DAY = 2299425631U;
+        static const AkUniqueID PLAY_LDMRK_CITY = 1475694052U;
+        static const AkUniqueID PLAY_LDMRK_FOREST = 702316442U;
+        static const AkUniqueID PLAY_LDMRK_RAIN = 4286364483U;
         static const AkUniqueID PLAY_WALK_TEST = 1273048044U;
+        static const AkUniqueID STOP_ALL = 452547817U;
     } // namespace EVENTS
+
+    namespace STATES
+    {
+        namespace TEST_ROUNTING_STATE
+        {
+            static const AkUniqueID GROUP = 384614222U;
+
+            namespace STATE
+            {
+                static const AkUniqueID NONE = 748895195U;
+                static const AkUniqueID PLAYER_A_AND_C = 3768106970U;
+                static const AkUniqueID PLAYER_B_AND_D = 2793951418U;
+            } // namespace STATE
+        } // namespace TEST_ROUNTING_STATE
+
+    } // namespace STATES
 
     namespace SWITCHES
     {
@@ -36,6 +55,7 @@ namespace AK
     {
         static const AkUniqueID CP_ACCESS_LP = 2166846796U;
         static const AkUniqueID DENSITY_FA_SSGRAIN = 2715217995U;
+        static const AkUniqueID DISTANCE = 1240670792U;
         static const AkUniqueID GP_ACCESS_HP = 2745718364U;
         static const AkUniqueID GP_ACCESS_NOTCH = 3319484834U;
         static const AkUniqueID IMMERSION_FA_SSGRAIN = 2481728872U;
@@ -58,14 +78,15 @@ namespace AK
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID AMB = 1117531639U;
         static const AkUniqueID CHAR = 4140304029U;
+        static const AkUniqueID TEST_LANDMARK = 1286362932U;
     } // namespace BANKS
 
     namespace BUSSES
     {
-        static const AkUniqueID AMB = 1117531639U;
+        static const AkUniqueID HDR_BUS = 1527753766U;
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
+        static const AkUniqueID MUTED_MASTER = 3967932291U;
     } // namespace BUSSES
 
     namespace AUDIO_DEVICES

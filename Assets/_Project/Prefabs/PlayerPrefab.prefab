@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7143649717338925088}
   m_Layer: 0
   m_Name: PlayerPrefab
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -321,6 +321,7 @@ MonoBehaviour:
   _defaultPlayerMass: 0
   _currentBindTongueAnchor: {fileID: 0}
   _tongueRenderer: {fileID: 0}
+  _isTongueActionPressed: 0
 --- !u!1 &5554505616590805676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,6 +1492,8 @@ MonoBehaviour:
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 3667370609337106282}
   _networkObjectCache: {fileID: 3667370609337106282}
+  _canRotate: 1
+  _canMove: 1
 --- !u!114 &3505088727478025733
 MonoBehaviour:
   m_ObjectHideFlags: 0
