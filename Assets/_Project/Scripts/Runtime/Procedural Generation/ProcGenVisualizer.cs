@@ -57,7 +57,7 @@ public class ProcGenVisualizer : MonoBehaviour
         int tmpRadiusSecured = Mathf.FloorToInt(tmpRadius * 0.9f);
 
 
-        Debug.Log("La plus grande distance maximal trouvée est : " + tmpRadiusSecured + "\n(Sans sécurité) : " + tmpRadius);
+        Debug.Log("La plus grande distance maximal trouvï¿½e est : " + tmpRadiusSecured + "\n(Sans sï¿½curitï¿½) : " + tmpRadius);
         _minDistance = tmpRadiusSecured;
     }
 
@@ -100,16 +100,6 @@ public class ProcGenVisualizer : MonoBehaviour
         newRegionSize.x *= (100 - edgeDistance) / 100;
         newRegionSize.y *= (100 - edgeDistance) / 100;
         Gizmos.DrawWireCube(transform.position, newRegionSize);
-
-        //for (float i = 0; i < 720; i++)
-        //{
-        //    float angle = i/360 * Mathf.PI * 2;
-        //    Vector2 dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
-        //    //Vector2 candidate = spawnCentre + dir * Random.Range(minRadius, maxRadius);
-        //    //Vector2 candidate = transform.position + new Vector3(dir.x * 100.0f, dir.y * 100.0f, transform.position.z);
-        //    Vector2 candidate = transform.position + new Vector3(dir.x * Random.Range(_minDistance, _maxDistance), dir.y * Random.Range(_minDistance, _maxDistance), transform.position.z);
-        //    Gizmos.DrawSphere(candidate, 10);
-        //}
 
 
         if (_points != null)
