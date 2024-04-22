@@ -13,38 +13,34 @@ public class WwEmiter3DNoPanning : MonoBehaviour
 
     [SerializeField] AkGameObj akGameObj;
 
-    private float maxVolumeDistance = 10f;
 
     List<GameObject> players = new List<GameObject>();
 
     public GameObject Player1;
     public GameObject Player2;
-    //public GameObject Player3;
-    //public GameObject Player4;
+    public GameObject Player3;
+    public GameObject Player4;
 
-    private Vector3 selfPosition;
-
-    public ulong[] listenersPlayer;
-
+ 
 
     // Start is called before the first frame update
     void Start()
     {
         players.Add(Player1);
         players.Add(Player2);
-       // players.Add(Player3);
-        //players.Add(Player4);
+       //players.Add(Player3);
+       //players.Add(Player4);
 
         AkSoundEngine.RegisterGameObj(gameObject); //maintenant ce gameobject est reconnu dans Wwise
-        selfPosition = gameObject.transform.position;
-
-        AkSoundEngine.SetListeners(gameObject, listenersPlayer, 1);
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+
+
+
         GameObject closestPlayer = null;
         float closestDistance = float.MaxValue;
 
@@ -63,6 +59,7 @@ public class WwEmiter3DNoPanning : MonoBehaviour
         {
             if (player != closestPlayer)
             {
+
                 player.GetComponentInChildren<AkAudioListener>().StopListeningToEmitter(akGameObj);
             }
         }
