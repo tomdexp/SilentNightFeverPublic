@@ -8,28 +8,31 @@ using UnityEngine;
 
 public class ProcGenInstanciator : MonoBehaviour
 {
-    [SerializeField] private ProcGenVisualizer _procGenVisualizer;
+    public bool _patxiMode = false;
+
     [SerializeField] private Vector2 _regionSize;
-    [SerializeField] private GameObject _ground;
+
+    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _ground;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _playerPrefab;
 
     [Title("    Team A")]
     [SerializeField] private ProcGenParameters _teamAParameters;
-    [SerializeField] private GameObject _teamAPrefab;
+    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _teamAPrefab;
     private List<Vector2> _teamAPoints;
 
     [Title("    Team B")]
     [SerializeField] private ProcGenParameters _teamBParameters;
-    [SerializeField] private GameObject _teamBPrefab;
+    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _teamBPrefab;
     private List<Vector2> _teamBPoints;
 
     [Title("    Landmarks")]
     [SerializeField] private ProcGenParameters _landmarksParameters;
-    [SerializeField] private GameObject _landmarksPrefab;
+    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _landmarksPrefab;
     private List<Vector2> _landmarksPoints;
 
     [Title("    Crowd")]
     [SerializeField] private ProcGenParameters _CrowdParameters;
-    [SerializeField] private GameObject _CrowdPrefab;
+    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _CrowdPrefab;
     private List<Vector2> _CrowdPoints;
 
     private bool _readyToSpawnPrefabs = false;
@@ -38,8 +41,6 @@ public class ProcGenInstanciator : MonoBehaviour
     public event Action OnMapGenerated;
     public event Action OnPrefabSpawned;
 
-    // GD Spawn tool
-    [SerializeField] private NetworkObject _playerPrefab;
 
     [Button]
     private void GenerateMap()
