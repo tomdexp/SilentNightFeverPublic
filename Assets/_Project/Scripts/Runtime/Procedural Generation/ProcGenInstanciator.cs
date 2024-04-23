@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ProcGenInstanciator : MonoBehaviour
@@ -36,6 +37,9 @@ public class ProcGenInstanciator : MonoBehaviour
     // Events
     public event Action OnMapGenerated;
     public event Action OnPrefabSpawned;
+
+    // GD Spawn tool
+    [SerializeField] private NetworkObject _playerPrefab;
 
     [Button]
     private void GenerateMap()
@@ -100,5 +104,25 @@ public class ProcGenInstanciator : MonoBehaviour
         OnPrefabSpawned?.Invoke();
     }
 
+    [Button]
+    private void PlacePlayers()
+    {
+        GameObject[] players = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name == "PlayerPrefab(Clone)").ToArray();
+
+        for (int i = 0; i < players.Count(); i++)
+        {
+            List<Vector2> teampoint;
+            if (i < 2)
+            {
+                teampoint = _teamAPoints;
+            } else
+            {
+                teampoint = _teamBPoints;
+            }
+            players[i].transform.position = new Vector3(teampoint[i%2].x, 0, teampoint[i%2].y);
+        }
+
+
+    }
 
 }
