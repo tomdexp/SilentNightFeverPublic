@@ -28,8 +28,8 @@ public class WwEmiter3DNoPanning : MonoBehaviour
     {
         players.Add(Player1);
         players.Add(Player2);
-       //players.Add(Player3);
-       //players.Add(Player4);
+       players.Add(Player3);
+       players.Add(Player4);
 
         AkSoundEngine.RegisterGameObj(gameObject); //maintenant ce gameobject est reconnu dans Wwise
         
@@ -40,31 +40,34 @@ public class WwEmiter3DNoPanning : MonoBehaviour
     {
 
 
-
-        GameObject closestPlayer = null;
-        float closestDistance = float.MaxValue;
-
-        foreach (var player in players)
-        {
-            float distance = Vector3.SqrMagnitude(transform.position - player.transform.position);
-            if (distance < closestDistance)
+       
+        
+            GameObject closestPlayer = null;
+            float closestDistance = float.MaxValue;
+    
+            foreach (var player in players)
             {
-                closestPlayer = player;
-                closestDistance = distance;
+                float distance = Vector3.SqrMagnitude(transform.position - player.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestPlayer = player;
+                    closestDistance = distance;
+                }
             }
-        }
-        //En gros on active le plus proche et on desactive tout les autres, mais faudrait voir a pas le faire toutes les frames (et a pas utiliser getcomponentinchildren)
-        //tom pardonne moi je t'en supplie
-        foreach (var player in players)
-        {
-            if (player != closestPlayer)
+            //En gros on active le plus proche et on desactive tout les autres, mais faudrait voir a pas le faire toutes les frames (et a pas utiliser getcomponentinchildren)
+            //tom pardonne moi je t'en supplie
+            foreach (var player in players)
             {
-
-                player.GetComponentInChildren<AkAudioListener>().StopListeningToEmitter(akGameObj);
+                if (player != closestPlayer)
+                {
+    
+                    player.GetComponentInChildren<AkAudioListener>().StopListeningToEmitter(akGameObj);
+    
+                }
             }
-        }
-
-        closestPlayer.GetComponentInChildren<AkAudioListener>().StartListeningToEmitter(akGameObj);
+    
+            closestPlayer.GetComponentInChildren<AkAudioListener>().StartListeningToEmitter(akGameObj);
+   
 
         if (!PlayerManager.HasInstance) return;
         
@@ -84,22 +87,22 @@ public class WwEmiter3DNoPanning : MonoBehaviour
                 Player2 = player.gameObject;
             }
         }
-        //if (!Player3)
-        //{
-        //    var player = PlayerManager.Instance.GetNetworkPlayer(_Project.Scripts.Runtime.Player.PlayerIndexType.C);
-        //    if (player)
-        //    {
-        //        Player3 = player.gameObject;
-        //    }
-        //}
-        //if (!Player4)
-        //{
-        //    var player = PlayerManager.Instance.GetNetworkPlayer(_Project.Scripts.Runtime.Player.PlayerIndexType.D);
-        //    if (player)
-        //    {
-        //        Player4 = player.gameObject;
-        //    }
-        //}
+        if (!Player3)
+        {
+            var player = PlayerManager.Instance.GetNetworkPlayer(_Project.Scripts.Runtime.Player.PlayerIndexType.C);
+            if (player)
+            {
+                Player3 = player.gameObject;
+            }
+        }
+        if (!Player4)
+        {
+            var player = PlayerManager.Instance.GetNetworkPlayer(_Project.Scripts.Runtime.Player.PlayerIndexType.D);
+            if (player)
+            {
+                Player4 = player.gameObject;
+            }
+        }
 
         if (!Player1) return;
 
@@ -111,14 +114,14 @@ public class WwEmiter3DNoPanning : MonoBehaviour
         currentNumberPlayer = currentNumberPlayer + 1;
         
 
-        if (other.name != "CharacterController" || isInCollider)
+        if (other.tag != "Player" || isInCollider)
         {
             return;
         }
         if (currentNumberPlayer != 0) {
             isInCollider = true;
             AkSoundEngine.PostEvent(EventName, gameObject);
-            Debug.Log(gameObject.transform.position);
+            Debug.Log("sound is playing");
         }
         
     }
@@ -127,7 +130,7 @@ public class WwEmiter3DNoPanning : MonoBehaviour
         currentNumberPlayer = currentNumberPlayer - 1;
         Debug.Log(currentNumberPlayer);
 
-        if (other.name != "CharacterController" || !isInCollider || currentNumberPlayer != 0)
+        if (other.tag != "Player" || !isInCollider || currentNumberPlayer != 0)
         {
             return;
         }
