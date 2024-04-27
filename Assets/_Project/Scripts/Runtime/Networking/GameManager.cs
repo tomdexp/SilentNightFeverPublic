@@ -2,6 +2,7 @@
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Networking
 {
@@ -32,22 +33,23 @@ namespace _Project.Scripts.Runtime.Networking
         {
             if (IsGameStarted.Value)
             {
-                Debug.Log("Game already started !");
+                Logger.LogDebug("Game already started !", Logger.LogType.Server, this);
                 return;
             }
-            Debug.Log("Attempting to start game...");
+            Logger.LogTrace("Attempting to start game...", Logger.LogType.Server, this);
             if (!PlayerManager.HasInstance)
             {
-                Debug.LogError("No player manager instance found ! It should be spawned by the Default Spawn Objects script");
+                Logger.LogError("No player manager instance found ! It should be spawned by the Default Spawn Objects script", Logger.LogType.Server, this);
                 return;
             }
             if (PlayerManager.Instance.NumberOfPlayers != 4)
             {
-                Debug.Log("Not enough players to start the game ! (current : " + PlayerManager.Instance.NumberOfPlayers +"/4)");
+                Logger.LogWarning("Not enough players to start the game ! (current : " + PlayerManager.Instance.NumberOfPlayers +"/4)", Logger.LogType.Server, this);
                 return;
             }
             PlayerManager.Instance.SpawnAllPlayers();
-            Debug.Log("Game started !");
+            PlayerManager.Instance.SetCanChangeTeam(false);
+            Logger.LogInfo("Game started !", Logger.LogType.Server, this);
             IsGameStarted.Value = true;
         }
     }

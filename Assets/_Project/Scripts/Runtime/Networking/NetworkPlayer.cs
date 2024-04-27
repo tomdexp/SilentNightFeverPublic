@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Player.PlayerEffects;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Networking
 {
@@ -12,20 +15,23 @@ namespace _Project.Scripts.Runtime.Networking
        [field: SerializeField] public PlayerData PlayerData { get; private set; }
        private readonly SyncVar<RealPlayerInfo> _realPlayerInfo = new SyncVar<RealPlayerInfo>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
        private PlayerController _playerController;
+       private List<PlayerEffect> _appliedPlayerEffects = new List<PlayerEffect>();
 
        private void Awake()
        { 
            _playerController = GetComponent<PlayerController>();
            if (PlayerData == null)
            {
-               Debug.LogError("PlayerData is null on NetworkPlayer. Set it on the prefab.", this);
+               Logger.LogError("PlayerData is null on NetworkPlayer. Set it on the prefab.", context: this);
            }
+           var copy = Instantiate(PlayerData);
+           PlayerData = copy;
        }
 
        public override void OnStartClient()
        { 
            base.OnStartClient(); 
-           Debug.Log("Player spawned on client");
+           Logger.LogTrace("Player spawned on client", Logger.LogType.Client, this);
            _realPlayerInfo.OnChange += OnRealPlayerInfoChange;
        }
 
@@ -37,7 +43,7 @@ namespace _Project.Scripts.Runtime.Networking
 
        private void OnRealPlayerInfoChange(RealPlayerInfo prev, RealPlayerInfo next, bool asServer)
        { 
-           Debug.Log("RealPlayerInfo changed for player " + next.PlayerIndexType + " (" + next.ClientId + "|" + next.DevicePath + ")");
+           Logger.LogTrace("RealPlayerInfo changed for player " + next.PlayerIndexType + " (" + next.ClientId + "|" + next.DevicePath + ")", Logger.LogType.Client, this);
            _playerController.SetRealPlayerInfo(next);
        }
 
@@ -54,6 +60,21 @@ namespace _Project.Scripts.Runtime.Networking
        public RealPlayerInfo GetRealPlayerInfo()
        {
            return _realPlayerInfo.Value;
+       }
+       
+       public void GiveEffect<T>() where T : PlayerEffect
+       {
+           Logger.LogDebug("Giving effect " + typeof(T).Name, Logger.LogType.Client, this);
+           T effect = PlayerEffectHelper.LoadPlayerEffect<T>();
+           if (effect)
+           {
+               _appliedPlayerEffects.Add(effect);
+               effect.ApplyEffect(this);
+           }
+           else
+           {
+               Logger.LogError("Failed to load PlayerEffect of type " + typeof(T).Name, Logger.LogType.Client, this);
+           }
        }
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.InputSystem.Users;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 using PlayerController = _Project.Scripts.Runtime.Player.PlayerController;
 
 namespace _Project.Scripts.Runtime.Inputs
@@ -91,7 +92,7 @@ namespace _Project.Scripts.Runtime.Inputs
             InputDevice inputDevice = InputSystem.GetDevice(deviceName);
             if (inputDevice == null)
             {
-                Debug.LogError("No input device found with name: " + deviceName);
+                Logger.LogError("No input device found with name: " + deviceName, context:this);
                 return;
             }
             
@@ -110,7 +111,7 @@ namespace _Project.Scripts.Runtime.Inputs
             _inputActions.Player.Move.canceled += OnMoveInputAction;
             _inputActions.Player.DebugPossess.performed += OnDebugPossess;
             _inputActions.Enable();
-            Debug.Log("Bound input provider with device: " + deviceName + " for clientID: " + _playerInfo.ClientId);
+            Logger.LogTrace("Bound input provider with device: " + deviceName + " for clientID: " + _playerInfo.ClientId, context:this);
         }
 
         private void OnDebugPossess(InputAction.CallbackContext context)
@@ -160,7 +161,7 @@ namespace _Project.Scripts.Runtime.Inputs
                     }
                     else
                     {
-                        Debug.LogWarning("No fake player found to possess");
+                        Logger.LogTrace("No fake player found to possess", context:this);
                     }
 
                     return;

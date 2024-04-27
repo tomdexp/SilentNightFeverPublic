@@ -101,6 +101,88 @@ MonoBehaviour:
       m_Action: Leave Input
       m_Flags: 0
     m_Flags: 0
+  _goToLeftTeamInputAction:
+    m_Name: Go To Left Team Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 183e470d-7ba0-4fe0-84f9-b6f0cbbdcea3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: a7c0d3fc-d2d9-4a9a-91d8-6bb2bd7e26d0
+      m_Path: <Keyboard>/leftArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go To Left Team Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: ace3bb68-ac7d-428a-8b9e-b5d090e35cc3
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go To Left Team Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: a9b68ed9-7f30-49a4-8b20-9b6027ae055f
+      m_Path: <Gamepad>/leftShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go To Left Team Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 2637bd4b-add3-4a7d-99e2-b601cec6181e
+      m_Path: <Gamepad>/dpad/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go To Left Team Input
+      m_Flags: 0
+    m_Flags: 0
+  _goToRightTeamInputAction:
+    m_Name: Go To Right Team Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b648e8bc-9d1a-4dee-ae83-893ce2d0ea1c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: bdaa9f96-4343-401a-ad14-28e0ee8920ab
+      m_Path: <Keyboard>/rightArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go To Right Team Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: c4388d8b-60ac-4dc6-a24e-4db40e165306
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go To Right Team Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 35e34b45-b93e-4035-9549-a653645e76de
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go To Right Team Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: b030777e-dedd-496d-bd8b-fc577d02531b
+      m_Path: <Gamepad>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go To Right Team Input
+      m_Flags: 0
+    m_Flags: 0
   _joinAndFullFakePlayerInputAction:
     m_Name: Join And Full Fake Player Input
     m_Type: 0
@@ -155,7 +237,15 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 2
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  <PrefabId>k__BackingField: 3
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
