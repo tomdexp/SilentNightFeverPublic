@@ -20,6 +20,8 @@ namespace _Project.Scripts.Runtime.UI
         private Label _playerB;
         private Label _playerC;
         private Label _playerD;
+        private Label _possessedPlayersLabel;
+        private string _possessedPlayersLabelDefaultText;
 
         private void Awake()
         {
@@ -27,7 +29,7 @@ namespace _Project.Scripts.Runtime.UI
             _root = _uiDocument.rootVisualElement;
             if (_uiDocument == null)
             {
-                Debug.LogError("No UIDocument found on PlayerManagerUIDocumentBinder.");
+                Utils.Logger.LogError("No UIDocument found on PlayerManagerUIDocumentBinder.", context:this);
                 return;
             }
 
@@ -35,12 +37,20 @@ namespace _Project.Scripts.Runtime.UI
             _playerB = _root.Query<VisualElement>("playerInfosB").Children<Label>("playerValue");
             _playerC = _root.Query<VisualElement>("playerInfosC").Children<Label>("playerValue");
             _playerD = _root.Query<VisualElement>("playerInfosD").Children<Label>("playerValue");
+            _possessedPlayersLabel = _root.Query<Label>("player-possessions-infos-value");
             
             if (_playerA == null || _playerB == null || _playerC == null || _playerD == null)
             {
-                Debug.LogError("PlayerManagerUIDocumentBinder: One of the player labels is null.");
+                Utils.Logger.LogError("PlayerManagerUIDocumentBinder: One of the player labels is null.", context:this);
                 return;
             }
+            if (_possessedPlayersLabel == null)
+            {
+                Utils.Logger.LogError("PlayerManagerUIDocumentBinder: Possessed players label is null.", context:this);
+                return;
+            }
+            
+            _possessedPlayersLabelDefaultText = _possessedPlayersLabel.text;
             
             InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
         }
@@ -65,13 +75,18 @@ namespace _Project.Scripts.Runtime.UI
                 yield return new WaitForSecondsRealtime(0.1f);
             }
             PlayerManager.Instance.OnRealPlayerInfosChanged += OnRealPlayerInfosChanged;
-            Debug.Log("PlayerManagerUIDocumentBinder: PlayerManager found. Binding events.");
+            PlayerManager.Instance.OnRealPlayerPossessed += OnRealPlayerPossessed;
+            PlayerManager.Instance.OnRealPlayerUnpossessed += OnRealPlayerUnpossessed;
+            Utils.Logger.LogTrace("PlayerManagerUIDocumentBinder: PlayerManager found. Binding events.", context:this);
         }
-        
+
         private void UnbindEvents()
         {
-            if (PlayerManager.HasInstance) PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
-            Debug.Log("PlayerManagerUIDocumentBinder: Unbinding events.");
+            if (PlayerManager.HasInstance == false) return;
+            PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
+            PlayerManager.Instance.OnRealPlayerPossessed -= OnRealPlayerPossessed;
+            PlayerManager.Instance.OnRealPlayerUnpossessed -= OnRealPlayerUnpossessed;
+            Utils.Logger.LogTrace("PlayerManagerUIDocumentBinder: Unbinding events.", context:this);
         }
 
         private void OnRealPlayerInfosChanged(List<RealPlayerInfo> realPlayerInfos)
@@ -102,6 +117,16 @@ namespace _Project.Scripts.Runtime.UI
                         break;
                 }
             }
+        }
+        
+        private void OnRealPlayerPossessed(RealPlayerInfo source, RealPlayerInfo target)
+        {
+            _possessedPlayersLabel.text = source.PlayerIndexType + " ---is possessing--> " + target.PlayerIndexType;
+        }
+        
+        private void OnRealPlayerUnpossessed(RealPlayerInfo realPlayerInfo)
+        {
+            _possessedPlayersLabel.text = _possessedPlayersLabelDefaultText;
         }
     }
 }

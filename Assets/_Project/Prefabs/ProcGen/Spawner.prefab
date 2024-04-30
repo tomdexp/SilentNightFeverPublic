@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5726693446575654263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7683029116754985435}
+  - component: {fileID: 8267652213070930559}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7683029116754985435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5726693446575654263}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8267652213070930559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5726693446575654263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7134980f15aacc84e909d6f6bec96894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _patxiMode: 1
+  _regionSize: {x: 200, y: 200}
+  _ground: {fileID: 4962924090520799058, guid: 4d3bbb7ce2eb3004e8b4eca8014802d2, type: 3}
+  _playerPrefab: {fileID: 3667370609337106282, guid: 7f235897ac3e3d9428ec9334311332ea,
+    type: 3}
+  _teamAParameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _teamAPrefab: {fileID: 5642245386794544270, guid: a0982b0842037f64c9deacdcf4e263dc,
+    type: 3}
+  _teamBParameters: {fileID: 11400000, guid: 0d0bfd8e48edc3b4e8f37c3a0d759474, type: 2}
+  _teamBPrefab: {fileID: 5642245386794544270, guid: 36372f25f118bad40b56b65b4c7b7df9,
+    type: 3}
+  _landmarksParameters: {fileID: 11400000, guid: a9146d958f0c92d40bbbf60e70e93375,
+    type: 2}
+  _landmarksPrefab: {fileID: 5642245386794544270, guid: afb0abcb3336e2648af44828b3134fd4,
+    type: 3}
+  _CrowdParameters: {fileID: 11400000, guid: 7785665f1c25a164d9471fca17df2370, type: 2}
+  _CrowdPrefab: {fileID: 5642245386794544270, guid: f82863f54786b7b408b57e0fc1e46e82,
+    type: 3}
