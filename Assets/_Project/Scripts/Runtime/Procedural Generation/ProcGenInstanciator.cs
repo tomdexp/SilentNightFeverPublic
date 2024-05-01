@@ -1,4 +1,6 @@
+using FishNet;
 using FishNet.Object;
+using Mono.CSharp;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
@@ -12,29 +14,29 @@ public class ProcGenInstanciator : MonoBehaviour
 
     [SerializeField] private Vector2 _regionSize;
 
-    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _ground;
-    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _invisibleWall;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _ground;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _invisibleWall;
 
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _playerPrefab;
 
     [Title("    Team A")]
     [SerializeField] private ProcGenParameters _teamAParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _teamAPrefab;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _teamAPrefab;
     private List<Vector2> _teamAPoints;
 
     [Title("    Team B")]
     [SerializeField] private ProcGenParameters _teamBParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _teamBPrefab;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _teamBPrefab;
     private List<Vector2> _teamBPoints;
 
     [Title("    Landmarks")]
     [SerializeField] private ProcGenParameters _landmarksParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _landmarksPrefab;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _landmarksPrefab;
     private List<Vector2> _landmarksPoints;
 
     [Title("    Crowd")]
     [SerializeField] private ProcGenParameters _CrowdParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _CrowdPrefab;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _CrowdPrefab;
     private List<Vector2> _CrowdPoints;
 
     private bool _readyToSpawnPrefabs = false;
@@ -45,7 +47,7 @@ public class ProcGenInstanciator : MonoBehaviour
 
 
     [Button]
-    private void GenerateMap()
+    public void GenerateMap()
     {
         GenerateTerrain();
 
@@ -61,22 +63,30 @@ public class ProcGenInstanciator : MonoBehaviour
     private void GenerateTerrain()
     {
         // Generate Map ground
-        GameObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -2, _regionSize.y / 2), Quaternion.identity);
+        NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -2, _regionSize.y / 2), Quaternion.identity);
         ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 100, 1, _regionSize.y / 10 + _regionSize.y / 100);
+        InstanceFinder.ServerManager.Spawn(ground);
 
         // Generate Map invisible wall boundings
         // North
-        GameObject wallNorth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, _regionSize.y + 1), Quaternion.identity);
+        NetworkObject wallNorth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, _regionSize.y + 1), Quaternion.identity);
         wallNorth.transform.localScale = new Vector3(_regionSize.x + 1, 4, 1);
+        InstanceFinder.ServerManager.Spawn(wallNorth);
+
         // South
-        GameObject wallSouth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, -1), Quaternion.identity);
+        NetworkObject wallSouth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, -1), Quaternion.identity);
         wallSouth.transform.localScale = new Vector3(_regionSize.x + 1, 4, 1);
+        InstanceFinder.ServerManager.Spawn(wallSouth);
+
         // East
-        GameObject wallEast = Instantiate(_invisibleWall, new Vector3(_regionSize.y + 1, 1, _regionSize.y / 2), Quaternion.identity);
+        NetworkObject wallEast = Instantiate(_invisibleWall, new Vector3(_regionSize.y + 1, 1, _regionSize.y / 2), Quaternion.identity);
         wallEast.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
+        InstanceFinder.ServerManager.Spawn(wallEast);
+
         // West
-        GameObject wallWest = Instantiate(_invisibleWall, new Vector3(-1, 1, _regionSize.y / 2), Quaternion.identity);
+        NetworkObject wallWest = Instantiate(_invisibleWall, new Vector3(-1, 1, _regionSize.y / 2), Quaternion.identity);
         wallWest.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
+        InstanceFinder.ServerManager.Spawn(wallWest);
     }
 
     private List<Vector2> GeneratePoints(ProcGenParameters parameters, bool forceExactNumber)
@@ -102,16 +112,17 @@ public class ProcGenInstanciator : MonoBehaviour
         return points;
     }
 
-    private void SpawnPrefabs(List<Vector2> pointsLocation, GameObject prefab)
+    private void SpawnPrefabs(List<Vector2> pointsLocation, NetworkObject prefab)
     {
         for (int i = 0; i < pointsLocation.Count; i++)
         {
-            Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
+            NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
+            InstanceFinder.ServerManager.Spawn(pref);
         }
     }
 
     [Button, HideIf("@_readyToSpawnPrefabs == false")]
-    private void SpawnAllPrefabs()
+    public void SpawnAllPrefabs()
     {
         if (_readyToSpawnPrefabs == false)
         {
@@ -127,21 +138,22 @@ public class ProcGenInstanciator : MonoBehaviour
     }
 
     [Button]
-    private void PlacePlayers()
+    public void PlacePlayers()
     {
-        GameObject[] players = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name == "PlayerPrefab(Clone)").ToArray();
+        GameObject[] players = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name == _playerPrefab.name+"(Clone)").ToArray();
 
         for (int i = 0; i < players.Count(); i++)
         {
-            List<Vector2> teampoint;
             if (i < 2)
             {
-                teampoint = _teamAPoints;
-            } else
-            {
-                teampoint = _teamBPoints;
+                GameObject[] teamAPoint = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name == _teamAPrefab.name + "(Clone)").ToArray();
+                players[i].transform.position = teamAPoint[i % 2].transform.position;
             }
-            players[i].transform.position = new Vector3(teampoint[i%2].x, 0, teampoint[i%2].y);
+            else
+            {
+                GameObject[] teamBPoint = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name == _teamBPrefab.name + "(Clone)").ToArray();
+                players[i].transform.position = teamBPoint[i % 2].transform.position;
+            }
         }
     }
 
