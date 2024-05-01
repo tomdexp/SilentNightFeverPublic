@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class ProcGenInstanciator : MonoBehaviour
@@ -53,6 +54,14 @@ public class ProcGenInstanciator : MonoBehaviour
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testLandmarkPrefab;
     private List<Vector2> _testLandmarkPoints;
 
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testCubeParameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testCubePrefab;
+    private List<Vector2> _testCubePoints;
+
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testDiscParameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testDiscPrefab;
+    private List<Vector2> _testDiscPoints;
+
     private bool _readyToSpawnPrefabs = false;
 
     // Events
@@ -73,6 +82,9 @@ public class ProcGenInstanciator : MonoBehaviour
         _FernPoints = GeneratePoints(_FernParameters, false);
         _TreePoints = GeneratePoints(_TreeParameters, false);
         _testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false);
+
+        _testCubePoints = GeneratePoints(_testCubeParameters, false);
+        _testDiscPoints = GeneratePoints(_testDiscParameters, false);
 
         _CrowdPoints = GeneratePoints(_CrowdParameters, false);
 
@@ -138,7 +150,7 @@ public class ProcGenInstanciator : MonoBehaviour
         for (int i = 0; i < pointsLocation.Count; i++)
         {
             NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
-            pref.transform.Rotate(new Vector3(0,5,0));
+            pref.transform.Rotate(new Vector3(0, UnityEngine.Random.Range(0,360),0));
             InstanceFinder.ServerManager.Spawn(pref);
         }
     }
@@ -158,6 +170,8 @@ public class ProcGenInstanciator : MonoBehaviour
         SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
         SpawnPrefabs(_FernPoints, _FernPrefab);
         SpawnPrefabs(_TreePoints, _TreePrefab);
+        SpawnPrefabs(_testCubePoints, _testCubePrefab);
+        SpawnPrefabs(_testDiscPoints, _testDiscPrefab);
         SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
         OnPrefabSpawned?.Invoke();
     }
