@@ -39,6 +39,20 @@ public class ProcGenInstanciator : MonoBehaviour
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _CrowdPrefab;
     private List<Vector2> _CrowdPoints;
 
+
+    [Title("    Environment")]
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _FernParameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _FernPrefab;
+    private List<Vector2> _FernPoints;
+
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _TreeParameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _TreePrefab;
+    private List<Vector2> _TreePoints;
+
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testLandmarkParameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testLandmarkPrefab;
+    private List<Vector2> _testLandmarkPoints;
+
     private bool _readyToSpawnPrefabs = false;
 
     // Events
@@ -54,7 +68,14 @@ public class ProcGenInstanciator : MonoBehaviour
         _teamAPoints = GeneratePoints(_teamAParameters, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true);
         _landmarksPoints = GeneratePoints(_landmarksParameters, true);
+
+        // Decoration
+        _FernPoints = GeneratePoints(_FernParameters, false);
+        _TreePoints = GeneratePoints(_TreeParameters, false);
+        _testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false);
+
         _CrowdPoints = GeneratePoints(_CrowdParameters, false);
+
 
         _readyToSpawnPrefabs = true;
         OnMapGenerated?.Invoke();
@@ -63,7 +84,7 @@ public class ProcGenInstanciator : MonoBehaviour
     private void GenerateTerrain()
     {
         // Generate Map ground
-        NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -2, _regionSize.y / 2), Quaternion.identity);
+        NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -1f, _regionSize.y / 2), Quaternion.identity);
         ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 100, 1, _regionSize.y / 10 + _regionSize.y / 100);
         InstanceFinder.ServerManager.Spawn(ground);
 
@@ -117,6 +138,7 @@ public class ProcGenInstanciator : MonoBehaviour
         for (int i = 0; i < pointsLocation.Count; i++)
         {
             NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
+            pref.transform.Rotate(new Vector3(0,5,0));
             InstanceFinder.ServerManager.Spawn(pref);
         }
     }
@@ -133,6 +155,9 @@ public class ProcGenInstanciator : MonoBehaviour
         SpawnPrefabs(_teamAPoints, _teamAPrefab);
         SpawnPrefabs(_teamBPoints, _teamBPrefab);
         SpawnPrefabs(_landmarksPoints, _landmarksPrefab);
+        SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
+        SpawnPrefabs(_FernPoints, _FernPrefab);
+        SpawnPrefabs(_TreePoints, _TreePrefab);
         SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
         OnPrefabSpawned?.Invoke();
     }

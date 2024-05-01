@@ -66,6 +66,16 @@ MonoBehaviour:
   _CrowdParameters: {fileID: 11400000, guid: 7785665f1c25a164d9471fca17df2370, type: 2}
   _CrowdPrefab: {fileID: -8035802715321130305, guid: f82863f54786b7b408b57e0fc1e46e82,
     type: 3}
+  _FernParameters: {fileID: 11400000, guid: a0945e16741e7a941b31a85b88dd1764, type: 2}
+  _FernPrefab: {fileID: 5080035641428349429, guid: 1b928a2c79881a543aea5eaec40b67ba,
+    type: 3}
+  _TreeParameters: {fileID: 11400000, guid: 947744e1069733a4a8e6397e521fabf6, type: 2}
+  _TreePrefab: {fileID: -3039553893625661155, guid: ef68afd684d55fa428acfc7b35d93079,
+    type: 3}
+  _testLandmarkParameters: {fileID: 11400000, guid: 8d94e7d1d99d1ab4ab261daddbe22f33,
+    type: 2}
+  _testLandmarkPrefab: {fileID: -2057176407103553752, guid: ea703e50e86d7a14ab0c61cf12d10601,
+    type: 3}
 --- !u!114 &608977885178213418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,9 +113,9 @@ MonoBehaviour:
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 0}
-    LocalScale: {x: 0, y: 0, z: 0}
+    Position: {x: -144.50012, y: 104.74017, z: -88.083496}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isSpawnable: 1
   _isGlobal: 1
@@ -122,6 +132,6 @@ MonoBehaviour:
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 4
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 62373428
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 5973215791502873657
