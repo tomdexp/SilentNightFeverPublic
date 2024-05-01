@@ -381,5 +381,10 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         {
             OnTongueIn?.Invoke();
         }
+        
+        public TongueAnchor GetCurrentBindTongueAnchor()
+        {
+            return _currentBindTongueAnchor;
+        }
     }
 }

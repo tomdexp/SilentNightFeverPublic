@@ -294,5 +294,10 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             OnTongueBindChange?.Invoke(tongue);
             Logger.LogTrace("SetStickTongueClientRpc and event Invoke", Logger.LogType.Client, this);
         }
+        
+        public PlayerStickyTongue GetCurrentStickTongue()
+        {
+            return _currentStickTongue;
+        }
     }
 }

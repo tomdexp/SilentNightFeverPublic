@@ -535,6 +535,7 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerChangingTeamEnabledClientRpc(false);
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
             {
+                Logger.LogTrace("Spawning player for real player " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context:this);
                 var nob = Instantiate(_playerPrefab);
                 InstanceFinder.ServerManager.Spawn(nob);
                 nob.GetComponentInChildren<NetworkPlayer>().SetRealPlayerInfo(realPlayerInfo);
@@ -643,6 +644,7 @@ namespace _Project.Scripts.Runtime.Networking
         [ServerRpc(RunLocally = true, RequireOwnership = false)]
         public void SetCanChangeTeam(bool value)
         {
+            Logger.LogDebug("SetCanChangeTeam: " + value, Logger.LogType.Server, context:this);
             _canChangeTeam.Value = value;
         }
         

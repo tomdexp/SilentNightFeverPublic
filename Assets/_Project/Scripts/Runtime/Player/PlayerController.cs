@@ -229,6 +229,16 @@ namespace _Project.Scripts.Runtime.Player
             }
         }
         
+        public TongueAnchor GetCharacterTongueAnchor()
+        {
+            return _characterTongueAnchor;
+        }
+        
+        public PlayerStickyTongue GetTongue()
+        {
+            return _playerStickyTongue;
+        }
+        
         private void DisablePlayerRotation()
         {
             Logger.LogTrace("DisablePlayerRotation", context:this);
