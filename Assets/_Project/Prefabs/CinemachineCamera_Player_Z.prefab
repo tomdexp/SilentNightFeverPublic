@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FollowOffset: {x: 0, y: 4, z: -2}
+  FollowOffset: {x: 0, y: 4, z: 0}
   TrackerSettings:
     BindingMode: 4
     PositionDamping: {x: 1, y: 1, z: 1}
@@ -140,6 +140,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PlayerIndexType>k__BackingField: 4
+  _cameraOffsetRadius: 2
+  _cameraHeight: 4
+  _cameraAngle: 0
 --- !u!114 &6295709196432752803
 MonoBehaviour:
   m_ObjectHideFlags: 0
