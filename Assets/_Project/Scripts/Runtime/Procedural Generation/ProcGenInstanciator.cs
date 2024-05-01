@@ -13,6 +13,8 @@ public class ProcGenInstanciator : MonoBehaviour
     [SerializeField] private Vector2 _regionSize;
 
     [HideIf("@_patxiMode == true"), SerializeField] private GameObject _ground;
+    [HideIf("@_patxiMode == true"), SerializeField] private GameObject _invisibleWall;
+
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _playerPrefab;
 
     [Title("    Team A")]
@@ -45,9 +47,7 @@ public class ProcGenInstanciator : MonoBehaviour
     [Button]
     private void GenerateMap()
     {
-        // Generate Map ground
-        GameObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -2, _regionSize.y / 2), Quaternion.identity);
-        ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 100, 1, _regionSize.y / 10 + _regionSize.y / 100) ;
+        GenerateTerrain();
 
         _teamAPoints = GeneratePoints(_teamAParameters, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true);
@@ -56,6 +56,27 @@ public class ProcGenInstanciator : MonoBehaviour
 
         _readyToSpawnPrefabs = true;
         OnMapGenerated?.Invoke();
+    }
+
+    private void GenerateTerrain()
+    {
+        // Generate Map ground
+        GameObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -2, _regionSize.y / 2), Quaternion.identity);
+        ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 100, 1, _regionSize.y / 10 + _regionSize.y / 100);
+
+        // Generate Map invisible wall boundings
+        // North
+        GameObject wallNorth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, _regionSize.y + 1), Quaternion.identity);
+        wallNorth.transform.localScale = new Vector3(_regionSize.x + 1, 4, 1);
+        // South
+        GameObject wallSouth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, -1), Quaternion.identity);
+        wallSouth.transform.localScale = new Vector3(_regionSize.x + 1, 4, 1);
+        // East
+        GameObject wallEast = Instantiate(_invisibleWall, new Vector3(_regionSize.y + 1, 1, _regionSize.y / 2), Quaternion.identity);
+        wallEast.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
+        // West
+        GameObject wallWest = Instantiate(_invisibleWall, new Vector3(-1, 1, _regionSize.y / 2), Quaternion.identity);
+        wallWest.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
     }
 
     private List<Vector2> GeneratePoints(ProcGenParameters parameters, bool forceExactNumber)
@@ -122,8 +143,6 @@ public class ProcGenInstanciator : MonoBehaviour
             }
             players[i].transform.position = new Vector3(teampoint[i%2].x, 0, teampoint[i%2].y);
         }
-
-
     }
 
 }
