@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Player.PlayerTongue;
 using Sirenix.OdinInspector;
 using UnityEngine;
 

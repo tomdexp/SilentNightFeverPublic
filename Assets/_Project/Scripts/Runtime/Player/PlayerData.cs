@@ -24,5 +24,7 @@ namespace _Project.Scripts.Runtime.Player
         public Ease TongueRetractEase = Ease.Linear;
         public float SmoothPlayerMassChangeOnTongueMoveDuration = 0.5f;
         public float TongueInteractDuration = 0.5f;
+        public float OtherTongueAttachedForce = 10f;
+        public float OtherTongueMinDistance = 1f;
     }
 }

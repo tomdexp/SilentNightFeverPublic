@@ -10,7 +10,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
-namespace _Project.Scripts.Runtime.Player
+namespace _Project.Scripts.Runtime.Player.PlayerTongue
 {
     public class PlayerStickyTongue : NetworkBehaviour
     {
@@ -380,6 +380,11 @@ namespace _Project.Scripts.Runtime.Player
         private void OnTongueInClientRpc()
         {
             OnTongueIn?.Invoke();
+        }
+        
+        public TongueAnchor GetCurrentBindTongueAnchor()
+        {
+            return _currentBindTongueAnchor;
         }
     }
 }
