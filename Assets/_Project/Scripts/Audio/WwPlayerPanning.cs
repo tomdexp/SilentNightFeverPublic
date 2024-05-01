@@ -5,7 +5,7 @@ using UnityEngine;
 public class WwPlayerPanning : MonoBehaviour
 {
 
-    private float[] vVolumes = new float[2];
+    private float[] vVolumes = new float [2];
     private AkChannelConfig channelConfig;
 
     public GameObject listenerPlayer1;
@@ -23,11 +23,12 @@ public class WwPlayerPanning : MonoBehaviour
         vVolumes[1] = -96f;
         AkSoundEngine.SetListenerSpatialization(listenerPlayer1, isSpatialized, channelConfig, vVolumes);
 
+        Debug.Log(" le Volumes est de " + vVolumes[1]);
+        Debug.Log("AkChannelConfig est : " + channelConfig);
+
         vVolumes[0] = -96f;
         vVolumes[1] = 0f;
         AkSoundEngine.SetListenerSpatialization(listenerPlayer2, isSpatialized, channelConfig, vVolumes);
-
-        Debug.Log(AkChannelConfig.Standard(4));
 
         
 
