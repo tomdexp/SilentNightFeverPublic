@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerEffects;
+using DG.Tweening;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
@@ -93,6 +95,54 @@ namespace _Project.Scripts.Runtime.Networking
                PlayerIndexType.Z => PlayerTeamType.Z,
                _ => throw new ArgumentOutOfRangeException()
            };
+       }
+       
+       public void TrySetSize(float newSize)
+       {
+           if (IsServerStarted)
+           {
+               SetSize(newSize);
+           }
+           SetSizeServerRpc(newSize);
+       }
+
+       [ServerRpc(RequireOwnership = false)]
+       private void SetSizeServerRpc(float newSize)
+       {
+           SetSize(newSize);
+           SetSizeClientRpc(newSize);
+       }
+
+       [ObserversRpc(ExcludeServer = true)]
+       private void SetSizeClientRpc(float newSize)
+       {
+           SetSize(newSize);
+       }
+       
+       private void SetSize(float newSize)
+       {
+           StartCoroutine(SetSizeCoroutine(newSize));
+       }
+       
+       private IEnumerator SetSizeCoroutine(float newSize)
+       {
+           // check if we are scaling up or down compared to our current size, based on the scale.x
+           var currentSize = transform.localScale.x;
+           var scaleDirection = newSize > currentSize ? 1 : -1;
+           // TODO : Fix ground alignment after scaling
+           if (scaleDirection == 1) // scaling up
+           {
+               // use dotween to scale up
+               transform.DOScale(Vector3.one * newSize, PlayerData.PlayerSizeUpChangeDuration).SetEase(PlayerData.PlayerSizeUpChangeEase);
+               yield return new WaitForSeconds(PlayerData.PlayerSizeUpChangeDuration);
+           }
+           else
+           {
+                // use dotween to scale down
+                transform.DOScale(Vector3.one * newSize, PlayerData.PlayerSizeDownChangeDuration).SetEase(PlayerData.PlayerSizeDownChangeEase);
+                yield return new WaitForSeconds(PlayerData.PlayerSizeDownChangeDuration);
+           }
+           yield return null;
        }
     }
 }
