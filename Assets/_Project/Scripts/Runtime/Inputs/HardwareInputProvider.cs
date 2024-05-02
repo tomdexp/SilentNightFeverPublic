@@ -175,5 +175,10 @@ namespace _Project.Scripts.Runtime.Inputs
                 _currentPossessedPlayer = nextPlayer;
             }
         }
+        public RealPlayerInfo GetRealPlayerInfo()
+        {
+            return _playerInfo;
+        }
     }
+    
 }

@@ -5,7 +5,7 @@ using Micosmo.SensorToolkit;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
-namespace _Project.Scripts.Runtime.Player
+namespace _Project.Scripts.Runtime.Player.PlayerTongue
 {
     public class TongueInteractable : NetworkBehaviour
     {

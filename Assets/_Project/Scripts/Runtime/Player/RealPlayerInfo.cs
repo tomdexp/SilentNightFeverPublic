@@ -13,5 +13,10 @@ namespace _Project.Scripts.Runtime.Player
         public byte ClientId;
         public PlayerIndexType PlayerIndexType;
         public string DevicePath;
+
+        public override string ToString()
+        {
+            return $"RealPlayerInfo(ClientId: {ClientId}, PlayerIndexType: {PlayerIndexType}, DevicePath: {DevicePath})";
+        }
     }
 }
