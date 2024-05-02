@@ -12,7 +12,7 @@ public class WwVolumeManager : MonoBehaviour
     void Start()
     {
         AkSoundEngine.RegisterGameObj(gameObject);
-        VolumeMusic = 0;
+        VolumeMusic = 80;
     }
 
     // Update is called once per frame

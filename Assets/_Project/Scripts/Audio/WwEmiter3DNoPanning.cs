@@ -70,7 +70,9 @@ public class WwEmiter3DNoPanning : MonoBehaviour
    
 
         if (!PlayerManager.HasInstance) return;
-        
+
+        if (!Player1) return;
+
         if (!Player1)
         {
             var player = PlayerManager.Instance.GetNetworkPlayer(_Project.Scripts.Runtime.Player.PlayerIndexType.A);
@@ -104,7 +106,7 @@ public class WwEmiter3DNoPanning : MonoBehaviour
             }
         }
 
-        if (!Player1) return;
+        
 
     }
 
