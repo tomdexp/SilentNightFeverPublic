@@ -747,5 +747,15 @@ namespace _Project.Scripts.Runtime.Networking
             }
             networkPlayer.GiveEffect<T>();
         }
+
+        public IEnumerable<NetworkPlayer> GetNetworkPlayers()
+        {
+            return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None);
+        }
+
+        public IEnumerable<NetworkPlayer> GetNetworkPlayers(PlayerTeamType teamType)
+        {
+            return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None).Where(x => x.GetPlayerTeamType() == teamType);
+        }
     }
 }

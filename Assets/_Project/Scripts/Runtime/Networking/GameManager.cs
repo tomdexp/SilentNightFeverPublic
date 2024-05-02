@@ -23,10 +23,10 @@ namespace _Project.Scripts.Runtime.Networking
         public readonly SyncList<RoundResult> RoundsResults = new SyncList<RoundResult>();
         public readonly SyncVar<byte> CurrentRoundNumber = new SyncVar<byte>(); // Starts at 1
         public readonly SyncVar<uint> CurrentRoundTimer = new SyncVar<uint>(new SyncTypeSettings(.5f));
-        public event Action OnGameStarted; // TODO : Implement
-        public event Action<PlayerTeamType> OnGameEnded;
-        public event Action OnAnyRoundStarted;
-        public event Action OnAnyRoundEnded; // TODO : Implement
+        public event Action OnGameStarted;
+        public event Action<PlayerTeamType> OnGameEnded; // arg = winning team
+        public event Action<byte> OnAnyRoundStarted;
+        public event Action<byte> OnAnyRoundEnded;
         public event Action OnFirstRoundStarted;
         public event Action OnFirstRoundEnded; // TODO : Implement
         public event Action OnFinalRoundStarted; // TODO : Implement
@@ -124,6 +124,7 @@ namespace _Project.Scripts.Runtime.Networking
             SubscribeToTongueChangeEvents();
             SetupRounds();
             StartCoroutine(StartRounds());
+            OnGameStarted?.Invoke();
             Logger.LogInfo("Game started !", Logger.LogType.Server, this);
             IsGameStarted.Value = true;
         }
@@ -258,7 +259,7 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 yield return new WaitForSeconds(GameManagerData.SecondsBetweenRounds);
             }
-            OnAnyRoundStarted?.Invoke();
+            OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
             Logger.LogInfo("Starting round " + CurrentRoundNumber.Value, Logger.LogType.Server, this);
             GetCurrentRound().StartRound();
         }
@@ -283,7 +284,7 @@ namespace _Project.Scripts.Runtime.Networking
                     RoundNumber = CurrentRoundNumber.Value,
                     WinningTeam = teamType
                 };
-                OnAnyRoundEnded?.Invoke();
+                OnAnyRoundEnded?.Invoke(CurrentRoundNumber.Value);
                 RoundsResults.Add(roundResult);
                 GetCurrentRound().EndRound();
                 Logger.LogInfo("Round " + CurrentRoundNumber.Value + $" ended ! {roundResult}", Logger.LogType.Server, this);

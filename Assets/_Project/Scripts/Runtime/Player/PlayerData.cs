@@ -10,7 +10,18 @@ namespace _Project.Scripts.Runtime.Player
     {
         [Title("Player Movement Settings")]
         [PropertyRange(0,100)] public float PlayerMovementSpeed = 5f;
+        [PropertyRange(0,100)] public float PlayerMinMovementSpeed = 1f;
+        [PropertyRange(0,100)] public float PlayerMaxMovementSpeed = 10f;
         [PropertyRange(0,100)] public float PlayerRotationSpeed = 5f;
+        
+        [Title("Player Size Settings")]
+        [PropertyRange(0,100)] public float PlayerSize = 1f;
+        [PropertyRange(0,100)] public float PlayerMinSize = 0.5f;
+        [PropertyRange(0,100)] public float PlayerMaxSize = 2f;
+        [PropertyRange(0,100)] public float PlayerSizeUpChangeDuration = 1f;
+        [PropertyRange(0,100)] public float PlayerSizeDownChangeDuration = 1f;
+        public Ease PlayerSizeUpChangeEase = Ease.InOutBounce;
+        public Ease PlayerSizeDownChangeEase = Ease.InOutBounce;
         
         [Title("Tongue Settings")]
         [Tooltip("Minimum time between tongue uses in seconds")]

@@ -15,10 +15,10 @@ namespace _Project.Scripts.Runtime.UI
         {
             _text = GetComponent<TMP_Text>();
             _playerIndexScreen = GetComponentInParent<PlayerIndexScreen>();
-            if (_playerIndexScreen)
-            {
-                Logger.LogError("PlayerIndexScreen not found in parent", Logger.LogType.Local, this);
-            }
+            // if (_playerIndexScreen)
+            // {
+            //     Logger.LogError("PlayerIndexScreen not found in parent", Logger.LogType.Local, this);
+            // }
         }
 
         private void Update()

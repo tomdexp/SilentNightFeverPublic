@@ -38,6 +38,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Alpha:
+        m_Texture: {fileID: 2800000, guid: 596b50f4d5a25c24c923966e75f4b03c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -91,6 +95,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_b2297c5bcf214f3caf430403d8a32377_Texture_1_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_c061376485c44078ac7371d9da14b3f7_Texture_1_Texture2D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -132,6 +140,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _Noise_Scale: 3
     - _Normal_Strenght: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -146,12 +155,17 @@ Material:
     - _Surface: 0
     - _Wind_Density: 2
     - _Wind_Speed: 0.25
-    - _Wind_Strenght: 0.001
+    - _Wind_Strenght: 0.15
     - _WorkflowMode: 1
+    - _World_Albedo_Offset: -0.45
+    - _World_Albedo_Smoothness: 4.12
     - _ZWrite: 1
     m_Colors:
+    - _A_Color: {r: 0, g: 1, b: 0.14668608, a: 0}
     - _Albedo: {r: 0, g: 0.7372549, b: 0.45490196, a: 0}
+    - _B_Color: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _C_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

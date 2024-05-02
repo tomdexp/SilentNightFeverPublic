@@ -37,6 +37,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         public event Action OnTongueOut;
         public event Action OnTongueIn;
         public event Action OnTongueRetractStart;
+        public Transform TongueTip => _tongueTip;
 
         public override void OnStartClient()
         {
