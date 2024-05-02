@@ -6,8 +6,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Player;
 using Unity.Mathematics;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 public class ProcGenInstanciator : MonoBehaviour
 {
@@ -67,6 +70,11 @@ public class ProcGenInstanciator : MonoBehaviour
     // Events
     public event Action OnMapGenerated;
     public event Action OnPrefabSpawned;
+
+    private void Awake()
+    {
+        VerifyPrefabSetup();
+    }
 
 
     [Button]
@@ -176,24 +184,41 @@ public class ProcGenInstanciator : MonoBehaviour
         OnPrefabSpawned?.Invoke();
     }
 
+    private void VerifyPrefabSetup()
+    {
+        if (!_ground) Logger.LogError("Ground prefab is missing");
+        if (!_invisibleWall) Logger.LogError("Invisible wall prefab is missing");
+        if (!_playerPrefab) Logger.LogError("Player prefab is missing");
+        if (!_teamAPrefab) Logger.LogError("Team A prefab is missing");
+        if (!_teamBPrefab) Logger.LogError("Team B prefab is missing");
+        if (!_landmarksPrefab) Logger.LogError("Landmarks prefab is missing");
+        if (!_FernPrefab) Logger.LogError("Fern prefab is missing");
+        if (!_TreePrefab) Logger.LogError("Tree prefab is missing");
+        if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
+        if (!_testCubePrefab) Logger.LogError("Test Cube prefab is missing");
+        if (!_testDiscPrefab) Logger.LogError("Test Disc prefab is missing");
+        if (!_CrowdPrefab) Logger.LogError("Crowd prefab is missing");
+    }
+
     [Button]
     public void PlacePlayers()
     {
-        GameObject[] players = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name == _playerPrefab.name+"(Clone)").ToArray();
-
-        for (int i = 0; i < players.Count(); i++)
+        GameObject[] playersTeamA = PlayerManager.Instance.GetNetworkPlayers(PlayerTeamType.A).Select(player => player.gameObject).ToArray();
+        GameObject[] playersTeamB = PlayerManager.Instance.GetNetworkPlayers(PlayerTeamType.B).Select(player => player.gameObject).ToArray();
+        
+        for (int i = 0; i < playersTeamA.Length; i++)
         {
-            if (i < 2)
-            {
-                GameObject[] teamAPoint = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name == _teamAPrefab.name + "(Clone)").ToArray();
-                players[i].transform.position = teamAPoint[i % 2].transform.position;
-            }
-            else
-            {
-                GameObject[] teamBPoint = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name == _teamBPrefab.name + "(Clone)").ToArray();
-                players[i].transform.position = teamBPoint[i % 2].transform.position;
-            }
+            playersTeamA[i].transform.position = new Vector3(_teamAPoints[i].x, 0, _teamAPoints[i].y);
+        }
+        for (int i = 0; i < playersTeamB.Length; i++)
+        {
+            playersTeamB[i].transform.position = new Vector3(_teamBPoints[i].x, 0, _teamBPoints[i].y);
         }
     }
 
+    public void GenerateNewPlayerPoints()
+    {
+        _teamAPoints = GeneratePoints(_teamAParameters, true);
+        _teamBPoints = GeneratePoints(_teamBParameters, true);
+    }
 }
