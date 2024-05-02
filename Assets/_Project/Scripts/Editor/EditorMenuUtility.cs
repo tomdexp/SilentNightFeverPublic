@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Runtime.Player;
+﻿using _Project.Scripts.Runtime.Landmarks.Kitchen;
+using _Project.Scripts.Runtime.Player;
 using UnityEditor;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -19,6 +20,21 @@ namespace _Project.Scripts.Editor
             else
             {
                 Logger.LogError("PlayerData could not be loaded. Please make sure the path is correct.");
+            }
+        }
+
+        [MenuItem("Silent Night Fever/Open LandmarkData_Kitchen")]
+        private static void OpenLandmarkKitchenData()
+        {
+            // Load the PlayerData asset
+            LandmarkData_Kitchen data = AssetDatabase.LoadAssetAtPath<LandmarkData_Kitchen>("Assets/_Project/Settings/Resources/LandmarkDatas/LandmarkData_Kitchen.asset");
+            if (data != null)
+            {
+                PopUpAssetInspector.Create(data);
+            }
+            else
+            {
+                Logger.LogError("LandmarkData_Kitchen could not be loaded. Please make sure the path is correct.");
             }
         }
     }
