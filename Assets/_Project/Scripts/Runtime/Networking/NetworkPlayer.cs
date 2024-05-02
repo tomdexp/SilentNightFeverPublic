@@ -81,5 +81,18 @@ namespace _Project.Scripts.Runtime.Networking
        {
            return _playerController;
        }
+
+       public PlayerTeamType GetPlayerTeamType()
+       {
+           return _realPlayerInfo.Value.PlayerIndexType switch
+           {
+               PlayerIndexType.A => PlayerTeamType.A,
+               PlayerIndexType.B => PlayerTeamType.B,
+               PlayerIndexType.C => PlayerTeamType.A,
+               PlayerIndexType.D => PlayerTeamType.B,
+               PlayerIndexType.Z => PlayerTeamType.Z,
+               _ => throw new ArgumentOutOfRangeException()
+           };
+       }
     }
 }
