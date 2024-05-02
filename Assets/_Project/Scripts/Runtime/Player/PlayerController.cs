@@ -7,6 +7,7 @@ using FishNet.Connection;
 using FishNet.Object;
 using Sirenix.OdinInspector;
 using Unity.Cinemachine;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -31,7 +32,8 @@ namespace _Project.Scripts.Runtime.Player
         private Rigidbody _rigidbody;
         private PlayerStickyTongue _playerStickyTongue;
         private Quaternion _targetRotation;
-
+        private PlayerCamera _playerCamera;
+        
         private void Awake()
         {
             var inputProvider = GetComponent<IInputProvider>();
@@ -112,10 +114,10 @@ namespace _Project.Scripts.Runtime.Player
             if (_inputProvider == null) return;
             if (!Owner.IsLocalClient) return;
             _rigidbody.isKinematic = false;
-            
+
             var movementInput = _inputProvider.GetMovementInput();
             movementInput *= _networkPlayer.PlayerData.PlayerMovementSpeed;
-            
+
             if (_playerStickyTongue.IsTongueBind())
             {
                 // rotate the forward toward the tongue tip
@@ -127,12 +129,23 @@ namespace _Project.Scripts.Runtime.Player
             {
                 if (movementInput.magnitude > 0.1f)
                 {
+
                     var direction = new Vector3(movementInput.x, 0, movementInput.y);
-                    _targetRotation = Quaternion.LookRotation(direction);
+                    if (_playerCamera)
+                    {
+                        direction.x = -(Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
+                        direction.z = -(Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
+                    }
+                    _targetRotation = Quaternion.LookRotation(direction.normalized);
                 }
             }
-            
+
             Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y);
+            if (_playerCamera)
+            {
+                movement.x = -(Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
+                movement.z = -(Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
+            }
 
             if (_otherPlayerAttachedFromTongue)
             {
@@ -157,7 +170,7 @@ namespace _Project.Scripts.Runtime.Player
             {
                 _rigidbody.velocity = movement;
             }
-            
+
             if (_canRotate)
             {
                 transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, Time.deltaTime * _networkPlayer.PlayerData.PlayerRotationSpeed);
@@ -172,8 +185,8 @@ namespace _Project.Scripts.Runtime.Player
             _inputProvider = inputProvider;
             _inputProvider.OnActionInteractPerformed += OnInteractPerformed;
             _inputProvider.OnActionInteractCanceled += OnInteractCanceled;
-            
-            Logger.LogDebug("Bound input provider : " + _inputProvider.GetType().Name, context:this);
+
+            Logger.LogDebug("Bound input provider : " + _inputProvider.GetType().Name, context: this);
         }
 
         public void ClearInputProvider()
@@ -183,19 +196,19 @@ namespace _Project.Scripts.Runtime.Player
                 _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
                 _inputProvider.OnActionInteractCanceled -= OnInteractCanceled;
                 _inputProvider = null;
-                Logger.LogDebug("Cleared input provider.", context:this);
+                Logger.LogDebug("Cleared input provider.", context: this);
             }
         }
-        
+
         private void OnInteractPerformed(InputAction.CallbackContext context)
         {
-            Logger.LogTrace("Interact performed locally !", context:this);
+            Logger.LogTrace("Interact performed locally !", context: this);
             _playerStickyTongue.TryUseTongue();
         }
-        
+
         private void OnInteractCanceled(InputAction.CallbackContext context)
         {
-            Logger.LogTrace("Interact canceled locally !", context:this);
+            Logger.LogTrace("Interact canceled locally !", context: this);
             _playerStickyTongue.TryRetractTongue();
         }
 
@@ -215,6 +228,7 @@ namespace _Project.Scripts.Runtime.Player
             {
                 if (playerCamera.PlayerIndexType == realPlayerInfo.PlayerIndexType)
                 {
+                    _playerCamera = playerCamera;
                     // get the associated CinemachineCamera
                     var cinemachineCamera = playerCamera.GetComponent<CinemachineCamera>();
                     if (cinemachineCamera)
@@ -222,7 +236,7 @@ namespace _Project.Scripts.Runtime.Player
                         // Bind the player controller to the Cinemachine Camera
                         cinemachineCamera.Follow = transform;
                         cinemachineCamera.LookAt = transform;
-                        Logger.LogDebug("Bound player " + realPlayerInfo.PlayerIndexType + " to camera " + cinemachineCamera.name, context:this);
+                        Logger.LogDebug("Bound player " + realPlayerInfo.PlayerIndexType + " to camera " + cinemachineCamera.name, context: this);
                     }
                     return;
                 }
@@ -241,13 +255,13 @@ namespace _Project.Scripts.Runtime.Player
         
         private void DisablePlayerRotation()
         {
-            Logger.LogTrace("DisablePlayerRotation", context:this);
+            Logger.LogTrace("DisablePlayerRotation", context: this);
             _canRotate = false;
         }
-        
+
         private void EnablePlayerRotation()
         {
-            Logger.LogTrace("EnablePlayerRotation", context:this);
+            Logger.LogTrace("EnablePlayerRotation", context: this);
             _canRotate = true;
         }
     }
