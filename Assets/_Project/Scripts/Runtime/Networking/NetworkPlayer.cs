@@ -75,6 +75,11 @@ namespace _Project.Scripts.Runtime.Networking
            {
                Logger.LogError("Failed to load PlayerEffect of type " + typeof(T).Name, Logger.LogType.Client, this);
            }
+       } 
+       
+       public PlayerController GetPlayerController()
+       {
+           return _playerController;
        }
     }
 }

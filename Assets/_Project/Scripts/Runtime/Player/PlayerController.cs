@@ -1,6 +1,7 @@
 ﻿using System;
 using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Player.PlayerTongue;
 using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
@@ -15,17 +16,24 @@ namespace _Project.Scripts.Runtime.Player
 {
     public class PlayerController : NetworkBehaviour
     {
+        [Title("References")]
+        [SerializeField, Required] private TongueAnchor _characterTongueAnchor;
+        
+        [Title("Debug (Read-Only)")]
+        [SerializeField, ReadOnly] private bool _canRotate = true;
+        [SerializeField, ReadOnly] private bool _canMove = true;
+        [SerializeField, ReadOnly] private PlayerStickyTongue _otherPlayerAttachedFromTongue;
+        [SerializeField, ReadOnly] private NetworkPlayer _otherAttachedNetworkPlayer;
+        [SerializeField, ReadOnly] private float _distanceToAttachedPlayer;
+        [SerializeField, ReadOnly] private bool _influencedByAttachedTongue;
+        
         private IInputProvider _inputProvider;
         private NetworkPlayer _networkPlayer;
         private Rigidbody _rigidbody;
         private PlayerStickyTongue _playerStickyTongue;
         private Quaternion _targetRotation;
         private PlayerCamera _playerCamera;
-
-        [Title("Debug (Read-Only)")]
-        [SerializeField, ReadOnly] private bool _canRotate = true;
-        [SerializeField, ReadOnly] private bool _canMove = true;
-
+        
         private void Awake()
         {
             var inputProvider = GetComponent<IInputProvider>();
@@ -35,22 +43,26 @@ namespace _Project.Scripts.Runtime.Player
             }
             else
             {
-                Logger.LogError("No input provider found on PlayerController.", context: this);
+                Logger.LogError("No input provider found on PlayerController", context:this);
             }
             _networkPlayer = GetComponent<NetworkPlayer>();
-            if (_networkPlayer == null)
+            if (!_networkPlayer)
             {
-                Logger.LogError("No NetworkPlayer found on PlayerController.", context: this);
+                Logger.LogError("No NetworkPlayer found on PlayerController", context:this);
             }
             _rigidbody = GetComponent<Rigidbody>();
-            if (_rigidbody == null)
+            if (!_rigidbody)
             {
-                Logger.LogError("No Rigidbody found on PlayerController.", context: this);
+                Logger.LogError("No Rigidbody found on PlayerController", context:this);
             }
             _playerStickyTongue = GetComponentInChildren<PlayerStickyTongue>();
-            if (_playerStickyTongue == null)
+            if (!_playerStickyTongue)
             {
-                Logger.LogError("No PlayerStickyTongue found on PlayerController or its children.", context: this);
+                Logger.LogError("No PlayerStickyTongue found on PlayerController or its children", context:this);
+            }
+            if (!_characterTongueAnchor)
+            {
+                Logger.LogError("No CharacterTongueAnchor set on PlayerController", context:this);
             }
         }
 
@@ -61,6 +73,7 @@ namespace _Project.Scripts.Runtime.Player
             {
                 _playerStickyTongue.OnTongueRetractStart += DisablePlayerRotation;
                 _playerStickyTongue.OnTongueIn += EnablePlayerRotation;
+                _characterTongueAnchor.OnTongueBindChange += OnTongueBindChange;
             }
         }
 
@@ -75,6 +88,24 @@ namespace _Project.Scripts.Runtime.Player
             {
                 _playerStickyTongue.OnTongueRetractStart -= DisablePlayerRotation;
                 _playerStickyTongue.OnTongueIn -= EnablePlayerRotation;
+                _characterTongueAnchor.OnTongueBindChange -= OnTongueBindChange;
+            }
+        }
+
+        private void OnTongueBindChange(PlayerStickyTongue tongue)
+        {
+            Logger.LogTrace("Tongue bind change", context:this);
+            if (tongue)
+            {
+                // Tongue bind
+                _otherPlayerAttachedFromTongue = tongue;
+                _otherAttachedNetworkPlayer = tongue.GetComponentInParent<NetworkPlayer>();
+            }
+            else
+            {
+                // Tongue unbind
+                _otherPlayerAttachedFromTongue = null;
+                _otherAttachedNetworkPlayer = null;
             }
         }
 
@@ -111,6 +142,26 @@ namespace _Project.Scripts.Runtime.Player
             movement.x = -(Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
             movement.z = -(Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
 
+
+            if (_otherPlayerAttachedFromTongue)
+            {
+                _distanceToAttachedPlayer = Vector3.Distance(transform.position, _otherPlayerAttachedFromTongue.transform.position);
+                _influencedByAttachedTongue = _distanceToAttachedPlayer > _networkPlayer.PlayerData.OtherTongueMinDistance;
+                if (_influencedByAttachedTongue)
+                {
+                    var direction = _otherPlayerAttachedFromTongue.transform.position - transform.position;
+                    direction.y = 0;
+                    direction.Normalize();
+                    // add the direction to the movement
+                    movement += direction * _networkPlayer.PlayerData.OtherTongueAttachedForce;
+                }
+            }
+            else
+            {
+                _influencedByAttachedTongue = false;
+                _distanceToAttachedPlayer = 0;
+            }
+            
             if (_canMove)
             {
                 _rigidbody.velocity = movement;
@@ -124,13 +175,8 @@ namespace _Project.Scripts.Runtime.Player
 
         public void BindInputProvider(IInputProvider inputProvider)
         {
-            // Clean the old input provider
-            if (_inputProvider != null)
-            {
-                _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
-                _inputProvider.OnActionInteractCanceled -= OnInteractCanceled;
-            }
-
+            ClearInputProvider();
+            
             // Bind the new input provider
             _inputProvider = inputProvider;
             _inputProvider.OnActionInteractPerformed += OnInteractPerformed;
@@ -192,7 +238,17 @@ namespace _Project.Scripts.Runtime.Player
                 }
             }
         }
-
+        
+        public TongueAnchor GetCharacterTongueAnchor()
+        {
+            return _characterTongueAnchor;
+        }
+        
+        public PlayerStickyTongue GetTongue()
+        {
+            return _playerStickyTongue;
+        }
+        
         private void DisablePlayerRotation()
         {
             Logger.LogTrace("DisablePlayerRotation", context: this);

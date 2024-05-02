@@ -10,7 +10,7 @@ namespace _Project.Scripts.Runtime.Utils
         [Command("/effect.give.speed", "Give speed effect to the player.")]
         public static void GiveEffect_PE_Speed(PlayerIndexType player)
         {
-            PlayerManager.Instance.TryGiveEffectToPlayer<PE_Speed>(player);
+            if(PlayerManager.HasInstance) PlayerManager.Instance.TryGiveEffectToPlayer<PE_Speed>(player);
         }
     }
 }

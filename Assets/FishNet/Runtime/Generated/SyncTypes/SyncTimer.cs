@@ -50,7 +50,7 @@ namespace FishNet.Object.Synchronizing
         /// <summary>
         /// Time remaining on the timer. When the timer is expired this value will be 0f.
         /// </summary>
-        public float Remaining { get; private set; }
+        public float Remaining { get; protected set; }
         /// <summary>
         /// How much time has passed since the timer started.
         /// </summary>
@@ -58,11 +58,11 @@ namespace FishNet.Object.Synchronizing
         /// <summary>
         /// Starting duration of the timer.
         /// </summary>
-        public float Duration { get; private set; }
+        public float Duration { get; protected set; }
         /// <summary>
         /// True if the SyncTimer is currently paused. Calls to Update(float) will be ignored when paused.
         /// </summary>
-        public bool Paused { get; private set; }
+        public bool Paused { get; protected set; }
         #endregion
 
         #region Private.
@@ -157,13 +157,12 @@ namespace FishNet.Object.Synchronizing
         /// <summary>
         /// Adds an operation to synchronize.
         /// </summary>
-        private void AddOperation(SyncTimerOperation operation, float prev, float next)
+        protected void AddOperation(SyncTimerOperation operation, float prev, float next)
         {
             if (!base.IsInitialized)
                 return;
 
             bool asServerInvoke = (!base.IsNetworkInitialized || base.NetworkBehaviour.IsServerStarted);
-
             if (asServerInvoke)
             {
                 if (base.Dirty())
@@ -375,7 +374,7 @@ namespace FishNet.Object.Synchronizing
         /// Removes delta from Remaining for server and client.
         /// </summary>
         /// <param name="delta">Value to remove from Remaining.</param>
-        public void Update(float delta)
+        public virtual void Update(float delta)
         {
             //Not enabled.
             if (Remaining <= 0f)
