@@ -144,5 +144,21 @@ namespace _Project.Scripts.Runtime.Networking
            }
            yield return null;
        }
+       
+       /// <summary>
+       /// Wrapper of PlayerController.Teleport
+       /// </summary>
+       public void Teleport(Transform tr)
+       {
+           _playerController.Teleport(tr);
+       }
+        
+       /// <summary>
+       /// Wrapper of PlayerController.Teleport
+       /// </summary>
+       public void Teleport(Vector3 position)
+       { 
+           _playerController.Teleport(position);
+       }
     }
 }
