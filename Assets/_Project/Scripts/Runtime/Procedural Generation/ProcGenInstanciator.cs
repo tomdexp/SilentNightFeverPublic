@@ -205,14 +205,14 @@ public class ProcGenInstanciator : MonoBehaviour
     {
         GameObject[] playersTeamA = PlayerManager.Instance.GetNetworkPlayers(PlayerTeamType.A).Select(player => player.gameObject).ToArray();
         GameObject[] playersTeamB = PlayerManager.Instance.GetNetworkPlayers(PlayerTeamType.B).Select(player => player.gameObject).ToArray();
-        
+
         for (int i = 0; i < playersTeamA.Length; i++)
         {
-            playersTeamA[i].transform.position = new Vector3(_teamAPoints[i].x, 0, _teamAPoints[i].y);
+            playersTeamA[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamAPoints[i].x, 0, _teamAPoints[i].y));
         }
         for (int i = 0; i < playersTeamB.Length; i++)
         {
-            playersTeamB[i].transform.position = new Vector3(_teamBPoints[i].x, 0, _teamBPoints[i].y);
+            playersTeamB[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamBPoints[i].x, 0, _teamBPoints[i].y));
         }
     }
 
