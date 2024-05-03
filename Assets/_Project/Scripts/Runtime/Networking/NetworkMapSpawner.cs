@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 
 [RequireComponent(typeof(ProcGenInstanciator))]
@@ -25,7 +26,8 @@ public class NetworkMapSpawner : NetworkBehaviour
     private void OnDestroy()
     {
         if (GameManager.HasInstance) GameManager.Instance.IsGameStarted.OnChange -= OnGameStarted;
-        if(PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayerSpawnedLocally -= OnAllPlayerSpawnedLocally;
+        if (GameManager.HasInstance) GameManager.Instance.OnAnyRoundStarted -= OnRoundStart;
+        if (PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayerSpawnedLocally -= OnAllPlayerSpawnedLocally;
         _procGenInstanciator.OnMapGenerated -= OnMapGenerated;
         _procGenInstanciator.OnPrefabSpawned -= OnPrefabSpawned;
     }
@@ -37,8 +39,10 @@ public class NetworkMapSpawner : NetworkBehaviour
             yield return null;
         }
         GameManager.Instance.IsGameStarted.OnChange += OnGameStarted;
+        GameManager.Instance.OnAnyRoundStarted += OnRoundStart;
     }
     
+
     private IEnumerator TrySubscribingToAllPlayerSpawnedLocallyEvent()
     {
         while (!PlayerManager.HasInstance)
@@ -63,6 +67,14 @@ public class NetworkMapSpawner : NetworkBehaviour
             _procGenInstanciator.OnMapGenerated += OnMapGenerated;
             _procGenInstanciator.GenerateMap();
         }
+    }
+    
+    private void OnRoundStart(byte roundIndex)
+    {
+        if (roundIndex == 1) return; // The teleportation on the first round is handled by the OnPlayerReadyLocally event
+        Logger.LogDebug("New round started, generating new player points", Logger.LogType.Server, this);
+        _procGenInstanciator.GenerateNewPlayerPoints();
+        TryPlacePlayers();
     }
 
     // When game map is generated, spawn elements on it

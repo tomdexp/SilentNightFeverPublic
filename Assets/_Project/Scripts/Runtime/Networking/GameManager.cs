@@ -316,11 +316,6 @@ namespace _Project.Scripts.Runtime.Networking
                     }
                     return false;
                 case RoundsWinType.FirstToX:
-                    if (RoundsResults.Count == RoundsConfig.RoundsCount)
-                    {
-                        
-                        return true;
-                    }
                     if (teamWinsA >= RoundsConfig.RoundsCount)
                     {
                         StartCoroutine(EndGame(PlayerTeamType.A));
