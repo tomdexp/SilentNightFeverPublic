@@ -13,7 +13,7 @@ namespace _Project.Scripts.Runtime.Utils
 
         private void Awake()
         {
-            _meshRenderers = GetComponents<MeshRenderer>();
+            _meshRenderers = GetComponentsInChildren<MeshRenderer>();
             foreach (var meshRenderer in _meshRenderers)
             {
                 meshRenderer.material = new Material(meshRenderer.material);
@@ -38,7 +38,8 @@ namespace _Project.Scripts.Runtime.Utils
 
             foreach (var meshRenderer in _meshRenderers)
             {
-                meshRenderer.material.SetColor("_Albedo", _randomColor);
+                //meshRenderer.material.SetColor("_Color", _randomColor);
+                meshRenderer.material.color = _randomColor;
             }
         }
     }
