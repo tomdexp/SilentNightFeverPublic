@@ -27,7 +27,7 @@ namespace _Project.Scripts.Runtime.Utils
             _defaultColor = _meshRenderer.material.color;
         }
 
-        private void ChangeColor()
+        private void ChangeColor(PlayerStickyTongue _)
         {
             StartCoroutine(ChangeColorCoroutine());
         }

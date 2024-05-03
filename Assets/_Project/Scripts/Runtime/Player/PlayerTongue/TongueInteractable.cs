@@ -13,7 +13,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
     [RequireComponent(typeof(NetworkTransform))]
     public class TongueInteractable : NetworkBehaviour
     {
-        public event Action OnInteract;
+        public event Action<PlayerStickyTongue> OnInteract;
         public readonly SyncVar<bool> IsInteractable = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
         [Title("Reference")] 
         public Transform Target;
@@ -54,15 +54,15 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             OnInteract -= ReplicateOnInteract;
         }
 
-        private void ReplicateOnInteract()
+        private void ReplicateOnInteract(PlayerStickyTongue playerStickyTongue)
         {
-            OnInteractClientRpc();
+            OnInteractClientRpc(playerStickyTongue);
         }
 
         [ObserversRpc(ExcludeServer = true)]
-        private void OnInteractClientRpc()
+        private void OnInteractClientRpc(PlayerStickyTongue playerStickyTongue)
         {
-            OnInteract?.Invoke();
+            OnInteract?.Invoke(playerStickyTongue);
             Logger.LogTrace("OnInteractClientRpc", Logger.LogType.Client, this);
         }
 
@@ -75,29 +75,29 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 {
                     LocallyAttachToTongueTip(tongue.TongueTip);
                 }
-                InteractServerRpc(tongue.TongueTip);
+                InteractServerRpc(tongue);
             }
         }
         
         [ServerRpc(RequireOwnership = false)]
-        private void InteractServerRpc(Transform tongueTip)
+        private void InteractServerRpc(PlayerStickyTongue tongue)
         {
             Logger.LogTrace("InteractServerRpc", Logger.LogType.Server, this);
-            OnInteract?.Invoke();
+            OnInteract?.Invoke(tongue);
             if (Behavior == InteractableBehavior.AttachToTongue)
             {
-                LocallyAttachToTongueTip(tongueTip);
+                LocallyAttachToTongueTip(tongue.TongueTip);
             }
-            InteractClientRpc(tongueTip);
+            InteractClientRpc(tongue);
         }
 
         [ObserversRpc(ExcludeServer = true)]
-        private void InteractClientRpc(Transform tongueTip)
+        private void InteractClientRpc(PlayerStickyTongue tongue)
         {
             Logger.LogTrace("InteractClientRpc", Logger.LogType.Client, this);
             if (Behavior == InteractableBehavior.AttachToTongue)
             {
-                LocallyAttachToTongueTip(tongueTip);
+                LocallyAttachToTongueTip(tongue.TongueTip);
             }
         }
 

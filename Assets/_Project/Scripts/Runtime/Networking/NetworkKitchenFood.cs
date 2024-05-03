@@ -1,35 +1,23 @@
-﻿using _Project.Scripts.Runtime.Utils;
-using FishNet.Object;
+﻿using System.Collections;
+using _Project.Scripts.Runtime.Player.PlayerEffects;
+using _Project.Scripts.Runtime.Player.PlayerTongue;
+using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Networking
 {
     public class NetworkKitchenFood : NetworkConsumable
     {
-        protected override void Consume()
+        protected override void Consume(PlayerStickyTongue tongue)
         {
             Logger.LogDebug("Consuming food", context:this);
-            TryApplyFoodEffect();
+            StartCoroutine(ConsumeCoroutine(tongue));
         }
-
-        private void TryApplyFoodEffect()
+        
+        private IEnumerator ConsumeCoroutine(PlayerStickyTongue tongue)
         {
-            if (IsServerStarted)
-            {
-                ApplyEffect();
-            }
-            ApplyEffectServerRpc();
-        }
-
-        [ServerRpc(RequireOwnership = false)]
-        private void ApplyEffectServerRpc()
-        {
-            ApplyEffect();
-        }
-
-        private void ApplyEffect()
-        {
-            Logger.LogDebug("Applying kitchen food effect",Logger.LogType.Server, context:this);
-            
+            yield return new WaitForSeconds(2f);
+            PlayerManager.Instance.TryGiveEffectToPlayer<PE_KitchenFood>(tongue.GetNetworkPlayer().GetPlayerIndexType());
         }
     }
 }
