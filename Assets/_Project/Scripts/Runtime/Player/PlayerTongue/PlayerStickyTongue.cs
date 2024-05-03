@@ -387,5 +387,10 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         {
             return _currentBindTongueAnchor;
         }
+        
+        public NetworkPlayer GetNetworkPlayer()
+        {
+            return _networkPlayer;
+        }
     }
 }

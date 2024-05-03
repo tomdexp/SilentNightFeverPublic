@@ -27,6 +27,6 @@ namespace _Project.Scripts.Runtime.Networking
             _tongueInteractable.OnInteract += Consume;
         }
 
-        protected abstract void Consume();
+        protected abstract void Consume(PlayerStickyTongue playerStickyTongue);
     }
 }
