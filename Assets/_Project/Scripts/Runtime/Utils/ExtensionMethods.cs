@@ -5,7 +5,7 @@ namespace _Project.Scripts.Runtime.Utils
 {
     public static class ExtensionMethods
     {
-        // extend the enum PlayerIndexType with a method to get the player index type as a string
+        // extend the enum PlayerIndexType with a new method AsTeam to get the team of the player
         public static PlayerTeamType AsTeam(this PlayerIndexType playerIndexType)
         {
             return playerIndexType switch
