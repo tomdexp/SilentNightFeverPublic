@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerEffects;
 using DG.Tweening;
+using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
@@ -63,7 +64,7 @@ namespace _Project.Scripts.Runtime.Networking
        {
            return _realPlayerInfo.Value;
        }
-       
+
        public void GiveEffect<T>() where T : PlayerEffect
        {
            Logger.LogDebug("Giving effect " + typeof(T).Name, Logger.LogType.Client, this);

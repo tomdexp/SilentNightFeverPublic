@@ -37,6 +37,8 @@ namespace _Project.Scripts.Runtime.Player
         private Quaternion _targetRotation;
         private PlayerCamera _playerCamera;
         private NetworkTransform _networkTransform;
+
+        public event Action OnPlayerSpawnedLocally;
         
         private void Awake()
         {
@@ -78,16 +80,29 @@ namespace _Project.Scripts.Runtime.Player
                 Logger.LogError("No NetworkTransform found on PlayerController", context:this);
             }
         }
-
-        public override void OnStartClient()
+        
+        public override void OnOwnershipClient(NetworkConnection prevOwner)
         {
-            base.OnStartClient();
-            if (IsOwner)
+            base.OnOwnershipClient(prevOwner);
+            // if previous owner was server, we know the object just spawned
+            if (prevOwner.ClientId == -1)
             {
-                _playerStickyTongue.OnTongueRetractStart += DisablePlayerRotation;
-                _playerStickyTongue.OnTongueIn += EnablePlayerRotation;
-                _characterTongueAnchor.OnTongueBindChange += OnTongueBindChange;
+                Logger.LogInfo("Previous owner was Server, PlayerController just spawned", Logger.LogType.Client, this);
+                if (IsOwner)
+                {
+                    _playerStickyTongue.OnTongueRetractStart += DisablePlayerRotation;
+                    _playerStickyTongue.OnTongueIn += EnablePlayerRotation;
+                    _characterTongueAnchor.OnTongueBindChange += OnTongueBindChange;
+                    TriggerOnPlayerReadyLocally();
+                }
             }
+        }
+
+        [ServerRpc(RunLocally = true)]
+        private void TriggerOnPlayerReadyLocally()
+        {
+            Logger.LogTrace("TriggerOnPlayerReadyLocally", Logger.LogType.Server,this);
+            OnPlayerSpawnedLocally?.Invoke();
         }
 
         private void OnDestroy()

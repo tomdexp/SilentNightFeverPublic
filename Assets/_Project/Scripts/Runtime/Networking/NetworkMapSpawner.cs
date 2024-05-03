@@ -12,24 +12,25 @@ public class NetworkMapSpawner : NetworkBehaviour
     [SerializeField] private ProcGenInstanciator _procGenInstanciator;
     [SerializeField] private bool _gameIsPlaying;
 
-    private void OnDisable()
-    {
-        // Unbind to all events
-        GameManager.Instance.IsGameStarted.OnChange -= OnGameStarted;
-        _procGenInstanciator.OnMapGenerated -= OnMapGenerated;
-        _procGenInstanciator.OnPrefabSpawned -= OnPrefabSpawned;
-    }
-
     void Start()
     {
         _procGenInstanciator = GetComponent<ProcGenInstanciator>();
         if (IsServerStarted)
         {
-            StartCoroutine(trySubscribingToGameStartedEvent());
+            StartCoroutine(TrySubscribingToGameStartedEvent());
+            StartCoroutine(TrySubscribingToAllPlayerSpawnedLocallyEvent());
         }
     }
 
-    public IEnumerator trySubscribingToGameStartedEvent()
+    private void OnDestroy()
+    {
+        if (GameManager.HasInstance) GameManager.Instance.IsGameStarted.OnChange -= OnGameStarted;
+        if(PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayerSpawnedLocally -= OnAllPlayerSpawnedLocally;
+        _procGenInstanciator.OnMapGenerated -= OnMapGenerated;
+        _procGenInstanciator.OnPrefabSpawned -= OnPrefabSpawned;
+    }
+
+    private IEnumerator TrySubscribingToGameStartedEvent()
     {
         while (!GameManager.HasInstance)
         {
@@ -37,6 +38,21 @@ public class NetworkMapSpawner : NetworkBehaviour
         }
         GameManager.Instance.IsGameStarted.OnChange += OnGameStarted;
     }
+    
+    private IEnumerator TrySubscribingToAllPlayerSpawnedLocallyEvent()
+    {
+        while (!PlayerManager.HasInstance)
+        {
+            yield return null;
+        }
+        PlayerManager.Instance.OnAllPlayerSpawnedLocally += OnAllPlayerSpawnedLocally;
+    }
+
+    private void OnAllPlayerSpawnedLocally()
+    {
+        TryPlacePlayers();
+    }
+
 
     // When game start, generate map
     private void OnGameStarted(bool prev, bool next, bool asServer)
@@ -63,7 +79,6 @@ public class NetworkMapSpawner : NetworkBehaviour
     private void OnPrefabSpawned()
     {
         _procGenInstanciator.OnPrefabSpawned -= OnPrefabSpawned;
-        TryPlacePlayers();
     }
 
     public void TryPlacePlayers()
@@ -84,7 +99,6 @@ public class NetworkMapSpawner : NetworkBehaviour
         PlacePlayers();
     }
 
-    [ObserversRpc]
     private void PlacePlayers()
     {
         _procGenInstanciator.PlacePlayers();
