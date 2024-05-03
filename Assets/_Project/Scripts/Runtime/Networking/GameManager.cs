@@ -244,7 +244,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         public IEnumerator StartNextRound()
         {
-            if (CurrentRoundNumber.Value >= RoundsConfig.RoundsCount)
+            if (CurrentRoundNumber.Value >= RoundsConfig.GetMaxRounds())
             {
                 Logger.LogDebug("No more rounds to play, the current round number is superior or equal to the number of round in the RoundsConfig!", Logger.LogType.Server, this);
                 yield return null;
@@ -342,7 +342,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         public Round GetRound(byte roundNumber)
         {
-            if (roundNumber < 1 || roundNumber > RoundsConfig.RoundsCount)
+            if (roundNumber < 1 || roundNumber > RoundsConfig.GetMaxRounds())
             {
                 Logger.LogError("Round number " + roundNumber + " is out of bounds !", Logger.LogType.Server, this);
                 return null;
@@ -400,5 +400,9 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
         
+        public int GetWinCount(PlayerTeamType teamType)
+        {
+            return RoundsResults.Collection.FindAll(result => result.WinningTeam == teamType).Count;
+        }
     }
 }
