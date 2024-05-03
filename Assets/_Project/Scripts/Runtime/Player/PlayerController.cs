@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
 using FishNet;
+using FishNet.Component.Transforming;
 using FishNet.Connection;
 using FishNet.Object;
 using Sirenix.OdinInspector;
@@ -18,6 +20,7 @@ namespace _Project.Scripts.Runtime.Player
     {
         [Title("References")]
         [SerializeField, Required] private TongueAnchor _characterTongueAnchor;
+        [SerializeField, Required] private Collider _playerCollider;
         
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private bool _canRotate = true;
@@ -33,6 +36,7 @@ namespace _Project.Scripts.Runtime.Player
         private PlayerStickyTongue _playerStickyTongue;
         private Quaternion _targetRotation;
         private PlayerCamera _playerCamera;
+        private NetworkTransform _networkTransform;
         
         private void Awake()
         {
@@ -63,6 +67,15 @@ namespace _Project.Scripts.Runtime.Player
             if (!_characterTongueAnchor)
             {
                 Logger.LogError("No CharacterTongueAnchor set on PlayerController", context:this);
+            }
+            if (!_playerCollider)
+            {
+                Logger.LogError("No PlayerCollider set on PlayerController", context:this);
+            }
+            _networkTransform = GetComponent<NetworkTransform>();
+            if (!_networkTransform)
+            {
+                Logger.LogError("No NetworkTransform found on PlayerController", context:this);
             }
         }
 
@@ -241,6 +254,54 @@ namespace _Project.Scripts.Runtime.Player
                     return;
                 }
             }
+        }
+
+        public void Teleport(Transform tr)
+        {
+            Teleport(tr.position);
+        }
+        
+        public void Teleport(Vector3 position)
+        {
+            if (IsOwner) // Only the owner can teleport
+            {
+                StartCoroutine(TeleportCoroutine(position));
+            }
+            else if (IsServerStarted)
+            {
+                TeleportTargetRpc(Owner, position);
+            }
+            else
+            {
+                TeleportServerRpc(Owner, position);
+            }
+        }
+        
+        [TargetRpc]
+        private void TeleportTargetRpc(NetworkConnection conn, Vector3 position)
+        {
+            StartCoroutine(TeleportCoroutine(position));
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void TeleportServerRpc(NetworkConnection conn, Vector3 position)
+        {
+            Teleport(position);
+        }
+
+        private IEnumerator TeleportCoroutine(Vector3 position)
+        {
+            Logger.LogInfo("Teleporting player to " + position, context: this);
+            bool rigidbodyStateBefore = _rigidbody.isKinematic;
+            _rigidbody.isKinematic = true;
+            _playerCollider.enabled = false;
+            yield return new WaitForFixedUpdate();
+            _rigidbody.MovePosition(position);
+            _characterTongueAnchor.GetRigidbody().MovePosition(position);
+            yield return new WaitForFixedUpdate();
+            _rigidbody.isKinematic = rigidbodyStateBefore;
+            _playerCollider.enabled = true;
+            Logger.LogDebug("Player teleported to " + transform.position, context: this);
         }
         
         public TongueAnchor GetCharacterTongueAnchor()
