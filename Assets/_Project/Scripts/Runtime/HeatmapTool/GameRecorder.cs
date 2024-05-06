@@ -21,7 +21,6 @@ public class GameRecorder : NetworkBehaviour
     private GameObject _playerD;
 
     private int _currentRoundIndex;
-    private float _timeSinceRoundStarted;
 
     private GameInfos _gameInfos;
 
@@ -55,7 +54,7 @@ public class GameRecorder : NetworkBehaviour
         }
         _procGenInstanciator.OnMapGenerated += RegisterLandmarksLocation;
         GameManager.Instance.OnAnyRoundStarted += StartRegisteringPlayerLocation;
-
+        GameManager.Instance.OnGameEnded += SaveGameInfosToJSON;
     }
 
 
@@ -74,7 +73,6 @@ public class GameRecorder : NetworkBehaviour
     private void StartRegisteringPlayerLocation(byte roundIndex)
     {
         _currentRoundIndex = roundIndex;
-        _timeSinceRoundStarted = 0;
 
         if (!(_playerA && _playerB && _playerC && _playerD))
         {
@@ -116,11 +114,9 @@ public class GameRecorder : NetworkBehaviour
         }
     }
 
-    public void SaveGameInfosToJSON()
+    public void SaveGameInfosToJSON(PlayerTeamType winningTeam)
     {
         string json = JsonUtility.ToJson(_gameInfos);
         File.WriteAllText(Application.dataPath + "/GameInfos.json", json);
     }
-
-
 }
