@@ -66,7 +66,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             Logger.LogTrace("OnInteractClientRpc", Logger.LogType.Client, this);
         }
 
-        public void TryInteract(PlayerStickyTongue tongue, RayHit hitInfo)
+        public void TryInteract(PlayerStickyTongue tongue)
         {
             Logger.LogTrace("Try Interact", Logger.LogType.Client, this);
             if (IsInteractable.Value)

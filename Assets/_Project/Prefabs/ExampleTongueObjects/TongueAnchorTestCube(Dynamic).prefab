@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3882799197027400544}
   m_Layer: 0
   m_Name: TongueAnchorTestCube(Dynamic)
-  m_TagString: Untagged
+  m_TagString: TongueInteractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,7 +54,12 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 8682220649787565702}
   <MaxTonguesAtOnce>k__BackingField: 1
   Target: {fileID: 0}
+  DefaultOwnershipIsLinkedNetworkObject: 0
+  UseRigidbodyStabilization: 1
+  LinkedNetworkObjectForOwnership: {fileID: 0}
+  RigidbodyBehavior: 2
   _rigidbodySpeed: 0
+  _currentStickTongue: {fileID: 0}
 --- !u!114 &408128236236042246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +205,7 @@ GameObject:
   - component: {fileID: 4659195606721693487}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: TongueInteractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

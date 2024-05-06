@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1367161128185690902}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: TongueInteractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,12 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 663593535577069827}
   <MaxTonguesAtOnce>k__BackingField: 1
   Target: {fileID: 7814569780430159111}
+  DefaultOwnershipIsLinkedNetworkObject: 0
+  UseRigidbodyStabilization: 1
+  LinkedNetworkObjectForOwnership: {fileID: 0}
+  RigidbodyBehavior: 2
   _rigidbodySpeed: 0
+  _currentStickTongue: {fileID: 0}
 --- !u!33 &6699397011681408523
 MeshFilter:
   m_ObjectHideFlags: 0

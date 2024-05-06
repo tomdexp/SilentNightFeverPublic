@@ -41,5 +41,7 @@ namespace _Project.Scripts.Runtime.Player
         public float TongueInteractDuration = 0.5f;
         public float OtherTongueAttachedForce = 10f;
         public float OtherTongueMinDistance = 1f;
+        public float TongueMissDuration = 0.3f;
+        public float TongueMissPercentOfMaxDistance = 0.5f;
     }
 }
