@@ -1777,6 +1777,7 @@ GameObject:
   - component: {fileID: 77448746061817200}
   - component: {fileID: 6723864226705078321}
   - component: {fileID: 1835819580199823753}
+  - component: {fileID: 665524915870132987}
   m_Layer: 6
   m_Name: CharacterController
   m_TagString: Untagged
@@ -2171,3 +2172,19 @@ MonoBehaviour:
   _colorPlayerB: {r: 0.9502846, g: 1, b: 0, a: 1}
   _colorPlayerC: {r: 0, g: 1, b: 0.95960426, a: 1}
   _colorPlayerD: {r: 1, g: 0.2025823, b: 0, a: 1}
+--- !u!114 &665524915870132987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104645510343224822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ec932e9e52952408bdd349224160a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkPlayer: {fileID: 0}
+  listenerPlayer1: {fileID: 0}
+  listenerPlayer2: {fileID: 0}
+  isSpatialized: 1
