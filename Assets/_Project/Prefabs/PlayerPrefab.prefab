@@ -1949,6 +1949,8 @@ GameObject:
   - component: {fileID: 6723864226705078321}
   - component: {fileID: 1835819580199823753}
   - component: {fileID: 665524915870132987}
+  - component: {fileID: 1723608734385903751}
+  - component: {fileID: 547171292449136632}
   m_Layer: 6
   m_Name: CharacterController
   m_TagString: PlayerCapsule
@@ -2356,5 +2358,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ec932e9e52952408bdd349224160a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkPlayer: {fileID: 0}
+  NetworkPlayer: {fileID: 9141821169382468748}
   isSpatialized: 1
+--- !u!114 &1723608734385903751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104645510343224822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9518f6a0705d4cd408651207276fa7a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 0
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
+--- !u!114 &547171292449136632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104645510343224822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f01c39a96d1f0374ba2e5df544a0359b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefaultListener: 0
+  listenerId: 0

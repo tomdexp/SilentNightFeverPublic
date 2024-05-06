@@ -13,17 +13,14 @@ public class WwPlayerPanning : MonoBehaviour
 
     [SerializeField] private bool isSpatialized = true;
 
-    // Start is called before the first frame update
     void Start()
     {
         channelConfig = AkChannelConfig.Standard(AkSoundEngine.AK_SPEAKER_SETUP_STEREO);
 
         vVolumes[0] = 0;
         vVolumes[1] = -14;
-        AkSoundEngine.SetListenerSpatialization(this.gameObject, isSpatialized, channelConfig, vVolumes);
-
-
-
+        AkSoundEngine.SetListenerSpatialization(gameObject, isSpatialized, channelConfig, vVolumes);
+        
         switch (NetworkPlayer.GetPlayerIndexType())
         {
             case _Project.Scripts.Runtime.Player.PlayerIndexType.A:
@@ -42,13 +39,6 @@ public class WwPlayerPanning : MonoBehaviour
 
                 break;
         }
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
     }
 
