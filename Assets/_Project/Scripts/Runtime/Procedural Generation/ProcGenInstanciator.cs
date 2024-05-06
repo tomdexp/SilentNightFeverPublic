@@ -75,13 +75,11 @@ public class ProcGenInstanciator : MonoBehaviour
     {
         VerifyPrefabSetup();
     }
-
-
+    
     [Button]
     public void GenerateMap()
     {
         GenerateTerrain();
-
         _teamAPoints = GeneratePoints(_teamAParameters, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true);
         _landmarksPoints = GeneratePoints(_landmarksParameters, true);
@@ -199,20 +197,21 @@ public class ProcGenInstanciator : MonoBehaviour
         if (!_testDiscPrefab) Logger.LogError("Test Disc prefab is missing");
         if (!_CrowdPrefab) Logger.LogError("Crowd prefab is missing");
     }
-
+    
     [Button]
     public void PlacePlayers()
     {
+        Logger.LogDebug("Placing players...", Logger.LogType.Server, this);
         GameObject[] playersTeamA = PlayerManager.Instance.GetNetworkPlayers(PlayerTeamType.A).Select(player => player.gameObject).ToArray();
         GameObject[] playersTeamB = PlayerManager.Instance.GetNetworkPlayers(PlayerTeamType.B).Select(player => player.gameObject).ToArray();
-        
+
         for (int i = 0; i < playersTeamA.Length; i++)
         {
-            playersTeamA[i].transform.position = new Vector3(_teamAPoints[i].x, 0, _teamAPoints[i].y);
+            playersTeamA[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamAPoints[i].x, 0, _teamAPoints[i].y));
         }
         for (int i = 0; i < playersTeamB.Length; i++)
         {
-            playersTeamB[i].transform.position = new Vector3(_teamBPoints[i].x, 0, _teamBPoints[i].y);
+            playersTeamB[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamBPoints[i].x, 0, _teamBPoints[i].y));
         }
     }
 

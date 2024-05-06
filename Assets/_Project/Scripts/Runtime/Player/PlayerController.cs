@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
 using FishNet;
+using FishNet.Component.Transforming;
 using FishNet.Connection;
 using FishNet.Object;
 using Sirenix.OdinInspector;
@@ -18,6 +20,7 @@ namespace _Project.Scripts.Runtime.Player
     {
         [Title("References")]
         [SerializeField, Required] private TongueAnchor _characterTongueAnchor;
+        [SerializeField, Required] private Collider _playerCollider;
         
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private bool _canRotate = true;
@@ -33,6 +36,9 @@ namespace _Project.Scripts.Runtime.Player
         private PlayerStickyTongue _playerStickyTongue;
         private Quaternion _targetRotation;
         private PlayerCamera _playerCamera;
+        private NetworkTransform _networkTransform;
+
+        public event Action OnPlayerSpawnedLocally;
         
         private void Awake()
         {
@@ -64,17 +70,39 @@ namespace _Project.Scripts.Runtime.Player
             {
                 Logger.LogError("No CharacterTongueAnchor set on PlayerController", context:this);
             }
+            if (!_playerCollider)
+            {
+                Logger.LogError("No PlayerCollider set on PlayerController", context:this);
+            }
+            _networkTransform = GetComponent<NetworkTransform>();
+            if (!_networkTransform)
+            {
+                Logger.LogError("No NetworkTransform found on PlayerController", context:this);
+            }
+        }
+        
+        public override void OnOwnershipClient(NetworkConnection prevOwner)
+        {
+            base.OnOwnershipClient(prevOwner);
+            // if previous owner was server, we know the object just spawned
+            if (prevOwner.ClientId == -1)
+            {
+                Logger.LogInfo("Previous owner was Server, PlayerController just spawned", Logger.LogType.Client, this);
+                if (IsOwner)
+                {
+                    _playerStickyTongue.OnTongueRetractStart += DisablePlayerRotation;
+                    _playerStickyTongue.OnTongueIn += EnablePlayerRotation;
+                    _characterTongueAnchor.OnTongueBindChange += OnTongueBindChange;
+                    TriggerOnPlayerReadyLocally();
+                }
+            }
         }
 
-        public override void OnStartClient()
+        [ServerRpc(RunLocally = true)]
+        private void TriggerOnPlayerReadyLocally()
         {
-            base.OnStartClient();
-            if (IsOwner)
-            {
-                _playerStickyTongue.OnTongueRetractStart += DisablePlayerRotation;
-                _playerStickyTongue.OnTongueIn += EnablePlayerRotation;
-                _characterTongueAnchor.OnTongueBindChange += OnTongueBindChange;
-            }
+            Logger.LogTrace("TriggerOnPlayerReadyLocally", Logger.LogType.Server,this);
+            OnPlayerSpawnedLocally?.Invoke();
         }
 
         private void OnDestroy()
@@ -133,8 +161,8 @@ namespace _Project.Scripts.Runtime.Player
                     var direction = new Vector3(movementInput.x, 0, movementInput.y);
                     if (_playerCamera)
                     {
-                        direction.x = -(Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
-                        direction.z = -(Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
+                        direction.x = -(Mathf.Cos(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.y);
+                        direction.z = -(Mathf.Sin(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.y);
                     }
                     _targetRotation = Quaternion.LookRotation(direction.normalized);
                 }
@@ -143,8 +171,8 @@ namespace _Project.Scripts.Runtime.Player
             Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y);
             if (_playerCamera)
             {
-                movement.x = -(Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
-                movement.z = -(Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
+                movement.x = -(Mathf.Cos(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.y);
+                movement.z = -(Mathf.Sin(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.y);
             }
 
             if (_otherPlayerAttachedFromTongue)
@@ -241,6 +269,54 @@ namespace _Project.Scripts.Runtime.Player
                     return;
                 }
             }
+        }
+
+        public void Teleport(Transform tr)
+        {
+            Teleport(tr.position);
+        }
+        
+        public void Teleport(Vector3 position)
+        {
+            if (IsOwner) // Only the owner can teleport
+            {
+                StartCoroutine(TeleportCoroutine(position));
+            }
+            else if (IsServerStarted)
+            {
+                TeleportTargetRpc(Owner, position);
+            }
+            else
+            {
+                TeleportServerRpc(Owner, position);
+            }
+        }
+        
+        [TargetRpc]
+        private void TeleportTargetRpc(NetworkConnection conn, Vector3 position)
+        {
+            StartCoroutine(TeleportCoroutine(position));
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void TeleportServerRpc(NetworkConnection conn, Vector3 position)
+        {
+            Teleport(position);
+        }
+
+        private IEnumerator TeleportCoroutine(Vector3 position)
+        {
+            Logger.LogInfo("Teleporting player to " + position, context: this);
+            bool rigidbodyStateBefore = _rigidbody.isKinematic;
+            _rigidbody.isKinematic = true;
+            _playerCollider.enabled = false;
+            yield return new WaitForFixedUpdate();
+            _rigidbody.MovePosition(position);
+            _characterTongueAnchor.GetRigidbody().MovePosition(position);
+            yield return new WaitForFixedUpdate();
+            _rigidbody.isKinematic = rigidbodyStateBefore;
+            _playerCollider.enabled = true;
+            Logger.LogDebug("Player teleported to " + transform.position, context: this);
         }
         
         public TongueAnchor GetCharacterTongueAnchor()

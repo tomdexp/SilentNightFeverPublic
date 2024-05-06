@@ -1,21 +1,54 @@
+State Group	ID	Name			Wwise Object Path	Notes
+	384614222	Test_Rounting_State			\Default Work Unit\Test_Rounting_State	
+	1679017340	GS_IsDucked_City			\Default Work Unit\GS_IsDucked_City	
+	1976966907	MUSC_A1_FD			\Default Work Unit\MUSC_A1_FD	
+
+State	ID	Name	State Group			Notes
+	748895195	None	Test_Rounting_State			
+	2793951418	Player_B_and_D	Test_Rounting_State			
+	3768106970	Player_A_and_C	Test_Rounting_State			
+	748895195	None	GS_IsDucked_City			
+	1042147611	City_Ducked	GS_IsDucked_City			
+	1072893886	City_Unducked	GS_IsDucked_City			
+	748895195	None	MUSC_A1_FD			
+	1125500713	INTRO	MUSC_A1_FD			
+	3306124271	EXPOSITION	MUSC_A1_FD			
+
 Game Parameter	ID	Name			Wwise Object Path	Notes
 	504532776	Brick			\Factory Acoustic Textures\Textures\Brick	
 	513139656	Mountain			\Factory Acoustic Textures\Textures\Mountain	
 	841620460	Concrete			\Factory Acoustic Textures\Textures\Concrete	
+	987834118	GP_PARAM_MUSC_Volume			\Default Work Unit\GP_PARAM_MUSC_Volume	
 	1755085759	Wood_Deep			\Factory Acoustic Textures\Textures\Wood_Deep	
 	1873957695	Anechoic			\Factory Acoustic Textures\Textures\Anechoic	
 	1970351858	Fabric			\Factory Acoustic Textures\Textures\Fabric	
 	2058049674	Wood			\Factory Acoustic Textures\Textures\Wood	
+	2166846796	CP_Access_LP			\Default Work Unit\CP_Access_LP	
 	2412606308	Carpet			\Factory Acoustic Textures\Textures\Carpet	
 	2637588553	Tile			\Factory Acoustic Textures\Textures\Tile	
+	2745718364	GP_Access_HP			\Default Work Unit\GP_Access_HP	
 	2928161104	Curtains			\Factory Acoustic Textures\Textures\Curtains	
 	3195498748	Cork_Tiles			\Factory Acoustic Textures\Textures\Cork_Tiles	
+	3319484834	GP_Access_Notch			\Default Work Unit\GP_Access_Notch	
 	3670307564	Drywall			\Factory Acoustic Textures\Textures\Drywall	
 	4168643977	Acoustic_Banner			\Factory Acoustic Textures\Textures\Acoustic_Banner	
 	4262522749	Wood_Bright			\Factory Acoustic Textures\Textures\Wood_Bright	
 
 Audio Bus	ID	Name			Wwise Object Path	Notes
 	3803692087	Master Audio Bus			\Default Work Unit\Master Audio Bus	
+	3967932291	Muted_Master			\Default Work Unit\Master Audio Bus\Muted_Master	
+	3991942870	Music			\Default Work Unit\Master Audio Bus\Music	
+
+Auxiliary Bus	ID	Name			Wwise Object Path	Notes
+	1486733157	LDMRK_FOREST			\Default Work Unit\Master Audio Bus\Muted_Master\LDMRK_FOREST	
+	2156680276	LDMRK_RAIN			\Default Work Unit\Master Audio Bus\Muted_Master\LDMRK_RAIN	
+	2684572747	LDMRK_CITY			\Default Work Unit\Master Audio Bus\Muted_Master\LDMRK_CITY	
+
+Effect plug-ins	ID	Name	Type				Notes
+	70340969	Meter City	Wwise Meter			
+	597421931	Meter Forest	Wwise Meter			
+	916400883	Meter Rain	Wwise Meter			
+	2667647788	Single_Band_1Khz_Wide	Wwise Parametric EQ			
 
 Audio Devices	ID	Name	Type				Notes
 	2317455096	No_Output	No Output			
