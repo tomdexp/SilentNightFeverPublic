@@ -161,8 +161,8 @@ namespace _Project.Scripts.Runtime.Player
                     var direction = new Vector3(movementInput.x, 0, movementInput.y);
                     if (_playerCamera)
                     {
-                        direction.x = -(Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
-                        direction.z = -(Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
+                        direction.x = -(Mathf.Cos(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.y);
+                        direction.z = -(Mathf.Sin(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.y);
                     }
                     _targetRotation = Quaternion.LookRotation(direction.normalized);
                 }
@@ -171,8 +171,8 @@ namespace _Project.Scripts.Runtime.Player
             Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y);
             if (_playerCamera)
             {
-                movement.x = -(Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
-                movement.z = -(Mathf.Sin(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera._cameraAngle - (float)Math.PI / 2) * movementInput.y);
+                movement.x = -(Mathf.Cos(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.x - Mathf.Sin(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.y);
+                movement.z = -(Mathf.Sin(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.x + Mathf.Cos(_playerCamera.CameraAngle - (float)Math.PI / 2) * movementInput.y);
             }
 
             if (_otherPlayerAttachedFromTongue)
