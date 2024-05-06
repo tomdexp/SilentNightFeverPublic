@@ -35,8 +35,8 @@ public class ProcGenInstanciator : MonoBehaviour
 
     [Title("    Landmarks")]
     [SerializeField] private ProcGenParameters _landmarksParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _landmarksPrefab;
-    private List<Vector2> _landmarksPoints;
+    [HideIf("@_patxiMode == true"), SerializeField] public NetworkObject _landmarksPrefab;
+    public List<Vector2> _landmarksPoints;
 
     [Title("    Crowd")]
     [SerializeField] private ProcGenParameters _CrowdParameters;
