@@ -42,6 +42,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: 596b50f4d5a25c24c923966e75f4b03c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Alpha_Main:
+        m_Texture: {fileID: 2800000, guid: 596b50f4d5a25c24c923966e75f4b03c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Alpha_Outline:
+        m_Texture: {fileID: 2800000, guid: ab74e7ca6ca602e4a97451aa418d2195, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -168,6 +176,7 @@ Material:
     - _C_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Outline_Color: {r: 0.3333037, g: 0.57112986, b: 0.6603774, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
