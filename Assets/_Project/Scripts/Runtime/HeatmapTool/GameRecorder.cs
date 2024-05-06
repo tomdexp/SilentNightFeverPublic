@@ -1,5 +1,6 @@
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.UI;
 using FishNet;
 using FishNet.Object;
 using Sirenix.OdinInspector;
@@ -12,12 +13,15 @@ using UnityEngine;
 
 public class GameRecorder : NetworkBehaviour
 {
-    private ProcGenInstanciator _procGenInstanciator = null;
+    [ReadOnly] public ProcGenInstanciator _procGenInstanciator = null;
 
     private GameObject _playerA;
     private GameObject _playerB;
     private GameObject _playerC;
     private GameObject _playerD;
+
+    private int _currentRoundIndex;
+    private float _timeSinceRoundStarted;
 
     private GameInfos _gameInfos;
 
@@ -35,10 +39,7 @@ public class GameRecorder : NetworkBehaviour
 
     private void OnDestroy()
     {
-        if (PlayerManager.HasInstance)
-        {
-            PlayerManager.Instance.OnAllPlayerSpawnedLocally -= StartRegisteringPlayerLocation;
-        }
+        GameManager.Instance.OnAnyRoundStarted -= StartRegisteringPlayerLocation;
         if (_procGenInstanciator != null)
         {
             _procGenInstanciator.OnMapGenerated -= RegisterLandmarksLocation;
@@ -47,18 +48,14 @@ public class GameRecorder : NetworkBehaviour
 
     private IEnumerator TrySubscribingEvents()
     {
-        while (!PlayerManager.HasInstance)
-        {
-            yield return null;
-        }
-        PlayerManager.Instance.OnAllPlayerSpawnedLocally += StartRegisteringPlayerLocation;
-
         while (_procGenInstanciator == null)
         {
             _procGenInstanciator = FindAnyObjectByType<ProcGenInstanciator>();
-            yield return new WaitForSeconds(1f);
+            yield return null;
         }
         _procGenInstanciator.OnMapGenerated += RegisterLandmarksLocation;
+        GameManager.Instance.OnAnyRoundStarted += StartRegisteringPlayerLocation;
+
     }
 
 
@@ -71,33 +68,59 @@ public class GameRecorder : NetworkBehaviour
             // TODO : For now, we only spawn one type of prefab, this will need to be changed when spawn different prefabs
             _gameInfos.LandmarksLocation.Add(new LandmarksInfos(_procGenInstanciator._landmarksPrefab.name, _procGenInstanciator._landmarksPoints[i]));
         }
-        
     }
 
-    private void StartRegisteringPlayerLocation()
-    {
-        PlayerManager.Instance.OnAllPlayerSpawnedLocally -= StartRegisteringPlayerLocation;
 
-        GameObject[] players = PlayerManager.Instance.GetNetworkPlayers().Select(player => player.gameObject).ToArray();
-     
-        if (players.Count() != 4)
+    private void StartRegisteringPlayerLocation(byte roundIndex)
+    {
+        _currentRoundIndex = roundIndex;
+        _timeSinceRoundStarted = 0;
+
+        if (!(_playerA && _playerB && _playerC && _playerD))
         {
-            Debug.LogWarning("Couldn't find all players, can't register their location");
-            return;
+            GameObject[] players = PlayerManager.Instance.GetNetworkPlayers().Select(player => player.gameObject).ToArray();
+
+            if (players.Count() != 4)
+            {
+                Debug.LogWarning("Couldn't find all players, can't register their location");
+                return;
+            }
+
+            _playerA = players[0];
+            _playerB = players[1];
+            _playerC = players[2];
+            _playerD = players[3];
+
         }
 
-        InvokeRepeating(nameof(RegisterPlayerLocation), 0, 1.0f);
+        StartCoroutine(RegisterPlayerLocation(roundIndex));
     }
 
-    private void RegisterPlayerLocation()
+    public IEnumerator RegisterPlayerLocation(byte roundIndex)
     {
-        
+        float registerInterval = 1.0f;
+        float timeSinceRoundStarted = 0.0f;
+
+        _gameInfos.RoundInfo.Add(new RoundInfos());
+
+        _gameInfos.RoundInfo[roundIndex - 1].timeInterval = registerInterval;
+        _gameInfos.RoundInfo[roundIndex - 1].PlayerInfos = new List<PlayerInfos>();
+
+        while (roundIndex == _currentRoundIndex)
+        {
+            PlayerInfos PInfos = new PlayerInfos(_playerA.transform.localPosition, _playerB.transform.localPosition, _playerC.transform.localPosition, _playerD.transform.localPosition);
+            _gameInfos.RoundInfo[roundIndex - 1].PlayerInfos.Add(PInfos);
+
+            yield return new WaitForSeconds(registerInterval);
+            timeSinceRoundStarted += registerInterval;
+        }
     }
 
-    [Button]
     public void SaveGameInfosToJSON()
     {
         string json = JsonUtility.ToJson(_gameInfos);
         File.WriteAllText(Application.dataPath + "/GameInfos.json", json);
     }
+
+
 }
