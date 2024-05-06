@@ -1,57 +1,60 @@
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Player;
 using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
-public class WwPlayerPanning : MonoBehaviour
+namespace _Project.Scripts.Audio
 {
-    [Required] public NetworkPlayer NetworkPlayer;
-
-    private float[] vVolumes = new float[2];
-    private AkChannelConfig channelConfig = new AkChannelConfig();
-
-    [SerializeField] private bool isSpatialized = true;
-
-    void Start()
+    public class WwPlayerPanning : MonoBehaviour
     {
-        channelConfig = AkChannelConfig.Standard(AkSoundEngine.AK_SPEAKER_SETUP_STEREO);
+        [Required] public NetworkPlayer NetworkPlayer;
 
-        vVolumes[0] = 0;
-        vVolumes[1] = -14;
-        AkSoundEngine.SetListenerSpatialization(gameObject, isSpatialized, channelConfig, vVolumes);
-        
-        switch (NetworkPlayer.GetPlayerIndexType())
+        private float[] _volumesOffset = new float[2];
+        private AkChannelConfig channelConfig = new AkChannelConfig();
+
+        [SerializeField] private bool isSpatialized = true;
+
+        void Start()
         {
-            case _Project.Scripts.Runtime.Player.PlayerIndexType.A:
-                PlayerABoffset();
-                break;
-            case _Project.Scripts.Runtime.Player.PlayerIndexType.B:
-                PlayerABoffset();
-                break;
-            case _Project.Scripts.Runtime.Player.PlayerIndexType.C:
-                PlayerCDoffset();
-                break;
-            case _Project.Scripts.Runtime.Player.PlayerIndexType.D:
-                PlayerCDoffset();
-                break;
-            case _Project.Scripts.Runtime.Player.PlayerIndexType.Z:
+            channelConfig = AkChannelConfig.Standard(AkSoundEngine.AK_SPEAKER_SETUP_STEREO);
 
-                break;
-        }
+            _volumesOffset[0] = 0;
+            _volumesOffset[1] = -14;
         
-    }
+            switch (NetworkPlayer.GetPlayerIndexType())
+            {
+                case PlayerIndexType.A:
+                    PlayerABoffset();
+                    break;
+                case PlayerIndexType.B:
+                    PlayerABoffset();
+                    break;
+                case PlayerIndexType.C:
+                    PlayerCDoffset();
+                    break;
+                case PlayerIndexType.D:
+                    PlayerCDoffset();
+                    break;
+                case PlayerIndexType.Z:
+                    break;
+            }
+            
+            AkSoundEngine.SetListenerSpatialization(gameObject, isSpatialized, channelConfig, _volumesOffset);
+            Logger.LogTrace($"Player panning initialized at [{_volumesOffset[0]},{_volumesOffset[1]}] for Player " + NetworkPlayer.GetPlayerIndexType(), Logger.LogType.Local, this);
+        }
 
-    private void PlayerABoffset()
-    {
-        vVolumes[0] = 0;
-        vVolumes[1] = -96;
-    }
+        private void PlayerABoffset()
+        {
+            _volumesOffset[0] = 0;
+            _volumesOffset[1] = -96;
+        }
 
-    private void PlayerCDoffset()
-    {
-        vVolumes[0] = -96;
-        vVolumes[1] = 0;
-    }
+        private void PlayerCDoffset()
+        {
+            _volumesOffset[0] = -96;
+            _volumesOffset[1] = 0;
+        }
 
+    }
 }
