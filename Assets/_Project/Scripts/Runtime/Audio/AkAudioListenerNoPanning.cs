@@ -8,7 +8,7 @@ namespace _Project.Scripts.Runtime.Audio
     public class AkAudioListenerNoPanning : MonoBehaviour
     {
         private AkAudioListener _akAudioListener;
-        private float[] _volumes = new float[2] {0, -14f};
+        public float[] VolumesOffset = new float[2];
         private AkChannelConfig _channelConfig = new AkChannelConfig();
         
         private void Awake()
@@ -19,7 +19,7 @@ namespace _Project.Scripts.Runtime.Audio
         private void Start()
         {
             _channelConfig.SetStandard(AkSoundEngine.AK_SPEAKER_SETUP_STEREO);
-            var result = AkSoundEngine.SetListenerSpatialization(gameObject, false, _channelConfig, _volumes);
+            var result = AkSoundEngine.SetListenerSpatialization(gameObject, true, _channelConfig, VolumesOffset);
             Logger.LogTrace(result + " for " + gameObject.name, Logger.LogType.Local, this);
         }
     }

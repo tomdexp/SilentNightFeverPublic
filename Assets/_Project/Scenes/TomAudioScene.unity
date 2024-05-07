@@ -221,7 +221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!20 &534277675
 Camera:
   m_ObjectHideFlags: 0
@@ -510,7 +510,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_listeners:
-    initialListenerList: []
+    initialListenerList:
+    - {fileID: 645292761}
     useDefaultListeners: 0
   isEnvironmentAware: 1
   isStaticObject: 0
@@ -528,9 +529,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 645292759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0b69029a094b318eab6871f5a687af, type: 3}
+  m_Script: {fileID: 11500000, guid: fed899fd3b7f2694aaffcbc6b965b9b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VolumesOffset:
+  - 0
+  - -96
 --- !u!1 &645909216
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,7 +961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1958154346
 BoxCollider:
   m_ObjectHideFlags: 0
