@@ -98,6 +98,7 @@ namespace AK
         static const AkUniqueID DISTANCE = 1240670792U;
         static const AkUniqueID GP_ACCESS_HP = 2745718364U;
         static const AkUniqueID GP_ACCESS_NOTCH = 3319484834U;
+        static const AkUniqueID GP_GLOBALLANDMARKS_MUSIC = 4083545613U;
         static const AkUniqueID GP_LANDMARKMETER_CITY = 823063048U;
         static const AkUniqueID GP_LANDMARKMETER_FOREST = 1268650150U;
         static const AkUniqueID GP_LANDMARKMETER_RAIN = 1311938743U;
@@ -129,6 +130,7 @@ namespace AK
 
     namespace BUSSES
     {
+        static const AkUniqueID LANDMARKS = 1061412920U;
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
         static const AkUniqueID MUSIC = 3991942870U;
         static const AkUniqueID MUTED_MASTER = 3967932291U;
