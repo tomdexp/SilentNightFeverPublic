@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
-namespace _Project.Scripts.Audio
+namespace _Project.Scripts.Runtime.Audio
 {
     public class WwEmitter3DNoPanning : MonoBehaviour
     {
