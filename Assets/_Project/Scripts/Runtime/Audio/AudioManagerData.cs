@@ -11,6 +11,10 @@ namespace _Project.Scripts.Runtime.Audio
         [Title("Banks Settings")]
         public BankLoadConfig[] BanksToLoadOnApplicationStart;
         
+        [Title("Players Panning Settings")]
+        public float[] LeftSpeakerVolumeOffset = new float[2] {0, -96}; 
+        public float[] RightSpeakerVolumeOffset = new float[2] {-96, 0};
+        
         [Serializable]
         public class BankLoadConfig
         {

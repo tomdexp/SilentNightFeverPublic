@@ -16,7 +16,7 @@ namespace _Project.Scripts.Runtime.Audio
     [DisallowMultipleComponent]
     [RequireComponent(typeof(AkInitializer))]
     [RequireComponent(typeof(AkGameObj))]
-    public class AudioManager : NetworkPersistentSingleton<GameManager>
+    public class AudioManager : NetworkPersistentSingleton<AudioManager>
     {
         public AudioManagerData AudioManagerData;
         public event Action OnBanksLoadStart;

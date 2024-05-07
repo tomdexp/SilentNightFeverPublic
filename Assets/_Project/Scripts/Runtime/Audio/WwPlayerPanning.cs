@@ -25,16 +25,16 @@ namespace _Project.Scripts.Runtime.Audio
             switch (NetworkPlayer.GetPlayerIndexType())
             {
                 case PlayerIndexType.A:
-                    PlayerABoffset();
+                    LeftSpeakerOffset();
                     break;
                 case PlayerIndexType.B:
-                    PlayerABoffset();
+                    RightSpeakerOffset();
                     break;
                 case PlayerIndexType.C:
-                    PlayerCDoffset();
+                    LeftSpeakerOffset();
                     break;
                 case PlayerIndexType.D:
-                    PlayerCDoffset();
+                    RightSpeakerOffset();
                     break;
                 case PlayerIndexType.Z:
                     break;
@@ -44,17 +44,16 @@ namespace _Project.Scripts.Runtime.Audio
             Logger.LogTrace($"Player panning initialized at [{_volumesOffset[0]},{_volumesOffset[1]}] for Player " + NetworkPlayer.GetPlayerIndexType(), Logger.LogType.Local, this);
         }
 
-        private void PlayerABoffset()
+        private void LeftSpeakerOffset()
         {
-            _volumesOffset[0] = 0;
-            _volumesOffset[1] = -96;
+            _volumesOffset[0] = AudioManager.Instance.AudioManagerData.LeftSpeakerVolumeOffset[0];
+            _volumesOffset[1] = AudioManager.Instance.AudioManagerData.LeftSpeakerVolumeOffset[1];
         }
 
-        private void PlayerCDoffset()
+        private void RightSpeakerOffset()
         {
-            _volumesOffset[0] = -96;
-            _volumesOffset[1] = 0;
+            _volumesOffset[0] = AudioManager.Instance.AudioManagerData.RightSpeakerVolumeOffset[0];
+            _volumesOffset[1] = AudioManager.Instance.AudioManagerData.RightSpeakerVolumeOffset[1];
         }
-
     }
 }
