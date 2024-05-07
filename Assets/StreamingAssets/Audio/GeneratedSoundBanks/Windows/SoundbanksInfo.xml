@@ -9,7 +9,7 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="1286362932" Type="User" Language="SFX" Hash="{069272C9-FE6F-644C-A1B1-DD88745B9287}">
+		<SoundBank Id="1286362932" Type="User" Language="SFX" Hash="{C7556B85-7A59-EEC5-7919-FB0E7BBE2C0E}">
 			<ShortName>TEST_LANDMARK</ShortName>
 			<Path>TEST_LANDMARK.bnk</Path>
 			<Media>
@@ -60,7 +60,7 @@
 				<GameParameter Id="1311938743" Name="GP_LandMarkMeter_Rain"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{9ECC59D5-62D5-31B0-5AEB-90F5E3B3CA55}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{B44CBAE1-70EA-C856-98B8-3374663963FC}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -70,6 +70,7 @@
 					<Plugin Id="916400883" Name="Meter Rain" LibName="Wwise Meter" LibId="8454147"/>
 				</Custom>
 				<ShareSets>
+					<Plugin Id="1763592331" Name="New_Meter" LibName="Wwise Meter" LibId="8454147"/>
 					<Plugin Id="2667647788" Name="Single_Band_1Khz_Wide" LibName="Wwise Parametric EQ" LibId="6881283"/>
 				</ShareSets>
 				<AudioDevices>
@@ -78,6 +79,13 @@
 				</AudioDevices>
 			</Plugins>
 			<Busses>
+				<Bus Id="1061412920" Name="Landmarks">
+					<PluginRefs>
+						<ShareSets>
+							<PluginRef Id="1763592331"/>
+						</ShareSets>
+					</PluginRefs>
+				</Bus>
 				<Bus Id="3803692087" Name="Master Audio Bus">
 					<PluginRefs>
 						<ShareSets>
@@ -135,6 +143,7 @@
 				<GameParameter Id="3319484834" Name="GP_Access_Notch"/>
 				<GameParameter Id="3715662592" Name="SS_Air_Storm"/>
 				<GameParameter Id="3847924954" Name="SS_Air_Presence"/>
+				<GameParameter Id="4083545613" Name="GP_globalLandmarks_Music"/>
 				<GameParameter Id="4160247818" Name="SS_Air_Turbulence"/>
 			</GameParameters>
 			<StateGroups>
@@ -307,7 +316,7 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="3991942870" Type="User" Language="SFX" Hash="{F5F96697-27D4-9CF5-7E42-FE33728C448F}">
+		<SoundBank Id="3991942870" Type="User" Language="SFX" Hash="{57943FDB-07D3-5B43-5232-213F45AA67AC}">
 			<ShortName>MUSIC</ShortName>
 			<Path>MUSIC.bnk</Path>
 			<Media>
@@ -428,9 +437,7 @@
 				</Event>
 			</Events>
 			<GameParameters>
-				<GameParameter Id="823063048" Name="GP_LandMarkMeter_City"/>
-				<GameParameter Id="1268650150" Name="GP_LandMarkMeter_Forest"/>
-				<GameParameter Id="1311938743" Name="GP_LandMarkMeter_Rain"/>
+				<GameParameter Id="4083545613" Name="GP_globalLandmarks_Music"/>
 			</GameParameters>
 		</SoundBank>
 		<SoundBank Id="4140304029" Type="User" Language="SFX" Hash="{D7436C4C-1C86-D1E6-00A9-65914A95FB68}">
@@ -601,5 +608,5 @@
 			</SwitchGroups>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{A703406C-A183-55DE-F16D-E2B85F36461C}</FileHash>
+	<FileHash>{B46AA0AC-1895-BBC2-7C67-EA0E800FCC91}</FileHash>
 </SoundBanksInfo>
