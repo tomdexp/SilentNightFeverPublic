@@ -259,10 +259,6 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                     Destroy(fixedJoint);
                 }
             }
-            else
-            {
-                Logger.LogWarning($"Tongue is not binded for {_networkPlayer.GetPlayerIndexType()}", Logger.LogType.Client, this);
-            }
             _tongueTip.position = _tongueOrigin.position;
             SetTongueVisibilityServerRpc(false);
             _isTongueOut = false;
