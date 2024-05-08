@@ -315,6 +315,8 @@ namespace _Project.Scripts.Runtime.Player
             _characterTongueAnchor.GetRigidbody().MovePosition(position);
             yield return new WaitForFixedUpdate();
             _rigidbody.isKinematic = rigidbodyStateBefore;
+            _rigidbody.velocity = Vector3.zero;
+            _characterTongueAnchor.GetRigidbody().velocity = Vector3.zero;
             _playerCollider.enabled = true;
             Logger.LogDebug("Player teleported to " + transform.position, context: this);
         }

@@ -599,7 +599,8 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void PossessPlayer(PlayerIndexType sourcePlayerIndexType, PlayerIndexType targetPlayerIndexType)
         {
-            // TODO NETWORKING : This method only works if the source and target player are on the same client
+            if (!IsServerStarted) return;
+            // TODO NETWORKING : Only the host can possess a fake player
             var sourceNetworkPlayer = GetNetworkPlayer(sourcePlayerIndexType);
             var targetNetworkPlayer = GetNetworkPlayer(targetPlayerIndexType);
             if (targetNetworkPlayer.GetRealPlayerInfo().ClientId != 255)
@@ -608,7 +609,7 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             var conn = InstanceFinder.ServerManager.Clients[sourceNetworkPlayer.OwnerId];
-            targetNetworkPlayer.GiveOwnership(conn);
+            //targetNetworkPlayer.GiveOwnership(conn);
             targetNetworkPlayer.GetComponent<PlayerController>().BindInputProvider(sourceNetworkPlayer.GetComponent<HardwareInputProvider>());
             sourceNetworkPlayer.GetComponent<PlayerController>().ClearInputProvider();
             Logger.LogDebug("Player " + targetPlayerIndexType + " possessed by player " + sourcePlayerIndexType, context:this);
@@ -635,13 +636,14 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void UnpossessPlayer(PlayerIndexType playerIndexType)
         {
+            if (!IsServerStarted) return;
             var networkPlayer = GetNetworkPlayer(playerIndexType);
             if (networkPlayer.GetRealPlayerInfo().ClientId != 255)
             {
                 Logger.LogError("Cannot unpossess a real player.", context:this);
                 return;
             }
-            networkPlayer.RemoveOwnership();
+            //networkPlayer.RemoveOwnership();
             networkPlayer.GetComponent<PlayerController>().ClearInputProvider();
             OnRealPlayerUnpossessed?.Invoke(networkPlayer.GetRealPlayerInfo());
             Logger.LogDebug("Player " + playerIndexType + " unpossessed.", context:this);

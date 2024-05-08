@@ -19,5 +19,12 @@ namespace _Project.Scripts.Runtime.Utils
         {
             if (PlayerManager.HasInstance) PlayerManager.Instance.GetNetworkPlayer(player).GetPlayerController().Teleport(position);
         }
+        
+        [Command("/player.teleport.toPlayer", "Teleport the player to the specified player.")]
+        public static void TeleportPlayer(PlayerIndexType sourcePlayer, PlayerIndexType targetPlayer)
+        {
+            var targetPlayerPosition = PlayerManager.Instance.GetNetworkPlayer(targetPlayer).gameObject.transform.position;
+            if (PlayerManager.HasInstance) PlayerManager.Instance.GetNetworkPlayer(sourcePlayer).GetPlayerController().Teleport(targetPlayerPosition);
+        }
     }
 }
