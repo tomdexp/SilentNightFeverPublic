@@ -117,6 +117,7 @@ public class GameRecorder : NetworkBehaviour
     public void SaveGameInfosToJSON(PlayerTeamType winningTeam)
     {
         string json = JsonUtility.ToJson(_gameInfos);
-        File.WriteAllText(Application.dataPath + "/GameInfos.json", json);
+        DateTime dt = DateTime.Now;
+        File.WriteAllText(Application.dataPath + "/GameInfos" + dt.ToString("HHmmss") + ".json", json);
     }
 }
