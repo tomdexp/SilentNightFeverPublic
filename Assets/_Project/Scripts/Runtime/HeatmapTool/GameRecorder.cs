@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 public class GameRecorder : NetworkBehaviour
 {
@@ -24,35 +25,42 @@ public class GameRecorder : NetworkBehaviour
 
     private GameInfos _gameInfos;
 
-    private void Start()
+    public override void OnStartServer()
     {
+        base.OnStartServer();
         _gameInfos = new GameInfos();
         _gameInfos.LandmarksLocation = new List<LandmarksInfos>();
         _gameInfos.RoundInfo = new List<RoundInfos>();
-        if (IsServerStarted)
-        {
-            StartCoroutine(TrySubscribingEvents());
-        }
+        StartCoroutine(TrySubscribingProcGenEvents());
+        StartCoroutine(TrySubscribingToGameManager());
     }
 
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnAnyRoundStarted -= StartRegisteringPlayerLocation;
+        if (GameManager.HasInstance) GameManager.Instance.OnAnyRoundStarted -= StartRegisteringPlayerLocation;
         if (_procGenInstanciator != null)
         {
             _procGenInstanciator.OnMapGenerated -= RegisterLandmarksLocation;
         }
     }
 
-    private IEnumerator TrySubscribingEvents()
+    private IEnumerator TrySubscribingProcGenEvents()
     {
-        while (_procGenInstanciator == null)
+        while (!_procGenInstanciator)
         {
             _procGenInstanciator = FindAnyObjectByType<ProcGenInstanciator>();
             yield return null;
         }
         _procGenInstanciator.OnMapGenerated += RegisterLandmarksLocation;
+    }
+    
+    private IEnumerator TrySubscribingToGameManager()
+    {
+        while (!GameManager.HasInstance)
+        {
+            yield return null;
+        }
         GameManager.Instance.OnAnyRoundStarted += StartRegisteringPlayerLocation;
         GameManager.Instance.OnGameEnded += SaveGameInfosToJSON;
     }
@@ -80,7 +88,7 @@ public class GameRecorder : NetworkBehaviour
 
             if (players.Count() != 4)
             {
-                Debug.LogWarning("Couldn't find all players, can't register their location");
+                Logger.LogWarning("Couldn't find all players, can't register their location", Logger.LogType.Server, this);
                 return;
             }
 
