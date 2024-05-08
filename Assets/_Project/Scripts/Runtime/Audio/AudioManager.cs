@@ -45,6 +45,14 @@ namespace _Project.Scripts.Runtime.Audio
         /// <summary>
         /// This method plays an event without replication over the network
         /// </summary>
+        public void PlayAudioLocal(AK.Wwise.Event eventRef, GameObject go)
+        {
+            InternalPlayAudioLocal(eventRef.Id, go);
+        }
+        
+        /// <summary>
+        /// This method plays an event without replication over the network
+        /// </summary>
         public void PlayAudioLocal(string eventName, GameObject go)
         {
             InternalPlayAudioLocal(AkSoundEngine.GetIDFromString(eventName), go);
@@ -58,9 +66,28 @@ namespace _Project.Scripts.Runtime.Audio
             InternalPlayAudioLocal(eventId, go);
         }
         
+        /// <summary>
+        /// This method plays an event with replication over the network, beware of calling this method too often
+        /// </summary>
+        public void PlayAudioNetworked(AK.Wwise.Event eventRef, GameObject go)
+        {
+            ReplicateAudio(eventRef.Id, go);
+        }
+        
+        /// <summary>
+        /// This method plays an event with replication over the network, beware of calling this method too often
+        /// </summary>
         public void PlayAudioNetworked(uint eventId, GameObject go)
         {
             ReplicateAudio(eventId, go);
+        }
+        
+        /// <summary>
+        /// This method plays an event with replication over the network, beware of calling this method too often
+        /// </summary>
+        public void PlayAudioNetworked(string eventName, GameObject go)
+        {
+            ReplicateAudio(AkSoundEngine.GetIDFromString(eventName), go);
         }
         
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
