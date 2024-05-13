@@ -16,6 +16,7 @@ namespace AK
         static const AkUniqueID PLAY_LDMRK_CITY = 1475694052U;
         static const AkUniqueID PLAY_LDMRK_FOREST = 702316442U;
         static const AkUniqueID PLAY_LDMRK_RAIN = 4286364483U;
+        static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
         static const AkUniqueID PLAY_TEST_2 = 1517493057U;
         static const AkUniqueID PLAY_WALK_TEST = 1273048044U;
         static const AkUniqueID STOP_ALL = 452547817U;
@@ -93,15 +94,16 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
-        static const AkUniqueID CP_ACCESS_LP = 2166846796U;
+        static const AkUniqueID CP_ACC_LP = 115457093U;
         static const AkUniqueID DENSITY_FA_SSGRAIN = 2715217995U;
         static const AkUniqueID DISTANCE = 1240670792U;
-        static const AkUniqueID GP_ACCESS_HP = 2745718364U;
-        static const AkUniqueID GP_ACCESS_NOTCH = 3319484834U;
-        static const AkUniqueID GP_GLOBALLANDMARKS_MUSIC = 4083545613U;
+        static const AkUniqueID GP_ACC_HP = 756044085U;
+        static const AkUniqueID GP_ACC_NOTCH = 4172717105U;
         static const AkUniqueID GP_LANDMARKMETER_CITY = 823063048U;
         static const AkUniqueID GP_LANDMARKMETER_FOREST = 1268650150U;
         static const AkUniqueID GP_LANDMARKMETER_RAIN = 1311938743U;
+        static const AkUniqueID GP_LM_KITCHEN = 331898971U;
+        static const AkUniqueID GP_LM_TOMUSIC = 1716289499U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
         static const AkUniqueID IMMERSION_FA_SSGRAIN = 2481728872U;
         static const AkUniqueID INSTRUMENT_FA_SSGRAIN = 2317409760U;
@@ -125,6 +127,7 @@ namespace AK
         static const AkUniqueID INIT = 1355168291U;
         static const AkUniqueID CHAR = 4140304029U;
         static const AkUniqueID MUSIC = 3991942870U;
+        static const AkUniqueID SB_LM = 709024172U;
         static const AkUniqueID TEST_LANDMARK = 1286362932U;
     } // namespace BANKS
 
@@ -141,6 +144,7 @@ namespace AK
         static const AkUniqueID LDMRK_CITY = 2684572747U;
         static const AkUniqueID LDMRK_FOREST = 1486733157U;
         static const AkUniqueID LDMRK_RAIN = 2156680276U;
+        static const AkUniqueID LM_KITCHEN = 2768191745U;
     } // namespace AUX_BUSSES
 
     namespace AUDIO_DEVICES
