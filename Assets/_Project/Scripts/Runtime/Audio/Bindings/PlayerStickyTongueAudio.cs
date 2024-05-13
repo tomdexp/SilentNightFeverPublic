@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Runtime.Player.PlayerTongue;
+﻿using System;
+using _Project.Scripts.Runtime.Player.PlayerTongue;
 using UnityEngine;
 
 namespace _Project.Scripts.Runtime.Audio.Bindings
@@ -8,11 +9,17 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
     {
         private PlayerStickyTongue _playerStickyTongue;
 
-        private void Awake()
+        private void Start()
         {
             _playerStickyTongue = GetComponent<PlayerStickyTongue>();
             _playerStickyTongue.OnTongueOut += OnTongueOut;
             _playerStickyTongue.OnTongueRetractStart += OnTongueRetractStart;
+        }
+
+        private void OnDestroy()
+        {
+            _playerStickyTongue.OnTongueOut -= OnTongueOut;
+            _playerStickyTongue.OnTongueRetractStart -= OnTongueRetractStart;
         }
 
         // Since OnTongueOut is already replicated, we just play the audio locally
