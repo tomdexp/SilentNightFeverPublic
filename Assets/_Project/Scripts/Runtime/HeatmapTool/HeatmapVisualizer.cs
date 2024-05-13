@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -119,6 +120,7 @@ public class HeatmapVisualizer : MonoBehaviour
     private int MAP_SIZE = 125;
 
     private int _currentHeatMap = 1;
+    private bool _replayIsPlaying = false;
 
     private void Start()
     {
@@ -142,6 +144,8 @@ public class HeatmapVisualizer : MonoBehaviour
         _round3Time = 0;
         _round4Time = 0;
         _round5Time = 0;
+
+        _gameInfos = null;
     }
 
     #region GenerateRoundsHeatMap
@@ -301,6 +305,96 @@ public class HeatmapVisualizer : MonoBehaviour
         }
     }
 
+    [Button, HideIf("@_replayIsPlaying == true || _gameInfos == null")]
+    private void StartReplay()
+    {
+        _replayIsPlaying = true;
+        StartCoroutine(PlayReplay());
+    }
+
+    [Button, HideIf("@_replayIsPlaying == false || _gameInfos == null")]
+    private void StopReplay()
+    {
+        _replayIsPlaying = false;
+        StopCoroutine(PlayReplay());
+    }
+
+    public IEnumerator PlayReplay()
+    {
+
+        int roundTime;
+        RoundInfos roundInfos;
+        // I Wish there was a better way of doing it but well
+        switch (_currentHeatMap)
+        {
+            case 1:
+                roundInfos = _round1Infos;
+                roundTime = _round1Time;
+                break;
+
+            case 2:
+                roundInfos = _round2Infos;
+                roundTime = _round2Time;
+                break;
+
+            case 3:
+                roundInfos = _round3Infos;
+                roundTime = _round3Time;
+                break;
+
+            case 4:
+                roundInfos = _round4Infos;
+                roundTime = _round4Time;
+                break;
+
+            case 5:
+                roundInfos = _round5Infos;
+                roundTime = _round5Time;
+                break;
+
+
+            default:
+                roundInfos = _round1Infos;
+                roundTime = _round1Time;
+                break;
+        }
+
+        while (roundTime < (int)Mathf.Floor(roundInfos.PlayerInfos.Count * _round1Infos.timeInterval) - 5 && _replayIsPlaying)
+        {
+            roundTime++;
+            switch (_currentHeatMap)
+            {
+                case 1:
+                    _round1Time = roundTime;
+                    break;
+
+                case 2:
+                    _round2Time = roundTime;
+                    break;
+
+                case 3:
+                    _round3Time = roundTime;
+                    break;
+
+                case 4:
+                    _round4Time = roundTime;
+                    break;
+
+                case 5:
+                    _round5Time = roundTime;
+                    break;
+
+
+                default:
+                    _round1Time = roundTime;
+                    break;
+            }
+            GenerateHeatmap();
+            yield return new WaitForSeconds(_round1Infos.timeInterval/2);
+
+        }
+
+    }
 
     private void OnDrawGizmos()
     {
@@ -363,8 +457,6 @@ public class HeatmapVisualizer : MonoBehaviour
                 Gizmos.DrawCube(new Vector3(transform.position.x + i, transform.position.y + j, transform.position.z), Vector3.one);
             }
         }
-
-
 
         // Draw Landsmarks
         for (int i = 0; i < _gameInfos.LandmarksLocation.Count; i++)
