@@ -9,7 +9,7 @@ public class HeatmapVisualizer : MonoBehaviour
 
     private GameInfos _gameInfos = null;
 
-    [SerializeField, OnValueChanged("GenerateHeatmap"), ShowIf("@_dataFile"), PropertySpace(spaceAfter:5, spaceBefore:20)] 
+    [SerializeField, OnValueChanged("GenerateHeatmap"), ShowIf("@_dataFile"), PropertySpace(spaceAfter:5, spaceBefore:20), HideInEditorMode()] 
     private bool _progressiveHeatmap = true;
 
 
@@ -30,19 +30,24 @@ public class HeatmapVisualizer : MonoBehaviour
     private List<List<BoxColorPair>> _heatmapval5 = new();
 
     [TabGroup("Round 1", VisibleIf = "_dataFile")]
-    [SerializeField, PropertyRange(0, "getRound1Duration"), OnValueChanged("GenerateHeatmap")] private int _round1Time;
+    [SerializeField, PropertyRange(0, "getRound1Duration"), OnValueChanged("GenerateHeatmap"), HideInEditorMode()] 
+    private int _round1Time;
 
     [TabGroup("Round 2")]
-    [SerializeField, PropertyRange(0, "getRound2Duration"), OnValueChanged("GenerateHeatmap")] private int _round2Time;
+    [SerializeField, PropertyRange(0, "getRound2Duration"), OnValueChanged("GenerateHeatmap"), HideInEditorMode()] 
+    private int _round2Time;
 
     [TabGroup("Round 3")]
-    [SerializeField, PropertyRange(0, "getRound3Duration"), OnValueChanged("GenerateHeatmap")] private int _round3Time;
+    [SerializeField, PropertyRange(0, "getRound3Duration"), OnValueChanged("GenerateHeatmap"), HideInEditorMode()] 
+    private int _round3Time;
 
     [TabGroup("Round 4")]
-    [SerializeField, PropertyRange(0, "getRound4Duration"), HideIf("@_gameInfos?.RoundInfo?.Count < 4"), OnValueChanged("GenerateHeatmap")] private int _round4Time;
+    [SerializeField, PropertyRange(0, "getRound4Duration"), HideIf("@_gameInfos?.RoundInfo?.Count < 4"), OnValueChanged("GenerateHeatmap"), HideInEditorMode()] 
+    private int _round4Time;
 
     [TabGroup("Round 5")]
-    [SerializeField, PropertyRange(0, "getRound5Duration"), HideIf("@_gameInfos?.RoundInfo?.Count < 5"), OnValueChanged("GenerateHeatmap")] private int _round5Time;
+    [SerializeField, PropertyRange(0, "getRound5Duration"), HideIf("@_gameInfos?.RoundInfo?.Count < 5"), OnValueChanged("GenerateHeatmap"), HideInEditorMode()] 
+    private int _round5Time;
 
     #region GetRoundsDurationFunctions
     private int getRound1Duration()
@@ -50,7 +55,7 @@ public class HeatmapVisualizer : MonoBehaviour
         // Try catch because weird errors I couldn't fix
         try
         {
-            return ((int)_round1Infos.PlayerInfos.Count - 1) * (int)_round1Infos.timeInterval;
+            return (int)Mathf.Floor(((int)_round1Infos.PlayerInfos.Count - 1) * _round1Infos.timeInterval);
         }
         catch
         {
@@ -62,7 +67,7 @@ public class HeatmapVisualizer : MonoBehaviour
     {
         try
         {
-            return ((int)_round2Infos.PlayerInfos.Count - 1) * (int)_round2Infos.timeInterval;
+            return (int)Mathf.Floor(((int)_round2Infos.PlayerInfos.Count - 1) * _round2Infos.timeInterval);
         }
         catch
         {
@@ -74,7 +79,7 @@ public class HeatmapVisualizer : MonoBehaviour
     {
         try
         {
-            return ((int)_round3Infos.PlayerInfos.Count - 1) * (int)_round3Infos.timeInterval;
+            return (int)Mathf.Floor(((int)_round3Infos.PlayerInfos.Count - 1) * _round3Infos.timeInterval);
 
         }
         catch
@@ -87,7 +92,7 @@ public class HeatmapVisualizer : MonoBehaviour
     {
         try
         {
-            return ((int)_round4Infos.PlayerInfos.Count - 1) * (int)_round4Infos.timeInterval;
+            return (int)Mathf.Floor(((int)_round4Infos.PlayerInfos.Count - 1) * _round4Infos.timeInterval);
 
         }
         catch
@@ -100,7 +105,7 @@ public class HeatmapVisualizer : MonoBehaviour
     {
         try
         {
-            return ((int)_round5Infos.PlayerInfos.Count - 1) * (int)_round5Infos.timeInterval;
+            return (int)Mathf.Floor(((int)_round5Infos.PlayerInfos.Count - 1) * _round5Infos.timeInterval);
 
         }
         catch
@@ -135,11 +140,13 @@ public class HeatmapVisualizer : MonoBehaviour
         _round1Time = 0;
         _round2Time = 0;
         _round3Time = 0;
+        _round4Time = 0;
+        _round5Time = 0;
     }
 
     #region GenerateRoundsHeatMap
     [TabGroup("Round 1")]
-    [Button("Generate Heatmap")]
+    [Button("Generate Heatmap"), HideInEditorMode()]
     private void GenerateRound1Heatmap()
     {
 
@@ -148,7 +155,7 @@ public class HeatmapVisualizer : MonoBehaviour
     }
 
     [TabGroup("Round 2")]
-    [Button("Generate Heatmap")]
+    [Button("Generate Heatmap"), HideInEditorMode()]
     private void GenerateRound2Heatmap()
     {
         _currentHeatMap = 2;
@@ -156,7 +163,7 @@ public class HeatmapVisualizer : MonoBehaviour
     }
 
     [TabGroup("Round 3")]
-    [Button("Generate Heatmap")]
+    [Button("Generate Heatmap"), HideInEditorMode()]
     private void GenerateRound3Heatmap()
     {
         _currentHeatMap = 3;
@@ -165,7 +172,7 @@ public class HeatmapVisualizer : MonoBehaviour
 
 
     [TabGroup("Round 4")]
-    [Button("Generate Heatmap"), HideIf("@_gameInfos?.RoundInfo?.Count < 4")]
+    [Button("Generate Heatmap"), HideIf("@_gameInfos?.RoundInfo?.Count < 4"), HideInEditorMode()]
     private void GenerateRound4Heatmap()
     {
         _currentHeatMap = 4;
@@ -174,7 +181,7 @@ public class HeatmapVisualizer : MonoBehaviour
 
 
     [TabGroup("Round 5")]
-    [Button("Generate Heatmap"), HideIf("@_gameInfos?.RoundInfo?.Count < 5")]
+    [Button("Generate Heatmap"), HideIf("@_gameInfos?.RoundInfo?.Count < 5"), HideInEditorMode()]
     private void GenerateRound5Heatmap()
     {
         _currentHeatMap = 5;
@@ -225,7 +232,7 @@ public class HeatmapVisualizer : MonoBehaviour
             default:
                 return;
         }
-
+        roundTime = (int)Mathf.Floor(roundTime / _round1Infos.timeInterval);
         heatmapval.Clear();
 
         heatmapval = new List<List<BoxColorPair>>();
@@ -340,6 +347,7 @@ public class HeatmapVisualizer : MonoBehaviour
 
 
         if (heatmapval.IsNullOrEmpty()) { return; };
+        roundTime = (int)Mathf.Floor(roundTime / _round1Infos.timeInterval);
 
         // Draw Black background
         Gizmos.color = Color.black;
