@@ -6,7 +6,13 @@ using UnityEngine;
 public class HeatmapVisualizer : MonoBehaviour
 {
     [SerializeField, AssetSelector(Filter = ("GameInfos"))] private TextAsset _dataFile;
+
     private GameInfos _gameInfos = null;
+
+    [SerializeField, OnValueChanged("GenerateHeatmap"), ShowIf("@_dataFile"), PropertySpace(spaceAfter:5, spaceBefore:20)] 
+    private bool _progressiveHeatmap = true;
+
+
 
     private RoundInfos _round1Infos = null;
     private List<List<BoxColorPair>> _heatmapval1 = new();
@@ -24,19 +30,19 @@ public class HeatmapVisualizer : MonoBehaviour
     private List<List<BoxColorPair>> _heatmapval5 = new();
 
     [TabGroup("Round 1", VisibleIf = "_dataFile")]
-    [SerializeField, PropertyRange(0, "getRound1Duration")] private int _round1Time;
+    [SerializeField, PropertyRange(0, "getRound1Duration"), OnValueChanged("GenerateHeatmap")] private int _round1Time;
 
     [TabGroup("Round 2")]
-    [SerializeField, PropertyRange(0, "getRound2Duration")] private int _round2Time;
+    [SerializeField, PropertyRange(0, "getRound2Duration"), OnValueChanged("GenerateHeatmap")] private int _round2Time;
 
     [TabGroup("Round 3")]
-    [SerializeField, PropertyRange(0, "getRound3Duration")] private int _round3Time;
+    [SerializeField, PropertyRange(0, "getRound3Duration"), OnValueChanged("GenerateHeatmap")] private int _round3Time;
 
     [TabGroup("Round 4")]
-    [SerializeField, PropertyRange(0, "getRound4Duration"), HideIf("@_gameInfos?.RoundInfo?.Count < 4")] private int _round4Time;
+    [SerializeField, PropertyRange(0, "getRound4Duration"), HideIf("@_gameInfos?.RoundInfo?.Count < 4"), OnValueChanged("GenerateHeatmap")] private int _round4Time;
 
     [TabGroup("Round 5")]
-    [SerializeField, PropertyRange(0, "getRound5Duration"), HideIf("@_gameInfos?.RoundInfo?.Count < 5")] private int _round5Time;
+    [SerializeField, PropertyRange(0, "getRound5Duration"), HideIf("@_gameInfos?.RoundInfo?.Count < 5"), OnValueChanged("GenerateHeatmap")] private int _round5Time;
 
     #region GetRoundsDurationFunctions
     private int getRound1Duration()
@@ -136,24 +142,25 @@ public class HeatmapVisualizer : MonoBehaviour
     [Button("Generate Heatmap")]
     private void GenerateRound1Heatmap()
     {
-        GenerateHeatmap(1);
+
         _currentHeatMap = 1;
+        GenerateHeatmap();
     }
 
     [TabGroup("Round 2")]
     [Button("Generate Heatmap")]
     private void GenerateRound2Heatmap()
     {
-        GenerateHeatmap(2);
         _currentHeatMap = 2;
+        GenerateHeatmap();
     }
 
     [TabGroup("Round 3")]
     [Button("Generate Heatmap")]
     private void GenerateRound3Heatmap()
     {
-        GenerateHeatmap(3);
         _currentHeatMap = 3;
+        GenerateHeatmap();
     }
 
 
@@ -161,8 +168,8 @@ public class HeatmapVisualizer : MonoBehaviour
     [Button("Generate Heatmap"), HideIf("@_gameInfos?.RoundInfo?.Count < 4")]
     private void GenerateRound4Heatmap()
     {
-        GenerateHeatmap(4);
         _currentHeatMap = 4;
+        GenerateHeatmap();
     }
 
 
@@ -170,42 +177,48 @@ public class HeatmapVisualizer : MonoBehaviour
     [Button("Generate Heatmap"), HideIf("@_gameInfos?.RoundInfo?.Count < 5")]
     private void GenerateRound5Heatmap()
     {
-        GenerateHeatmap(5);
         _currentHeatMap = 5;
+        GenerateHeatmap();
     }
     #endregion
 
 
-    private void GenerateHeatmap(int roundNumber)
+    private void GenerateHeatmap()
     {
         List<List<BoxColorPair>> heatmapval;
         RoundInfos roundInfos;
+        int roundTime;
 
-        switch (roundNumber)
+        switch (_currentHeatMap)
         {
             case 1:
                 heatmapval = _heatmapval1;
                 roundInfos = _round1Infos;
+                roundTime = _round1Time;
                 break;
 
             case 2:
                 heatmapval = _heatmapval2;
                 roundInfos = _round2Infos;
+                roundTime = _round2Time;
                 break;
 
             case 3:
                 heatmapval = _heatmapval3;
                 roundInfos = _round3Infos;
+                roundTime = _round3Time;
                 break;
 
             case 4:
                 heatmapval = _heatmapval4;
                 roundInfos = _round4Infos;
+                roundTime = _round4Time;
                 break;
 
             case 5:
                 heatmapval = _heatmapval5;
                 roundInfos = _round5Infos;
+                roundTime = _round5Time;
                 break;
 
 
@@ -225,7 +238,20 @@ public class HeatmapVisualizer : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < roundInfos.PlayerInfos.Count; i++)
+
+        int roundFrames = 0;
+        // If we chose progressive heatmap, then the heatmap will show only where the players already went
+        if (_progressiveHeatmap == true)
+        {
+            roundFrames = roundTime;
+        }
+        // Else we display heatmap for the round
+        else
+        {
+            roundFrames = roundInfos.PlayerInfos.Count;
+        }
+
+        for (int i = 0; i < roundFrames; i++)
         {
             Vector2Int PlayerAPos = new Vector2Int((int)Mathf.Round(roundInfos.PlayerInfos[i].PlayerALocation.x), (int)Mathf.Round(roundInfos.PlayerInfos[i].PlayerALocation.z));
             heatmapval[PlayerAPos.x][PlayerAPos.y].IncreaseColor();
@@ -241,7 +267,7 @@ public class HeatmapVisualizer : MonoBehaviour
         }
 
         // TODO : ugly code, find a way to use pointers somehow ?
-        switch (roundNumber)
+        switch (_currentHeatMap)
         {
             case 1:
                 _heatmapval1 = heatmapval;
@@ -340,7 +366,7 @@ public class HeatmapVisualizer : MonoBehaviour
         }
 
         // Draw Player
-            // Team A
+        // Team A
         Gizmos.color = Color.blue;
         Vector3 PlayerAPos = roundInfos.PlayerInfos[roundTime].PlayerALocation;
         Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerAPos.x, transform.position.y + PlayerAPos.z, transform.position.z), 2);
@@ -348,7 +374,7 @@ public class HeatmapVisualizer : MonoBehaviour
         Vector3 PlayerCPos = roundInfos.PlayerInfos[roundTime].PlayerCLocation;
         Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerCPos.x, transform.position.y + PlayerCPos.z, transform.position.z), 2);
 
-            // Team B
+        // Team B
         Gizmos.color = Color.green;
         Vector3 PlayerBPos = roundInfos.PlayerInfos[roundTime].PlayerBLocation;
         Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerBPos.x, transform.position.y + PlayerBPos.z, transform.position.z), 2);
