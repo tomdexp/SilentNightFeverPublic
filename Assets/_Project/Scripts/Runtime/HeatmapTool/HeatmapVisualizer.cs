@@ -23,7 +23,7 @@ public class HeatmapVisualizer : MonoBehaviour
     private RoundInfos _round5Infos = null;
     private List<List<BoxColorPair>> _heatmapval5 = new();
 
-    [TabGroup("Round 1")]
+    [TabGroup("Round 1", VisibleIf = "_dataFile")]
     [SerializeField, PropertyRange(0, "getRound1Duration")] private int _round1Time;
 
     [TabGroup("Round 2")]
@@ -315,33 +315,46 @@ public class HeatmapVisualizer : MonoBehaviour
 
         if (heatmapval.IsNullOrEmpty()) { return; };
 
+        // Draw Black background
+        Gizmos.color = Color.black;
+        Gizmos.DrawCube(new Vector3(transform.position.x + MAP_SIZE / 2, transform.position.y + +MAP_SIZE / 2, transform.position.z), new Vector3(MAP_SIZE, MAP_SIZE, 1));
+
         // Draw Heatmap
         for (int i = 0; i <= MAP_SIZE; i++)
         {
             for (int j = 0; j <= MAP_SIZE; j++)
             {
+                if (heatmapval[i][j].color == Color.black) { continue; }
                 Gizmos.color = heatmapval[i][j].color;
                 Gizmos.DrawCube(new Vector3(transform.position.x + i, transform.position.y + j, transform.position.z), Vector3.one);
             }
         }
 
 
+
+        // Draw Landsmarks
+        for (int i = 0; i < _gameInfos.LandmarksLocation.Count; i++)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawSphere(new Vector3(transform.position.x + _gameInfos.LandmarksLocation[i].Location.x, transform.position.y + _gameInfos.LandmarksLocation[i].Location.y, transform.position.z), 5);
+        }
+
         // Draw Player
-        // Team A
+            // Team A
         Gizmos.color = Color.blue;
         Vector3 PlayerAPos = roundInfos.PlayerInfos[roundTime].PlayerALocation;
-        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerAPos.x, transform.position.y + PlayerAPos.z, transform.position.z), 1);
+        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerAPos.x, transform.position.y + PlayerAPos.z, transform.position.z), 2);
 
         Vector3 PlayerCPos = roundInfos.PlayerInfos[roundTime].PlayerCLocation;
-        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerCPos.x, transform.position.y + PlayerCPos.z, transform.position.z), 1);
+        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerCPos.x, transform.position.y + PlayerCPos.z, transform.position.z), 2);
 
-        // Team B
+            // Team B
         Gizmos.color = Color.green;
         Vector3 PlayerBPos = roundInfos.PlayerInfos[roundTime].PlayerBLocation;
-        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerBPos.x, transform.position.y + PlayerBPos.z, transform.position.z), 1);
+        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerBPos.x, transform.position.y + PlayerBPos.z, transform.position.z), 2);
 
         Vector3 PlayerDPos = roundInfos.PlayerInfos[roundTime].PlayerDLocation;
-        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerDPos.x, transform.position.y + PlayerDPos.z, transform.position.z), 1);
+        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerDPos.x, transform.position.y + PlayerDPos.z, transform.position.z), 2);
     }
 }
 
@@ -355,8 +368,8 @@ class BoxColorPair
         //color.g = Mathf.Clamp(color.b - 1 + color.g + 0.1f, 0, 1);
         //color.r = Mathf.Clamp(color.b - 1 + color.g - 1 + color.r + 0.1f, 0, 1);
 
-        color.r = Mathf.Clamp(color.r + 0.1f, 0, 1);
-        color.g = Mathf.Clamp(color.r - 1 + color.g + 0.1f, 0, 1);
+        color.r = Mathf.Clamp(color.r + 0.2f, 0, 1);
+        color.g = Mathf.Clamp(color.r - 1 + color.g + 0.06f, 0, 1);
         color.b = Mathf.Clamp(color.r - 1 + color.g - 1 + color.b + 0.1f, 0, 1);
     }
 }
