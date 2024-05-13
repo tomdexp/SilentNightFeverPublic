@@ -1,5 +1,6 @@
 ﻿using System;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet;
 using FishNet.Connection;
@@ -27,7 +28,17 @@ namespace _Project.Scripts.Runtime.Audio
             base.Awake();
             LoadAllBanks();
         }
-        
+
+        private void Start()
+        {
+            // Avoid playing the application start event multiple times
+            if (!LocalStaticValues.HasApplicationStartWwiseEventFired)
+            {
+                PlayAudioLocal(AudioManagerData.EventApplicationStart, gameObject);
+                LocalStaticValues.HasApplicationStartWwiseEventFired = true;
+            }
+        }
+
         private void LoadAllBanks()
         {
             OnBanksLoadStart?.Invoke();
@@ -113,6 +124,28 @@ namespace _Project.Scripts.Runtime.Audio
         /// </summary>
         private void InternalPlayAudioLocal(uint eventId, GameObject go)
         {
+            if (eventId == 0)
+            {
+                switch (AudioManagerData.EventNotFoundLogLevel)
+                {
+                    case Logger.LogLevel.Trace:
+                        Logger.LogTrace("Tried to play an audio event with ID 0, it means that the event is probably not assigned properly in AudioManagerData", Logger.LogType.Local, this);
+                        break;
+                    case Logger.LogLevel.Debug:
+                        Logger.LogDebug("Tried to play an audio event with ID 0, it means that the event is probably not assigned properly in AudioManagerData", Logger.LogType.Local, this);
+                        break;
+                    case Logger.LogLevel.Info:
+                        Logger.LogInfo("Tried to play an audio event with ID 0, it means that the event is probably not assigned properly in AudioManagerData", Logger.LogType.Local, this);
+                        break;
+                    case Logger.LogLevel.Warning:
+                        Logger.LogWarning("Tried to play an audio event with ID 0, it means that the event is probably not assigned properly in AudioManagerData", Logger.LogType.Local, this);
+                        break;
+                    case Logger.LogLevel.Error:
+                        Logger.LogError("Tried to play an audio event with ID 0, it means that the event is probably not assigned properly in AudioManagerData", Logger.LogType.Local, this);
+                        break;
+                }
+                return;
+            }
             Logger.LogTrace("Playing audio event locally : " + eventId, Logger.LogType.Local, this);
             AkSoundEngine.PostEvent(eventId, go);
         }

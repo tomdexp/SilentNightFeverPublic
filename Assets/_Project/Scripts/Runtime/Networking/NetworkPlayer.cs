@@ -31,10 +31,18 @@ namespace _Project.Scripts.Runtime.Networking
            PlayerData = copy;
        }
 
+       public override void OnStartServer()
+       {
+           base.OnStartServer();
+           Logger.LogTrace($"Player {GetPlayerIndexType()} spawned on server", Logger.LogType.Server, this);
+           ResetPlayerClientRpc(0);
+           StartCoroutine(TrySubscribingToRoundEndEvent());
+       }
+
        public override void OnStartClient()
        { 
            base.OnStartClient(); 
-           Logger.LogTrace("Player spawned on client", Logger.LogType.Client, this);
+           Logger.LogTrace($"Player {GetPlayerIndexType()} spawned on client", Logger.LogType.Client, this);
            _realPlayerInfo.OnChange += OnRealPlayerInfoChange;
        }
 
@@ -42,6 +50,30 @@ namespace _Project.Scripts.Runtime.Networking
        {
            base.OnStopClient();
            _realPlayerInfo.OnChange -= OnRealPlayerInfoChange;
+       }
+
+       private IEnumerator TrySubscribingToRoundEndEvent()
+       {
+           while (!GameManager.HasInstance)
+           {
+               yield return null;
+           }
+           GameManager.Instance.OnAnyRoundEnded += ResetPlayerClientRpc;
+       }
+       
+       private void OnDestroy()
+       {
+           if (GameManager.HasInstance) GameManager.Instance.OnAnyRoundEnded -= ResetPlayerClientRpc;
+       }
+       
+       [ObserversRpc]
+       private void ResetPlayerClientRpc(byte _)
+       {
+           if (!Owner.IsLocalClient) return;
+           // Called when the player is reset, for example when a new round starts or at the beginning of the game
+           _appliedPlayerEffects.Clear();
+           TrySetSize(PlayerData.PlayerDefaultSize);
+           Logger.LogDebug($"Player {GetPlayerIndexType()} reset", Logger.LogType.Client, this);
        }
 
        private void OnRealPlayerInfoChange(RealPlayerInfo prev, RealPlayerInfo next, bool asServer)
@@ -127,6 +159,12 @@ namespace _Project.Scripts.Runtime.Networking
        
        private IEnumerator SetSizeCoroutine(float newSize)
        {
+           if (newSize > PlayerData.PlayerMaxSize || newSize < PlayerData.PlayerMinSize)
+           {
+               Logger.LogWarning("Tried to set size to " + newSize + " which is out of bounds", Logger.LogType.Client, this);
+               yield break;
+           }
+           
            // check if we are scaling up or down compared to our current size, based on the scale.x
            var currentSize = transform.localScale.x;
            var scaleDirection = newSize > currentSize ? 1 : -1;

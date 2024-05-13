@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeceb2c3d62447fdada9b0f71eaa960b, type: 3}
   m_Name: AudioManagerData
   m_EditorClassIdentifier: 
+  EventNotFoundLogLevel: 3
   BanksToLoadOnApplicationStart:
   - Bank:
       idInternal: 0
@@ -34,3 +35,73 @@ MonoBehaviour:
         type: 2}
     DecodeBankOnLoad: 1
     SaveDecodedBank: 0
+  LeftSpeakerVolumeOffset:
+  - 0
+  - -96
+  RightSpeakerVolumeOffset:
+  - -96
+  - 0
+  EventApplicationStart:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventMainMenuStart:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventCharacterSelectionStart:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventGameStart:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventGameEnd:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventRoundStart:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventRoundEnd:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventPlayerTongueThrow:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventPlayerTongueRetract:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventUIButtonHover:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventUIButtonClick:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventUIOnlineLobbyCreated:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventUIOnlineLobbyPlayerJoin:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventUIPlayerJoinWithController:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventUIPlayerLeftWithController:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventLandmarkKitchenFoodEaten:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}

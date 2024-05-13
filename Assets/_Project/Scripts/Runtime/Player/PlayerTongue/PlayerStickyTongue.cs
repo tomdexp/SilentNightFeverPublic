@@ -3,6 +3,7 @@ using System.Collections;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
+using FishNet.Connection;
 using FishNet.Object;
 using Micosmo.SensorToolkit;
 using Obi;
@@ -57,12 +58,23 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             _tongueRenderer.enabled = false;
             _defaultPlayerMass = _playerRigidbody.mass;
             RetractTongue();
-            if (IsOwner)
-            { 
-                OnTongueOut += ReplicateOnTongueOut;
-                Logger.LogTrace("PlayerStickyTongue.OnTongueOut is registered for Replication", Logger.LogType.Client, this);
-                OnTongueIn += ReplicateOnTongueIn; 
-                Logger.LogTrace("PlayerStickyTongue.OnTongueIn is registered for Replication", Logger.LogType.Client, this);
+        }
+        
+        public override void OnOwnershipClient(NetworkConnection prevOwner)
+        {
+            base.OnOwnershipClient(prevOwner);
+            // if previous owner was server, we know the object just spawned
+            if (prevOwner.ClientId == -1)
+            {
+                if (IsOwner)
+                { 
+                    OnTongueOut += ReplicateOnTongueOut;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueOut is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueIn += ReplicateOnTongueIn; 
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueIn is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueRetractStart += ReplicateOnTongueRetractStart;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueRetractStart is registered for Replication", Logger.LogType.Client, this);
+                }
             }
         }
 
@@ -74,6 +86,8 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 Logger.LogTrace("PlayerStickyTongue.OnTongueOut is unregistered for Replication", Logger.LogType.Client, this);
                 OnTongueIn -= ReplicateOnTongueIn;
                 Logger.LogTrace("PlayerStickyTongue.OnTongueIn is unregistered for Replication", Logger.LogType.Client, this);
+                OnTongueRetractStart -= ReplicateOnTongueRetractStart;
+                Logger.LogTrace("PlayerStickyTongue.OnTongueRetractStart is unregistered for Replication", Logger.LogType.Client, this);
             }
         }
 
@@ -419,7 +433,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
         private void OnTongueOutClientRpc()
         {
-            OnTongueOut?.Invoke();
+            if(!Owner.IsLocalClient) OnTongueOut?.Invoke();
         }
 
         private void ReplicateOnTongueIn()
@@ -437,7 +451,25 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
         private void OnTongueInClientRpc()
         {
-            OnTongueIn?.Invoke();
+            if(!Owner.IsLocalClient) OnTongueIn?.Invoke();
+        }
+        
+        private void ReplicateOnTongueRetractStart()
+        {
+            OnTongueRetractStartServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnTongueRetractStartServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueRetractStart?.Invoke();
+            OnTongueRetractStartClientRpc();
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnTongueRetractStartClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueRetractStart?.Invoke();
         }
         
         public TongueAnchor GetCurrentBindTongueAnchor()

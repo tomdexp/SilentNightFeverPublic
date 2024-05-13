@@ -19,7 +19,7 @@ namespace _Project.Scripts.Runtime.Player
         public float CameraHeight = 6;
         
         [Title("Player Size Settings")]
-        [PropertyRange(0,100)] public float PlayerSize = 1f;
+        [PropertyRange(0,100)] public float PlayerDefaultSize = 1f;
         [PropertyRange(0,100)] public float PlayerMinSize = 0.5f;
         [PropertyRange(0,100)] public float PlayerMaxSize = 2f;
         [PropertyRange(0,100)] public float PlayerSizeUpChangeDuration = 1f;

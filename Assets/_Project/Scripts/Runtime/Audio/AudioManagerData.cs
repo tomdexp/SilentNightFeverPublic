@@ -8,6 +8,9 @@ namespace _Project.Scripts.Runtime.Audio
     [CreateAssetMenu(fileName = nameof(AudioManagerData), menuName = "Scriptable Objects/" + nameof(AudioManagerData))]
     public class AudioManagerData : ScriptableObject
     {
+        [Title("Global Settings")]
+        public Logger.LogLevel EventNotFoundLogLevel = Logger.LogLevel.Warning;
+        
         [Title("Banks Settings")]
         public BankLoadConfig[] BanksToLoadOnApplicationStart;
         
@@ -19,8 +22,10 @@ namespace _Project.Scripts.Runtime.Audio
         [Tooltip("Called at the start of the application, will only be called ONCE, when the application start, not when the game start, or a round start")]
         public AK.Wwise.Event EventApplicationStart;
         [Tooltip("Called when the Main Menu scene starts, it can be called MULTIPLE times, when the scene is loaded again, or when the game is restarted")]
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventMainMenuStart;
         [Tooltip("Called when the Character Selection menu pops up")]
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventCharacterSelectionStart;
         [Tooltip("Called when the whole game session start, so that the map is generated and its the first round")]
         public AK.Wwise.Event EventGameStart;
@@ -36,14 +41,21 @@ namespace _Project.Scripts.Runtime.Audio
         public AK.Wwise.Event EventPlayerTongueRetract;
         
         [Title("AkEvent References", "UI Events")]
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIButtonHover;
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIButtonClick;
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIOnlineLobbyCreated;
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIOnlineLobbyPlayerJoin;
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIPlayerJoinWithController;
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIPlayerLeftWithController;
         
         [Title("AkEvent References", "Landmark Events")]
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventLandmarkKitchenFoodEaten;
         
         
