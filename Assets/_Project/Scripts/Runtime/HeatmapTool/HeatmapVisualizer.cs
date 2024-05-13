@@ -326,6 +326,22 @@ public class HeatmapVisualizer : MonoBehaviour
         }
 
 
+        // Draw Player
+        // Team A
+        Gizmos.color = Color.blue;
+        Vector3 PlayerAPos = roundInfos.PlayerInfos[roundTime].PlayerALocation;
+        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerAPos.x, transform.position.y + PlayerAPos.z, transform.position.z), 1);
+
+        Vector3 PlayerCPos = roundInfos.PlayerInfos[roundTime].PlayerCLocation;
+        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerCPos.x, transform.position.y + PlayerCPos.z, transform.position.z), 1);
+
+        // Team B
+        Gizmos.color = Color.green;
+        Vector3 PlayerBPos = roundInfos.PlayerInfos[roundTime].PlayerBLocation;
+        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerBPos.x, transform.position.y + PlayerBPos.z, transform.position.z), 1);
+
+        Vector3 PlayerDPos = roundInfos.PlayerInfos[roundTime].PlayerDLocation;
+        Gizmos.DrawSphere(new Vector3(transform.position.x + PlayerDPos.x, transform.position.y + PlayerDPos.z, transform.position.z), 1);
     }
 }
 
