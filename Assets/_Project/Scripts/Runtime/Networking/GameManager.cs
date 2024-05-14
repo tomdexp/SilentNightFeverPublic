@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using _Project.Scripts.Runtime.Networking.Rounds;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
+using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
+using FishNet.Managing.Scened;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using NUnit.Framework;
@@ -57,6 +59,77 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 Logger.LogError("No RoundsConfig found on the GameManager, please set it in the GameManagerData !", Logger.LogType.Local, this);
             }
+        }
+
+        private void Start()
+        {
+            string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            // Special conditions when the Editor does not load the StartScene first but another scene
+            if (Enum.TryParse(currentSceneName, out SceneType sceneType))
+            {
+                switch (sceneType)
+                {
+                    case SceneType.StartScene:
+                        CameraManager.Instance.DisableSplitScreenCameras();
+                        LoadIntroScene();
+                        break;
+                    case SceneType.IntroScene:
+                        CameraManager.Instance.DisableSplitScreenCameras();
+                        break;
+                    case SceneType.MenuScene:
+                        CameraManager.Instance.DisableSplitScreenCameras();
+                        break;
+                    case SceneType.GameScene:
+                        CameraManager.Instance.EnableSplitScreenCameras(); // Special condition when the Editor directly loads the GameScene
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            else
+            {
+                Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Enabling Split Screen Cameras per default", Logger.LogType.Local, this);
+                CameraManager.Instance.EnableSplitScreenCameras();
+            }
+        }
+
+        private void LoadIntroScene()
+        {
+            LoadGlobalScene(SceneType.IntroScene);
+        }
+
+        public void LoadMenuScene()
+        {
+            LoadGlobalScene(SceneType.MenuScene);
+            UnLoadCurrentScene();
+        }
+        
+        private void LoadGameScene()
+        {
+            LoadGlobalScene(SceneType.GameScene);
+        }
+
+        private void LoadGlobalScene(SceneType sceneType)
+        {
+            Logger.LogInfo("Loading Scene : " + sceneType + "...", Logger.LogType.Local, this);
+            var stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
+            SceneLoadData sld = new SceneLoadData(sceneType.ToString());
+            SceneManager.LoadGlobalScenes(sld);
+            stopwatch.Stop();
+            Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
+        }
+
+        private void UnLoadCurrentScene()
+        {
+            Logger.LogInfo("Unloading current scene...", Logger.LogType.Local, this);
+            string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            var stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
+            SceneUnloadData sld = new SceneUnloadData(currentSceneName);
+            SceneManager.UnloadGlobalScenes(sld);
+            stopwatch.Stop();
+            Logger.LogInfo("Scene unloaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
         }
 
         private void Update()

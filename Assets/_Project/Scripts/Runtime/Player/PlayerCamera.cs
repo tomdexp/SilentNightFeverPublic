@@ -31,6 +31,17 @@ namespace _Project.Scripts.Runtime.Player
         public override void OnStartServer()
         {
             base.OnStartServer();
+            // check if there is already a PlayerCamera component on a game object with the same PlayerIndexType, if yes destroy this one
+            PlayerCamera[] playerCameras = FindObjectsOfType<PlayerCamera>();
+            foreach (PlayerCamera playerCamera in playerCameras)
+            {
+                if (playerCamera.PlayerIndexType == PlayerIndexType && playerCamera != this)
+                {
+                    Logger.LogWarning("PlayerCamera component already exists on a game object with the same PlayerIndexType, destroying this one.", Logger.LogType.Server, this);
+                    Despawn();
+                    return;
+                }
+            }
             RandomRotateCameraAroundPlayer();
             StartCoroutine(TrySubscribingToOnAnyRoundStartedEvent());
         }

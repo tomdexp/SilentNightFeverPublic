@@ -15,7 +15,6 @@ namespace _Project.Scripts.Runtime.Audio
     /// It is responsible for initializing the Wwise audio system and playing event across the network.
     /// </summary>
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(AkInitializer))]
     [RequireComponent(typeof(AkGameObj))]
     public class AudioManager : NetworkPersistentSingleton<AudioManager>
     {
@@ -23,17 +22,12 @@ namespace _Project.Scripts.Runtime.Audio
         public event Action OnBanksLoadStart;
         public event Action OnBanksLoadComplete;
 
-        protected override void Awake()
-        {
-            base.Awake();
-            LoadAllBanks();
-        }
-
         private void Start()
         {
-            // Avoid playing the application start event multiple times
+            // Avoid playing the application start event multiple times or loading the banks multiple times
             if (!LocalStaticValues.HasApplicationStartWwiseEventFired)
             {
+                LoadAllBanks();
                 PlayAudioLocal(AudioManagerData.EventApplicationStart, gameObject);
                 LocalStaticValues.HasApplicationStartWwiseEventFired = true;
             }

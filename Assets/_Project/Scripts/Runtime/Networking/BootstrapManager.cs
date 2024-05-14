@@ -53,6 +53,11 @@ namespace _Project.Scripts.Runtime.Networking
         protected override void Awake()
         {
             base.Awake();
+            //StartCoroutine(SetupAndStartLocalHost());
+        }
+
+        private void Start()
+        {
             StartCoroutine(SetupAndStartLocalHost());
         }
 
@@ -150,7 +155,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             catch (Exception ex)
             {
-                Logger.LogError("Failed to start host with relay service.", Logger.LogType.Server, context:this);
+                Logger.LogError($"Failed to start host with relay service. See exception : {ex}", Logger.LogType.Server, context:this);
                 OnServerMigrationFailed?.Invoke();
             }
         }
@@ -262,6 +267,56 @@ namespace _Project.Scripts.Runtime.Networking
             }
             // that doesn't mean the join code exists, but at least it's sanitized
             return true;
+        }
+
+        [Button(ButtonSizes.Large)]
+        public bool TryCloseRelayAndBackToLocalServer()
+        {
+            Logger.LogTrace("Trying to close relay and go back to local server...", Logger.LogType.Server, context:this);
+            // check if there is a join code, it will indicate if we are online or not
+            if (HasJoinCode)
+            {
+                var success = CloseRelayAndBackToLocalServer();
+                if (success)
+                {
+                    return true;
+                }
+
+                Logger.LogError("Failed to close relay and go back to local server.", Logger.LogType.Server, context:this);
+                return false;
+            }
+
+            Logger.LogWarning("No join code found, cannot close relay and go back to local server.", Logger.LogType.Server, context:this);
+            return false;
+        }
+
+        private bool CloseRelayAndBackToLocalServer()
+        {
+            try
+            {
+                OnServerMigrationStarted?.Invoke();
+                
+                // Stop server
+                InstanceFinder.ServerManager.StopConnection(true);
+                
+                // Configure transport to default
+                var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
+                if (!fishyUnityTransport)
+                {
+                    throw new Exception("FishyUnityTransport not found, cannot stop a host with relay service.");
+                }
+                fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.UnityTransport);
+                StartCoroutine(SetupAndStartLocalHost());
+                OnServerMigrationFinished?.Invoke();
+                Logger.LogDebug("Successfully closed relay and went back to local server.", Logger.LogType.Server, this);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Can't Close Relay and go back to local server. See exception : {ex.Message}", Logger.LogType.Client, context:this);
+                OnServerMigrationFailed?.Invoke();
+                return false;
+            }
         }
     }
 }

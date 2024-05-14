@@ -23,7 +23,7 @@ namespace _Project.Scripts.Runtime.UI
         private Label _possessedPlayersLabel;
         private string _possessedPlayersLabelDefaultText;
 
-        private void Awake()
+        private void Start()
         {
             _uiDocument = GetComponent<UIDocument>();
             _root = _uiDocument.rootVisualElement;
@@ -53,6 +53,11 @@ namespace _Project.Scripts.Runtime.UI
             _possessedPlayersLabelDefaultText = _possessedPlayersLabel.text;
             
             InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+        }
+
+        private void OnDestroy()
+        {
+            if (InstanceFinder.ClientManager) InstanceFinder.ClientManager.OnClientConnectionState -= OnClientConnectionState;
         }
 
         private void OnClientConnectionState(ClientConnectionStateArgs args)

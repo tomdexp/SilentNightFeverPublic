@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1980729529018663473}
   - component: {fileID: 7418456488195778152}
   - component: {fileID: 7827765877202993528}
+  - component: {fileID: 2067277655583908596}
   m_Layer: 0
   m_Name: NetworkManager (SNF Variant)
   m_TagString: Untagged
@@ -181,3 +182,19 @@ MonoBehaviour:
     _updateInteval: 0.5
     _updateClient: 1
     _updateServer: 1
+--- !u!114 &2067277655583908596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5523345315966815015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15895a51081447d46bda466e7e830c08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sceneProcessor: {fileID: 0}
+  _lightProbeUpdating: 0
+  _moveClientHostObjects: 1
+  _setActiveScene: 1
