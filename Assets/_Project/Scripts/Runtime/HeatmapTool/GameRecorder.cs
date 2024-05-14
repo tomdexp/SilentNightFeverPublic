@@ -109,7 +109,7 @@ public class GameRecorder : NetworkBehaviour
 
     public IEnumerator RegisterPlayerLocation(byte roundIndex)
     {
-        float registerInterval = 1.0f;
+        float registerInterval = 0.3f;
         float timeSinceRoundStarted = 0.0f;
 
         _gameInfos.RoundInfo.Add(new RoundInfos());

@@ -2400,6 +2400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 534145667}
   - component: {fileID: 534145668}
+  - component: {fileID: 534145669}
   m_Layer: 0
   m_Name: GameRecorder
   m_TagString: Untagged
@@ -2416,7 +2417,7 @@ Transform:
   m_GameObject: {fileID: 534145666}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -151.30554, y: 212.47981, z: -118.3699}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2437,6 +2438,26 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 689048646}
   _networkObjectCache: {fileID: 689048646}
+  _procGenInstanciator: {fileID: 0}
+--- !u!114 &534145669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534145666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3896ad27cd08c9044a0803e89f6a74da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dataFile: {fileID: 4900000, guid: 189899b4998b6164fa763a07c05925f3, type: 3}
+  _progressiveHeatmap: 1
+  _round1Time: 0
+  _round2Time: 0
+  _round3Time: 0
+  _round4Time: 0
+  _round5Time: 0
 --- !u!1 &581052939
 GameObject:
   m_ObjectHideFlags: 0
@@ -5585,11 +5606,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2781356387916167372, guid: 777fbee8b251cb242bfcb18858655dc8,
         type: 3}
-      propertyPath: edgeDistance
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2781356387916167372, guid: 777fbee8b251cb242bfcb18858655dc8,
-        type: 3}
       propertyPath: _objectRadius
       value: 4.6
       objectReference: {fileID: 0}
@@ -5646,7 +5662,7 @@ PrefabInstance:
     - target: {fileID: 5830699115887179975, guid: 777fbee8b251cb242bfcb18858655dc8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 45.9
+      value: 111.31041
       objectReference: {fileID: 0}
     - target: {fileID: 5830699115887179975, guid: 777fbee8b251cb242bfcb18858655dc8,
         type: 3}
