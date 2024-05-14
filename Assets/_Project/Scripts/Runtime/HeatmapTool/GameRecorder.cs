@@ -1,20 +1,25 @@
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
-using _Project.Scripts.Runtime.UI;
-using FishNet;
 using FishNet.Object;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
+using Unity.Services.CloudCode;
+using Unity.Services.CloudSave;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 public class GameRecorder : NetworkBehaviour
 {
     [ReadOnly] public ProcGenInstanciator _procGenInstanciator = null;
+    
+    public event Action OnCloudSaveBegin;
+    public event Action OnCloudSaveEnd;
 
     private GameObject _playerA;
     private GameObject _playerB;
@@ -127,5 +132,50 @@ public class GameRecorder : NetworkBehaviour
         string json = JsonUtility.ToJson(_gameInfos);
         DateTime dt = DateTime.Now;
         File.WriteAllText(Application.dataPath + "/GameInfos" + dt.ToString("HHmmss") + ".json", json);
+        string path = Application.dataPath + "/GameInfos" + dt.ToString("HHmmss") + ".json";
+        string name = "GameInfos" + dt.ToString("HHmmss") + ".json";
+        Logger.LogInfo($"GameInfos file {name} saved to {path}", Logger.LogType.Server, this);
+        SaveJSONToCloud(json, name);
+    }
+
+    [Button(ButtonStyle.FoldoutButton)]
+    public async void SaveJSONToCloud(string fileJson, string fileName)
+    {
+        OnCloudSaveBegin?.Invoke();
+        var stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+        int bytes = Encoding.UTF8.GetByteCount(fileJson);
+        Logger.LogInfo($"Begin to save file to cloud of size {bytes} byte", Logger.LogType.Server, this);
+        Logger.LogTrace(fileJson);
+        var fileBytes = Encoding.UTF8.GetBytes(fileJson);
+        var arguments = new Dictionary<string, object>
+        {
+            { "FileName", fileName },
+            { "FileJson", fileBytes}
+            
+        };
+        var response = await CloudCodeService.Instance.CallEndpointAsync<SaveGameInfoJSONResponse>("SaveGameInfoJSON", arguments);
+        Debug.Log(response.response);
+        stopwatch.Stop();
+        Logger.LogInfo($"File saved to cloud in {stopwatch.ElapsedMilliseconds} ms", Logger.LogType.Server, this);
+        OnCloudSaveEnd?.Invoke();
+    }
+    
+    [Button(ButtonStyle.FoldoutButton)]
+    public GameInfos ReconstructJsonFromBytes(string fileBytes)
+    {
+        // remove the " at the start and the end
+        fileBytes = fileBytes.Substring(1, fileBytes.Length - 2);
+        string json = Encoding.UTF8.GetString(Convert.FromBase64String(fileBytes));
+        Logger.LogTrace(json);
+        GameInfos gameInfos = JsonUtility.FromJson<GameInfos>(json);
+        return gameInfos;
+    }
+
+    public class SaveGameInfoJSONResponse
+    {
+        public string message;
+        public string response;
+        public bool success;
     }
 }
