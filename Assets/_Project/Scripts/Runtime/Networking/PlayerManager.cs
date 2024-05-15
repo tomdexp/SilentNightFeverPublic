@@ -63,10 +63,10 @@ namespace _Project.Scripts.Runtime.Networking
             _goToLeftTeamInputAction.performed += GoToLeftTeamInputActionPerformed;
             _leaveInputAction.performed += LeaveInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed += JoinAndFullFakePlayerInputActionOnPerformed;
-            _joinInputAction.Enable();
-            _leaveInputAction.Enable();
-            _goToRightTeamInputAction.Enable();
-            _goToLeftTeamInputAction.Enable();
+            //_joinInputAction.Enable();
+            //_leaveInputAction.Enable();
+            //_goToRightTeamInputAction.Enable();
+            //_goToLeftTeamInputAction.Enable();
             _joinAndFullFakePlayerInputAction.Enable();
         }
 
@@ -75,10 +75,10 @@ namespace _Project.Scripts.Runtime.Networking
             base.OnStopClient();
             _realPlayerInfos.OnChange -= OnChangedRealPlayerInfos;
             _playerTeamInfos.OnChange -= OnChangedPlayerTeamInfos;
-            _joinInputAction.Disable();
-            _leaveInputAction.Disable();
-            _goToRightTeamInputAction.Disable();
-            _goToLeftTeamInputAction.Disable();
+            //_joinInputAction.Disable();
+            //_leaveInputAction.Disable();
+            //_goToRightTeamInputAction.Disable();
+            //_goToLeftTeamInputAction.Disable();
             _joinAndFullFakePlayerInputAction.Disable();
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
@@ -251,6 +251,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
         {
+            SetPlayerJoiningEnabled(true);
             JoinInputActionPerformed(context);
             AddFakePlayer();
             AddFakePlayer();

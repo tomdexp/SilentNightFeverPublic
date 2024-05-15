@@ -10,8 +10,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
+      propertyPath: _isGlobal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
       propertyPath: <IsNested>k__BackingField
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
+      propertyPath: <PrefabId>k__BackingField
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
@@ -26,7 +36,7 @@ PrefabInstance:
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
       propertyPath: <ComponentIndex>k__BackingField
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
@@ -87,7 +97,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _addedNetworkObject
       value: 
-      objectReference: {fileID: 3267609621193262205}
+      objectReference: {fileID: 872797442897772062}
     - target: {fileID: 1844121535304250712, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
       propertyPath: _cameraOffsetRadius
@@ -97,6 +107,11 @@ PrefabInstance:
         type: 3}
       propertyPath: <PlayerIndexType>k__BackingField
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582053150722278600, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
+      propertyPath: <AssetPathHash>k__BackingField
+      value: 17757076481636220801
       objectReference: {fileID: 0}
     - target: {fileID: 2934725334150724674, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
@@ -188,9 +203,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf, type: 3}
---- !u!114 &3267609621193262205 stripped
+--- !u!114 &872797442897772062 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+  m_CorrespondingSourceObject: {fileID: 2582053150722278600, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
     type: 3}
   m_PrefabInstance: {fileID: 3443431890461178582}
   m_PrefabAsset: {fileID: 0}

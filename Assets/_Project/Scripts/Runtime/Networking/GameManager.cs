@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using _Project.Scripts.Runtime.Networking.Rounds;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
 using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
+using DG.Tweening;
 using FishNet.Managing.Scened;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
-using NUnit.Framework;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -33,6 +32,8 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnFirstRoundEnded; // TODO : Implement
         public event Action OnFinalRoundStarted; // TODO : Implement
         public event Action OnFinalRoundEnded; // TODO : Implement
+        public event Action<float> OnBeforeSceneChange; // arg = seconds before scene change
+        public event Action OnAfterSceneChange;
         public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
         
         private float _deltaTimeCounter;
@@ -47,6 +48,9 @@ namespace _Project.Scripts.Runtime.Networking
         private PlayerStickyTongue _playerBStickyTongue;
         private PlayerStickyTongue _playerCStickyTongue;
         private PlayerStickyTongue _playerDStickyTongue;
+        
+        private float _minSecondsBeforeSceneLoad = 1.0f;
+        
         
         protected override void Awake()
         {
@@ -70,17 +74,19 @@ namespace _Project.Scripts.Runtime.Networking
                 switch (sceneType)
                 {
                     case SceneType.StartScene:
-                        CameraManager.Instance.DisableSplitScreenCameras();
+                        CameraManager.Instance.TryDisableSplitScreenCameras();
                         LoadIntroScene();
                         break;
                     case SceneType.IntroScene:
-                        CameraManager.Instance.DisableSplitScreenCameras();
+                        CameraManager.Instance.TryDisableSplitScreenCameras();
                         break;
                     case SceneType.MenuScene:
-                        CameraManager.Instance.DisableSplitScreenCameras();
+                        CameraManager.Instance.TryDisableSplitScreenCameras();
+                        PlayerManager.Instance.SetPlayerJoiningEnabled(false);
                         break;
                     case SceneType.GameScene:
-                        CameraManager.Instance.EnableSplitScreenCameras(); // Special condition when the Editor directly loads the GameScene
+                        CameraManager.Instance.TryEnableSplitScreenCameras(); // Special condition when the Editor directly loads the GameScene
+                        PlayerManager.Instance.SetPlayerJoiningEnabled(true);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -89,8 +95,21 @@ namespace _Project.Scripts.Runtime.Networking
             else
             {
                 Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Enabling Split Screen Cameras per default", Logger.LogType.Local, this);
-                CameraManager.Instance.EnableSplitScreenCameras();
+                CameraManager.Instance.TryEnableSplitScreenCameras();
+                PlayerManager.Instance.SetPlayerJoiningEnabled(true);
             }
+        }
+
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            OnBeforeSceneChange += ReplicateOnBeforeSceneChange;
+        }
+
+        public override void OnStopServer()
+        {
+            base.OnStopServer();
+            OnBeforeSceneChange -= ReplicateOnBeforeSceneChange;
         }
 
         private void LoadIntroScene()
@@ -101,23 +120,47 @@ namespace _Project.Scripts.Runtime.Networking
         public void LoadMenuScene()
         {
             LoadGlobalScene(SceneType.MenuScene);
-            UnLoadCurrentScene();
         }
         
-        private void LoadGameScene()
+        public void LoadGameScene()
         {
             LoadGlobalScene(SceneType.GameScene);
         }
 
         private void LoadGlobalScene(SceneType sceneType)
         {
+            StartCoroutine(LoadGlobalSceneCoroutine(sceneType));
+        }
+
+        private IEnumerator LoadGlobalSceneCoroutine(SceneType sceneType)
+        {
             Logger.LogInfo("Loading Scene : " + sceneType + "...", Logger.LogType.Local, this);
+            OnBeforeSceneChange?.Invoke(_minSecondsBeforeSceneLoad);
+            yield return new WaitForSeconds(_minSecondsBeforeSceneLoad);
             var stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
             SceneLoadData sld = new SceneLoadData(sceneType.ToString());
             SceneManager.LoadGlobalScenes(sld);
             stopwatch.Stop();
             Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
+            UnLoadCurrentScene();
+            OnAfterSceneChange?.Invoke();
+            switch (sceneType)
+            {
+                case SceneType.StartScene:
+                    break;
+                case SceneType.IntroScene:
+                    break;
+                case SceneType.MenuScene:
+                    PlayerManager.Instance.SetPlayerJoiningEnabled(false);
+                    break;
+                case SceneType.GameScene:
+                    CameraManager.Instance.TryEnableSplitScreenCameras();
+                    DOVirtual.DelayedCall(3.0f, TryStartGame);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(sceneType), sceneType, null);
+            }
         }
 
         private void UnLoadCurrentScene()
@@ -156,6 +199,7 @@ namespace _Project.Scripts.Runtime.Networking
         }
 
         // Entry point
+        [Button(ButtonSizes.Large)]
         public void TryStartGame()
         {
             if (!IsServerStarted)
@@ -476,6 +520,24 @@ namespace _Project.Scripts.Runtime.Networking
         public int GetWinCount(PlayerTeamType teamType)
         {
             return RoundsResults.Collection.FindAll(result => result.WinningTeam == teamType).Count;
+        }
+        
+        private void ReplicateOnBeforeSceneChange(float _)
+        {
+            OnBeforeSceneChangeServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnBeforeSceneChangeServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnBeforeSceneChange?.Invoke(_minSecondsBeforeSceneLoad);
+            OnBeforeSceneChangeClientRpc();
+        }
+
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnBeforeSceneChangeClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnBeforeSceneChange?.Invoke(_minSecondsBeforeSceneLoad);
         }
     }
 }

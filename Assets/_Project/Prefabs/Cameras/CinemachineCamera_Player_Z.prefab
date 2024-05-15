@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -945679277639659138}
   - component: {fileID: 1844121535304250712}
   - component: {fileID: 6295709196432752803}
+  - component: {fileID: 2582053150722278600}
   m_Layer: 0
   m_Name: CinemachineCamera_Player_Z
   m_TagString: Untagged
@@ -140,8 +141,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 0}
-  _networkObjectCache: {fileID: 0}
+  _addedNetworkObject: {fileID: 2582053150722278600}
+  _networkObjectCache: {fileID: 2582053150722278600}
   <PlayerData>k__BackingField: {fileID: 11400000, guid: cba28541030cc9e41bf92005e67cc6a0,
     type: 2}
   <PlayerIndexType>k__BackingField: 4
@@ -158,3 +159,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _outputChannels: 0
+--- !u!114 &2582053150722278600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2934725334150724674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours:
+  - {fileID: 1844121535304250712}
+  <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
+  <NestedRootNetworkBehaviours>k__BackingField: []
+  SerializedTransformProperties:
+    Position: {x: -20.4, y: 33.6, z: -56.6}
+    Rotation: {x: 0.25105304, y: -0.017426722, z: 0.0045205476, w: 0.9678059}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isSpawnable: 1
+  _isGlobal: 1
+  _initializeOrder: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
+  _scenePathHash: 0
+  <SceneId>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 12522299645421672779

@@ -10,7 +10,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
+      propertyPath: _isGlobal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
       propertyPath: <IsNested>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
+      propertyPath: <PrefabId>k__BackingField
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
@@ -26,7 +36,7 @@ PrefabInstance:
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
       propertyPath: <ComponentIndex>k__BackingField
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
@@ -87,7 +97,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _addedNetworkObject
       value: 
-      objectReference: {fileID: 2324417672922746127}
+      objectReference: {fileID: 73694267815933804}
     - target: {fileID: 1844121535304250712, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
       propertyPath: _cameraOffsetRadius
@@ -97,6 +107,16 @@ PrefabInstance:
         type: 3}
       propertyPath: <PlayerIndexType>k__BackingField
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582053150722278600, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
+      propertyPath: <PrefabId>k__BackingField
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582053150722278600, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
+      propertyPath: <AssetPathHash>k__BackingField
+      value: 115822580377028273
       objectReference: {fileID: 0}
     - target: {fileID: 2934725334150724674, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
@@ -188,9 +208,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf, type: 3}
---- !u!114 &2324417672922746127 stripped
+--- !u!114 &73694267815933804 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+  m_CorrespondingSourceObject: {fileID: 2582053150722278600, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
     type: 3}
   m_PrefabInstance: {fileID: 2508675566146450340}
   m_PrefabAsset: {fileID: 0}

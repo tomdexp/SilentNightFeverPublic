@@ -10,8 +10,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
+      propertyPath: _isGlobal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
       propertyPath: <IsNested>k__BackingField
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
+      propertyPath: <PrefabId>k__BackingField
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
@@ -26,7 +36,7 @@ PrefabInstance:
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
       propertyPath: <ComponentIndex>k__BackingField
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
@@ -87,7 +97,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _addedNetworkObject
       value: 
-      objectReference: {fileID: 5993208829744882513}
+      objectReference: {fileID: 8243850835758962994}
     - target: {fileID: 1844121535304250712, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
       propertyPath: _cameraOffsetRadius
@@ -97,6 +107,16 @@ PrefabInstance:
         type: 3}
       propertyPath: <PlayerIndexType>k__BackingField
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582053150722278600, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
+      propertyPath: <PrefabId>k__BackingField
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582053150722278600, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+        type: 3}
+      propertyPath: <AssetPathHash>k__BackingField
+      value: 13581082457294254463
       objectReference: {fileID: 0}
     - target: {fileID: 2934725334150724674, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
         type: 3}
@@ -200,9 +220,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08917b8240ad4c939105ca8e130e1b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5993208829744882513 stripped
+--- !u!114 &8243850835758962994 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 185041949171859115, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
+  m_CorrespondingSourceObject: {fileID: 2582053150722278600, guid: 7f83cfc3fa1aa524f8430e6319cfc8cf,
     type: 3}
   m_PrefabInstance: {fileID: 5889935361316134394}
   m_PrefabAsset: {fileID: 0}

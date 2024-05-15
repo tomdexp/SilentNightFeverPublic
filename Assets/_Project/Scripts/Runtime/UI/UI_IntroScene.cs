@@ -24,7 +24,6 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private float _secondsBetweenLogos = 1.0f;
         [SerializeField] private float _secondsBeforeSceneChange = 1.0f;
         
-        
         [Title("Settings", "Game Logo")]
         [SerializeField] private float _secondsFadeInDurationGameLogo = 1.0f;
         [SerializeField] private float _secondsBeforeFadeOutGameLogo = 1.0f;
