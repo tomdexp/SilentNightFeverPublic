@@ -10,6 +10,7 @@ using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using FishNet.Transporting;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,12 +33,15 @@ namespace _Project.Scripts.Runtime.Networking
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
         private readonly SyncList<PlayerTeamInfo> _playerTeamInfos = new SyncList<PlayerTeamInfo>();
         private readonly SyncVar<bool> _canChangeTeam = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner));
+        
+        public readonly SyncVar<bool> CanPlayerUseTongue = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
         public int NumberOfPlayers => _realPlayerInfos.Count;
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
         public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;
         public event Action<RealPlayerInfo,RealPlayerInfo> OnRealPlayerPossessed; // source, target
         public event Action<RealPlayerInfo> OnRealPlayerUnpossessed;
         public event Action OnAllPlayerSpawnedLocally;
+        public event Action OnRemoteClientDisconnected;
         
         private int _numberOfPlayerSpawnedLocally = 0;
 
@@ -45,12 +49,25 @@ namespace _Project.Scripts.Runtime.Networking
         {
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
+            InstanceFinder.ServerManager.OnRemoteConnectionState += OnRemoteConnectionState;
+        }
+
+        private void OnRemoteConnectionState(NetworkConnection conn, RemoteConnectionStateArgs args)
+        {
+            if (args.ConnectionState == RemoteConnectionState.Stopped)
+            {
+                Logger.LogInfo("Remote client disconnected from online", Logger.LogType.Server, this);
+                _realPlayerInfos.Clear();
+                _playerTeamInfos.Clear();
+                OnRemoteClientDisconnected?.Invoke();
+            }
         }
 
         public override void OnStopServer()
         {
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
+            InstanceFinder.ServerManager.OnRemoteConnectionState -= OnRemoteConnectionState;
         }
 
         public override void OnStartClient()

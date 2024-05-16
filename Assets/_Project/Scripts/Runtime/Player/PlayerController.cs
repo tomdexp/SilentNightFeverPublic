@@ -231,6 +231,11 @@ namespace _Project.Scripts.Runtime.Player
         private void OnInteractPerformed(InputAction.CallbackContext context)
         {
             Logger.LogTrace("Interact performed locally !", context: this);
+            if (!PlayerManager.Instance.CanPlayerUseTongue.Value)
+            {
+                Logger.LogDebug($"Player {_networkPlayer.GetPlayerIndexType()} can't use tongue because PlayerManager forbids it", Logger.LogType.Client, this);
+                return;
+            }
             _playerStickyTongue.TryUseTongue();
         }
 
