@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Utils.Singletons;
 using DG.Tweening;
 using FishNet;
 using FishNet.Managing.Scened;
@@ -12,7 +13,7 @@ using Logger = _Project.Scripts.Runtime.Utils.Logger;
 namespace _Project.Scripts.Runtime.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class UI_Fader : MonoBehaviour
+    public class FadeManager : NetworkPersistentSingleton<FadeManager>
     {
         [Title("Settings")]
         private float _fadeInDuration = 1.0f;
@@ -30,13 +31,9 @@ namespace _Project.Scripts.Runtime.UI
         public event Action OnFadeOutStart;
         public event Action OnFadeOutComplete;
 
-        private void Awake()
-        {
-            _canvasGroup = GetComponent<CanvasGroup>();
-        }
-
         private void Start()
         {
+            _canvasGroup = GetComponent<CanvasGroup>();
             StartCoroutine(TrySubscribeToGameManagerEvents());
         }
 

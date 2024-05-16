@@ -100,18 +100,6 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
-        public override void OnStartServer()
-        {
-            base.OnStartServer();
-            OnBeforeSceneChange += ReplicateOnBeforeSceneChange;
-        }
-
-        public override void OnStopServer()
-        {
-            base.OnStopServer();
-            OnBeforeSceneChange -= ReplicateOnBeforeSceneChange;
-        }
-
         private void LoadIntroScene()
         {
             LoadGlobalScene(SceneType.IntroScene);
@@ -520,24 +508,6 @@ namespace _Project.Scripts.Runtime.Networking
         public int GetWinCount(PlayerTeamType teamType)
         {
             return RoundsResults.Collection.FindAll(result => result.WinningTeam == teamType).Count;
-        }
-        
-        private void ReplicateOnBeforeSceneChange(float _)
-        {
-            OnBeforeSceneChangeServerRpc();
-        }
-        
-        [ServerRpc]
-        private void OnBeforeSceneChangeServerRpc()
-        {
-            if(!Owner.IsLocalClient) OnBeforeSceneChange?.Invoke(_minSecondsBeforeSceneLoad);
-            OnBeforeSceneChangeClientRpc();
-        }
-
-        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
-        private void OnBeforeSceneChangeClientRpc()
-        {
-            if(!Owner.IsLocalClient) OnBeforeSceneChange?.Invoke(_minSecondsBeforeSceneLoad);
         }
     }
 }
