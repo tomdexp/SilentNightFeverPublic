@@ -156,7 +156,7 @@ namespace _Project.Scripts.Runtime.Networking
                     break;
                 case SceneType.GameScene:
                     CameraManager.Instance.TryEnableSplitScreenCameras();
-                    DOVirtual.DelayedCall(3.0f, TryStartGame);
+                    DOVirtual.DelayedCall(5.0f, TryStartGame);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sceneType), sceneType, null);
