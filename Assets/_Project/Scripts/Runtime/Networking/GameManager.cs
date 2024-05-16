@@ -190,6 +190,12 @@ namespace _Project.Scripts.Runtime.Networking
         [Button(ButtonSizes.Large)]
         public void TryStartGame()
         {
+            string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            if (currentSceneName == SceneType.MenuScene.ToString())
+            {
+                Logger.LogWarning("The game cannot be started from the Menu Scene !", Logger.LogType.Server, this);
+                return;
+            }
             if (!IsServerStarted)
             {
                 StartGameServerRpc();

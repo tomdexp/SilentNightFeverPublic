@@ -6,6 +6,7 @@ using _Project.Scripts.Runtime.Utils.Singletons;
 using DG.Tweening;
 using FishNet;
 using FishNet.Managing.Scened;
+using FishNet.Object.Synchronizing;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -25,6 +26,7 @@ namespace _Project.Scripts.Runtime.UI
         private CanvasGroup _canvasGroup;
         private Queue<Action> _fadeQueue = new Queue<Action>();
         private bool _isFading;
+        private readonly SyncVar<float> _currentFadeValue = new SyncVar<float>();
 
         public event Action OnFadeInStart;
         public event Action OnFadeInComplete;
@@ -34,6 +36,11 @@ namespace _Project.Scripts.Runtime.UI
         private void Start()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
+        }
+
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
             StartCoroutine(TrySubscribeToGameManagerEvents());
         }
 
@@ -45,7 +52,7 @@ namespace _Project.Scripts.Runtime.UI
             }
             GameManager.Instance.OnBeforeSceneChange += OnBeforeSceneChange;
             GameManager.Instance.OnAfterSceneChange += OnAfterSceneChange;
-            Logger.LogTrace("UI_Fader: Subscribed to GameManager events");
+            Logger.LogTrace("UI_Fader: Subscribed to GameManager events", Logger.LogType.Server, context:this);
         }
 
         private void OnDestroy()
@@ -53,7 +60,13 @@ namespace _Project.Scripts.Runtime.UI
             if (!GameManager.HasInstance) return;
             GameManager.Instance.OnBeforeSceneChange -= OnBeforeSceneChange;
             GameManager.Instance.OnAfterSceneChange -= OnAfterSceneChange;
-            Logger.LogTrace("UI_Fader: Unsubscribed from GameManager events");
+            Logger.LogTrace("UI_Fader: Unsubscribed from GameManager events", Logger.LogType.Server, context:this);
+        }
+
+        private void Update()
+        {
+            if (_isFading) _currentFadeValue.Value = _canvasGroup.alpha;
+            if(!IsServerStarted) _canvasGroup.alpha = _currentFadeValue.Value;
         }
 
         private void OnBeforeSceneChange(float seconds)

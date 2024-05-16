@@ -1,6 +1,5 @@
 ﻿using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
-using _Project.Scripts.Runtime.Player.PlayerEffects;
 using QFSW.QC;
 
 namespace _Project.Scripts.Runtime.Utils

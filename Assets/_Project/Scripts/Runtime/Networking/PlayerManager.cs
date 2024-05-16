@@ -273,7 +273,7 @@ namespace _Project.Scripts.Runtime.Networking
         }
         
         [ObserversRpc]
-        private void SetPlayerJoiningEnabledClientRpc(bool value)
+        public void SetPlayerJoiningEnabledClientRpc(bool value)
         {
             SetPlayerJoiningEnabled(value);
         }
