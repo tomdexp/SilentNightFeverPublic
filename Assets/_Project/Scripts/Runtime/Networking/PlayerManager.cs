@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -50,6 +51,17 @@ namespace _Project.Scripts.Runtime.Networking
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
             InstanceFinder.ServerManager.OnRemoteConnectionState += OnRemoteConnectionState;
+            StartCoroutine(TrySubscribeToGameManagerEvents());
+        }
+        
+        private IEnumerator TrySubscribeToGameManagerEvents()
+        {
+            while (!GameManager.HasInstance)
+            {
+                yield return null;
+            }
+            GameManager.Instance.OnAnyRoundStarted += OnAnyRoundStarted;
+            GameManager.Instance.OnAnyRoundEnded += OnAnyRoundEnded;
         }
 
         private void OnRemoteConnectionState(NetworkConnection conn, RemoteConnectionStateArgs args)
@@ -68,6 +80,11 @@ namespace _Project.Scripts.Runtime.Networking
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
             InstanceFinder.ServerManager.OnRemoteConnectionState -= OnRemoteConnectionState;
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.OnAnyRoundStarted -= OnAnyRoundStarted;
+                GameManager.Instance.OnAnyRoundEnded -= OnAnyRoundEnded;
+            }
         }
 
         public override void OnStartClient()
@@ -102,6 +119,18 @@ namespace _Project.Scripts.Runtime.Networking
             _goToRightTeamInputAction.performed -= GoToRightTeamInputActionPerformed;
             _goToLeftTeamInputAction.performed -= GoToLeftTeamInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed -= JoinAndFullFakePlayerInputActionOnPerformed;
+        }
+        
+        private void OnAnyRoundStarted(byte _)
+        {
+            Logger.LogTrace("RoundStarted ! Activating Tongue usage for players", Logger.LogType.Server, this);
+            CanPlayerUseTongue.Value = true;
+        }
+        
+        private void OnAnyRoundEnded(byte _)
+        {
+           Logger.LogTrace("RoundEnded ! Deactivating Tongue usage for players", Logger.LogType.Server, this);
+            CanPlayerUseTongue.Value = false;
         }
         
         private void OnChangedRealPlayerInfos(SyncListOperation op, int index, RealPlayerInfo oldItem, RealPlayerInfo newItem, bool asServer)
