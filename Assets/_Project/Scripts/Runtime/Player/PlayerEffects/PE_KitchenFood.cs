@@ -9,7 +9,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerEffects
     public class PE_KitchenFood : PlayerEffect
     {
         [Title("PE_KitchenFood Settings")] [SerializeField]
-        private float _sizeMultiplier = 1.2f;
+        private float _sizeMultiplier = 1.1f;
         // [SerializeField] private EffectStep[] _effectSteps;
         //
         // [Serializable]

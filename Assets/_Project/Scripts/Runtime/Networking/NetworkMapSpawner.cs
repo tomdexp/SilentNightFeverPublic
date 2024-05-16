@@ -10,7 +10,7 @@ using Logger = _Project.Scripts.Runtime.Utils.Logger;
 [RequireComponent(typeof(ProcGenInstanciator))]
 public class NetworkMapSpawner : NetworkBehaviour
 {
-    [SerializeField] private ProcGenInstanciator _procGenInstanciator;
+    private ProcGenInstanciator _procGenInstanciator;
     [SerializeField] private bool _gameIsPlaying;
 
     void Start()

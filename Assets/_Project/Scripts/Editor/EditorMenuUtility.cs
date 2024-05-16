@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Runtime.Landmarks.Kitchen;
+﻿using _Project.Scripts.Runtime.Audio;
+using _Project.Scripts.Runtime.Landmarks.Kitchen;
 using _Project.Scripts.Runtime.Player;
 using UnityEditor;
 using UnityEngine;
@@ -35,6 +36,21 @@ namespace _Project.Scripts.Editor
             else
             {
                 Logger.LogError("LandmarkData_Kitchen could not be loaded. Please make sure the path is correct.");
+            }
+        }
+        
+        [MenuItem("Silent Night Fever/Open AudioManagerData")]
+        private static void OpenAudioManagerData()
+        {
+            // Load the PlayerData asset
+            AudioManagerData data = AssetDatabase.LoadAssetAtPath<AudioManagerData>("Assets/_Project/Settings/AudioManagerData.asset");
+            if (data != null)
+            {
+                PopUpAssetInspector.Create(data);
+            }
+            else
+            {
+                Logger.LogError("AudioManagerData could not be loaded. Please make sure the path is correct.");
             }
         }
     }

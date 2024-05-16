@@ -17,7 +17,7 @@ namespace _Project.Scripts.Editor
         
         private static IEnumerator VerifyCoroutine()
         {
-            Logger.LogInfo("Verifying Online Setup...", context: typeof(OnlineSetupVerifier));
+            Logger.LogInfo("Verifying Online Setup...");
             ShowSceneNotification("Verifying Online Setup...");
             bool hasNetworkManagersSpawnerPrefab = GameObject.Find("NetworkedManagersSpawner (MUST HAVE)");
             bool hasNetworkManagerSNFVariantPrefab = GameObject.Find("NetworkManager (SNF Variant)");
@@ -25,12 +25,12 @@ namespace _Project.Scripts.Editor
             yield return new EditorWaitForSeconds(2f);
             if (hasNetworkManagersSpawnerPrefab && hasNetworkManagerSNFVariantPrefab && hasBootstrapPrefab)
             {
-                Logger.LogInfo("Online Setup is correct!", context: typeof(OnlineSetupVerifier));
+                Logger.LogInfo("Online Setup is correct!");
                 ShowSceneNotification("Online Setup is correct!");
             }
             else
             {
-                Logger.LogError("Online Setup is incorrect! Please make sure you have the following prefabs in your scene: NetworkedManagersSpawner (MUST HAVE), NetworkManager (SNF Variant), BootstrapManager [Local]", context: typeof(OnlineSetupVerifier));
+                Logger.LogError("Online Setup is incorrect! Please make sure you have the following prefabs in your scene: NetworkedManagersSpawner (MUST HAVE), NetworkManager (SNF Variant), BootstrapManager [Local]");
                 ShowSceneNotification("Online Setup is incorrect! Please make sure you have the following prefabs in your scene: NetworkedManagersSpawner (MUST HAVE), NetworkManager (SNF Variant), BootstrapManager [Local]");
             }
             yield return null;
