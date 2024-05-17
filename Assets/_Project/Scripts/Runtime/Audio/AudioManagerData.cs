@@ -57,6 +57,8 @@ namespace _Project.Scripts.Runtime.Audio
         [Title("AkEvent References", "Landmark Events")]
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventLandmarkKitchenFoodEaten;
+        public AK.Wwise.Event EventLandmarkZoomStartTurning;
+        public AK.Wwise.Event EventLandmarkZoomStopTurning;
         
         
         [Serializable]

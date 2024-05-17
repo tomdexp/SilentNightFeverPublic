@@ -17,6 +17,9 @@ namespace _Project.Scripts.Runtime.Player
         [Title("Player Camera Settings")] 
         public float CameraOffsetRadius = 3;
         public float CameraHeight = 6;
+        public float CameraFov = 60;
+        public float CameraFovChangeDuration = 1f;
+        public Ease CameraFovChangeEase = Ease.Linear;
         
         [Title("Player Size Settings")]
         [PropertyRange(0,100)] public float PlayerDefaultSize = 1f;
