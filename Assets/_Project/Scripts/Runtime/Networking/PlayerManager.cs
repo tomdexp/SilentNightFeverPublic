@@ -45,6 +45,12 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnRemoteClientDisconnected;
         
         private int _numberOfPlayerSpawnedLocally = 0;
+        
+        private PlayerController _playerControllerA;
+        private PlayerController _playerControllerB;
+        private PlayerController _playerControllerC;
+        private PlayerController _playerControllerD;
+        
 
         public override void OnStartServer()
         {
@@ -614,6 +620,11 @@ namespace _Project.Scripts.Runtime.Networking
                     }
                 }
             }
+            
+            _playerControllerA = GetNetworkPlayer(PlayerIndexType.A).GetPlayerController();
+            _playerControllerB = GetNetworkPlayer(PlayerIndexType.B).GetPlayerController();
+            _playerControllerC = GetNetworkPlayer(PlayerIndexType.C).GetPlayerController();
+            _playerControllerD = GetNetworkPlayer(PlayerIndexType.D).GetPlayerController();
         }
 
         private void OnPlayerSpawnedLocally()
@@ -821,6 +832,30 @@ namespace _Project.Scripts.Runtime.Networking
         public IEnumerable<NetworkPlayer> GetNetworkPlayers(PlayerTeamType teamType)
         {
             return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None).Where(x => x.GetPlayerTeamType() == teamType);
+        }
+
+        [Server]
+        public void SetVoodooPuppetDirection(PlayerIndexType playerIndexType, Vector2 direction)
+        {
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    _playerControllerA.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.B:
+                    _playerControllerB.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.C:
+                    _playerControllerC.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.D:
+                    _playerControllerD.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.Z:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
+            }
         }
     }
 }

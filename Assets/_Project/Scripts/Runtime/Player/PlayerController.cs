@@ -7,6 +7,7 @@ using FishNet;
 using FishNet.Component.Transforming;
 using FishNet.Connection;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using Sirenix.OdinInspector;
 using Unity.Cinemachine;
 using UnityEditor;
@@ -37,6 +38,8 @@ namespace _Project.Scripts.Runtime.Player
         private Quaternion _targetRotation;
         private PlayerCamera _playerCamera;
         private NetworkTransform _networkTransform;
+        
+        public readonly SyncVar<Vector2> VoodooPuppetDirection = new SyncVar<Vector2>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
 
         public event Action OnPlayerSpawnedLocally;
         
@@ -192,6 +195,12 @@ namespace _Project.Scripts.Runtime.Player
             {
                 _influencedByAttachedTongue = false;
                 _distanceToAttachedPlayer = 0;
+            }
+            
+            if(VoodooPuppetDirection.Value != Vector2.zero)
+            {
+                var direction = new Vector3(VoodooPuppetDirection.Value.x, 0, VoodooPuppetDirection.Value.y);
+                movement += direction * _networkPlayer.PlayerData.LandmarkData_Voodoo.ForcedMovementInfluenceFactor;
             }
             
             if (_canMove)

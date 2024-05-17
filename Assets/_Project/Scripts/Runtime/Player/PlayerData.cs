@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using _Project.Scripts.Runtime.Landmarks.Voodoo;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -46,5 +47,8 @@ namespace _Project.Scripts.Runtime.Player
         public float OtherTongueMinDistance = 1f;
         public float TongueMissDuration = 0.3f;
         public float TongueMissPercentOfMaxDistance = 0.5f;
+        
+        [Title("Landmark Datas")]
+        public LandmarkData_Voodoo LandmarkData_Voodoo;
     }
 }
