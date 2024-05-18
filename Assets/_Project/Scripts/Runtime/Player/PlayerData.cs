@@ -10,7 +10,22 @@ namespace _Project.Scripts.Runtime.Player
     {
         [Title("Player Movement Settings")]
         [PropertyRange(0,100)] public float PlayerMovementSpeed = 5f;
+        [PropertyRange(0,100)] public float PlayerMinMovementSpeed = 1f;
+        [PropertyRange(0,100)] public float PlayerMaxMovementSpeed = 10f;
         [PropertyRange(0,100)] public float PlayerRotationSpeed = 5f;
+
+        [Title("Player Camera Settings")] 
+        public float CameraOffsetRadius = 3;
+        public float CameraHeight = 6;
+        
+        [Title("Player Size Settings")]
+        [PropertyRange(0,100)] public float PlayerDefaultSize = 1f;
+        [PropertyRange(0,100)] public float PlayerMinSize = 0.5f;
+        [PropertyRange(0,100)] public float PlayerMaxSize = 2f;
+        [PropertyRange(0,100)] public float PlayerSizeUpChangeDuration = 1f;
+        [PropertyRange(0,100)] public float PlayerSizeDownChangeDuration = 1f;
+        public Ease PlayerSizeUpChangeEase = Ease.InOutBounce;
+        public Ease PlayerSizeDownChangeEase = Ease.InOutBounce;
         
         [Title("Tongue Settings")]
         [Tooltip("Minimum time between tongue uses in seconds")]
@@ -24,5 +39,9 @@ namespace _Project.Scripts.Runtime.Player
         public Ease TongueRetractEase = Ease.Linear;
         public float SmoothPlayerMassChangeOnTongueMoveDuration = 0.5f;
         public float TongueInteractDuration = 0.5f;
+        public float OtherTongueAttachedForce = 10f;
+        public float OtherTongueMinDistance = 1f;
+        public float TongueMissDuration = 0.3f;
+        public float TongueMissPercentOfMaxDistance = 0.5f;
     }
 }

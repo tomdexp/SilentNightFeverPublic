@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 761887451857632643}
   - component: {fileID: 2989157555678866651}
+  - component: {fileID: 2076153034051917258}
   - component: {fileID: 4018129181287465325}
   m_Layer: 0
   m_Name: 'GameManager [Networked] '
@@ -49,6 +50,22 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4018129181287465325}
   _networkObjectCache: {fileID: 4018129181287465325}
   AutoUnparentOnAwake: 1
+  GameManagerData: {fileID: 11400000, guid: 0a0ae432ccf4c2d4aa0cf648cd1be895, type: 2}
+--- !u!114 &2076153034051917258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130004455979960310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a96bf5efaf2b45bc91a930f0af0847ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 4018129181287465325}
+  _networkObjectCache: {fileID: 0}
 --- !u!114 &4018129181287465325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,7 +95,15 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 0
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  <PrefabId>k__BackingField: 2
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0

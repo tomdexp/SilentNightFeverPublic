@@ -21,6 +21,8 @@ public class ProcGenVisualizer : MonoBehaviour
     [Range(1, 50)] private int _rejectionSamples;
     [MinValue(1)] private int _maxFailedAttempts;
     private List<Vector2> _points;
+    private List<List<Vector2>> _prevPoints = new();
+    private List<float> _prevPointRadius = new();
 
     [Button]
     void CalculateMaximumRadius()
@@ -65,16 +67,23 @@ public class ProcGenVisualizer : MonoBehaviour
     [Button]
     public void GenerateNew()
     {
+        _prevPoints.Clear();
+        _prevPointRadius.Clear();
+
         _rejectionSamples = 720;
         _maxFailedAttempts = 10000;
         Vector2 newRegionSize = _regionSize;
         newRegionSize.x *= (100 - edgeDistance) / 100;
         newRegionSize.y *= (100 - edgeDistance) / 100;
+
         _points = PoissonDiscSampling.GenerateExactNumberOfPoints(_minDistance, _maxDistance, newRegionSize, _numOfPoints, _rejectionSamples, _maxFailedAttempts);
         if (_points.Count < _numOfPoints)
         {
             Debug.Log("Not enougth _points, something went wrong? \n Number of spawned objects : " + _points.Count);
         }
+
+        _prevPoints.Add(_points);
+        _prevPointRadius.Add(_objectRadius*1.2f);
     }
 
     [Button]
@@ -85,11 +94,15 @@ public class ProcGenVisualizer : MonoBehaviour
         Vector2 newRegionSize = _regionSize;
         newRegionSize.x *= (100 - edgeDistance) / 100;
         newRegionSize.y *= (100 - edgeDistance) / 100;
-        _points.AddRange(PoissonDiscSampling.GenerateExactNumberOfPoints(_minDistance, _maxDistance, newRegionSize, _numOfPoints, _rejectionSamples, _maxFailedAttempts));
+
+        _points.AddRange(PoissonDiscSampling.GenerateExactNumberOfPoints(_minDistance, _maxDistance, newRegionSize, _numOfPoints, _prevPoints, _prevPointRadius, _rejectionSamples, _maxFailedAttempts));
         if (_points.Count < _numOfPoints)
         {
             Debug.Log("Not enougth _points, something went wrong? \n Number of spawned objects : " + _points.Count);
         }
+
+        _prevPoints.Add(_points);
+        _prevPointRadius.Add(_objectRadius * 1.2f);
     }
 
     void OnDrawGizmos()

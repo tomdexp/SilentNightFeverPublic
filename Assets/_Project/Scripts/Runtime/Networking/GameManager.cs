@@ -1,6 +1,14 @@
-﻿using _Project.Scripts.Runtime.Utils.Singletons;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using _Project.Scripts.Runtime.Networking.Rounds;
+using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Player.PlayerTongue;
+using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using NUnit.Framework;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
@@ -8,8 +16,72 @@ namespace _Project.Scripts.Runtime.Networking
 {
     public class GameManager : NetworkPersistentSingleton<GameManager>
     {
+        [Title("References")]
+        [Required] public GameManagerData GameManagerData;
         public readonly SyncVar<bool> IsGameStarted = new SyncVar<bool>();
+        public readonly SyncList<Round> Rounds = new SyncList<Round>();
+        public readonly SyncList<RoundResult> RoundsResults = new SyncList<RoundResult>();
+        public readonly SyncVar<byte> CurrentRoundNumber = new SyncVar<byte>(); // Starts at 1
+        public readonly SyncVar<uint> CurrentRoundTimer = new SyncVar<uint>(new SyncTypeSettings(.5f));
+        public event Action OnGameStarted;
+        public event Action<PlayerTeamType> OnGameEnded; // arg = winning team
+        public event Action<byte> OnAnyRoundStarted;
+        public event Action<byte> OnAnyRoundEnded;
+        public event Action OnFirstRoundStarted;
+        public event Action OnFirstRoundEnded; // TODO : Implement
+        public event Action OnFinalRoundStarted; // TODO : Implement
+        public event Action OnFinalRoundEnded; // TODO : Implement
+        public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
         
+        private float _deltaTimeCounter;
+        
+        private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
+        private byte _teamBTongueBindCount;
+        private TongueAnchor _playerACharacterTongueAnchor;
+        private TongueAnchor _playerBCharacterTongueAnchor;
+        private TongueAnchor _playerCCharacterTongueAnchor;
+        private TongueAnchor _playerDCharacterTongueAnchor;
+        private PlayerStickyTongue _playerAStickyTongue;
+        private PlayerStickyTongue _playerBStickyTongue;
+        private PlayerStickyTongue _playerCStickyTongue;
+        private PlayerStickyTongue _playerDStickyTongue;
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            if (!GameManagerData)
+            {
+                Logger.LogError("No GameManagerData found on the GameManager, please set it in the GameManager prefab !", Logger.LogType.Local, this);
+            }
+            if (!RoundsConfig)
+            {
+                Logger.LogError("No RoundsConfig found on the GameManager, please set it in the GameManagerData !", Logger.LogType.Local, this);
+            }
+        }
+
+        private void Update()
+        {
+            if (!IsServerStarted) return;
+            if (IsGameStarted.Value)
+            {
+                if (CurrentRoundNumber.Value == 0) return;
+                if (GetCurrentRound().IsRoundActive)
+                {
+                    _deltaTimeCounter += Time.deltaTime;
+                    if (_deltaTimeCounter >= 1f)
+                    {
+                        _deltaTimeCounter = 0;
+                        CurrentRoundTimer.Value++;
+                    }
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            UnsubscribeToTongueChangeEvents();
+        }
+
         // Entry point
         public void TryStartGame()
         {
@@ -49,8 +121,288 @@ namespace _Project.Scripts.Runtime.Networking
             }
             PlayerManager.Instance.SpawnAllPlayers();
             PlayerManager.Instance.SetCanChangeTeam(false);
+            SubscribeToTongueChangeEvents();
+            SetupRounds();
+            StartCoroutine(StartRounds());
+            OnGameStarted?.Invoke();
             Logger.LogInfo("Game started !", Logger.LogType.Server, this);
             IsGameStarted.Value = true;
+        }
+
+        private void SubscribeToTongueChangeEvents()
+        {
+            _playerAStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.A).GetPlayerController().GetTongue();
+            _playerBStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.B).GetPlayerController().GetTongue();
+            _playerCStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.C).GetPlayerController().GetTongue();
+            _playerDStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.D).GetPlayerController().GetTongue();
+
+            _playerACharacterTongueAnchor = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.A).GetPlayerController().GetCharacterTongueAnchor();
+            _playerBCharacterTongueAnchor = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.B).GetPlayerController().GetCharacterTongueAnchor();
+            _playerCCharacterTongueAnchor = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.C).GetPlayerController().GetCharacterTongueAnchor();
+            _playerDCharacterTongueAnchor = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.D).GetPlayerController().GetCharacterTongueAnchor();
+            
+            _playerACharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
+            _playerBCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
+            _playerCCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
+            _playerDCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
+        }
+
+        private void OnAnyPlayerTongueBindChange(PlayerStickyTongue tongue)
+        {
+            Logger.LogTrace("OnAnyPlayerTongueBindChange called, checking win conditions...", Logger.LogType.Server, this);
+            
+            // check how many players have their tongue bind to the other player's anchor of the same team
+            // we can get the current bind anchor by a tongue with tongue.GetCurrentBindTongueAnchor()
+            _teamATongueBindCount = 0;
+            _teamBTongueBindCount = 0;
+            
+            Logger.LogTrace("Player A Anchor is bind to : " + _playerACharacterTongueAnchor.GetCurrentStickTongue(), Logger.LogType.Server, _playerACharacterTongueAnchor.GetCurrentStickTongue());
+            Logger.LogTrace("Player B Anchor is bind to : " + _playerBCharacterTongueAnchor.GetCurrentStickTongue(), Logger.LogType.Server, _playerBCharacterTongueAnchor.GetCurrentStickTongue());
+            Logger.LogTrace("Player C Anchor is bind to : " + _playerCCharacterTongueAnchor.GetCurrentStickTongue(), Logger.LogType.Server, _playerCCharacterTongueAnchor.GetCurrentStickTongue());
+            Logger.LogTrace("Player D Anchor is bind to : " + _playerDCharacterTongueAnchor.GetCurrentStickTongue(), Logger.LogType.Server, _playerDCharacterTongueAnchor.GetCurrentStickTongue());
+            
+            // Team composition : team A (player A, player C) vs team B (player b, player D)
+            if(_playerAStickyTongue == _playerCCharacterTongueAnchor.GetCurrentStickTongue())
+            {
+                _teamATongueBindCount++;
+                Logger.LogTrace("Player A tongue is bind to player C", Logger.LogType.Server, this);
+            }
+            if(_playerCStickyTongue == _playerACharacterTongueAnchor.GetCurrentStickTongue())
+            {
+                _teamATongueBindCount++;
+                Logger.LogTrace("Player C tongue is bind to player A", Logger.LogType.Server, this);
+            }
+            if(_playerBStickyTongue == _playerDCharacterTongueAnchor.GetCurrentStickTongue())
+            {
+                _teamBTongueBindCount++;
+                Logger.LogTrace("Player B tongue is bind to player D", Logger.LogType.Server, this);
+            }
+            if(_playerDStickyTongue == _playerBCharacterTongueAnchor.GetCurrentStickTongue())
+            {
+                _teamBTongueBindCount++;
+                Logger.LogTrace("Player D tongue is bind to player B", Logger.LogType.Server, this);
+            }
+
+            if (_teamATongueBindCount == 2)
+            {
+                Logger.LogInfo("Team A won the round !", Logger.LogType.Server, this);
+                EndCurrentRound(PlayerTeamType.A);
+            }
+            else if (_teamBTongueBindCount == 2)
+            {
+                Logger.LogInfo("Team B won the round !", Logger.LogType.Server, this);
+                EndCurrentRound(PlayerTeamType.B);
+            }
+            
+            Logger.LogTrace("Team A tongue bind count : " + _teamATongueBindCount, Logger.LogType.Server, this);
+            Logger.LogTrace("Team B tongue bind count : " + _teamBTongueBindCount, Logger.LogType.Server, this);
+        }
+
+        private void UnsubscribeToTongueChangeEvents()
+        {
+            if(_playerACharacterTongueAnchor) _playerACharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
+            if(_playerBCharacterTongueAnchor) _playerBCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
+            if(_playerCCharacterTongueAnchor) _playerCCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
+            if(_playerDCharacterTongueAnchor) _playerDCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
+        }
+
+        private void SetupRounds()
+        {
+            Logger.LogDebug("Setting up rounds...", Logger.LogType.Server, this);
+            Rounds.Clear();
+            switch (RoundsConfig.RoundsWinType)
+            {
+                case RoundsWinType.BestOfX:
+                    for (byte i = 1; i <= RoundsConfig.RoundsCount; i++)
+                    {
+                        var round = new Round();
+                        round.SetRoundNumber(i);
+                        Rounds.Add(round);
+                        Logger.LogDebug("Round " + i + " added", Logger.LogType.Server, this);
+                    }
+                    break;
+                case RoundsWinType.FirstToX:
+                    for (byte i = 1; i <= RoundsConfig.RoundsCount*2-1; i++)
+                    {
+                        var round = new Round();
+                        round.SetRoundNumber(i);
+                        Rounds.Add(round);
+                        Logger.LogDebug("Round " + i + " added", Logger.LogType.Server, this);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        private IEnumerator StartRounds()
+        {
+            Logger.LogDebug($"Starting first round in {GameManagerData.SecondsBetweenStartOfTheGameAndFirstRound} seconds...", Logger.LogType.Server, this);
+            yield return new WaitForSeconds(GameManagerData.SecondsBetweenStartOfTheGameAndFirstRound);
+            StartCoroutine(StartNextRound());
+        }
+
+        public IEnumerator StartNextRound()
+        {
+            if (CurrentRoundNumber.Value >= RoundsConfig.GetMaxRounds())
+            {
+                Logger.LogDebug("No more rounds to play, the current round number is superior or equal to the number of round in the RoundsConfig!", Logger.LogType.Server, this);
+                yield return null;
+            }
+            CurrentRoundTimer.Value = 0;
+            CurrentRoundNumber.Value++;
+            if (CurrentRoundNumber.Value == 1)
+            {
+                OnFirstRoundStarted?.Invoke();
+            }
+            else
+            {
+                yield return new WaitForSeconds(GameManagerData.SecondsBetweenRounds);
+            }
+            OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
+            Logger.LogInfo("Starting round " + CurrentRoundNumber.Value, Logger.LogType.Server, this);
+            GetCurrentRound().StartRound();
+        }
+
+        private void EndCurrentRound(PlayerTeamType teamType)
+        {
+            if (teamType == PlayerTeamType.Z)
+            {
+                Logger.LogError("The current round was ended by the Z team, this should not happen", Logger.LogType.Server, this);
+                return;
+            }
+            if (CurrentRoundNumber.Value == 0)
+            {
+                Logger.LogError("No round is currently active !", Logger.LogType.Server, this);
+                return;
+            }
+            if (GetCurrentRound().IsRoundActive)
+            {
+                RoundResult roundResult = new RoundResult
+                {
+                    SecondsElapsed = CurrentRoundTimer.Value,
+                    RoundNumber = CurrentRoundNumber.Value,
+                    WinningTeam = teamType
+                };
+                OnAnyRoundEnded?.Invoke(CurrentRoundNumber.Value);
+                RoundsResults.Add(roundResult);
+                GetCurrentRound().EndRound();
+                Logger.LogInfo("Round " + CurrentRoundNumber.Value + $" ended ! {roundResult}", Logger.LogType.Server, this);
+                bool isGameFinished = CheckIfGameIsFinished();
+                if(!isGameFinished) StartCoroutine(StartNextRound());
+            }
+            else
+            {
+                Logger.LogError("There is no active round to win !", Logger.LogType.Server, this);
+            }
+        }
+
+        private bool CheckIfGameIsFinished()
+        {
+            int teamWinsA = RoundsResults.Collection.FindAll(result => result.WinningTeam == PlayerTeamType.A).Count;
+            int teamWinsB = RoundsResults.Collection.FindAll(result => result.WinningTeam == PlayerTeamType.B).Count;
+            switch (RoundsConfig.RoundsWinType)
+            {
+                case RoundsWinType.BestOfX:
+                    if (teamWinsA > RoundsConfig.RoundsCount / 2)
+                    {
+                        StartCoroutine(EndGame(PlayerTeamType.A));
+                        return true;
+                    }
+                    if (teamWinsB > RoundsConfig.RoundsCount / 2)
+                    {
+                        StartCoroutine(EndGame(PlayerTeamType.B));
+                        return true;
+                    }
+                    return false;
+                case RoundsWinType.FirstToX:
+                    if (teamWinsA >= RoundsConfig.RoundsCount)
+                    {
+                        StartCoroutine(EndGame(PlayerTeamType.A));
+                        return true;
+                    }
+                    if (teamWinsB >= RoundsConfig.RoundsCount)
+                    {
+                        StartCoroutine(EndGame(PlayerTeamType.B));
+                        return true;
+                    }
+                    return false;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public IEnumerator EndGame(PlayerTeamType winningTeam)
+        {
+            Logger.LogInfo("Game finished ! The winning team is Team " + winningTeam, Logger.LogType.Server, this);
+            yield return new WaitForSeconds(GameManagerData.SecondsBetweenLastRoundCompletionAndEndOfTheGame);
+            OnGameEnded?.Invoke(winningTeam);
+            Logger.LogTrace("OnGameEnded event invoked", Logger.LogType.Server, this);
+        }
+
+        public Round GetRound(byte roundNumber)
+        {
+            if (roundNumber < 1 || roundNumber > RoundsConfig.GetMaxRounds())
+            {
+                Logger.LogError("Round number " + roundNumber + " is out of bounds !", Logger.LogType.Server, this);
+                return null;
+            }
+            return Rounds[roundNumber - 1];
+        }
+        
+        public Round GetCurrentRound()
+        {
+            return GetRound(CurrentRoundNumber.Value);
+        }
+        
+        public void TryForceRoundWinner(PlayerTeamType teamType)
+        {
+            if (!IsServerStarted)
+            {
+                ForceRoundWinnerServerRpc(teamType);
+            }
+            else
+            {
+                ForceRoundWinner(teamType);
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ForceRoundWinnerServerRpc(PlayerTeamType teamType)
+        {
+            ForceRoundWinner(teamType);
+        }
+
+        private void ForceRoundWinner(PlayerTeamType teamType)
+        {
+            if (teamType == PlayerTeamType.Z)
+            {
+                Logger.LogError("You can't force the Z team to win the round !", Logger.LogType.Server, this);
+                return;
+            }
+            if (!IsGameStarted.Value)
+            {
+                Logger.LogError("The game is not started ! The round cannot be forced to win", Logger.LogType.Server, this);
+                return;
+            }
+            if (CurrentRoundNumber.Value == 0)
+            {
+                Logger.LogError("No round is currently active !", Logger.LogType.Server, this);
+                return;
+            }
+            if (GetCurrentRound().IsRoundActive)
+            {
+                EndCurrentRound(teamType);
+            }
+            else
+            {
+                Logger.LogError("The current round is already ended !", Logger.LogType.Server, this);
+            }
+        }
+        
+        public int GetWinCount(PlayerTeamType teamType)
+        {
+            return RoundsResults.Collection.FindAll(result => result.WinningTeam == teamType).Count;
         }
     }
 }

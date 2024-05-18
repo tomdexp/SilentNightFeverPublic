@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Player.PlayerTongue;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ namespace _Project.Scripts.Runtime.Utils
             _defaultColor = _meshRenderer.material.color;
         }
 
-        private void ChangeColor()
+        private void ChangeColor(PlayerStickyTongue _)
         {
             StartCoroutine(ChangeColorCoroutine());
         }

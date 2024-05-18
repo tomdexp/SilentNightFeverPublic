@@ -36,13 +36,26 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
         public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;
         public event Action<RealPlayerInfo,RealPlayerInfo> OnRealPlayerPossessed; // source, target
-        public event Action<RealPlayerInfo> OnRealPlayerUnpossessed; 
+        public event Action<RealPlayerInfo> OnRealPlayerUnpossessed;
+        public event Action OnAllPlayerSpawnedLocally;
+        
+        private int _numberOfPlayerSpawnedLocally = 0;
+
+        public override void OnStartServer()
+        {
+            _realPlayerInfos.Clear();
+            _playerTeamInfos.Clear();
+        }
+
+        public override void OnStopServer()
+        {
+            _realPlayerInfos.Clear();
+            _playerTeamInfos.Clear();
+        }
 
         public override void OnStartClient()
         {
             base.OnStartClient();
-            _realPlayerInfos.Clear();
-            _playerTeamInfos.Clear();
             _realPlayerInfos.OnChange += OnChangedRealPlayerInfos;
             _playerTeamInfos.OnChange += OnChangedPlayerTeamInfos;
             _joinInputAction.performed += JoinInputActionPerformed;
@@ -60,9 +73,7 @@ namespace _Project.Scripts.Runtime.Networking
         public override void OnStopClient()
         {
             base.OnStopClient();
-            _realPlayerInfos.Clear();
             _realPlayerInfos.OnChange -= OnChangedRealPlayerInfos;
-            _playerTeamInfos.Clear();
             _playerTeamInfos.OnChange -= OnChangedPlayerTeamInfos;
             _joinInputAction.Disable();
             _leaveInputAction.Disable();
@@ -522,28 +533,52 @@ namespace _Project.Scripts.Runtime.Networking
                 Logger.LogWarning("Not enough real players to spawn all players.", Logger.LogType.Server, context:this);
                 return;
             }
+            _numberOfPlayerSpawnedLocally = 0;
             SetPlayerJoiningEnabledClientRpc(false);
             SetPlayerLeavingEnabledClientRpc(false);
             SetPlayerChangingTeamEnabledClientRpc(false);
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
             {
+                Logger.LogTrace("Spawning player for real player " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context:this);
                 var nob = Instantiate(_playerPrefab);
                 InstanceFinder.ServerManager.Spawn(nob);
-                nob.GetComponentInChildren<NetworkPlayer>().SetRealPlayerInfo(realPlayerInfo);
+                var networkPlayer = nob.GetComponentInChildren<NetworkPlayer>();
+                networkPlayer.SetRealPlayerInfo(realPlayerInfo);
+                networkPlayer.GetPlayerController().OnPlayerSpawnedLocally += OnPlayerSpawnedLocally;
                 if (realPlayerInfo.ClientId == 255)
                 {
                     // If the player is a fake player, give ownership to the first client
                     var conn = InstanceFinder.ServerManager.Clients[1];
-                    nob.GiveOwnership(conn); 
+                    nob.GiveOwnership(conn);
+                    NetworkObject[] networkObjects = nob.GetComponentsInChildren<NetworkObject>();
+                    foreach (NetworkObject networkObject in networkObjects)
+                    {
+                        networkObject.GiveOwnership(conn);
+                    }
                 }
                 else
                 {
                     var conn = InstanceFinder.ServerManager.Clients[realPlayerInfo.ClientId];
                     nob.GiveOwnership(conn);
+                    NetworkObject[] networkObjects = nob.GetComponentsInChildren<NetworkObject>();
+                    foreach (NetworkObject networkObject in networkObjects)
+                    {
+                        networkObject.GiveOwnership(conn);
+                    }
                 }
             }
         }
-        
+
+        private void OnPlayerSpawnedLocally()
+        {
+            _numberOfPlayerSpawnedLocally++;
+            if (_numberOfPlayerSpawnedLocally == 4)
+            {
+                OnAllPlayerSpawnedLocally?.Invoke();
+                Logger.LogDebug("All players spawned locally.", Logger.LogType.Server, context:this);
+            }
+        }
+
         public void TryPossessPlayer(PlayerIndexType sourcePlayerIndexType, PlayerIndexType targetPlayerIndexType)
         {
             if (!IsServerStarted)
@@ -564,7 +599,8 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void PossessPlayer(PlayerIndexType sourcePlayerIndexType, PlayerIndexType targetPlayerIndexType)
         {
-            // TODO NETWORKING : This method only works if the source and target player are on the same client
+            if (!IsServerStarted) return;
+            // TODO NETWORKING : Only the host can possess a fake player
             var sourceNetworkPlayer = GetNetworkPlayer(sourcePlayerIndexType);
             var targetNetworkPlayer = GetNetworkPlayer(targetPlayerIndexType);
             if (targetNetworkPlayer.GetRealPlayerInfo().ClientId != 255)
@@ -573,7 +609,7 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             var conn = InstanceFinder.ServerManager.Clients[sourceNetworkPlayer.OwnerId];
-            targetNetworkPlayer.GiveOwnership(conn);
+            //targetNetworkPlayer.GiveOwnership(conn);
             targetNetworkPlayer.GetComponent<PlayerController>().BindInputProvider(sourceNetworkPlayer.GetComponent<HardwareInputProvider>());
             sourceNetworkPlayer.GetComponent<PlayerController>().ClearInputProvider();
             Logger.LogDebug("Player " + targetPlayerIndexType + " possessed by player " + sourcePlayerIndexType, context:this);
@@ -600,13 +636,14 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void UnpossessPlayer(PlayerIndexType playerIndexType)
         {
+            if (!IsServerStarted) return;
             var networkPlayer = GetNetworkPlayer(playerIndexType);
             if (networkPlayer.GetRealPlayerInfo().ClientId != 255)
             {
                 Logger.LogError("Cannot unpossess a real player.", context:this);
                 return;
             }
-            networkPlayer.RemoveOwnership();
+            //networkPlayer.RemoveOwnership();
             networkPlayer.GetComponent<PlayerController>().ClearInputProvider();
             OnRealPlayerUnpossessed?.Invoke(networkPlayer.GetRealPlayerInfo());
             Logger.LogDebug("Player " + playerIndexType + " unpossessed.", context:this);
@@ -625,6 +662,7 @@ namespace _Project.Scripts.Runtime.Networking
         [ServerRpc(RunLocally = true, RequireOwnership = false)]
         public void SetCanChangeTeam(bool value)
         {
+            Logger.LogDebug("SetCanChangeTeam: " + value, Logger.LogType.Server, context:this);
             _canChangeTeam.Value = value;
         }
         
@@ -726,6 +764,16 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             networkPlayer.GiveEffect<T>();
+        }
+
+        public IEnumerable<NetworkPlayer> GetNetworkPlayers()
+        {
+            return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None);
+        }
+
+        public IEnumerable<NetworkPlayer> GetNetworkPlayers(PlayerTeamType teamType)
+        {
+            return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None).Where(x => x.GetPlayerTeamType() == teamType);
         }
     }
 }
