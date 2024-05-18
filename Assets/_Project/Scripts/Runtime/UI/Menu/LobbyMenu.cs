@@ -30,6 +30,11 @@ namespace _Project.Scripts.Runtime.UI
             _needSetup = true;
         }
 
+        private void OnDisable()
+        {
+            UnbindEvents();
+        }
+
         public override bool OpenMenu(bool selectLastSelectable = true)
         {
             if (!base.OpenMenu(selectLastSelectable)) return false;
@@ -86,6 +91,7 @@ namespace _Project.Scripts.Runtime.UI
             }
             PlayerManager.Instance.OnRealPlayerInfosChanged += OnRealPlayerInfosChanged;
             PlayerManager.Instance.SetPlayerJoiningEnabled(true);
+            PlayerManager.Instance.OnTeamManagementStarted += OnTeamManagementStarted;
 
         }
 
@@ -93,6 +99,7 @@ namespace _Project.Scripts.Runtime.UI
         {
             if (PlayerManager.HasInstance == false) return;
             PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
+            PlayerManager.Instance.OnTeamManagementStarted -= OnTeamManagementStarted;
         }
 
         private void OnRealPlayerInfosChanged(List<RealPlayerInfo> realPlayerInfos)
@@ -134,5 +141,11 @@ namespace _Project.Scripts.Runtime.UI
                 EventSystem.current.SetSelectedGameObject(null);
             }
         }
+
+        private void OnTeamManagementStarted()
+        {
+            _defaultSelectable.GetComponent<Button>().onClick?.Invoke();
+        }
+
     }
 }

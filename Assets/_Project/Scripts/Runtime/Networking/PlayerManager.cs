@@ -46,6 +46,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action<RealPlayerInfo> OnRealPlayerUnpossessed;
         public event Action OnAllPlayerSpawnedLocally;
         public event Action OnRemoteClientDisconnected;
+        public event Action OnTeamManagementStarted;
         
         private int _numberOfPlayerSpawnedLocally = 0;
         
@@ -285,7 +286,7 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerConfirmTeamEnabledClientRpc(true);
             SetPlayerJoiningEnabledClientRpc(false);
 
-            Logger.LogInfo("Team management started", Logger.LogType.Client, context: this);
+           
 
             List<PlayerTeamInfo> playerTeamInfos = new List<PlayerTeamInfo>();
 
@@ -300,7 +301,18 @@ namespace _Project.Scripts.Runtime.Networking
                     });
                 }
                 _playerTeamInfos.AddRange(playerTeamInfos);
+                Logger.LogInfo("Team management started", Logger.LogType.Client, context: this);
+                OnTeamManagementStartedTriggerClientRPC();
+            } else
+            {
+                Logger.LogInfo("Team management already started", Logger.LogType.Client, context: this);
             }
+        }
+
+        [ObserversRpc(ExcludeOwner = false, ExcludeServer = false)]
+        private void OnTeamManagementStartedTriggerClientRPC()
+        {
+            OnTeamManagementStarted?.Invoke();
         }
 
         private void TryChangeTeam(InputAction.CallbackContext context, bool goToLeft)
