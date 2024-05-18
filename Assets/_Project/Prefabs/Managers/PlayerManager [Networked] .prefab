@@ -101,6 +101,31 @@ MonoBehaviour:
       m_Action: Leave Input
       m_Flags: 0
     m_Flags: 0
+  _readyInputAction:
+    m_Name: Ready Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 7193a587-54d8-4b65-8b7c-5170bfd23baa
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1f6cdcea-cb67-4d52-9118-68ad7d66adf9
+      m_Path: <Keyboard>/c
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Ready Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 4613a67f-8427-45a2-b466-ffbeff6b2ad0
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Ready Input
+      m_Flags: 0
+    m_Flags: 0
   _goToLeftTeamInputAction:
     m_Name: Go To Left Team Input
     m_Type: 0

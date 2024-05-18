@@ -28,18 +28,21 @@ namespace _Project.Scripts.Runtime.Networking
         [SerializeField] private NetworkObject _playerPrefab;
         [SerializeField] private InputAction _joinInputAction;
         [SerializeField] private InputAction _leaveInputAction;
+        [SerializeField] private InputAction _readyInputAction;
         [SerializeField] private InputAction _goToLeftTeamInputAction;
         [SerializeField] private InputAction _goToRightTeamInputAction;
         [SerializeField] private InputAction _joinAndFullFakePlayerInputAction;
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
         private readonly SyncList<PlayerTeamInfo> _playerTeamInfos = new SyncList<PlayerTeamInfo>();
-        private readonly SyncVar<bool> _canChangeTeam = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner));
-        
+        private readonly SyncList<PlayerReadyInfo> _playerReadyInfos = new SyncList<PlayerReadyInfo>();
+        private bool _canChangeTeam = false;
+
         public readonly SyncVar<bool> CanPlayerUseTongue = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
         public int NumberOfPlayers => _realPlayerInfos.Count;
-        public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
+        public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged;
+        public event Action<List<PlayerReadyInfo>> OnPlayersReadyChanged;
         public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;
-        public event Action<RealPlayerInfo,RealPlayerInfo> OnRealPlayerPossessed; // source, target
+        public event Action<RealPlayerInfo, RealPlayerInfo> OnRealPlayerPossessed; // source, target
         public event Action<RealPlayerInfo> OnRealPlayerUnpossessed;
         public event Action OnAllPlayerSpawnedLocally;
         public event Action OnRemoteClientDisconnected;
@@ -56,10 +59,11 @@ namespace _Project.Scripts.Runtime.Networking
         {
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
+            _playerReadyInfos.Clear();
             InstanceFinder.ServerManager.OnRemoteConnectionState += OnRemoteConnectionState;
             StartCoroutine(TrySubscribeToGameManagerEvents());
         }
-        
+
         private IEnumerator TrySubscribeToGameManagerEvents()
         {
             while (!GameManager.HasInstance)
@@ -77,6 +81,7 @@ namespace _Project.Scripts.Runtime.Networking
                 Logger.LogInfo("Remote client disconnected from online", Logger.LogType.Server, this);
                 _realPlayerInfos.Clear();
                 _playerTeamInfos.Clear();
+                _playerReadyInfos.Clear();
                 OnRemoteClientDisconnected?.Invoke();
             }
         }
@@ -85,6 +90,7 @@ namespace _Project.Scripts.Runtime.Networking
         {
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
+            _playerReadyInfos.Clear();
             InstanceFinder.ServerManager.OnRemoteConnectionState -= OnRemoteConnectionState;
             if (GameManager.HasInstance)
             {
@@ -98,6 +104,7 @@ namespace _Project.Scripts.Runtime.Networking
             base.OnStartClient();
             _realPlayerInfos.OnChange += OnChangedRealPlayerInfos;
             _playerTeamInfos.OnChange += OnChangedPlayerTeamInfos;
+            _playerReadyInfos.OnChange += OnChangedPlayersReadyInfos;
             _joinInputAction.performed += JoinInputActionPerformed;
             _goToRightTeamInputAction.performed += GoToRightTeamInputActionPerformed;
             _goToLeftTeamInputAction.performed += GoToLeftTeamInputActionPerformed;
@@ -107,6 +114,7 @@ namespace _Project.Scripts.Runtime.Networking
             //_leaveInputAction.Enable();
             //_goToRightTeamInputAction.Enable();
             //_goToLeftTeamInputAction.Enable();
+            _readyInputAction.Enable();
             _joinAndFullFakePlayerInputAction.Enable();
         }
 
@@ -115,13 +123,16 @@ namespace _Project.Scripts.Runtime.Networking
             base.OnStopClient();
             _realPlayerInfos.OnChange -= OnChangedRealPlayerInfos;
             _playerTeamInfos.OnChange -= OnChangedPlayerTeamInfos;
+            _playerReadyInfos.OnChange -= OnChangedPlayersReadyInfos;
             //_joinInputAction.Disable();
             //_leaveInputAction.Disable();
             //_goToRightTeamInputAction.Disable();
             //_goToLeftTeamInputAction.Disable();
+            // _readyInputAction.Disable();
             _joinAndFullFakePlayerInputAction.Disable();
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
+            _readyInputAction.performed -= ConfirmTeamInputActionPerformed;
             _goToRightTeamInputAction.performed -= GoToRightTeamInputActionPerformed;
             _goToLeftTeamInputAction.performed -= GoToLeftTeamInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed -= JoinAndFullFakePlayerInputActionOnPerformed;
@@ -156,6 +167,21 @@ namespace _Project.Scripts.Runtime.Networking
                     teams += "Player " +playerTeamInfo.PlayerIndexType + " : Team " + playerTeamInfo.PlayerTeamType + " | ";
                 }
                 Logger.LogTrace("Teams: " + teams, Logger.LogType.Server, this);
+            }
+        }
+
+        private void OnChangedPlayersReadyInfos(SyncListOperation op, int index, PlayerReadyInfo oldItem, PlayerReadyInfo newItem, bool asServer)
+        {
+            OnPlayersReadyChanged?.Invoke(_playerReadyInfos.Collection);
+            if (op == SyncListOperation.Set)
+            {
+                string readys = "";
+                // Debug the current ready Players in a single log
+                foreach (PlayerReadyInfo playerReadyInfo in _playerReadyInfos.Collection)
+                {
+                    readys += "Player " + playerReadyInfo.PlayerIndexType + " : Ready " + playerReadyInfo.IsPlayerReady + " | ";
+                }
+                Logger.LogTrace("Readys: " + readys, Logger.LogType.Server, this);
             }
         }
 
@@ -211,7 +237,12 @@ namespace _Project.Scripts.Runtime.Networking
                 TryAddRealPlayer(newRealPlayerInfo.ClientId, newRealPlayerInfo.DevicePath);
             }
         }
-        
+
+        private void ConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
+        {
+            TryConfirmTeam(context);
+        }
+
         private void GoToLeftTeamInputActionPerformed(InputAction.CallbackContext context)
         {
             TryChangeTeam(context, true);
@@ -222,9 +253,59 @@ namespace _Project.Scripts.Runtime.Networking
             TryChangeTeam(context, false);
         }
 
+        [Button(ButtonSizes.Medium)]
+        public void TryStartTeamManagement()
+        {
+            if (_realPlayerInfos.Collection.Count != 4)
+            {
+                Logger.LogWarning("Not enough real players to start team management.", context: this);
+                return;
+            }
+
+            if (!IsServerStarted)
+            {
+                StartTeamManagementServerRpc();
+            }
+            else
+            {
+                StartTeamManagement();
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void StartTeamManagementServerRpc()
+        {
+            StartTeamManagement();
+        }
+
+        private void StartTeamManagement()
+        {
+            SetPlayerLeavingEnabledClientRpc(false);
+            SetJoinTeamEnabledClientRpc(true);
+            SetPlayerConfirmTeamEnabledClientRpc(true);
+            SetPlayerJoiningEnabledClientRpc(false);
+
+            Logger.LogInfo("Team management started", Logger.LogType.Client, context: this);
+
+            List<PlayerTeamInfo> playerTeamInfos = new List<PlayerTeamInfo>();
+
+            if (_playerTeamInfos.Count < _realPlayerInfos.Count)
+            {
+                for (int i = 0; i < _realPlayerInfos.Count; i++)
+                {
+                    playerTeamInfos.Add(new PlayerTeamInfo
+                    {
+                        PlayerIndexType = _realPlayerInfos[i].PlayerIndexType,
+                        PlayerTeamType = PlayerTeamType.Z
+                    });
+                }
+                _playerTeamInfos.AddRange(playerTeamInfos);
+            }
+        }
+
         private void TryChangeTeam(InputAction.CallbackContext context, bool goToLeft)
         {
-            if (!_canChangeTeam.Value)
+            if (!_canChangeTeam)
             {
                 Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context:this);
                 return;
@@ -238,44 +319,27 @@ namespace _Project.Scripts.Runtime.Networking
             var exist = DoesRealPlayerExist(realPlayerInfo);
             if (!exist)
             {
-                Logger.LogWarning("Can't change team for RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath + " as it does not exist.", context:this);
+                Logger.LogWarning("Can't change team for RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath + " as it does not exist.", context: this);
                 return;
             }
             var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
-            if (!IsServerStarted)
-            {
-                ChangeTeamServerRpc(playerIndexType, goToLeft);
-            }
-            else
-            {
-                ChangeTeam(playerIndexType, goToLeft);
-            }
-        }
-        
-        public void ForceChangeTeam(PlayerIndexType playerIndexType, bool goToLeft)
-        {
-            if (!_canChangeTeam.Value)
-            {
-                Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context:this);
-                return;
-            }
-            if (!IsServerStarted)
-            {
-                ChangeTeamServerRpc(playerIndexType, goToLeft);
-            }
-            else
-            {
-                ChangeTeam(playerIndexType, goToLeft);
-            }
-        }
-        
-        [ServerRpc(RequireOwnership = false)]
-        private void ChangeTeamServerRpc(PlayerIndexType playerIndexType, bool goToLeft)
-        {
-            ChangeTeam(playerIndexType, goToLeft);
+     
+            ChangeTeamServerRpc(playerIndexType, goToLeft);
         }
 
-        private void ChangeTeam(PlayerIndexType playerIndexType, bool goToLeft)
+        public void ForceChangeTeam(PlayerIndexType playerIndexType, bool goToLeft)
+        {
+            if (!_canChangeTeam)
+            {
+                Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context: this);
+                return;
+            }
+            
+            ChangeTeamServerRpc(playerIndexType, goToLeft);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ChangeTeamServerRpc(PlayerIndexType playerIndexType, bool goToLeft)
         {
             // Structures cannot have their values modified when they reside within a collection. You must instead create a local variable for the collection index you wish to modify, change values on the local copy, then set the local copy back into the collection
             PlayerTeamType newTeam = PlayerTeamType.Z;
@@ -301,30 +365,108 @@ namespace _Project.Scripts.Runtime.Networking
             Logger.LogDebug("Player " + playerIndexType + " changed team to " + newTeam, Logger.LogType.Server, this);
         }
 
-        private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
+        private void TryConfirmTeam(InputAction.CallbackContext context)
         {
-            SetPlayerJoiningEnabled(true);
-            JoinInputActionPerformed(context);
-            AddFakePlayer();
-            AddFakePlayer();
-            AddFakePlayer();
-            GameManager.Instance.TryStartGame();
+            if (!_canChangeTeam)
+            {
+                Logger.LogWarning("Can't confirm team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context: this);
+                return;
+            }
+            // Reconstruct the RealPlayerInfo
+            var realPlayerInfo = new RealPlayerInfo
+            {
+                ClientId = (byte)LocalConnection.ClientId,
+                DevicePath = context.control.device.path
+            };
+            var exist = DoesRealPlayerExist(realPlayerInfo);
+            if (!exist)
+            {
+                Logger.LogWarning("Can't change team for RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath + " as it does not exist.", context: this);
+                return;
+            }
+            var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
+
+            ConfirmTeamServerRpc(playerIndexType);
+
         }
+
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ConfirmTeamServerRpc(PlayerIndexType playerIndexType, NetworkConnection conn = null)
+        {
+            // Check if player is not already ready
+            foreach (PlayerReadyInfo playerReadyInfo in _playerReadyInfos.Collection)
+            {
+                if (playerReadyInfo.PlayerIndexType == playerIndexType && playerReadyInfo.IsPlayerReady == true)
+                {
+                    Logger.LogWarning("Player " + playerIndexType + " is already ready " + playerReadyInfo.IsPlayerReady, Logger.LogType.Server, this);
+                    return;
+                }
+            }
+
+            // Find in which team player want to confirm
+            PlayerTeamInfo confirmingTeam = new PlayerTeamInfo
+            {
+                PlayerTeamType = PlayerTeamType.Z,
+                PlayerIndexType = playerIndexType
+            };
+
+            foreach (PlayerTeamInfo playerTeamInfo in _playerTeamInfos.Collection)
+            {
+                if (playerTeamInfo.PlayerIndexType == playerIndexType)
+                {
+                    confirmingTeam.PlayerTeamType = playerTeamInfo.PlayerTeamType;
+                    break;
+                }
+            }
+
+            // If player tried to confirm while not in a team, return
+            if (confirmingTeam.PlayerTeamType == PlayerTeamType.Z)
+            {
+                Logger.LogWarning("Player " + playerIndexType + " didn't select a team " + confirmingTeam.PlayerTeamType, Logger.LogType.Server, this);
+                return;
+            }
+
+            // Check if Team is made of 2 or less members 
+            int numOfPlayersInThisTeam = 0;
+            foreach (PlayerTeamInfo playerTeamInfo in _playerTeamInfos.Collection)
+            {
+                if (playerTeamInfo.PlayerTeamType == confirmingTeam.PlayerTeamType)
+                {
+                    numOfPlayersInThisTeam++;
+                }
+            }
+
+            if (numOfPlayersInThisTeam > 2)
+            {
+                Logger.LogDebug("Player " + playerIndexType + " can't confirm joint team " + confirmingTeam + " because team is already full " + numOfPlayersInThisTeam, Logger.LogType.Server, this);
+                return;
+            }
+
+            _playerReadyInfos.Add(new PlayerReadyInfo
+            {
+                PlayerIndexType = playerIndexType,
+                IsPlayerReady = true
+            });
+            Logger.LogDebug("Player " + playerIndexType + " confirmed being in team " + confirmingTeam, Logger.LogType.Server, this);
+
+            SetJoinTeamEnabledTargetRPC(conn, false);
+        }
+
 
         public void TrySetJoinTeamEnabled(bool value)
         {
-            if (!IsServerStarted)
-            {
-                SetJoinTeamEnabledServerRpc(value);
-            }
-            else
-            {
-                SetJoinTeamEnabled(value);
-            }
+            SetJoinTeamEnabledServerRpc(value);
         }
 
         [ServerRpc(RequireOwnership = false)]
         private void SetJoinTeamEnabledServerRpc(bool value)
+        {
+            SetJoinTeamEnabledClientRpc(value);
+        }
+
+        [ObserversRpc]
+        private void SetJoinTeamEnabledClientRpc(bool value)
         {
             SetJoinTeamEnabled(value);
         }
@@ -342,8 +484,27 @@ namespace _Project.Scripts.Runtime.Networking
                 _goToRightTeamInputAction.Disable();
                 _goToLeftTeamInputAction.Disable();
             }
+            _canChangeTeam = value;
         }
-        
+
+        [TargetRpc(ExcludeServer = false)]
+        private void SetJoinTeamEnabledTargetRPC(NetworkConnection conn, bool value)
+        {
+            SetJoinTeamEnabled(value);
+        }
+
+
+        private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
+        {
+            SetPlayerJoiningEnabled(true);
+            JoinInputActionPerformed(context);
+            AddFakePlayer();
+            AddFakePlayer();
+            AddFakePlayer();
+            GameManager.Instance.TryStartGame();
+        }
+
+
         public void SetPlayerJoiningEnabled(bool value)
         {
             Logger.LogTrace("SetPlayerJoiningEnabled: " + value, context:this);
@@ -402,7 +563,30 @@ namespace _Project.Scripts.Runtime.Networking
                 _goToRightTeamInputAction.Disable();
             }
         }
-        
+
+
+        [ObserversRpc]
+        private void SetPlayerConfirmTeamEnabledClientRpc(bool value)
+        {
+            SetPlayerConfirmTeamEnabled(value);
+        }
+
+        public void SetPlayerConfirmTeamEnabled(bool value)
+        {
+            Logger.LogTrace("SetPlayerConfirmTeamEnabled: " + value, context: this);
+
+            if (value)
+            {
+                _readyInputAction.Enable();
+                _readyInputAction.performed += ConfirmTeamInputActionPerformed;
+            }
+            else
+            {
+                _readyInputAction.performed -= ConfirmTeamInputActionPerformed;
+                _readyInputAction.Disable();
+            }
+        }
+
         private void LeaveInputActionPerformed(InputAction.CallbackContext context)
         {
             // This method is always call locally
@@ -444,14 +628,14 @@ namespace _Project.Scripts.Runtime.Networking
 
             // This Real Player is not in the list
             Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                            realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context:this);
+                            realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context: this);
         }
-        
+
         public void TrySpawnPlayer()
         {
             if (!IsServerStarted)
             {
-                Logger.LogTrace("TrySpawnPlayer request denied locally because not server, ignore this if you are a client-only player.", context:this);
+                Logger.LogTrace("TrySpawnPlayer request denied locally because not server, ignore this if you are a client-only player.", context: this);
                 SpawnPlayerServerRpc();
             }
             else
@@ -459,19 +643,19 @@ namespace _Project.Scripts.Runtime.Networking
                 SpawnPlayer();
             }
         }
-        
+
         [ServerRpc(RequireOwnership = false)]
         private void SpawnPlayerServerRpc()
         {
             SpawnPlayer();
         }
-        
+
         private void SpawnPlayer()
         {
-            Logger.LogTrace("Attempting to spawn player...", Logger.LogType.Server, context:this);
+            Logger.LogTrace("Attempting to spawn player...", Logger.LogType.Server, context: this);
             if (!IsServerStarted)
             {
-                Logger.LogError("This method should only be called on the server, if you see this message, it's not normal.", context:this);
+                Logger.LogError("This method should only be called on the server, if you see this message, it's not normal.", context: this);
             }
             var go = Instantiate(_playerPrefab);
             InstanceFinder.ServerManager.Spawn(go);
@@ -482,17 +666,17 @@ namespace _Project.Scripts.Runtime.Networking
         {
             TryAddRealPlayer(clientId, devicePath);
         }
-        
+
         private void TryAddRealPlayer(byte clientId, string devicePath)
         {
             if (GameManager.Instance.IsGameStarted.Value) return;
-            
+
             if (_realPlayerInfos.Count >= 4)
             {
-                Logger.LogTrace("Cannot add more than 4 players.", Logger.LogType.Server, context:this);
+                Logger.LogTrace("Cannot add more than 4 players.", Logger.LogType.Server, context: this);
                 return;
             }
-            
+
             // We need to find a free PlayerIndexType
             PlayerIndexType freePlayerIndexType = PlayerIndexType.Z;
             for (int i = 0; i < 4; i++)
@@ -513,28 +697,28 @@ namespace _Project.Scripts.Runtime.Networking
                     break;
                 }
             }
-            
+
             _realPlayerInfos.Add(new RealPlayerInfo
             {
                 ClientId = clientId,
                 DevicePath = devicePath,
                 PlayerIndexType = freePlayerIndexType
             });
-            Logger.LogTrace("+ RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " added. There are now " + _realPlayerInfos.Count + " players.", Logger.LogType.Server, context:this);
+            Logger.LogTrace("+ RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " added. There are now " + _realPlayerInfos.Count + " players.", Logger.LogType.Server, context: this);
             // make sure there is no duplicate PlayerIndexType
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
             {
-                Logger.LogTrace("PlayerIndexType: " + realPlayerInfo.PlayerIndexType + " for clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context:this);
+                Logger.LogTrace("PlayerIndexType: " + realPlayerInfo.PlayerIndexType + " for clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context: this);
                 // TODO Investigate : why is this loop still required
             }
         }
-        
+
         [ServerRpc(RequireOwnership = false)]
         private void TryRemoveRealPlayerServerRpc(byte clientId, string devicePath)
         {
             TryRemoveRealPlayer(clientId, devicePath);
         }
-        
+
         private void TryRemoveRealPlayer(byte clientId, string devicePath)
         {
             for (int i = 0; i < _realPlayerInfos.Count; i++)
@@ -542,12 +726,12 @@ namespace _Project.Scripts.Runtime.Networking
                 if (_realPlayerInfos[i].ClientId == clientId && _realPlayerInfos[i].DevicePath == devicePath)
                 {
                     _realPlayerInfos.RemoveAt(i);
-                    Logger.LogTrace("- RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " removed. There are now " + _realPlayerInfos.Count + " players.", Logger.LogType.Server, context:this);
+                    Logger.LogTrace("- RealPlayer with clientId " + clientId + " and devicePath " + devicePath + " removed. There are now " + _realPlayerInfos.Count + " players.", Logger.LogType.Server, context: this);
                     return;
                 }
             }
         }
-        
+
         public void TryAddFakePlayer()
         {
             if (!IsServerStarted)
@@ -559,7 +743,7 @@ namespace _Project.Scripts.Runtime.Networking
                 AddFakePlayer();
             }
         }
-        
+
         [ServerRpc(RequireOwnership = false)]
         private void AddFakePlayerServerRpc()
         {
@@ -576,10 +760,10 @@ namespace _Project.Scripts.Runtime.Networking
                 ClientId = 255,
                 DevicePath = "/FakeDevice(" + randomString + ")"
             };
-            Logger.LogTrace("Adding fake player with clientId " + fakePlayerInfo.ClientId + " and devicePath " + fakePlayerInfo.DevicePath, Logger.LogType.Server, context:this);
+            Logger.LogTrace("Adding fake player with clientId " + fakePlayerInfo.ClientId + " and devicePath " + fakePlayerInfo.DevicePath, Logger.LogType.Server, context: this);
             TryAddRealPlayer(fakePlayerInfo.ClientId, fakePlayerInfo.DevicePath);
         }
-        
+
         public void TryRemoveFakePlayer()
         {
             if (!IsServerStarted)
@@ -597,7 +781,7 @@ namespace _Project.Scripts.Runtime.Networking
         {
             RemoveFakePlayer();
         }
-        
+
         private void RemoveFakePlayer()
         {
             if (GameManager.Instance.IsGameStarted.Value) return;
@@ -605,18 +789,18 @@ namespace _Project.Scripts.Runtime.Networking
             if (fakePlayer.ClientId == 0) return;
             TryRemoveRealPlayer(fakePlayer.ClientId, fakePlayer.DevicePath);
         }
-        
+
         public void SpawnAllPlayers()
         {
             // ONLY CALLED BY THE SERVER
             if (!IsServerStarted)
             {
-                Logger.LogError("This method should only be called on the server, if you see this message, it's not normal.", Logger.LogType.Server, context:this);
+                Logger.LogError("This method should only be called on the server, if you see this message, it's not normal.", Logger.LogType.Server, context: this);
                 return;
             }
             if (_realPlayerInfos.Count != 4)
             {
-                Logger.LogWarning("Not enough real players to spawn all players.", Logger.LogType.Server, context:this);
+                Logger.LogWarning("Not enough real players to spawn all players.", Logger.LogType.Server, context: this);
                 return;
             }
             _numberOfPlayerSpawnedLocally = 0;
@@ -625,7 +809,7 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerChangingTeamEnabledClientRpc(false);
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
             {
-                Logger.LogTrace("Spawning player for real player " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context:this);
+                Logger.LogTrace("Spawning player for real player " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context: this);
                 var nob = Instantiate(_playerPrefab);
                 InstanceFinder.ServerManager.Spawn(nob);
                 var networkPlayer = nob.GetComponentInChildren<NetworkPlayer>();
@@ -731,78 +915,23 @@ namespace _Project.Scripts.Runtime.Networking
             var networkPlayer = GetNetworkPlayer(playerIndexType);
             if (networkPlayer.GetRealPlayerInfo().ClientId != 255)
             {
-                Logger.LogError("Cannot unpossess a real player.", context:this);
+                Logger.LogError("Cannot unpossess a real player.", context: this);
                 return;
             }
             //networkPlayer.RemoveOwnership();
             networkPlayer.GetComponent<PlayerController>().ClearInputProvider();
             OnRealPlayerUnpossessed?.Invoke(networkPlayer.GetRealPlayerInfo());
-            Logger.LogDebug("Player " + playerIndexType + " unpossessed.", context:this);
+            Logger.LogDebug("Player " + playerIndexType + " unpossessed.", context: this);
         }
 
         public NetworkPlayer GetNetworkPlayer(PlayerIndexType playerIndexType)
         {
             return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None).ToList().Find(x => x.GetPlayerIndexType() == playerIndexType);
         }
-        
+
         public List<RealPlayerInfo> GetRealPlayerInfos()
         {
             return _realPlayerInfos.Collection;
-        }
-        
-        [ServerRpc(RunLocally = true, RequireOwnership = false)]
-        public void SetCanChangeTeam(bool value)
-        {
-            Logger.LogDebug("SetCanChangeTeam: " + value, Logger.LogType.Server, context:this);
-            _canChangeTeam.Value = value;
-        }
-        
-        [Button(ButtonSizes.Medium)]
-        public void TryStartTeamManagement()
-        {
-            if (_realPlayerInfos.Collection.Count != 4)
-            {
-                Logger.LogWarning("Not enough real players to start team management.", context:this);
-                return;
-            }
-            
-            if (!IsServerStarted)
-            {
-                StartTeamManagementServerRpc();
-            }
-            else
-            {
-                StartTeamManagement();
-            }
-        }
-        
-        [ServerRpc(RequireOwnership = false)]
-        private void StartTeamManagementServerRpc()
-        {
-            StartTeamManagement();
-        }
-        
-        private void StartTeamManagement()
-        {
-            SetPlayerLeavingEnabledClientRpc(false);
-            SetPlayerJoiningEnabledClientRpc(false);
-
-            _goToRightTeamInputAction.Enable();
-            _goToLeftTeamInputAction.Enable();
-
-            Logger.LogInfo("Team management started", Logger.LogType.Server, context:this);
-
-            List<PlayerTeamInfo> playerTeamInfos = new List<PlayerTeamInfo>();
-            for (int i = 0; i < _realPlayerInfos.Count; i++)
-            {
-                playerTeamInfos.Add(new PlayerTeamInfo
-                {
-                    PlayerIndexType = _realPlayerInfos[i].PlayerIndexType,
-                    PlayerTeamType = PlayerTeamType.Z
-                });
-            }
-            _playerTeamInfos.AddRange(playerTeamInfos);
-            SetCanChangeTeam(true);
         }
         
         public bool DoesRealPlayerExist(RealPlayerInfo realPlayerInfo)
