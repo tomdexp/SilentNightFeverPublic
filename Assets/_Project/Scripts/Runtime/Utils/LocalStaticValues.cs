@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿# if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace _Project.Scripts.Runtime.Utils
 {
@@ -12,7 +14,9 @@ namespace _Project.Scripts.Runtime.Utils
             Reset();
         }
         
+#if UNITY_EDITOR
         [InitializeOnEnterPlayMode]
+#endif
         static void Reset()
         {
             Logger.LogDebug("Resetting LocalStaticValues");

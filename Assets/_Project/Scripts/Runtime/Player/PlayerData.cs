@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using _Project.Scripts.Runtime.Landmarks.Voodoo;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -17,6 +18,9 @@ namespace _Project.Scripts.Runtime.Player
         [Title("Player Camera Settings")] 
         public float CameraOffsetRadius = 3;
         public float CameraHeight = 6;
+        public float CameraFov = 60;
+        public float CameraFovChangeDuration = 1f;
+        public Ease CameraFovChangeEase = Ease.Linear;
         
         [Title("Player Size Settings")]
         [PropertyRange(0,100)] public float PlayerDefaultSize = 1f;
@@ -43,5 +47,8 @@ namespace _Project.Scripts.Runtime.Player
         public float OtherTongueMinDistance = 1f;
         public float TongueMissDuration = 0.3f;
         public float TongueMissPercentOfMaxDistance = 0.5f;
+        
+        [Title("Landmark Datas")]
+        public LandmarkData_Voodoo LandmarkData_Voodoo;
     }
 }

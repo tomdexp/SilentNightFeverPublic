@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,7 @@ using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using FishNet.Transporting;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,25 +34,63 @@ namespace _Project.Scripts.Runtime.Networking
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
         private readonly SyncList<PlayerTeamInfo> _playerTeamInfos = new SyncList<PlayerTeamInfo>();
         private readonly SyncVar<bool> _canChangeTeam = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner));
+        
+        public readonly SyncVar<bool> CanPlayerUseTongue = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
         public int NumberOfPlayers => _realPlayerInfos.Count;
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged; 
         public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;
         public event Action<RealPlayerInfo,RealPlayerInfo> OnRealPlayerPossessed; // source, target
         public event Action<RealPlayerInfo> OnRealPlayerUnpossessed;
         public event Action OnAllPlayerSpawnedLocally;
+        public event Action OnRemoteClientDisconnected;
         
         private int _numberOfPlayerSpawnedLocally = 0;
+        
+        private PlayerController _playerControllerA;
+        private PlayerController _playerControllerB;
+        private PlayerController _playerControllerC;
+        private PlayerController _playerControllerD;
+        
 
         public override void OnStartServer()
         {
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
+            InstanceFinder.ServerManager.OnRemoteConnectionState += OnRemoteConnectionState;
+            StartCoroutine(TrySubscribeToGameManagerEvents());
+        }
+        
+        private IEnumerator TrySubscribeToGameManagerEvents()
+        {
+            while (!GameManager.HasInstance)
+            {
+                yield return null;
+            }
+            GameManager.Instance.OnAnyRoundStarted += OnAnyRoundStarted;
+            GameManager.Instance.OnAnyRoundEnded += OnAnyRoundEnded;
+        }
+
+        private void OnRemoteConnectionState(NetworkConnection conn, RemoteConnectionStateArgs args)
+        {
+            if (args.ConnectionState == RemoteConnectionState.Stopped)
+            {
+                Logger.LogInfo("Remote client disconnected from online", Logger.LogType.Server, this);
+                _realPlayerInfos.Clear();
+                _playerTeamInfos.Clear();
+                OnRemoteClientDisconnected?.Invoke();
+            }
         }
 
         public override void OnStopServer()
         {
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
+            InstanceFinder.ServerManager.OnRemoteConnectionState -= OnRemoteConnectionState;
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.OnAnyRoundStarted -= OnAnyRoundStarted;
+                GameManager.Instance.OnAnyRoundEnded -= OnAnyRoundEnded;
+            }
         }
 
         public override void OnStartClient()
@@ -63,10 +103,10 @@ namespace _Project.Scripts.Runtime.Networking
             _goToLeftTeamInputAction.performed += GoToLeftTeamInputActionPerformed;
             _leaveInputAction.performed += LeaveInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed += JoinAndFullFakePlayerInputActionOnPerformed;
-            _joinInputAction.Enable();
-            _leaveInputAction.Enable();
-            _goToRightTeamInputAction.Enable();
-            _goToLeftTeamInputAction.Enable();
+            //_joinInputAction.Enable();
+            //_leaveInputAction.Enable();
+            //_goToRightTeamInputAction.Enable();
+            //_goToLeftTeamInputAction.Enable();
             _joinAndFullFakePlayerInputAction.Enable();
         }
 
@@ -75,16 +115,28 @@ namespace _Project.Scripts.Runtime.Networking
             base.OnStopClient();
             _realPlayerInfos.OnChange -= OnChangedRealPlayerInfos;
             _playerTeamInfos.OnChange -= OnChangedPlayerTeamInfos;
-            _joinInputAction.Disable();
-            _leaveInputAction.Disable();
-            _goToRightTeamInputAction.Disable();
-            _goToLeftTeamInputAction.Disable();
+            //_joinInputAction.Disable();
+            //_leaveInputAction.Disable();
+            //_goToRightTeamInputAction.Disable();
+            //_goToLeftTeamInputAction.Disable();
             _joinAndFullFakePlayerInputAction.Disable();
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
             _goToRightTeamInputAction.performed -= GoToRightTeamInputActionPerformed;
             _goToLeftTeamInputAction.performed -= GoToLeftTeamInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed -= JoinAndFullFakePlayerInputActionOnPerformed;
+        }
+        
+        private void OnAnyRoundStarted(byte _)
+        {
+            Logger.LogTrace("RoundStarted ! Activating Tongue usage for players", Logger.LogType.Server, this);
+            CanPlayerUseTongue.Value = true;
+        }
+        
+        private void OnAnyRoundEnded(byte _)
+        {
+           Logger.LogTrace("RoundEnded ! Deactivating Tongue usage for players", Logger.LogType.Server, this);
+            CanPlayerUseTongue.Value = false;
         }
         
         private void OnChangedRealPlayerInfos(SyncListOperation op, int index, RealPlayerInfo oldItem, RealPlayerInfo newItem, bool asServer)
@@ -251,6 +303,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
         {
+            SetPlayerJoiningEnabled(true);
             JoinInputActionPerformed(context);
             AddFakePlayer();
             AddFakePlayer();
@@ -272,7 +325,7 @@ namespace _Project.Scripts.Runtime.Networking
         }
         
         [ObserversRpc]
-        private void SetPlayerJoiningEnabledClientRpc(bool value)
+        public void SetPlayerJoiningEnabledClientRpc(bool value)
         {
             SetPlayerJoiningEnabled(value);
         }
@@ -567,6 +620,11 @@ namespace _Project.Scripts.Runtime.Networking
                     }
                 }
             }
+            
+            _playerControllerA = GetNetworkPlayer(PlayerIndexType.A).GetPlayerController();
+            _playerControllerB = GetNetworkPlayer(PlayerIndexType.B).GetPlayerController();
+            _playerControllerC = GetNetworkPlayer(PlayerIndexType.C).GetPlayerController();
+            _playerControllerD = GetNetworkPlayer(PlayerIndexType.D).GetPlayerController();
         }
 
         private void OnPlayerSpawnedLocally()
@@ -774,6 +832,30 @@ namespace _Project.Scripts.Runtime.Networking
         public IEnumerable<NetworkPlayer> GetNetworkPlayers(PlayerTeamType teamType)
         {
             return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None).Where(x => x.GetPlayerTeamType() == teamType);
+        }
+
+        [Server]
+        public void SetVoodooPuppetDirection(PlayerIndexType playerIndexType, Vector2 direction)
+        {
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    _playerControllerA.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.B:
+                    _playerControllerB.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.C:
+                    _playerControllerC.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.D:
+                    _playerControllerD.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.Z:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
+            }
         }
     }
 }
