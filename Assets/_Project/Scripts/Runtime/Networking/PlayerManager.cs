@@ -310,6 +310,39 @@ namespace _Project.Scripts.Runtime.Networking
             AddFakePlayer();
             GameManager.Instance.TryStartGame();
         }
+
+        public void TrySetJoinTeamEnabled(bool value)
+        {
+            if (!IsServerStarted)
+            {
+                SetJoinTeamEnabledServerRpc(value);
+            }
+            else
+            {
+                SetJoinTeamEnabled(value);
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SetJoinTeamEnabledServerRpc(bool value)
+        {
+            SetJoinTeamEnabled(value);
+        }
+
+        private void SetJoinTeamEnabled(bool value)
+        {
+            Logger.LogTrace("SetJoinTeamEnabled: " + value, context: this);
+            if (value)
+            {
+                _goToRightTeamInputAction.Enable();
+                _goToLeftTeamInputAction.Enable();
+            }
+            else
+            {
+                _goToRightTeamInputAction.Disable();
+                _goToLeftTeamInputAction.Disable();
+            }
+        }
         
         public void SetPlayerJoiningEnabled(bool value)
         {
@@ -753,7 +786,12 @@ namespace _Project.Scripts.Runtime.Networking
         {
             SetPlayerLeavingEnabledClientRpc(false);
             SetPlayerJoiningEnabledClientRpc(false);
+
+            _goToRightTeamInputAction.Enable();
+            _goToLeftTeamInputAction.Enable();
+
             Logger.LogInfo("Team management started", Logger.LogType.Server, context:this);
+
             List<PlayerTeamInfo> playerTeamInfos = new List<PlayerTeamInfo>();
             for (int i = 0; i < _realPlayerInfos.Count; i++)
             {
