@@ -36,7 +36,10 @@ namespace _Project.Scripts.Runtime.UI
         private void OnDisable()
         {
             DisableBackButton();
-            PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
+            if (PlayerManager.HasInstance)
+            {
+                PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
+            }
         }
 
         #region NavigationHistory
