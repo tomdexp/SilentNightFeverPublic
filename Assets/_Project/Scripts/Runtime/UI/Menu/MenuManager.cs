@@ -89,5 +89,10 @@ namespace _Project.Scripts.Runtime.UI
             _navigationHistory.CloseLastMenu();
             _navigationHistory.ClearHistory();
         }
+        
+        public void EnablePlayerJoining(bool enable)
+        {
+            PlayerManager.Instance.SetPlayerJoiningEnabled(enable);
+        }
     }
 }

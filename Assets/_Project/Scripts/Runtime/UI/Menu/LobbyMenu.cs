@@ -60,7 +60,7 @@ namespace _Project.Scripts.Runtime.UI
             _isSetup = true;
             _parentMenu = _potentialParentMenu;
             _parentMenu.OpenSubMenuAndCloseCurrentMenu(this);
-           //InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+            //InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
             StartCoroutine(BindEvents());
         }
 
@@ -78,12 +78,15 @@ namespace _Project.Scripts.Runtime.UI
 
         private IEnumerator BindEvents()
         {
+            yield return new WaitForSecondsRealtime(0.1f);
             while (PlayerManager.HasInstance == false)
             {
                 // We have to wait for the Server to spawn the PlayerManager
                 yield return new WaitForSecondsRealtime(0.1f);
             }
             PlayerManager.Instance.OnRealPlayerInfosChanged += OnRealPlayerInfosChanged;
+            PlayerManager.Instance.SetPlayerJoiningEnabled(true);
+
         }
 
         private void UnbindEvents()
