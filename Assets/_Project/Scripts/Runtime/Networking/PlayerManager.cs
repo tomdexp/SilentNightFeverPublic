@@ -29,6 +29,7 @@ namespace _Project.Scripts.Runtime.Networking
         [SerializeField] private InputAction _joinInputAction;
         [SerializeField] private InputAction _leaveInputAction;
         [SerializeField] private InputAction _readyInputAction;
+        [SerializeField] private InputAction _cancelReadyInputAction;
         [SerializeField] private InputAction _goToLeftTeamInputAction;
         [SerializeField] private InputAction _goToRightTeamInputAction;
         [SerializeField] private InputAction _joinAndFullFakePlayerInputAction;
@@ -115,7 +116,8 @@ namespace _Project.Scripts.Runtime.Networking
             //_leaveInputAction.Enable();
             //_goToRightTeamInputAction.Enable();
             //_goToLeftTeamInputAction.Enable();
-            _readyInputAction.Enable();
+            //_readyInputAction.Enable();
+            //_cancelReadyInputAction.Enable();
             _joinAndFullFakePlayerInputAction.Enable();
         }
 
@@ -130,15 +132,18 @@ namespace _Project.Scripts.Runtime.Networking
             //_goToRightTeamInputAction.Disable();
             //_goToLeftTeamInputAction.Disable();
             // _readyInputAction.Disable();
+            // _cancelReadyInputAction.Enable();
             _joinAndFullFakePlayerInputAction.Disable();
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
             _readyInputAction.performed -= ConfirmTeamInputActionPerformed;
+            _cancelReadyInputAction.performed -= CancelConfirmTeamInputActionPerformed;
             _goToRightTeamInputAction.performed -= GoToRightTeamInputActionPerformed;
             _goToLeftTeamInputAction.performed -= GoToLeftTeamInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed -= JoinAndFullFakePlayerInputActionOnPerformed;
         }
-        
+
+
         private void OnAnyRoundStarted(byte _)
         {
             Logger.LogTrace("RoundStarted ! Activating Tongue usage for players", Logger.LogType.Server, this);
@@ -244,6 +249,12 @@ namespace _Project.Scripts.Runtime.Networking
             TryConfirmTeam(context);
         }
 
+        private void CancelConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
+        {
+            TryCancelConfirmTeam(context);
+        }
+
+
         private void GoToLeftTeamInputActionPerformed(InputAction.CallbackContext context)
         {
             TryChangeTeam(context, true);
@@ -282,13 +293,12 @@ namespace _Project.Scripts.Runtime.Networking
         private void StartTeamManagement()
         {
             SetPlayerLeavingEnabledClientRpc(false);
-            SetJoinTeamEnabledClientRpc(true);
+            SetPlayerChangingTeamEnabledClientRpc(true);
             SetPlayerConfirmTeamEnabledClientRpc(true);
             SetPlayerJoiningEnabledClientRpc(false);
 
-           
-
             List<PlayerTeamInfo> playerTeamInfos = new List<PlayerTeamInfo>();
+            List<PlayerReadyInfo> playerReadyInfos = new List<PlayerReadyInfo>();
 
             if (_playerTeamInfos.Count < _realPlayerInfos.Count)
             {
@@ -299,8 +309,15 @@ namespace _Project.Scripts.Runtime.Networking
                         PlayerIndexType = _realPlayerInfos[i].PlayerIndexType,
                         PlayerTeamType = PlayerTeamType.Z
                     });
+                    playerReadyInfos.Add(new PlayerReadyInfo
+                    {
+                        PlayerIndexType = _realPlayerInfos[i].PlayerIndexType,
+                        IsPlayerReady = false
+                    });
+
                 }
                 _playerTeamInfos.AddRange(playerTeamInfos);
+                _playerReadyInfos.AddRange(playerReadyInfos);
                 Logger.LogInfo("Team management started", Logger.LogType.Client, context: this);
                 OnTeamManagementStartedTriggerClientRPC();
             } else
@@ -309,7 +326,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
-        [ObserversRpc(ExcludeOwner = false, ExcludeServer = false)]
+        [ObserversRpc]
         private void OnTeamManagementStartedTriggerClientRPC()
         {
             OnTeamManagementStarted?.Invoke();
@@ -399,7 +416,6 @@ namespace _Project.Scripts.Runtime.Networking
             var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
 
             ConfirmTeamServerRpc(playerIndexType);
-
         }
 
 
@@ -455,54 +471,68 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
 
-            _playerReadyInfos.Add(new PlayerReadyInfo
+            for (int i = _playerReadyInfos.Collection.Count - 1; i >= 0; i--)
             {
-                PlayerIndexType = playerIndexType,
-                IsPlayerReady = true
-            });
+                if (_playerReadyInfos.Collection[i].PlayerIndexType == playerIndexType && !_playerReadyInfos.Collection[i].IsPlayerReady)
+                {
+                    PlayerReadyInfo copy = _playerReadyInfos.Collection[i];
+                    copy.IsPlayerReady = true;
+                    _playerReadyInfos[i] = copy;
+
+                    break;
+                }
+            }
+
             Logger.LogDebug("Player " + playerIndexType + " confirmed being in team " + confirmingTeam, Logger.LogType.Server, this);
 
-            SetJoinTeamEnabledTargetRPC(conn, false);
+            SetPlayerChangingTeamTargetRPC(conn, false);
+            SetPlayerConfirmTeamEnabledTargetRpc(conn, false);
         }
 
-
-        public void TrySetJoinTeamEnabled(bool value)
+        public void TryCancelConfirmTeam(InputAction.CallbackContext context)
         {
-            SetJoinTeamEnabledServerRpc(value);
+            if (_canChangeTeam)
+            {
+                Logger.LogWarning("Can't quit team yet, the variable _canChangeTeam is currently true", context: this);
+                return;
+            }
+            // Reconstruct the RealPlayerInfo
+            var realPlayerInfo = new RealPlayerInfo
+            {
+                ClientId = (byte)LocalConnection.ClientId,
+                DevicePath = context.control.device.path
+            };
+            var exist = DoesRealPlayerExist(realPlayerInfo);
+            if (!exist)
+            {
+                Logger.LogWarning("Can't change team for RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath + " as it does not exist.", context: this);
+                return;
+            }
+            var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
+
+            CancelConfirmTeamServerRpc(playerIndexType);
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void SetJoinTeamEnabledServerRpc(bool value)
+        private void CancelConfirmTeamServerRpc(PlayerIndexType playerIndexType, NetworkConnection conn = null)
         {
-            SetJoinTeamEnabledClientRpc(value);
-        }
-
-        [ObserversRpc]
-        private void SetJoinTeamEnabledClientRpc(bool value)
-        {
-            SetJoinTeamEnabled(value);
-        }
-
-        private void SetJoinTeamEnabled(bool value)
-        {
-            Logger.LogTrace("SetJoinTeamEnabled: " + value, context: this);
-            if (value)
+            for (int i = _playerReadyInfos.Collection.Count - 1; i >= 0; i--)
             {
-                _goToRightTeamInputAction.Enable();
-                _goToLeftTeamInputAction.Enable();
-            }
-            else
-            {
-                _goToRightTeamInputAction.Disable();
-                _goToLeftTeamInputAction.Disable();
-            }
-            _canChangeTeam = value;
-        }
+                if (_playerReadyInfos.Collection[i].PlayerIndexType == playerIndexType && _playerReadyInfos.Collection[i].IsPlayerReady)
+                {
+                    PlayerReadyInfo copy = _playerReadyInfos.Collection[i];
+                    copy.IsPlayerReady = false;
+                    _playerReadyInfos[i] = copy;
 
-        [TargetRpc(ExcludeServer = false)]
-        private void SetJoinTeamEnabledTargetRPC(NetworkConnection conn, bool value)
-        {
-            SetJoinTeamEnabled(value);
+                    Logger.LogDebug("Player " + playerIndexType + " is no longer ready.", Logger.LogType.Server, this);
+
+                    SetPlayerChangingTeamTargetRPC(conn, true);
+                    SetPlayerConfirmTeamEnabledTargetRpc(conn, true);
+                    return;
+                }
+            }
+            Logger.LogWarning("Player " + playerIndexType + " was not found in a team to remove him from.", Logger.LogType.Server, this);
+
         }
 
 
@@ -554,16 +584,28 @@ namespace _Project.Scripts.Runtime.Networking
         {
             SetPlayerLeavingEnabled(value);
         }
-        
+
+        public void TrySetPlayerChangingTeamEnabled(bool value)
+        {
+            SetPlayerChangingTeamEnabledServerRpc(value);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SetPlayerChangingTeamEnabledServerRpc(bool value)
+        {
+        SetPlayerChangingTeamEnabledClientRpc(value);
+        }
+
         [ObserversRpc]
         private void SetPlayerChangingTeamEnabledClientRpc(bool value)
         {
             SetPlayerChangingTeamEnabled(value);
         }
         
-        public void SetPlayerChangingTeamEnabled(bool value)
+        private void SetPlayerChangingTeamEnabled(bool value)
         {
             Logger.LogTrace("SetPlayerChangingTeamEnabled: " + value, context:this);
+            _canChangeTeam = value;
             if (value)
             {
                 _goToLeftTeamInputAction.Enable();
@@ -577,8 +619,21 @@ namespace _Project.Scripts.Runtime.Networking
         }
 
 
+        [TargetRpc(ExcludeServer = false)]
+        private void SetPlayerChangingTeamTargetRPC(NetworkConnection conn, bool value)
+        {
+            SetPlayerChangingTeamEnabled(value);
+        }
+
+
         [ObserversRpc]
         private void SetPlayerConfirmTeamEnabledClientRpc(bool value)
+        {
+            SetPlayerConfirmTeamEnabled(value);
+        }
+
+        [TargetRpc(ExcludeServer = false)]
+        private void SetPlayerConfirmTeamEnabledTargetRpc(NetworkConnection conn, bool value)
         {
             SetPlayerConfirmTeamEnabled(value);
         }
@@ -591,11 +646,17 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 _readyInputAction.Enable();
                 _readyInputAction.performed += ConfirmTeamInputActionPerformed;
+
+                _cancelReadyInputAction.Disable();
+                _cancelReadyInputAction.performed -= CancelConfirmTeamInputActionPerformed;
             }
             else
             {
                 _readyInputAction.performed -= ConfirmTeamInputActionPerformed;
                 _readyInputAction.Disable();
+
+                _cancelReadyInputAction.Enable();
+                _cancelReadyInputAction.performed += CancelConfirmTeamInputActionPerformed;
             }
         }
 

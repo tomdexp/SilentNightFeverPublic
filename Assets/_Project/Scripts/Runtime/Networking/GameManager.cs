@@ -231,7 +231,7 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             PlayerManager.Instance.SpawnAllPlayers();
-            PlayerManager.Instance.TrySetJoinTeamEnabled(false);
+            PlayerManager.Instance.TrySetPlayerChangingTeamEnabled(false);
             SubscribeToTongueChangeEvents();
             SetupRounds();
             StartCoroutine(StartRounds());
