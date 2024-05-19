@@ -11,6 +11,7 @@ using _Project.Scripts.Runtime.Player;
 using Unity.Mathematics;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
+using Sirenix.Utilities;
 
 public class ProcGenInstanciator : MonoBehaviour
 {
@@ -35,8 +36,8 @@ public class ProcGenInstanciator : MonoBehaviour
 
     [Title("    Landmarks")]
     [SerializeField] private ProcGenParameters _landmarksParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _landmarksPrefab;
-    private List<Vector2> _landmarksPoints;
+    [HideIf("@_patxiMode == true"), SerializeField] public NetworkObject _landmarksPrefab;
+    public List<Vector2> _landmarksPoints;
 
     [Title("    Crowd")]
     [SerializeField] private ProcGenParameters _CrowdParameters;
@@ -65,6 +66,9 @@ public class ProcGenInstanciator : MonoBehaviour
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testDiscPrefab;
     private List<Vector2> _testDiscPoints;
 
+    private List<List<Vector2>> _alreadySpawnedPoints = new();
+    private List<float> _alreadySpawnedPointsRadius = new();
+
     private bool _readyToSpawnPrefabs = false;
 
     // Events
@@ -76,25 +80,23 @@ public class ProcGenInstanciator : MonoBehaviour
         VerifyPrefabSetup();
     }
 
-
     [Button]
     public void GenerateMap()
     {
         GenerateTerrain();
-
-        _teamAPoints = GeneratePoints(_teamAParameters, true);
-        _teamBPoints = GeneratePoints(_teamBParameters, true);
-        _landmarksPoints = GeneratePoints(_landmarksParameters, true);
+        _teamAPoints = GeneratePoints(_teamAParameters, true, true, true);
+        _teamBPoints = GeneratePoints(_teamBParameters, true, true, true);
+        _landmarksPoints = GeneratePoints(_landmarksParameters, true, true, true);
 
         // Decoration
-        _FernPoints = GeneratePoints(_FernParameters, false);
-        _TreePoints = GeneratePoints(_TreeParameters, false);
-        _testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false);
+        _FernPoints = GeneratePoints(_FernParameters, false, false, true);
+        _TreePoints = GeneratePoints(_TreeParameters, false, true, true);
+        _testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
 
-        _testCubePoints = GeneratePoints(_testCubeParameters, false);
-        _testDiscPoints = GeneratePoints(_testDiscParameters, false);
+        _testCubePoints = GeneratePoints(_testCubeParameters, false, false, true);
+        _testDiscPoints = GeneratePoints(_testDiscParameters, false, false, true);
 
-        _CrowdPoints = GeneratePoints(_CrowdParameters, false);
+        _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
 
 
         _readyToSpawnPrefabs = true;
@@ -130,17 +132,54 @@ public class ProcGenInstanciator : MonoBehaviour
         InstanceFinder.ServerManager.Spawn(wallWest);
     }
 
-    private List<Vector2> GeneratePoints(ProcGenParameters parameters, bool forceExactNumber)
+    /// <summary>
+    /// Generate points for object to spawn
+    /// </summary>
+    /// <param name="parameters"></param>
+    /// <param name="forceExactNumber"> If we want the exact same number of elements spawn than specified in parameters</param>
+    /// <param name="addToAlreadySpawnedPoints"> If we want other objects to consider the presence of these object to be taken into consideration when spawning them</param>
+    /// <param name="considerAlreadySpawnedObjects">If we want these object to not spawn on other objects (where addToAlreadySpawnedPoints was used for them) </param>
+    /// <returns></returns>
+    private List<Vector2> GeneratePoints(ProcGenParameters parameters, bool forceExactNumber, bool addToAlreadySpawnedPoints, bool considerAlreadySpawnedObjects)
     {
         Vector2 newRegionSize = _regionSize;
         newRegionSize.x *= (100 - parameters._edgeDistance) / 100;
         newRegionSize.y *= (100 - parameters._edgeDistance) / 100;
 
-        List<Vector2> points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, parameters._maxDistance, newRegionSize, parameters._numOfPoints, 720, 10000);
+        List<Vector2> points;
+
+        if (considerAlreadySpawnedObjects && !_alreadySpawnedPoints.IsNullOrEmpty())
+        {
+            // We create a copy of AlreadySpawnedPoints but the point are centered arround the region size we are trying to spawn our new points. (Hard to explain sorry)
+            List<List<Vector2>> tmpAlreadySpawnedPoints = new();
+            List<float> tmpAlreadySpawnedPointsRadius = new ();
+
+
+            for (int i = 0; i < _alreadySpawnedPoints.Count; i++)
+            {
+                tmpAlreadySpawnedPoints.Add(new List<Vector2>());
+                tmpAlreadySpawnedPointsRadius.Add(_alreadySpawnedPointsRadius[i] + parameters._distanceWithOtherObjects);
+                for (int j = 0; j < _alreadySpawnedPoints[i].Count; j++)
+                {
+                    Vector2 tmpPoint = _alreadySpawnedPoints[i][j];
+                    tmpPoint.x -= parameters._edgeDistance;
+                    tmpPoint.y -= parameters._edgeDistance;
+                    tmpAlreadySpawnedPoints[i].Add(tmpPoint);
+                }
+            }
+
+            points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, parameters._maxDistance, newRegionSize, parameters._numOfPoints, tmpAlreadySpawnedPoints, tmpAlreadySpawnedPointsRadius, 720, 3000);
+        }
+        else
+        {
+            points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, parameters._maxDistance, newRegionSize, parameters._numOfPoints, 720, 3000);
+        }
+
         if (points.Count < parameters._numOfPoints && forceExactNumber)
         {
             Debug.Log("Not enougth points, something went wrong? \n Number of spawned objects : " + points.Count);
         }
+
 
         for (int i = 0; i < points.Count; i++)
         {
@@ -148,6 +187,13 @@ public class ProcGenInstanciator : MonoBehaviour
             point.x += parameters._edgeDistance;
             point.y += parameters._edgeDistance;
             points[i] = point;
+        }
+
+
+        if (addToAlreadySpawnedPoints)
+        {
+            _alreadySpawnedPoints.Add(points);
+            _alreadySpawnedPointsRadius.Add(parameters._distanceWithOtherObjects);
         }
 
         return points;
@@ -158,7 +204,7 @@ public class ProcGenInstanciator : MonoBehaviour
         for (int i = 0; i < pointsLocation.Count; i++)
         {
             NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
-            pref.transform.Rotate(new Vector3(0, UnityEngine.Random.Range(0,360),0));
+            pref.transform.Rotate(new Vector3(0, UnityEngine.Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
         }
     }
@@ -203,22 +249,23 @@ public class ProcGenInstanciator : MonoBehaviour
     [Button]
     public void PlacePlayers()
     {
+        Logger.LogDebug("Placing players...", Logger.LogType.Server, this);
         GameObject[] playersTeamA = PlayerManager.Instance.GetNetworkPlayers(PlayerTeamType.A).Select(player => player.gameObject).ToArray();
         GameObject[] playersTeamB = PlayerManager.Instance.GetNetworkPlayers(PlayerTeamType.B).Select(player => player.gameObject).ToArray();
-        
+
         for (int i = 0; i < playersTeamA.Length; i++)
         {
-            playersTeamA[i].transform.position = new Vector3(_teamAPoints[i].x, 0, _teamAPoints[i].y);
+            playersTeamA[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamAPoints[i].x, 0, _teamAPoints[i].y));
         }
         for (int i = 0; i < playersTeamB.Length; i++)
         {
-            playersTeamB[i].transform.position = new Vector3(_teamBPoints[i].x, 0, _teamBPoints[i].y);
+            playersTeamB[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamBPoints[i].x, 0, _teamBPoints[i].y));
         }
     }
 
     public void GenerateNewPlayerPoints()
     {
-        _teamAPoints = GeneratePoints(_teamAParameters, true);
-        _teamBPoints = GeneratePoints(_teamBParameters, true);
+        _teamAPoints = GeneratePoints(_teamAParameters, true, false, true);
+        _teamBPoints = GeneratePoints(_teamBParameters, true, false, true);
     }
 }

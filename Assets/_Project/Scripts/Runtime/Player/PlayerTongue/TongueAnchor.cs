@@ -118,7 +118,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             }
         }
 
-        public void TryBindTongue(PlayerStickyTongue tongue, RayHit hitInfo)
+        public void TryBindTongue(PlayerStickyTongue tongue)
         {
             // SOURCE CLIENT BIND TO TONGUE AND TELL SERVER
             Logger.LogTrace("TryBindTongue to TongueAnchor", Logger.LogType.Client, this);

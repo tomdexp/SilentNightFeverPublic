@@ -5,8 +5,8 @@ namespace _Project.Scripts.Runtime.Player
     [Serializable]
     public enum PlayerIndexType
     {
-        A, // upper right player
-        B, // upper left player
+        A, // upper left player
+        B, // upper right player
         C, // lower left player
         D, // lower right player
         Z // Z == not set yet

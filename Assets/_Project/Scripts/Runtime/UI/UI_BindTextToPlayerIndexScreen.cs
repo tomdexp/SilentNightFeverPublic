@@ -1,4 +1,5 @@
 ﻿using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Utils;
 using TMPro;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -26,7 +27,7 @@ namespace _Project.Scripts.Runtime.UI
             if (!_playerIndexScreen) return;
             _text.text = _playerIndexScreen.PlayerIndexType == PlayerIndexType.Z
                 ? "Player Z"
-                : "Player " + _playerIndexScreen.PlayerIndexType;
+                : "Player " + _playerIndexScreen.PlayerIndexType + " (Team " + _playerIndexScreen.PlayerIndexType.AsTeam() + ")";
         }
     }
 }

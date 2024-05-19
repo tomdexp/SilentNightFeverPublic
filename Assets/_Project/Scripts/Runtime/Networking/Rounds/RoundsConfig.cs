@@ -28,5 +28,18 @@ namespace _Project.Scripts.Runtime.Networking.Rounds
                     throw new ArgumentOutOfRangeException();
             }
         }
+        
+        public int GetMaxRounds()
+        {
+            switch (RoundsWinType)
+            {
+                case RoundsWinType.BestOfX:
+                    return RoundsCount;
+                case RoundsWinType.FirstToX:
+                    return RoundsCount*2 - 1;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }

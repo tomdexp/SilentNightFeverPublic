@@ -3,6 +3,7 @@ using System.Collections;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
+using FishNet.Connection;
 using FishNet.Object;
 using Micosmo.SensorToolkit;
 using Obi;
@@ -19,7 +20,8 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [SerializeField, Required] private Transform _tongueOrigin;
         [SerializeField, Required] private NetworkPlayer _networkPlayer;
         [SerializeField, Required] private Transform _tongueTip;
-        [SerializeField, Required] private RaySensor _raySensor;
+        [SerializeField, Required] private TriggerSensor _fovSensor;
+        [SerializeField, Required] private FOVCollider _fovCollider;
         [SerializeField, Required] private ObiSolver _obiSolver;
         [SerializeField, Required] private ObiRope _obiRope;
         [SerializeField, Required] private Rigidbody _tongueTipRigidbody;
@@ -38,7 +40,13 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         public event Action OnTongueIn;
         public event Action OnTongueRetractStart;
         public Transform TongueTip => _tongueTip;
-
+        
+        public override void OnStartServer()
+        {
+            Logger.LogTrace("PlayerStickyTongue.OnStartServer", Logger.LogType.Local, this);
+            StartCoroutine(TrySubscribingToRoundEndEvent());
+        }
+        
         public override void OnStartClient()
         {
             _tongueRenderer = _obiRope.GetComponent<MeshRenderer>();
@@ -49,14 +57,24 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             Logger.LogTrace("PlayerStickyTongue.OnStartClient", Logger.LogType.Local, this);
             _tongueRenderer.enabled = false;
             _defaultPlayerMass = _playerRigidbody.mass;
-            ApplyPlayerDataToRaySensor();
             RetractTongue();
-            if (IsOwner)
-            { 
-                OnTongueOut += ReplicateOnTongueOut;
-                Logger.LogTrace("PlayerStickyTongue.OnTongueOut is registered for Replication", Logger.LogType.Client, this);
-                OnTongueIn += ReplicateOnTongueIn; 
-                Logger.LogTrace("PlayerStickyTongue.OnTongueIn is registered for Replication", Logger.LogType.Client, this);
+        }
+        
+        public override void OnOwnershipClient(NetworkConnection prevOwner)
+        {
+            base.OnOwnershipClient(prevOwner);
+            // if previous owner was server, we know the object just spawned
+            if (prevOwner.ClientId == -1)
+            {
+                if (IsOwner)
+                { 
+                    OnTongueOut += ReplicateOnTongueOut;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueOut is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueIn += ReplicateOnTongueIn; 
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueIn is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueRetractStart += ReplicateOnTongueRetractStart;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueRetractStart is registered for Replication", Logger.LogType.Client, this);
+                }
             }
         }
 
@@ -68,6 +86,8 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 Logger.LogTrace("PlayerStickyTongue.OnTongueOut is unregistered for Replication", Logger.LogType.Client, this);
                 OnTongueIn -= ReplicateOnTongueIn;
                 Logger.LogTrace("PlayerStickyTongue.OnTongueIn is unregistered for Replication", Logger.LogType.Client, this);
+                OnTongueRetractStart -= ReplicateOnTongueRetractStart;
+                Logger.LogTrace("PlayerStickyTongue.OnTongueRetractStart is unregistered for Replication", Logger.LogType.Client, this);
             }
         }
 
@@ -84,24 +104,19 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 RetractTongue();
             }
         }
-
-        protected override void OnValidate()
+        
+        private void OnDestroy()
         {
-            base.OnValidate();
-            ApplyPlayerDataToRaySensor();
+            if (GameManager.HasInstance) GameManager.Instance.OnAnyRoundEnded -= ResetTongueClientRpc;
         }
-
-        [Button(ButtonSizes.Small)]
-        private void ApplyPlayerDataToRaySensor()
+        
+        private IEnumerator TrySubscribingToRoundEndEvent()
         {
-            if (_raySensor == null)
+            while (!GameManager.HasInstance)
             {
-                Logger.LogError("Ray sensor is null on player sticky tongue.", Logger.LogType.Local, this);
-                return;
+                yield return null;
             }
-
-            _raySensor.Length = _networkPlayer.PlayerData.MaxTongueDistance;
-            _raySensor.Sphere.Radius = _networkPlayer.PlayerData.TongueSphereCastRadius;
+            GameManager.Instance.OnAnyRoundEnded += ResetTongueClientRpc;
         }
 
         public void TryUseTongue()
@@ -144,15 +159,15 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
 
             Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Throwing tongue locally", Logger.LogType.Client, this);
 
-            var didHit = _raySensor.IsObstructed;
+            bool didHit = _fovSensor.Detections.Count > 0;
 
             if (didHit)
             {
-                RayHit hitInfo = _raySensor.GetObstructionRayHit();
+                Signal signal = _fovSensor.GetStrongestSignal();
                 Logger.LogTrace(
                     $"Player {_networkPlayer.GetPlayerIndexType()} : Hit something with tongue: " +
-                    hitInfo.GameObject.name, Logger.LogType.Client, context:this);
-                var tongueCollider = hitInfo.Collider.GetComponent<TongueCollider>();
+                    signal.Object.name, Logger.LogType.Client, context:this);
+                var tongueCollider = signal.Object.GetComponent<TongueCollider>();
                 if (tongueCollider)
                 {
                     Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue collider", Logger.LogType.Client, this);
@@ -165,7 +180,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                             Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue anchor has no free space", Logger.LogType.Client, this);
                             yield break;
                         }
-                        tongueAnchor.TryBindTongue(this, hitInfo);
+                        tongueAnchor.TryBindTongue(this);
                         yield return BindTongueToAnchorCoroutine(tongueAnchor);
                     }
                     else
@@ -179,7 +194,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                                 yield break;
                             }
                             Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Hit tongue interactable", Logger.LogType.Client, this);
-                            tongueInteractable.TryInteract(this, hitInfo);
+                            tongueInteractable.TryInteract(this);
                             yield return ThrowToInteractable(tongueInteractable);
                         }
                     }
@@ -193,19 +208,30 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             else
             {
                 Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Did not hit anything with tongue", Logger.LogType.Client, this);
+                yield return ThrowInAir();
             }
         }
-
-
-        private void RetractTongue()
+        
+        [ObserversRpc]
+        private void ResetTongueClientRpc(byte _)
         {
-            StartCoroutine(RetractTongueCoroutine());
+            if (!Owner.IsLocalClient) return;
+            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Retracting tongue requested by server", Logger.LogType.Client, this);
+            ResetTongue();
         }
 
-        private IEnumerator RetractTongueCoroutine()
+        private void RetractTongue(bool force = false)
         {
-            if (!_isTongueOut) yield break;
-            if (!_canRetractTongue) yield break;
+            StartCoroutine(RetractTongueCoroutine(force));
+        }
+
+        private IEnumerator RetractTongueCoroutine(bool force = false)
+        {
+            if (!force)
+            {
+                if (!_canRetractTongue) yield break;
+                if (!_isTongueOut) yield break;
+            }
             if (_isTongueBind)
             {
                 yield return UnbindTongueFromAnchorCoroutine();
@@ -219,6 +245,38 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         {
             Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Retracting tongue locally", Logger.LogType.Client, this);
             OnTongueIn?.Invoke();
+        }
+
+        [Button]
+        private void ResetTongue()
+        {
+            StartCoroutine(ResetTongueCoroutine());
+        }
+        
+        private IEnumerator ResetTongueCoroutine()
+        {
+            yield return new WaitForSeconds(1f);
+            Logger.LogTrace($"Reset Tongue for Player {_networkPlayer.GetPlayerIndexType()}", Logger.LogType.Client, this);
+            if (_isTongueBind)
+            {
+                _isTongueBind = false;
+                if (!_currentBindTongueAnchor)
+                {
+                    Logger.LogError("Current bind tongue anchor is null", Logger.LogType.Client, this);
+                }
+                _currentBindTongueAnchor.TryUnbindTongue(this);
+                _currentBindTongueAnchor = null;
+                _tongueTipRigidbody.isKinematic = true;
+                var fixedJoint = _tongueTip.gameObject.GetComponent<FixedJoint>();
+                if (fixedJoint != null)
+                {
+                    Destroy(fixedJoint);
+                }
+            }
+            _tongueTip.position = _tongueOrigin.position;
+            SetTongueVisibilityServerRpc(false);
+            _isTongueOut = false;
+            yield return null;
         }
 
         private IEnumerator BindTongueToAnchorCoroutine(TongueAnchor tongueAnchor)
@@ -264,6 +322,19 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             SetTongueVisibilityServerRpc(true);
             yield return ThrowTo(tongueInteractable.Target.position);
             yield return new WaitForSeconds(_networkPlayer.PlayerData.TongueInteractDuration);
+            yield return Retract();
+            SetTongueVisibilityServerRpc(false);
+            _isTongueOut = false;
+        }
+
+        private IEnumerator ThrowInAir()
+        {
+            _isTongueOut = true;
+            _tongueTipRigidbody.isKinematic = true;
+            _tongueTip.position = _tongueOrigin.position;
+            SetTongueVisibilityServerRpc(true);
+            yield return ThrowTo(_tongueThrowDirection.position + _tongueThrowDirection.forward * (_fovCollider.Length * _networkPlayer.PlayerData.TongueMissPercentOfMaxDistance));
+            yield return new WaitForSeconds(_networkPlayer.PlayerData.TongueMissDuration);
             yield return Retract();
             SetTongueVisibilityServerRpc(false);
             _isTongueOut = false;
@@ -362,7 +433,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
         private void OnTongueOutClientRpc()
         {
-            OnTongueOut?.Invoke();
+            if(!Owner.IsLocalClient) OnTongueOut?.Invoke();
         }
 
         private void ReplicateOnTongueIn()
@@ -380,12 +451,35 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
         private void OnTongueInClientRpc()
         {
-            OnTongueIn?.Invoke();
+            if(!Owner.IsLocalClient) OnTongueIn?.Invoke();
+        }
+        
+        private void ReplicateOnTongueRetractStart()
+        {
+            OnTongueRetractStartServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnTongueRetractStartServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueRetractStart?.Invoke();
+            OnTongueRetractStartClientRpc();
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnTongueRetractStartClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueRetractStart?.Invoke();
         }
         
         public TongueAnchor GetCurrentBindTongueAnchor()
         {
             return _currentBindTongueAnchor;
+        }
+        
+        public NetworkPlayer GetNetworkPlayer()
+        {
+            return _networkPlayer;
         }
     }
 }
