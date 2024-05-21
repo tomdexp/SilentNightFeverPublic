@@ -570,6 +570,7 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 4095715110516237144}
+  - {fileID: 7108816694654842327}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField:
   - {fileID: 7253058178704523301}
@@ -676,6 +677,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736af1d1ea8f56b478f77d6216aa7e2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 5220753643757815717}
+  _networkObjectCache: {fileID: 5220753643757815717}
+  _randomColor:
+    _value: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &8327622045030970087
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,6 +1207,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Landmark_Visual_Kitchen
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195350437651282069, guid: a0f76f131c87b2b49a076fad47775432,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4436643662976511759, guid: a0f76f131c87b2b49a076fad47775432,
         type: 3}

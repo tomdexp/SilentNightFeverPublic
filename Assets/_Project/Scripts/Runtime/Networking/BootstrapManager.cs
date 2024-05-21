@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet;
+using FishNet.Transporting;
 using FishNet.Transporting.UTP;
 using Sirenix.OdinInspector;
 using Unity.Networking.Transport.Relay;
@@ -49,11 +50,53 @@ namespace _Project.Scripts.Runtime.Networking
 
         public event Action<string> OnJoinCodeReceived;
         public event Action<string> OnInvalidJoinCodeInput;
+        public event Action OnOnlineSessionLeft;
+        
+        private bool _isApplicationQuitting;
+        private bool _isLeavingOnline;
 
-        protected override void Awake()
+        private void Start()
         {
-            base.Awake();
             StartCoroutine(SetupAndStartLocalHost());
+            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+            Application.quitting += OnApplicationQuitting;
+        }
+
+        private void OnDestroy()
+        {
+            if(InstanceFinder.ClientManager) InstanceFinder.ClientManager.OnClientConnectionState -= OnClientConnectionState;
+            Application.quitting -= OnApplicationQuitting;
+        }
+
+        private void OnApplicationQuitting()
+        {
+            _isApplicationQuitting = true;
+            if (HasJoinCode && InstanceFinder.IsServerStarted)
+            {
+                Logger.LogInfo("Application is quitting and is hosting, kicking clients...", Logger.LogType.Client, this);
+                InstanceFinder.ServerManager.StopConnection(true);
+            }
+            else if (HasJoinCode && !InstanceFinder.IsServerStarted)
+            {
+                Logger.LogInfo("Application is quitting and is client in online session, disconnecting from server...", Logger.LogType.Client, this);
+                InstanceFinder.ClientManager.StopConnection();
+            }
+        }
+
+        private void OnClientConnectionState(ClientConnectionStateArgs args)
+        {
+            if (args.ConnectionState == LocalConnectionState.Stopped && HasJoinCode)
+            {
+                // it means we were kicked from the relay server because the host stopped the server
+                // so we go back to local server
+                // see if application was requested to quit
+                if (_isApplicationQuitting)
+                {
+                    Logger.LogDebug("Application is quitting, not going back to local server.", Logger.LogType.Client, this);
+                    return;
+                }
+                TryLeaveOnline();
+            }
         }
 
         /// <summary>
@@ -150,7 +193,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             catch (Exception ex)
             {
-                Logger.LogError("Failed to start host with relay service.", Logger.LogType.Server, context:this);
+                Logger.LogError($"Failed to start host with relay service. See exception : {ex}", Logger.LogType.Server, context:this);
                 OnServerMigrationFailed?.Invoke();
             }
         }
@@ -262,6 +305,114 @@ namespace _Project.Scripts.Runtime.Networking
             }
             // that doesn't mean the join code exists, but at least it's sanitized
             return true;
+        }
+        
+        public bool TryLeaveOnline()
+        {
+            Logger.LogInfo("Trying to leave online session...", Logger.LogType.Client, context:this);
+            if (_isLeavingOnline)
+            {
+                Logger.LogWarning("Already leaving online, cannot leave again.", Logger.LogType.Client, context:this);
+                return false;
+            }
+            _isLeavingOnline = true;
+            bool success;
+            if (InstanceFinder.IsServerStarted)
+            {
+                success = TryCloseRelayAndBackToLocalServer();
+            }
+            else
+            {
+                success = TryLeaveRelayAndBackToLocalServer();
+            }
+            _isLeavingOnline = false;
+            if (success)
+            {
+                Logger.LogInfo("Successfully left online session.", Logger.LogType.Client, context:this);
+                OnOnlineSessionLeft?.Invoke();
+            }
+            return success;
+        }
+
+        private bool TryCloseRelayAndBackToLocalServer()
+        {
+            Logger.LogTrace("Trying to close relay and go back to local server...", Logger.LogType.Server, context: this);
+            
+            if (!HasJoinCode)
+            {
+                Logger.LogWarning("No join code found, cannot close relay and go back to local server.",
+                    Logger.LogType.Server, context: this);
+                return false;
+            }
+
+            if (!InstanceFinder.IsServerStarted)
+            {
+                Logger.LogWarning("Server is not started, cannot close relay and go back to local server.",
+                    Logger.LogType.Server, context: this);
+                return false;
+            }
+
+            var success = DisconnectFromRelayAndBackToLocalServer();
+            
+            return success;
+        }
+
+        
+        private bool TryLeaveRelayAndBackToLocalServer()
+        {
+            Logger.LogTrace("Trying to leave relay and go back to local server...", Logger.LogType.Client, context:this);
+            // check if there is a join code, if the client is started and if the server is not started, it will indicate if we are online or not
+            if (!HasJoinCode)
+            {
+                Logger.LogWarning("No join code found, cannot leave relay and go back to local server.", Logger.LogType.Client, context:this);
+                return false;
+            }
+
+            // if (!InstanceFinder.IsClientStarted)
+            // {
+            //     Logger.LogWarning("Client is not started, cannot leave relay and go back to local server.", Logger.LogType.Client, context:this);
+            //     return false;
+            // }
+
+            if (InstanceFinder.IsServerStarted)
+            {
+                Logger.LogWarning("Server is started, cannot leave relay and go back to local server.", Logger.LogType.Client, context:this);
+                return false;
+            }
+
+            var success = DisconnectFromRelayAndBackToLocalServer();
+            return success;
+        }
+        
+        private bool DisconnectFromRelayAndBackToLocalServer()
+        {
+            try
+            {
+                OnServerMigrationStarted?.Invoke();
+                
+                // Stop server
+                InstanceFinder.ClientManager.StopConnection();
+                Logger.LogDebug("Client connection stopped.", Logger.LogType.Client, this);
+                CurrentJoinCode = string.Empty;
+                
+                // Configure transport to default
+                var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
+                if (!fishyUnityTransport)
+                {
+                    throw new Exception("FishyUnityTransport not found, cannot stop a host with relay service.");
+                }
+                fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.UnityTransport);
+                StartCoroutine(SetupAndStartLocalHost());
+                OnServerMigrationFinished?.Invoke();
+                Logger.LogDebug("Successfully disconnected from relay and went back to local server.", Logger.LogType.Server, this);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Can't disconnect from Relay and go back to local server. See exception : {ex.Message}", Logger.LogType.Client, context:this);
+                OnServerMigrationFailed?.Invoke();
+                return false;
+            }
         }
     }
 }

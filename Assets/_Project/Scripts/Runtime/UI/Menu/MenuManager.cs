@@ -36,7 +36,7 @@ namespace _Project.Scripts.Runtime.UI
         private void OnDisable()
         {
             DisableBackButton();
-            PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
+            if(PlayerManager.HasInstance) PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
         }
 
         #region NavigationHistory
@@ -84,9 +84,15 @@ namespace _Project.Scripts.Runtime.UI
         public void ReturnToMainMenu()
         {
             // TODO : disconect from server
+            //if (BootstrapManager.HasInstance) BootstrapManager.Instance.TryCloseRelayAndBackToLocalServer();
             _mainMenu.OpenMenu();
             _navigationHistory.CloseLastMenu();
             _navigationHistory.ClearHistory();
+        }
+        
+        public void EnablePlayerJoining(bool enable)
+        {
+            PlayerManager.Instance.SetPlayerJoiningEnabled(enable);
         }
     }
 }

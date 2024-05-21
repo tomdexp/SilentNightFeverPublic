@@ -75,6 +75,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Join Input
       m_Flags: 0
+    - m_Name: 
+      m_Id: d19e3d46-a24b-4755-addb-ad29b1a7cdc3
+      m_Path: <SwitchProControllerHID>/buttonWest
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join Input
+      m_Flags: 0
     m_Flags: 0
   _leaveInputAction:
     m_Name: Leave Input
@@ -99,6 +107,56 @@ MonoBehaviour:
       m_Processors: 
       m_Groups: 
       m_Action: Leave Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: aab04843-5e7a-4953-8829-bf70fbc0c655
+      m_Path: <SwitchProControllerHID>/select
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Leave Input
+      m_Flags: 0
+    m_Flags: 0
+  _readyInputAction:
+    m_Name: Ready Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 7193a587-54d8-4b65-8b7c-5170bfd23baa
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1f6cdcea-cb67-4d52-9118-68ad7d66adf9
+      m_Path: <Keyboard>/c
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Ready Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 4613a67f-8427-45a2-b466-ffbeff6b2ad0
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Ready Input
+      m_Flags: 0
+    m_Flags: 0
+  _cancelReadyInputAction:
+    m_Name: Cancel Ready Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 702987d8-b50c-4d9d-96d1-4d5eeee4d90e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 18e1a7c1-7ba6-42bf-a442-12a139b8e0d9
+      m_Path: <Keyboard>/x
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cancel Ready Input
       m_Flags: 0
     m_Flags: 0
   _goToLeftTeamInputAction:
@@ -245,7 +303,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 3
+  <PrefabId>k__BackingField: 13
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
