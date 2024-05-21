@@ -54,7 +54,9 @@ namespace _Project.Scripts.Runtime.Audio
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIButtonHover;
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
-        public AK.Wwise.Event EventUIButtonClick;
+        public AK.Wwise.Event EventUIButtonClickEnter;
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
+        public AK.Wwise.Event EventUIButtonClickBack;
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIOnlineLobbyCreated;
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
