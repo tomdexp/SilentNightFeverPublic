@@ -35,6 +35,7 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
         
         public event Action OnStartTurning;
         public event Action OnStopTurning;
+        public event Action OnStep;
         
         private WaitForSeconds _waitForSeconds;
         
@@ -64,6 +65,7 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
             if (!_isActive) return;
             // If its negative, then we need to calculate the new FOV for team A
             // If its positive, then we need to calculate the new FOV for team B
+            OnStep?.Invoke();
             _hasJustMoved = true;
             _absSignedAngle = Mathf.Abs(newSignedAngle);
             _t = Mathf.InverseLerp(Data.MinSignedAngle, Data.MaxSignedAngle, _absSignedAngle);

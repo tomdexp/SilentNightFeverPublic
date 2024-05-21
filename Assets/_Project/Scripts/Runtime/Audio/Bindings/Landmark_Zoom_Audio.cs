@@ -15,14 +15,16 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
             _landmarkZoom = GetComponent<Landmark_Zoom>();
             _landmarkZoom.OnStartTurning += OnStartTurning;
             _landmarkZoom.OnStopTurning += OnStopTurning;
+            _landmarkZoom.OnStep += OnStep;
         }
 
         public override void OnStopServer()
         {
             _landmarkZoom.OnStartTurning -= OnStartTurning;
             _landmarkZoom.OnStopTurning -= OnStopTurning;
+            _landmarkZoom.OnStep -= OnStep;
         }
-
+        
         private void OnStartTurning()
         {
             AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventLandmarkZoomStartTurning, transform.gameObject);
@@ -31,6 +33,10 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
         private void OnStopTurning()
         {
             AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventLandmarkZoomStopTurning, transform.gameObject);
+        }
+        private void OnStep()
+        {
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventLandmarkZoomStep, transform.gameObject);
         }
     }
 }

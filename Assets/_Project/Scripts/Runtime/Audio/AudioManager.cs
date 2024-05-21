@@ -143,5 +143,57 @@ namespace _Project.Scripts.Runtime.Audio
             Logger.LogTrace("Playing audio event locally : " + eventId, Logger.LogType.Local, this);
             AkSoundEngine.PostEvent(eventId, go);
         }
+        
+        public void SetLocalRTPC(string rtpcName, float value, GameObject go)
+        {
+            InternalSetRTPC(AkSoundEngine.GetIDFromString(rtpcName), value, go);
+        }
+        
+        public void SetLocalRTPC(uint rtpcId, float value, GameObject go)
+        {
+            InternalSetRTPC(rtpcId, value, go);
+        }
+        
+        public void SetLocalRTPC(AK.Wwise.RTPC rtpc, float value, GameObject go)
+        {
+            InternalSetRTPC(rtpc.Id, value, go);
+        }
+        
+        /// <summary>
+        /// This method sets an RTPC value without replication over the network, beware of calling this method too often
+        /// </summary>
+        public void SetNetworkedRTPC(uint rtpcId, float value, GameObject go)
+        {
+            ReplicateRTPC(rtpcId, value, go);
+        }
+        
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        private void ReplicateRTPC(uint rtpcId, float value, GameObject go, NetworkConnection conn = null)
+        {
+            Logger.LogTrace("Setting RTPC over the network with ID: " + rtpcId + " to " + value, Logger.LogType.Local, this);
+            InternalSetRTPC(rtpcId, value, go);
+            SetRTPCForClients(rtpcId, value, go, conn);
+        }
+        
+        [ObserversRpc(ExcludeServer = true)]
+        private void SetRTPCForClients(uint rtpcId, float value, GameObject go, NetworkConnection conn = null)
+        {
+            if (conn != null && conn == InstanceFinder.ClientManager.Connection)
+            {
+                return;
+            }
+            InternalSetRTPC(rtpcId, value, go);
+        }
+
+        private void InternalSetRTPC(uint rtpcId, float value, GameObject go)
+        {
+            if (rtpcId == 0)
+            {
+                Logger.Log(AudioManagerData.RTPCNotFoundLogLevel, Logger.LogType.Local,
+                    $"Tried to set an RTPC with ID {rtpcId} but was not found, it means that the RTPC is probably not assigned properly in AudioManagerData", this);
+            }
+            Logger.LogTrace("Setting RTPC locally (ID: " + rtpcId + ") to " + value, Logger.LogType.Local, this);
+            AkSoundEngine.SetRTPCValue(rtpcId, value, go);
+        }
     }
 }
