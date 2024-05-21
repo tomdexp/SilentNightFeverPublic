@@ -48,7 +48,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnAllPlayerSpawnedLocally;
         public event Action OnRemoteClientDisconnected;
         public event Action OnTeamManagementStarted;
-        public event Action OnAllPlayersReady;
+        // public event Action OnAllPlayersReady;
         
         private int _numberOfPlayerSpawnedLocally = 0;
         
@@ -162,40 +162,101 @@ namespace _Project.Scripts.Runtime.Networking
             OnRealPlayerInfosChanged?.Invoke(_realPlayerInfos.Collection);
         }
         
-        private void OnChangedPlayerTeamInfos(SyncListOperation op, int index, PlayerTeamInfo oldItem, PlayerTeamInfo newItem, bool asServer)
-        { 
-            OnPlayerTeamInfosChanged?.Invoke(_playerTeamInfos.Collection);
-            if (op == SyncListOperation.Set)
-            {
-                // Debug the current teams in a single log
-                string teams = "";
-                foreach (PlayerTeamInfo playerTeamInfo in _playerTeamInfos.Collection)
-                {
-                    teams += "Player " +playerTeamInfo.PlayerIndexType + " : Team " + playerTeamInfo.PlayerTeamType + " | ";
-                }
-                Logger.LogTrace("Teams: " + teams, Logger.LogType.Server, this);
-            }
-        }
+        #region =========== Join and Leave Functions =========== 
 
-        private void OnChangedPlayersReadyInfos(SyncListOperation op, int index, PlayerReadyInfo oldItem, PlayerReadyInfo newItem, bool asServer)
+        private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
         {
-            OnPlayersReadyChanged?.Invoke(_playerReadyInfos.Collection);
-            if (op == SyncListOperation.Set)
-            {
-                string readys = "";
-                // Debug the current ready Players in a single log
-                foreach (PlayerReadyInfo playerReadyInfo in _playerReadyInfos.Collection)
-                {
-                    readys += "Player " + playerReadyInfo.PlayerIndexType + " : Ready " + playerReadyInfo.IsPlayerReady + " | ";
-                }
-                Logger.LogTrace("Readys: " + readys, Logger.LogType.Server, this);
-            }
+            SetPlayerJoiningEnabled(true);
+            JoinInputActionPerformed(context);
+            AddFakePlayer();
+            AddFakePlayer();
+            AddFakePlayer();
+            GameManager.Instance.TryStartGame();
+        }
 
-            if (_playerReadyInfos.Collection.Count == 4)
+
+        public void SetPlayerJoiningEnabled(bool value)
+        {
+            Logger.LogTrace("SetPlayerJoiningEnabled: " + value, context: this);
+            if (value)
             {
-                OnAllPlayersReady?.Invoke();
+                _joinInputAction.Enable();
+            }
+            else
+            {
+                _joinInputAction.Disable();
             }
         }
+
+        [ObserversRpc]
+        public void SetPlayerJoiningEnabledClientRpc(bool value)
+        {
+            SetPlayerJoiningEnabled(value);
+        }
+
+        public void SetPlayerLeavingEnabled(bool value)
+        {
+            Logger.LogTrace("SetPlayerLeavingEnabled: " + value, context: this);
+            if (value)
+            {
+                _leaveInputAction.Enable();
+            }
+            else
+            {
+                _leaveInputAction.Disable();
+            }
+        }
+
+        [ObserversRpc]
+        private void SetPlayerLeavingEnabledClientRpc(bool value)
+        {
+            SetPlayerLeavingEnabled(value);
+        }
+
+        private void LeaveInputActionPerformed(InputAction.CallbackContext context)
+        {
+            // This method is always call locally
+            var realPlayerInfo = new RealPlayerInfo
+            {
+                ClientId = (byte)LocalConnection.ClientId,
+                DevicePath = context.control.device.path
+            };
+            Logger.LogTrace("LeaveInputActionPerformed with clientId " + realPlayerInfo.ClientId + " and devicePath " +
+                            realPlayerInfo.DevicePath + " received.", context: this);
+            if (_realPlayerInfos.Count == 0)
+            {
+                // We know this player is not in the list since its empty
+                Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
+                                realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context: this);
+                return;
+            }
+
+            for (int i = 0; i < _realPlayerInfos.Count; i++)
+            {
+                if (_realPlayerInfos[i].ClientId == realPlayerInfo.ClientId &&
+                    _realPlayerInfos[i].DevicePath == realPlayerInfo.DevicePath)
+                {
+                    // This Real Player is in the list
+                    Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
+                                    realPlayerInfo.DevicePath + " found in the list. Removing it...", context: this);
+                    if (!IsServerStarted)
+                    {
+                        TryRemoveRealPlayerServerRpc(realPlayerInfo.ClientId, realPlayerInfo.DevicePath);
+                        return;
+                    }
+                    else
+                    {
+                        TryRemoveRealPlayer(realPlayerInfo.ClientId, realPlayerInfo.DevicePath);
+                        return;
+                    }
+                }
+            }
+
+            // This Real Player is not in the list
+            Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
+                            realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context: this);
+        }
+
 
         private void JoinInputActionPerformed(InputAction.CallbackContext context)
         {
@@ -207,12 +268,12 @@ namespace _Project.Scripts.Runtime.Networking
                 DevicePath = context.control.device.path
             };
             Logger.LogTrace("JoinInputActionPerformed with clientId " + newRealPlayerInfo.ClientId + " and devicePath " +
-                      newRealPlayerInfo.DevicePath + " received.", context:this);
+                      newRealPlayerInfo.DevicePath + " received.", context: this);
             if (_realPlayerInfos.Count == 0)
             {
                 // We know this player is not in the list since its empty
                 Logger.LogTrace("RealPlayer with clientId " + newRealPlayerInfo.ClientId + " and devicePath " +
-                                newRealPlayerInfo.DevicePath + " not in the list. Adding it...", context:this);
+                                newRealPlayerInfo.DevicePath + " not in the list. Adding it...", context: this);
                 if (!IsServerStarted)
                 {
                     TryAddRealPlayerServerRpc(newRealPlayerInfo.ClientId, newRealPlayerInfo.DevicePath);
@@ -232,14 +293,14 @@ namespace _Project.Scripts.Runtime.Networking
                 {
                     // This Real Player is already in the list
                     Logger.LogTrace("RealPlayer with clientId " + newRealPlayerInfo.ClientId + " and devicePath " +
-                                    newRealPlayerInfo.DevicePath + " already in the list.", context:this);
+                                    newRealPlayerInfo.DevicePath + " already in the list.", context: this);
                     return;
                 }
             }
 
             // This Real Player is not in the list
             Logger.LogTrace("RealPlayer with clientId " + newRealPlayerInfo.ClientId + " and devicePath " +
-                            newRealPlayerInfo.DevicePath + " not in the list. Adding it...", context:this);
+                            newRealPlayerInfo.DevicePath + " not in the list. Adding it...", context: this);
             if (!IsServerStarted)
             {
                 TryAddRealPlayerServerRpc(newRealPlayerInfo.ClientId, newRealPlayerInfo.DevicePath);
@@ -250,26 +311,9 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
-        private void ConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
-        {
-            TryConfirmTeam(context);
-        }
+        #endregion
 
-        private void CancelConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
-        {
-            TryCancelConfirmTeam(context);
-        }
-
-
-        private void GoToLeftTeamInputActionPerformed(InputAction.CallbackContext context)
-        {
-            TryChangeTeam(context, true);
-        }
-        
-        private void GoToRightTeamInputActionPerformed(InputAction.CallbackContext context)
-        {
-            TryChangeTeam(context, false);
-        }
+        #region =========== StartTeamManagement Functions =========== 
 
         [Button(ButtonSizes.Medium)]
         public void TryStartTeamManagement()
@@ -289,6 +333,7 @@ namespace _Project.Scripts.Runtime.Networking
                 StartTeamManagement();
             }
         }
+
 
         [ServerRpc(RequireOwnership = false)]
         private void StartTeamManagementServerRpc()
@@ -326,7 +371,8 @@ namespace _Project.Scripts.Runtime.Networking
                 _playerReadyInfos.AddRange(playerReadyInfos);
                 Logger.LogInfo("Team management started", Logger.LogType.Client, context: this);
                 OnTeamManagementStartedTriggerClientRPC();
-            } else
+            }
+            else
             {
                 Logger.LogInfo("Team management already started", Logger.LogType.Client, context: this);
             }
@@ -337,12 +383,56 @@ namespace _Project.Scripts.Runtime.Networking
         {
             OnTeamManagementStarted?.Invoke();
         }
+        #endregion
+
+        #region ===========  Change Team Functions =========== 
+
+        public void TrySetPlayerChangingTeamEnabled(bool value)
+        {
+            SetPlayerChangingTeamEnabledServerRpc(value);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SetPlayerChangingTeamEnabledServerRpc(bool value)
+        {
+            SetPlayerChangingTeamEnabledClientRpc(value);
+        }
+
+        [ObserversRpc]
+        private void SetPlayerChangingTeamEnabledClientRpc(bool value)
+        {
+            SetPlayerChangingTeamEnabled(value);
+        }
+
+        private void SetPlayerChangingTeamEnabled(bool value)
+        {
+            Logger.LogTrace("SetPlayerChangingTeamEnabled: " + value, context: this);
+            _canChangeTeam = value;
+            if (value)
+            {
+                _goToLeftTeamInputAction.Enable();
+                _goToRightTeamInputAction.Enable();
+            }
+            else
+            {
+                _goToLeftTeamInputAction.Disable();
+                _goToRightTeamInputAction.Disable();
+            }
+        }
+
+
+        [TargetRpc(ExcludeServer = false)]
+        private void SetPlayerChangingTeamTargetRPC(NetworkConnection conn, bool value)
+        {
+            SetPlayerChangingTeamEnabled(value);
+        }
+
 
         private void TryChangeTeam(InputAction.CallbackContext context, bool goToLeft)
         {
             if (!_canChangeTeam)
             {
-                Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context:this);
+                Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context: this);
                 return;
             }
             // Reconstruct the RealPlayerInfo
@@ -358,7 +448,7 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
-     
+
             ChangeTeamServerRpc(playerIndexType, goToLeft);
         }
 
@@ -369,7 +459,7 @@ namespace _Project.Scripts.Runtime.Networking
                 Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context: this);
                 return;
             }
-            
+
             ChangeTeamServerRpc(playerIndexType, goToLeft);
         }
 
@@ -398,6 +488,71 @@ namespace _Project.Scripts.Runtime.Networking
             copy.PlayerTeamType = newTeam;
             _playerTeamInfos[index] = copy;
             Logger.LogDebug("Player " + playerIndexType + " changed team to " + newTeam, Logger.LogType.Server, this);
+        }
+
+
+        private void OnChangedPlayerTeamInfos(SyncListOperation op, int index, PlayerTeamInfo oldItem, PlayerTeamInfo newItem, bool asServer)
+        {
+            OnPlayerTeamInfosChanged?.Invoke(_playerTeamInfos.Collection);
+            if (op == SyncListOperation.Set)
+            {
+                // Debug the current teams in a single log
+                string teams = "";
+                foreach (PlayerTeamInfo playerTeamInfo in _playerTeamInfos.Collection)
+                {
+                    teams += "Player " + playerTeamInfo.PlayerIndexType + " : Team " + playerTeamInfo.PlayerTeamType + " | ";
+                }
+                Logger.LogTrace("Teams: " + teams, Logger.LogType.Server, this);
+            }
+        }
+
+
+        private void GoToLeftTeamInputActionPerformed(InputAction.CallbackContext context)
+        {
+            TryChangeTeam(context, true);
+        }
+
+        private void GoToRightTeamInputActionPerformed(InputAction.CallbackContext context)
+        {
+            TryChangeTeam(context, false);
+        }
+
+        #endregion
+
+        #region =========== Confirm Team Functions =========== 
+
+        [ObserversRpc]
+        private void SetPlayerConfirmTeamEnabledClientRpc(bool value)
+        {
+            SetPlayerConfirmTeamEnabled(value);
+        }
+
+        [TargetRpc(ExcludeServer = false)]
+        private void SetPlayerConfirmTeamEnabledTargetRpc(NetworkConnection conn, bool value)
+        {
+            SetPlayerConfirmTeamEnabled(value);
+        }
+
+        public void SetPlayerConfirmTeamEnabled(bool value)
+        {
+            Logger.LogTrace("SetPlayerConfirmTeamEnabled: " + value, context: this);
+
+            if (value)
+            {
+                _readyInputAction.Enable();
+                _readyInputAction.performed += ConfirmTeamInputActionPerformed;
+
+                _cancelReadyInputAction.Disable();
+                _cancelReadyInputAction.performed -= CancelConfirmTeamInputActionPerformed;
+            }
+            else
+            {
+                _readyInputAction.performed -= ConfirmTeamInputActionPerformed;
+                _readyInputAction.Disable();
+
+                _cancelReadyInputAction.Enable();
+                _cancelReadyInputAction.performed += CancelConfirmTeamInputActionPerformed;
+            }
         }
 
         private void TryConfirmTeam(InputAction.CallbackContext context)
@@ -538,177 +693,53 @@ namespace _Project.Scripts.Runtime.Networking
                 }
             }
             Logger.LogWarning("Player " + playerIndexType + " was not found in a team to remove him from.", Logger.LogType.Server, this);
-
         }
 
-
-        private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
+        private void OnChangedPlayersReadyInfos(SyncListOperation op, int index, PlayerReadyInfo oldItem, PlayerReadyInfo newItem, bool asServer)
         {
-            SetPlayerJoiningEnabled(true);
-            JoinInputActionPerformed(context);
-            AddFakePlayer();
-            AddFakePlayer();
-            AddFakePlayer();
-            GameManager.Instance.TryStartGame();
-        }
-
-
-        public void SetPlayerJoiningEnabled(bool value)
-        {
-            Logger.LogTrace("SetPlayerJoiningEnabled: " + value, context:this);
-            if (value)
+            OnPlayersReadyChanged?.Invoke(_playerReadyInfos.Collection);
+            if (op == SyncListOperation.Set)
             {
-                _joinInputAction.Enable();
-            }
-            else
-            {
-                _joinInputAction.Disable();
-            }
-        }
-        
-        [ObserversRpc]
-        public void SetPlayerJoiningEnabledClientRpc(bool value)
-        {
-            SetPlayerJoiningEnabled(value);
-        }
-        
-        public void SetPlayerLeavingEnabled(bool value)
-        {
-            Logger.LogTrace("SetPlayerLeavingEnabled: " + value, context:this);
-            if (value)
-            {
-                _leaveInputAction.Enable();
-            }
-            else
-            {
-                _leaveInputAction.Disable();
-            }
-        }
-        
-        [ObserversRpc]
-        private void SetPlayerLeavingEnabledClientRpc(bool value)
-        {
-            SetPlayerLeavingEnabled(value);
-        }
-
-        public void TrySetPlayerChangingTeamEnabled(bool value)
-        {
-            SetPlayerChangingTeamEnabledServerRpc(value);
-        }
-
-        [ServerRpc(RequireOwnership = false)]
-        private void SetPlayerChangingTeamEnabledServerRpc(bool value)
-        {
-        SetPlayerChangingTeamEnabledClientRpc(value);
-        }
-
-        [ObserversRpc]
-        private void SetPlayerChangingTeamEnabledClientRpc(bool value)
-        {
-            SetPlayerChangingTeamEnabled(value);
-        }
-        
-        private void SetPlayerChangingTeamEnabled(bool value)
-        {
-            Logger.LogTrace("SetPlayerChangingTeamEnabled: " + value, context:this);
-            _canChangeTeam = value;
-            if (value)
-            {
-                _goToLeftTeamInputAction.Enable();
-                _goToRightTeamInputAction.Enable();
-            }
-            else
-            {
-                _goToLeftTeamInputAction.Disable();
-                _goToRightTeamInputAction.Disable();
-            }
-        }
-
-
-        [TargetRpc(ExcludeServer = false)]
-        private void SetPlayerChangingTeamTargetRPC(NetworkConnection conn, bool value)
-        {
-            SetPlayerChangingTeamEnabled(value);
-        }
-
-
-        [ObserversRpc]
-        private void SetPlayerConfirmTeamEnabledClientRpc(bool value)
-        {
-            SetPlayerConfirmTeamEnabled(value);
-        }
-
-        [TargetRpc(ExcludeServer = false)]
-        private void SetPlayerConfirmTeamEnabledTargetRpc(NetworkConnection conn, bool value)
-        {
-            SetPlayerConfirmTeamEnabled(value);
-        }
-
-        public void SetPlayerConfirmTeamEnabled(bool value)
-        {
-            Logger.LogTrace("SetPlayerConfirmTeamEnabled: " + value, context: this);
-
-            if (value)
-            {
-                _readyInputAction.Enable();
-                _readyInputAction.performed += ConfirmTeamInputActionPerformed;
-
-                _cancelReadyInputAction.Disable();
-                _cancelReadyInputAction.performed -= CancelConfirmTeamInputActionPerformed;
-            }
-            else
-            {
-                _readyInputAction.performed -= ConfirmTeamInputActionPerformed;
-                _readyInputAction.Disable();
-
-                _cancelReadyInputAction.Enable();
-                _cancelReadyInputAction.performed += CancelConfirmTeamInputActionPerformed;
-            }
-        }
-
-        private void LeaveInputActionPerformed(InputAction.CallbackContext context)
-        {
-            // This method is always call locally
-            var realPlayerInfo = new RealPlayerInfo
-            {
-                ClientId = (byte)LocalConnection.ClientId,
-                DevicePath = context.control.device.path
-            };
-            Logger.LogTrace("LeaveInputActionPerformed with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                            realPlayerInfo.DevicePath + " received.", context:this);
-            if (_realPlayerInfos.Count == 0)
-            {
-                // We know this player is not in the list since its empty
-                Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                                realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context:this);
-                return;
-            }
-
-            for (int i = 0; i < _realPlayerInfos.Count; i++)
-            {
-                if (_realPlayerInfos[i].ClientId == realPlayerInfo.ClientId &&
-                    _realPlayerInfos[i].DevicePath == realPlayerInfo.DevicePath)
+                string readys = "";
+                // Debug the current ready Players in a single log
+                foreach (PlayerReadyInfo playerReadyInfo in _playerReadyInfos.Collection)
                 {
-                    // This Real Player is in the list
-                    Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                                    realPlayerInfo.DevicePath + " found in the list. Removing it...", context:this);
-                    if (!IsServerStarted)
-                    {
-                        TryRemoveRealPlayerServerRpc(realPlayerInfo.ClientId, realPlayerInfo.DevicePath);
-                        return;
-                    }
-                    else
-                    {
-                        TryRemoveRealPlayer(realPlayerInfo.ClientId, realPlayerInfo.DevicePath);
-                        return;
-                    }
+                    readys += "Player " + playerReadyInfo.PlayerIndexType + " : Ready " + playerReadyInfo.IsPlayerReady + " | ";
+                }
+                Logger.LogTrace("Readys: " + readys, Logger.LogType.Server, this);
+            }
+
+            if (AllPlayerAreReady())
+            {
+                // OnAllPlayersReady?.Invoke();
+            }
+        }
+        private bool AllPlayerAreReady()
+        {
+            bool res = true;
+            foreach (var playerReadyInfo in _playerReadyInfos.Collection)
+            {
+                if (playerReadyInfo.IsPlayerReady != true)
+                {
+                    res = false;
                 }
             }
 
-            // This Real Player is not in the list
-            Logger.LogTrace("RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " +
-                            realPlayerInfo.DevicePath + " not in the list. Nothing to remove.", context: this);
+            return res;
         }
+
+        private void ConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
+        {
+            TryConfirmTeam(context);
+        }
+
+        private void CancelConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
+        {
+            TryCancelConfirmTeam(context);
+        }
+
+        #endregion
+
 
         public void TrySpawnPlayer()
         {
