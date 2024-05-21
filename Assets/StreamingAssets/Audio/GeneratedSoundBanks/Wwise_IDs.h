@@ -17,9 +17,8 @@ namespace AK
         static const AkUniqueID PLAY_LDMRK_FOREST = 702316442U;
         static const AkUniqueID PLAY_LDMRK_RAIN = 4286364483U;
         static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
-        static const AkUniqueID PLAY_TEST_2 = 1517493057U;
-        static const AkUniqueID PLAY_WALK_TEST = 1273048044U;
         static const AkUniqueID STOP_ALL = 452547817U;
+        static const AkUniqueID STOP_LM_KITCHEN = 570374180U;
     } // namespace EVENTS
 
     namespace STATES
@@ -47,18 +46,6 @@ namespace AK
                 static const AkUniqueID NONE = 748895195U;
             } // namespace STATE
         } // namespace MUSC_A1_FD
-
-        namespace TEST_ROUNTING_STATE
-        {
-            static const AkUniqueID GROUP = 384614222U;
-
-            namespace STATE
-            {
-                static const AkUniqueID NONE = 748895195U;
-                static const AkUniqueID PLAYER_A_AND_C = 3768106970U;
-                static const AkUniqueID PLAYER_B_AND_D = 2793951418U;
-            } // namespace STATE
-        } // namespace TEST_ROUNTING_STATE
 
     } // namespace STATES
 
@@ -90,6 +77,19 @@ namespace AK
             } // namespace SWITCH
         } // namespace MUSC_A1_FD
 
+        namespace MUSC_GLOBAL_SWITCH
+        {
+            static const AkUniqueID GROUP = 4276095236U;
+
+            namespace SWITCH
+            {
+                static const AkUniqueID CR_A1 = 3220119667U;
+                static const AkUniqueID CR_A2 = 3220119664U;
+                static const AkUniqueID FD_A1 = 3307480612U;
+                static const AkUniqueID FD_A2 = 3307480615U;
+            } // namespace SWITCH
+        } // namespace MUSC_GLOBAL_SWITCH
+
     } // namespace SWITCHES
 
     namespace GAME_PARAMETERS
@@ -104,6 +104,7 @@ namespace AK
         static const AkUniqueID GP_LANDMARKMETER_RAIN = 1311938743U;
         static const AkUniqueID GP_LM_KITCHEN = 331898971U;
         static const AkUniqueID GP_LM_TOMUSIC = 1716289499U;
+        static const AkUniqueID GP_MUSC_SWITCH = 1886390058U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
         static const AkUniqueID IMMERSION_FA_SSGRAIN = 2481728872U;
         static const AkUniqueID INSTRUMENT_FA_SSGRAIN = 2317409760U;

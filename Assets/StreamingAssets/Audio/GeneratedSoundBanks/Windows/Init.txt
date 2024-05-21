@@ -1,12 +1,17 @@
+Switch Group	ID	Name			Wwise Object Path	Notes
+	4276095236	Musc_Global_Switch			\Default Work Unit\Musc_Global_Switch	
+
+Switch	ID	Name	Switch Group			Notes
+	3220119664	CR_A2	Musc_Global_Switch			
+	3220119667	CR_A1	Musc_Global_Switch			
+	3307480612	FD_A1	Musc_Global_Switch			
+	3307480615	FD_A2	Musc_Global_Switch			
+
 State Group	ID	Name			Wwise Object Path	Notes
-	384614222	Test_Rounting_State			\Default Work Unit\Test_Rounting_State	
 	1679017340	GS_IsDucked_City			\Default Work Unit\GS_IsDucked_City	
 	1976966907	MUSC_A1_FD			\Default Work Unit\MUSC_A1_FD	
 
 State	ID	Name	State Group			Notes
-	748895195	None	Test_Rounting_State			
-	2793951418	Player_B_and_D	Test_Rounting_State			
-	3768106970	Player_A_and_C	Test_Rounting_State			
 	748895195	None	GS_IsDucked_City			
 	1042147611	City_Ducked	GS_IsDucked_City			
 	1072893886	City_Unducked	GS_IsDucked_City			
@@ -20,7 +25,7 @@ Game Parameter	ID	Name			Wwise Object Path	Notes
 	513139656	Mountain			\Factory Acoustic Textures\Textures\Mountain	
 	756044085	GP_ACC_HP			\GP_ACCESS\GP_ACC_HP	
 	841620460	Concrete			\Factory Acoustic Textures\Textures\Concrete	
-	987834118	GP_PARAM_MUSC_Volume			\Default Work Unit\GP_PARAM_MUSC_Volume	
+	987834118	GP_PARAM_MUSC_Volume			\GP_MUSC\GP_PARAM_MUSC_Volume	
 	1755085759	Wood_Deep			\Factory Acoustic Textures\Textures\Wood_Deep	
 	1873957695	Anechoic			\Factory Acoustic Textures\Textures\Anechoic	
 	1970351858	Fabric			\Factory Acoustic Textures\Textures\Fabric	
