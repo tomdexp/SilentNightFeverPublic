@@ -81,7 +81,7 @@ namespace _Project.Scripts.Runtime.Networking
         {
             if (args.ConnectionState == RemoteConnectionState.Stopped)
             {
-                Logger.LogInfo("Remote client disconnected from online", Logger.LogType.Server, this);
+                Logger.LogInfo("Remote client disconnected with id " + conn.ClientId, Logger.LogType.Server, this);
                 _realPlayerInfos.Clear();
                 _playerTeamInfos.Clear();
                 _playerReadyInfos.Clear();

@@ -54,7 +54,10 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnAllPlayersReady()
         {
-            if (GameManager.HasInstance) GameManager.Instance.LoadGameScene();
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.LoadGameScene();
+            }
         }
 
         private void UnbindEvents()
