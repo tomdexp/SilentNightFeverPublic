@@ -17,6 +17,12 @@ namespace AK
         static const AkUniqueID PLAY_LDMRK_FOREST = 702316442U;
         static const AkUniqueID PLAY_LDMRK_RAIN = 4286364483U;
         static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
+        static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
+        static const AkUniqueID PLAY_UI_BACK = 1386224142U;
+        static const AkUniqueID PLAY_UI_DISPLACEMENT = 1341306234U;
+        static const AkUniqueID PLAY_UI_ENTER = 2982660583U;
+        static const AkUniqueID PLAY_UI_LOBBY_CREATED = 4198832716U;
+        static const AkUniqueID PLAY_UI_LOBBY_JOINED = 1782690879U;
         static const AkUniqueID STOP_ALL = 452547817U;
         static const AkUniqueID STOP_LM_KITCHEN = 570374180U;
     } // namespace EVENTS
@@ -126,9 +132,10 @@ namespace AK
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID CHAR = 4140304029U;
-        static const AkUniqueID MUSIC = 3991942870U;
+        static const AkUniqueID SB_CHAR = 2208305301U;
         static const AkUniqueID SB_LM = 709024172U;
+        static const AkUniqueID SB_MUSIC = 779753582U;
+        static const AkUniqueID SB_UI = 289583631U;
         static const AkUniqueID TEST_LANDMARK = 1286362932U;
     } // namespace BANKS
 
