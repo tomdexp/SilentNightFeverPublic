@@ -427,9 +427,6 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerChangingTeamEnabled(value);
         }
 
-
-        
-
         private void TryChangeTeam(InputAction.CallbackContext context, bool goToLeft)
         {
             //if (!_canChangeTeam)
@@ -451,9 +448,9 @@ namespace _Project.Scripts.Runtime.Networking
             }
             var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
 
-            if (IsPlayerReady(realPlayerInfo) == true)
+            if (IsPlayerReady(playerIndexType))
             {
-                Logger.LogWarning("Can't change team be cause player " + realPlayerInfo.ClientId + " is already ready.", context: this);
+                Logger.LogWarning($"Can't change team because player {playerIndexType} with id {realPlayerInfo.ClientId} is already ready", context: this);
                 return;
             }
 
@@ -583,7 +580,6 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
-
             ConfirmTeamServerRpc(playerIndexType);
         }
 
@@ -655,7 +651,7 @@ namespace _Project.Scripts.Runtime.Networking
             Logger.LogDebug("Player " + playerIndexType + " confirmed being in team " + confirmingTeam, Logger.LogType.Server, this);
 
             //SetPlayerChangingTeamTargetRPC(conn, false);
-            SetPlayerConfirmTeamEnabledTargetRpc(conn, false);
+            //SetPlayerConfirmTeamEnabledTargetRpc(conn, false);
         }
 
         public void TryCancelConfirmTeam(InputAction.CallbackContext context)
@@ -736,18 +732,9 @@ namespace _Project.Scripts.Runtime.Networking
             return res;
         }
 
-        private bool IsPlayerReady(RealPlayerInfo realPlayerInfo)
+        private bool IsPlayerReady(PlayerIndexType playerIndexType)
         {
-            foreach (var playerReadyInfo in _playerReadyInfos.Collection)
-            {
-                if (playerReadyInfo.PlayerIndexType == realPlayerInfo.PlayerIndexType && playerReadyInfo.IsPlayerReady)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-
+            return _playerReadyInfos.Collection.Any(playerReadyInfo => playerReadyInfo.PlayerIndexType == playerIndexType && playerReadyInfo.IsPlayerReady);
         }
 
         private void ConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
@@ -758,6 +745,48 @@ namespace _Project.Scripts.Runtime.Networking
         private void CancelConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
         {
             TryCancelConfirmTeam(context);
+        }
+        
+        public void ReadyAllFakePlayers()
+        {
+            if (!IsServerStarted) return;
+            StartCoroutine(ReadyAllFakePlayersCoroutine());
+        }
+
+        private IEnumerator ReadyAllFakePlayersCoroutine()
+        {
+            foreach (var realPlayerInfo in _realPlayerInfos.Collection)
+            {
+                if (realPlayerInfo.ClientId != 255) continue;
+                int numberOfPlayersInTeamA = 0;
+                int numberOfPlayersInTeamB = 0;
+                foreach (var playerTeamInfo in _playerTeamInfos.Collection)
+                {
+                    if (playerTeamInfo.PlayerTeamType == PlayerTeamType.A)
+                    {
+                        numberOfPlayersInTeamA++;
+                    }
+                    else if (playerTeamInfo.PlayerTeamType == PlayerTeamType.B)
+                    {
+                        numberOfPlayersInTeamB++;
+                    }
+                }
+
+                if (numberOfPlayersInTeamA != 2)
+                {
+                    ChangeTeamServerRpc(realPlayerInfo.PlayerIndexType, true);
+                }
+                else if (numberOfPlayersInTeamB != 2)
+                {
+                    ChangeTeamServerRpc(realPlayerInfo.PlayerIndexType, false);
+                }
+                else
+                {
+                    Logger.LogWarning("Cannot ready fake player " + realPlayerInfo.PlayerIndexType + " because both teams are full.", context: this);
+                }
+                ConfirmTeamServerRpc(realPlayerInfo.PlayerIndexType);
+                yield return new WaitForSeconds(1f);
+            }
         }
 
         #endregion
