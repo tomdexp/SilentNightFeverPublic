@@ -428,13 +428,15 @@ namespace _Project.Scripts.Runtime.Networking
         }
 
 
+        
+
         private void TryChangeTeam(InputAction.CallbackContext context, bool goToLeft)
         {
-            if (!_canChangeTeam)
-            {
-                Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context: this);
-                return;
-            }
+            //if (!_canChangeTeam)
+            //{
+            //    Logger.LogWarning("Can't change team yet, the variable _canChangeTeam is currently false, don't forget so start team management via TryStartTeamManagement()", context: this);
+            //    return;
+            //}
             // Reconstruct the RealPlayerInfo
             var realPlayerInfo = new RealPlayerInfo
             {
@@ -448,6 +450,12 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
+
+            if (IsPlayerReady(realPlayerInfo) == true)
+            {
+                Logger.LogWarning("Can't change team be cause player " + realPlayerInfo.ClientId + " is already ready.", context: this);
+                return;
+            }
 
             ChangeTeamServerRpc(playerIndexType, goToLeft);
         }
@@ -646,7 +654,7 @@ namespace _Project.Scripts.Runtime.Networking
 
             Logger.LogDebug("Player " + playerIndexType + " confirmed being in team " + confirmingTeam, Logger.LogType.Server, this);
 
-            SetPlayerChangingTeamTargetRPC(conn, false);
+            //SetPlayerChangingTeamTargetRPC(conn, false);
             SetPlayerConfirmTeamEnabledTargetRpc(conn, false);
         }
 
@@ -687,7 +695,7 @@ namespace _Project.Scripts.Runtime.Networking
 
                     Logger.LogDebug("Player " + playerIndexType + " is no longer ready.", Logger.LogType.Server, this);
 
-                    SetPlayerChangingTeamTargetRPC(conn, true);
+                    //SetPlayerChangingTeamTargetRPC(conn, true);
                     SetPlayerConfirmTeamEnabledTargetRpc(conn, true);
                     return;
                 }
@@ -726,6 +734,20 @@ namespace _Project.Scripts.Runtime.Networking
             }
 
             return res;
+        }
+
+        private bool IsPlayerReady(RealPlayerInfo realPlayerInfo)
+        {
+            foreach (var playerReadyInfo in _playerReadyInfos.Collection)
+            {
+                if (playerReadyInfo.PlayerIndexType == realPlayerInfo.PlayerIndexType && playerReadyInfo.IsPlayerReady)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+
         }
 
         private void ConfirmTeamInputActionPerformed(InputAction.CallbackContext context)
