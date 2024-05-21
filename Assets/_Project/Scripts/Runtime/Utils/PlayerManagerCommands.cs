@@ -16,5 +16,16 @@ namespace _Project.Scripts.Runtime.Utils
             }
             if(PlayerManager.HasInstance) PlayerManager.Instance.SetPlayerJoiningEnabledClientRpc(value);
         }
+        
+        [Command("/player.fake.all.ready", "Make all fake players ready")]
+        public static void SetFakePlayersReady()
+        {
+            if (!InstanceFinder.IsServerStarted)
+            {
+                Logger.LogError("Only the server can set this value !");
+                return;
+            }
+            if(PlayerManager.HasInstance) PlayerManager.Instance.ReadyAllFakePlayers();
+        }
     }
 }
