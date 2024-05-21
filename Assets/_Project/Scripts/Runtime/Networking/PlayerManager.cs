@@ -48,8 +48,8 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnAllPlayerSpawnedLocally;
         public event Action OnRemoteClientDisconnected;
         public event Action OnTeamManagementStarted;
-        // public event Action OnAllPlayersReady;
-        
+        public event Action OnAllPlayersReady;
+
         private int _numberOfPlayerSpawnedLocally = 0;
         
         private PlayerController _playerControllerA;
@@ -709,9 +709,9 @@ namespace _Project.Scripts.Runtime.Networking
                 Logger.LogTrace("Readys: " + readys, Logger.LogType.Server, this);
             }
 
-            if (AllPlayerAreReady())
+            if (AllPlayerAreReady() && IsServerStarted)
             {
-                // OnAllPlayersReady?.Invoke();
+                OnAllPlayersReady?.Invoke();
             }
         }
         private bool AllPlayerAreReady()
