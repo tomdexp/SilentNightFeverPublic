@@ -48,10 +48,15 @@ namespace _Project.Scripts.Runtime.UI
             PlayerManager.TryGetInstance().TryStartTeamManagement();
             PlayerManager.Instance.OnPlayerTeamInfosChanged += OnPlayerTeamInfosChanged;
             PlayerManager.Instance.OnPlayersReadyChanged += OnPlayersReadyChanged;
+            PlayerManager.Instance.OnAllPlayersReady += OnAllPlayersReady;
             _isSetup = true;
         }
 
-     
+        private void OnAllPlayersReady()
+        {
+            // TODO : Start game
+        }
+
         private void UnbindEvents()
         {
             if (PlayerManager.HasInstance == false) return;

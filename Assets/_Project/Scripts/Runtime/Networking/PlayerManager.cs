@@ -48,6 +48,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnAllPlayerSpawnedLocally;
         public event Action OnRemoteClientDisconnected;
         public event Action OnTeamManagementStarted;
+        public event Action OnAllPlayersReady;
         
         private int _numberOfPlayerSpawnedLocally = 0;
         
@@ -188,6 +189,11 @@ namespace _Project.Scripts.Runtime.Networking
                     readys += "Player " + playerReadyInfo.PlayerIndexType + " : Ready " + playerReadyInfo.IsPlayerReady + " | ";
                 }
                 Logger.LogTrace("Readys: " + readys, Logger.LogType.Server, this);
+            }
+
+            if (_playerReadyInfos.Collection.Count == 4)
+            {
+                OnAllPlayersReady?.Invoke();
             }
         }
 

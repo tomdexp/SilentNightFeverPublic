@@ -75,6 +75,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Join Input
       m_Flags: 0
+    - m_Name: 
+      m_Id: d19e3d46-a24b-4755-addb-ad29b1a7cdc3
+      m_Path: <SwitchProControllerHID>/buttonWest
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join Input
+      m_Flags: 0
     m_Flags: 0
   _leaveInputAction:
     m_Name: Leave Input
@@ -100,6 +108,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Leave Input
       m_Flags: 0
+    - m_Name: 
+      m_Id: aab04843-5e7a-4953-8829-bf70fbc0c655
+      m_Path: <SwitchProControllerHID>/select
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Leave Input
+      m_Flags: 0
     m_Flags: 0
   _readyInputAction:
     m_Name: Ready Input
@@ -120,6 +136,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 4613a67f-8427-45a2-b466-ffbeff6b2ad0
       m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Ready Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: b128152d-b053-4438-893c-dd015d1a5077
+      m_Path: <Gamepad>/buttonEast
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -287,7 +311,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 3
+  <PrefabId>k__BackingField: 13
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
