@@ -567,7 +567,7 @@
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{7D9FA882-2661-1706-F858-10BDB9A5D492}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{8AD71F5A-4017-5EBB-EB4D-6D819E2AFED3}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -587,13 +587,13 @@
 					<ShortName>SNF_FD_A1_132_Verse2_Voice_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A1_132_Verse2_Voice_V1_D8A0D580.wem</CachePath>
 				</File>
+				<File Id="237531611" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse_Bass_V1-001.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse_Bass_V1-001_D8A0D580.wem</CachePath>
+				</File>
 				<File Id="248899126" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A1_132_Verse1_Voice_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A1_132_Verse1_Voice_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="261774264" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Verse_Drums_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Verse_Drums_V1_D8A0D580.wem</CachePath>
 				</File>
 				<File Id="264880505" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A1_132_Intro_Bass_V1.wav</ShortName>
@@ -602,6 +602,10 @@
 				<File Id="301353085" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A1_132_Exposition_Lead_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A1_132_Exposition_Lead_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="337157351" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse_Drums_V1-001.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse_Drums_V1-001_D8A0D580.wem</CachePath>
 				</File>
 				<File Id="410070274" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Chords_V1.wav</ShortName>
@@ -628,10 +632,6 @@
 					<ShortName>SNF_FD_A1_132_Chorus1_Voice_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Voice_V1_D8A0D580.wem</CachePath>
 				</File>
-				<File Id="686981056" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Verse_Bass_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Verse_Bass_V1_D8A0D580.wem</CachePath>
-				</File>
 				<File Id="717906061" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A1_132_Exposition_Chords_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A1_132_Exposition_Chords_V1_D8A0D580.wem</CachePath>
@@ -645,6 +645,10 @@
 					<ShortName>SNF_FD_A1_132_Verse2_Chords_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A1_132_Verse2_Chords_V1_D8A0D580.wem</CachePath>
 				</File>
+				<File Id="938802493" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse_Bass_V1-002.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse_Bass_V1-002_D8A0D580.wem</CachePath>
+				</File>
 				<File Id="1031095703" Language="SFX" Streaming="true" Location="Loose">
 					<ShortName>SNF_FD_A1_132_Chorus1_Lead_V1.wav</ShortName>
 					<Path>Media/1031095703.wem</Path>
@@ -654,10 +658,6 @@
 					<ShortName>SNF_FD_A1_132_Chorus1_Bass_V1.wav</ShortName>
 					<Path>Media/1033699912.wem</Path>
 					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Bass_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="1055297783" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Intro_Drums_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Intro_Drums_V1_D8A0D580.wem</CachePath>
 				</File>
 				<File Id="1059675014" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A1_132_Intro_percs.wav</ShortName>
@@ -674,23 +674,23 @@
 								<MediaRef Id="162076403"/>
 								<MediaRef Id="177634168"/>
 								<MediaRef Id="196322221"/>
+								<MediaRef Id="237531611"/>
 								<MediaRef Id="248899126"/>
-								<MediaRef Id="261774264"/>
 								<MediaRef Id="264880505"/>
 								<MediaRef Id="301353085"/>
+								<MediaRef Id="337157351"/>
 								<MediaRef Id="410070274"/>
 								<MediaRef Id="457124064"/>
 								<MediaRef Id="516737288"/>
 								<MediaRef Id="520650177"/>
 								<MediaRef Id="584774517"/>
 								<MediaRef Id="618553296"/>
-								<MediaRef Id="686981056"/>
 								<MediaRef Id="717906061"/>
 								<MediaRef Id="790597649"/>
 								<MediaRef Id="934732765"/>
+								<MediaRef Id="938802493"/>
 								<MediaRef Id="1031095703"/>
 								<MediaRef Id="1033699912"/>
-								<MediaRef Id="1055297783"/>
 								<MediaRef Id="1059675014"/>
 							</MediaRefs>
 						</SwitchContainer>
@@ -1019,5 +1019,5 @@
 			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{D13B85DA-7645-9B3B-BEF8-A7195AF13901}</FileHash>
+	<FileHash>{D33A54A3-2840-7102-1115-E10A94446062}</FileHash>
 </SoundBanksInfo>
