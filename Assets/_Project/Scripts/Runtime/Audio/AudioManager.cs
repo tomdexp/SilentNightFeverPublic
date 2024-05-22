@@ -220,11 +220,6 @@ namespace _Project.Scripts.Runtime.Audio
         private void BindListenersAndEmitters()
         {
             Logger.LogTrace("Binding listeners and emitters...", Logger.LogType.Local, this);
-            
-            foreach (var listener in _listeners)
-            {
-                listener.StartListeningToEmitter(_akGameObj);
-            }
 
             foreach (var akGameObj in _emitters)
             {

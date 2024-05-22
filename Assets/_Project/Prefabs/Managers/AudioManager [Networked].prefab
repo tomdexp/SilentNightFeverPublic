@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2445750874059613331}
   - component: {fileID: 7063553536507962263}
   - component: {fileID: 5382303123516007893}
+  - component: {fileID: 1962652428493859892}
   m_Layer: 0
   m_Name: 'AudioManager [Networked]'
   m_TagString: Untagged
@@ -116,7 +117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_listeners:
-    initialListenerList: []
+    initialListenerList:
+    - {fileID: 1962652428493859892}
     useDefaultListeners: 0
   isEnvironmentAware: 0
   isStaticObject: 0
@@ -142,3 +144,17 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 4853525161189321259}
   AutoUnparentOnAwake: 1
   AudioManagerData: {fileID: 11400000, guid: b4df6653acd5e5b41b46998ccafdf5bb, type: 2}
+--- !u!114 &1962652428493859892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3218181787894493209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f01c39a96d1f0374ba2e5df544a0359b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefaultListener: 0
+  listenerId: 0
