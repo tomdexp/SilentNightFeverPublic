@@ -39,6 +39,9 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         public event Action OnTongueOut;
         public event Action OnTongueIn;
         public event Action OnTongueRetractStart;
+        public event Action OnTongueBind;
+        public event Action OnTongueUnbind;
+        public event Action OnTongueInteract;
         public Transform TongueTip => _tongueTip;
         
         public override void OnStartServer()
@@ -74,6 +77,12 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                     Logger.LogTrace("PlayerStickyTongue.OnTongueIn is registered for Replication", Logger.LogType.Client, this);
                     OnTongueRetractStart += ReplicateOnTongueRetractStart;
                     Logger.LogTrace("PlayerStickyTongue.OnTongueRetractStart is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueBind += ReplicateOnTongueBind;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueBind is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueUnbind += ReplicateOnTongueUnbind;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueUnbind is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueInteract += ReplicateOnTongueInteract;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueInteract is registered for Replication", Logger.LogType.Client, this);
                 }
             }
         }
@@ -88,6 +97,12 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 Logger.LogTrace("PlayerStickyTongue.OnTongueIn is unregistered for Replication", Logger.LogType.Client, this);
                 OnTongueRetractStart -= ReplicateOnTongueRetractStart;
                 Logger.LogTrace("PlayerStickyTongue.OnTongueRetractStart is unregistered for Replication", Logger.LogType.Client, this);
+                OnTongueBind -= ReplicateOnTongueBind;
+                Logger.LogTrace("PlayerStickyTongue.OnTongueBind is unregistered for Replication", Logger.LogType.Client, this);
+                OnTongueUnbind -= ReplicateOnTongueUnbind;
+                Logger.LogTrace("PlayerStickyTongue.OnTongueUnbind is unregistered for Replication", Logger.LogType.Client, this);
+                OnTongueInteract -= ReplicateOnTongueInteract;
+                Logger.LogTrace("PlayerStickyTongue.OnTongueInteract is unregistered for Replication", Logger.LogType.Client, this);
             }
         }
 
@@ -295,6 +310,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             fixedJoint.connectedAnchor = Vector3.zero;
             fixedJoint.anchor = Vector3.zero;
             _tongueTipRigidbody.isKinematic = false;
+            OnTongueBind?.Invoke();
         }
 
         private IEnumerator UnbindTongueFromAnchorCoroutine()
@@ -308,7 +324,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             {
                 Destroy(fixedJoint);
             }
-
+            OnTongueUnbind?.Invoke();
             yield return Retract();
             SetTongueVisibilityServerRpc(false);
             _isTongueOut = false;
@@ -321,6 +337,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             _tongueTip.position = _tongueOrigin.position;
             SetTongueVisibilityServerRpc(true);
             yield return ThrowTo(tongueInteractable.Target.position);
+            OnTongueInteract?.Invoke();
             yield return new WaitForSeconds(_networkPlayer.PlayerData.TongueInteractDuration);
             yield return Retract();
             SetTongueVisibilityServerRpc(false);
@@ -470,6 +487,60 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         private void OnTongueRetractStartClientRpc()
         {
             if(!Owner.IsLocalClient) OnTongueRetractStart?.Invoke();
+        }
+        
+        private void ReplicateOnTongueBind()
+        {
+            OnTongueBindServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnTongueBindServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueBind?.Invoke();
+            OnTongueBindClientRpc();
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnTongueBindClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueBind?.Invoke();
+        }
+        
+        private void ReplicateOnTongueUnbind()
+        {
+            OnTongueUnbindServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnTongueUnbindServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueUnbind?.Invoke();
+            OnTongueUnbindClientRpc();
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnTongueUnbindClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueUnbind?.Invoke();
+        }
+        
+        private void ReplicateOnTongueInteract()
+        {
+            OnTongueInteractServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnTongueInteractServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueInteract?.Invoke();
+            OnTongueInteractClientRpc();
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnTongueInteractClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueInteract?.Invoke();
         }
         
         public TongueAnchor GetCurrentBindTongueAnchor()
