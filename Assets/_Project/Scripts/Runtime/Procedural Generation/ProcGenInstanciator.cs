@@ -186,8 +186,8 @@ public class ProcGenInstanciator : MonoBehaviour
         for (int i = 0; i < points.Count; i++)
         {
             Vector2 point = points[i];
-            point.x += (parameters._edgeDistance/100 * _regionSize.x)/2;
-            point.y += (parameters._edgeDistance/100 * _regionSize.y)/2;
+            point.x += (parameters._edgeDistance / 100 * _regionSize.x) / 2;
+            point.y += (parameters._edgeDistance / 100 * _regionSize.y) / 2;
             points[i] = point;
         }
 
