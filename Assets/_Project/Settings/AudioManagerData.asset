@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EventNotFoundLogLevel: 3
   RTPCNotFoundLogLevel: 3
+  RPTCLog: 0
   BanksToLoadOnApplicationStart:
   - Bank:
       idInternal: 0
@@ -55,6 +56,12 @@ MonoBehaviour:
     WwiseObjectReference: {fileID: 0}
   RTPC_GP_MUSC_SWITCH_MinValue: 1
   RTPC_GP_MUSC_SWITCH_MaxValue: 4
+  RTPC_GP_LM_SatelliteSpeed:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  RTPC_GP_LM_SatelliteSpeed_MinValue: 0
+  RTPC_GP_LM_SatelliteSpeed_MaxValue: 10
   EventApplicationStart:
     idInternal: 0
     valueGuidInternal: 
@@ -94,6 +101,10 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: a43903307adc505488fb75536230a2ba,
       type: 2}
+  EventPlayerTongueInteractOrBind:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
   EventUIButtonHover:
     idInternal: 0
     valueGuidInternal: 
@@ -131,10 +142,6 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
   EventLandmarkZoomStopTurning:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  EventLandmarkZoomStep:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}

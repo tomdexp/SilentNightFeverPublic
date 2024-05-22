@@ -15,11 +15,14 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
         private float _minTurnSpeed = 0f;
         private float _maxTurnSpeed = 0.37f;
 
-        public override void OnStartServer()
+        private void Awake()
         {
             _landmarkZoom = GetComponent<Landmark_Zoom>();
             _akGameObj = GetComponent<AkGameObj>();
-            
+        }
+
+        public override void OnStartServer()
+        {
             _landmarkZoom.OnStartTurning += OnStartTurning;
             _landmarkZoom.OnStopTurning += OnStopTurning;
 

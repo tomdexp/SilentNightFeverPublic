@@ -100,7 +100,20 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             if (!InstanceFinder.IsServerStarted)
             {
                 Logger.LogTrace("Client started and rigidbody is set to kinematic==true", Logger.LogType.Client, this);
-                SetRigidbodyKinematic(true);
+                switch (RigidbodyBehavior)
+                {
+                    case RigidbodyAnchorBehavior.AlwaysKinematic:
+                        SetRigidbodyKinematic(true);
+                        break;
+                    case RigidbodyAnchorBehavior.AlwaysNonKinematic:
+                        SetRigidbodyKinematic(false);
+                        break;
+                    case RigidbodyAnchorBehavior.KinematicWhenNotOwner:
+                        SetRigidbodyKinematic(true);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
 
             if (DefaultOwnershipIsLinkedNetworkObject)
