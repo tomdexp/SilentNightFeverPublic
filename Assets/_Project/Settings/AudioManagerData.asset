@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AudioManagerData
   m_EditorClassIdentifier: 
   EventNotFoundLogLevel: 3
+  RTPCNotFoundLogLevel: 3
   BanksToLoadOnApplicationStart:
   - Bank:
       idInternal: 0
@@ -48,6 +49,12 @@ MonoBehaviour:
   RightSpeakerVolumeOffset:
   - -40
   - 0
+  RTPC_GP_MUSC_SWITCH:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  RTPC_GP_MUSC_SWITCH_MinValue: 1
+  RTPC_GP_MUSC_SWITCH_MaxValue: 4
   EventApplicationStart:
     idInternal: 0
     valueGuidInternal: 
@@ -80,16 +87,22 @@ MonoBehaviour:
   EventPlayerTongueThrow:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 07bd3746f68221e4eb8cb74dd051c914,
+      type: 2}
   EventPlayerTongueRetract:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: a43903307adc505488fb75536230a2ba,
+      type: 2}
   EventUIButtonHover:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
-  EventUIButtonClick:
+  EventUIButtonClickEnter:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventUIButtonClickBack:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
@@ -110,6 +123,18 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
   EventLandmarkKitchenFoodEaten:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventLandmarkZoomStartTurning:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventLandmarkZoomStopTurning:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventLandmarkZoomStep:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
