@@ -39,7 +39,7 @@ public class ProcGenInstanciator : MonoBehaviour
     [SerializeField] private ProcGenParameters _landmarksParameters;
     [SerializeField] public List<SpawnableNetworkObject> _landmarksPrefabList;
     [HideInInspector] public List<Vector2> _landmarksPoints;
-    public List<NetworkObject> _spawnedLandmarks;
+    [HideInInspector] public List<NetworkObject> _spawnedLandmarks;
 
     [Title("    Crowd")]
     [SerializeField] private ProcGenParameters _CrowdParameters;
@@ -230,7 +230,7 @@ public class ProcGenInstanciator : MonoBehaviour
         // For each element of our minList, we spawn its prefab the it and tell the SNOList we spawned it
         while (!minList.IsNullOrEmpty() && spawnIndex < pointsLocation.Count)
         {
-            int random = Random.Range(0, minList.Count-1);
+            int random = Random.Range(0, minList.Count - 1);
             NetworkObject prefab = minList[random].Object;
             minList.RemoveAt(random);
 
@@ -259,7 +259,7 @@ public class ProcGenInstanciator : MonoBehaviour
         // Then we spawn the remaining elements from the SNOList (considering the max attributes)
         while (!SNOList.IsNullOrEmpty() && spawnIndex < pointsLocation.Count)
         {
-            int random = Random.Range(0, SNOList.Count-1);
+            int random = Random.Range(0, SNOList.Count - 1);
             NetworkObject prefab = SNOList[random].Object;
             SNOList[random].Max -= 1;
 
