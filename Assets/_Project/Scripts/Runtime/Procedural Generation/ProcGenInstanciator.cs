@@ -1,14 +1,11 @@
 using FishNet;
 using FishNet.Object;
-using Mono.CSharp;
 using Sirenix.OdinInspector;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
-using Unity.Mathematics;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 using Sirenix.Utilities;
@@ -37,7 +34,12 @@ public class ProcGenInstanciator : MonoBehaviour
 
     [Title("    Landmarks")]
     [SerializeField] private ProcGenParameters _landmarksParameters;
-    [SerializeField] public List<SpawnableNetworkObject> _landmarksPrefabList;
+    [SerializeField, ValidateInput("MaxLandmarksSuperiorOrEqualToLandmarkCount", "The number of Landmarks that should " +
+        "spawn is less than the Landmarks you can spawn with these parameters " +
+        "(increase the max count of some of your landmarks or add more landmarks."
+        , InfoMessageType.Warning)]
+    public List<SpawnableNetworkObject> _landmarksPrefabList;
+
     [HideInInspector] public List<Vector2> _landmarksPoints;
     [HideInInspector] public List<NetworkObject> _spawnedLandmarks;
 
@@ -342,6 +344,20 @@ public class ProcGenInstanciator : MonoBehaviour
     {
         _teamAPoints = GeneratePoints(_teamAParameters, true, false, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true, false, true);
+    }
+
+    private bool MaxLandmarksSuperiorOrEqualToLandmarkCount()
+    {
+        int sum = 0;
+
+        foreach (var SNO in _landmarksPrefabList)
+        {
+            sum += SNO.Max;
+        }
+
+        bool res = (sum >= _landmarksParameters._numOfPoints);
+
+        return res;
     }
 }
 
