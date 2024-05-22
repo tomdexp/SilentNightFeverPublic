@@ -250,7 +250,7 @@ public class ProcGenInstanciator : MonoBehaviour
                 }
             }
 
-            NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[spawnIndex].x, 0, pointsLocation[spawnIndex].y), Quaternion.identity);
+            NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[spawnIndex].x, -1, pointsLocation[spawnIndex].y), Quaternion.identity);
             _spawnedLandmarks.Add(pref);
             pref.transform.Rotate(new Vector3(0, Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
