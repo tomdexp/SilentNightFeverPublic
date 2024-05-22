@@ -35,11 +35,18 @@ MonoBehaviour:
         type: 2}
     DecodeBankOnLoad: 1
     SaveDecodedBank: 0
+  - Bank:
+      idInternal: 0
+      valueGuidInternal: 
+      WwiseObjectReference: {fileID: 11400000, guid: 35eab507cb86d304e847f210d266c0d9,
+        type: 2}
+    DecodeBankOnLoad: 1
+    SaveDecodedBank: 0
   LeftSpeakerVolumeOffset:
   - 0
-  - -96
+  - -40
   RightSpeakerVolumeOffset:
-  - -96
+  - -40
   - 0
   EventApplicationStart:
     idInternal: 0
@@ -56,7 +63,8 @@ MonoBehaviour:
   EventGameStart:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: e51caf919b6fb104c9b22df442c75d2e,
+      type: 2}
   EventGameEnd:
     idInternal: 0
     valueGuidInternal: 
