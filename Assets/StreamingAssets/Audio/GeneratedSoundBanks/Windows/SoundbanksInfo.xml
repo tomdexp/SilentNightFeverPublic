@@ -231,7 +231,7 @@
 				<GameParameter Id="1240670792" Name="Distance"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{A729CE8E-63DF-18DF-7D53-B08868F16C95}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{B863BB93-6825-5C31-4A86-CD794335BA53}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -691,10 +691,32 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="2208305301" Type="User" Language="SFX" Hash="{3FE1DE51-72C6-AA2F-B901-1B8EF123DE01}">
+		<SoundBank Id="2208305301" Type="User" Language="SFX" Hash="{692C6C99-F333-5E09-C40E-7842DEE9A8EF}">
 			<ShortName>SB_CHAR</ShortName>
 			<Path>SB_CHAR.bnk</Path>
+			<Media>
+				<File Id="8339949" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>THONGUE_TRHOW.wav</ShortName>
+					<CachePath>SFX/THONGUE_TRHOW_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="827860642" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>THONGUE_RETRACT.wav</ShortName>
+					<CachePath>SFX/THONGUE_RETRACT_EDCD4836.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="3854640606" Name="Play_CHAR_THO_Retract" DurationType="OneShot" DurationMin="1.2138506" DurationMax="1.4040467">
+					<MediaRefs>
+						<MediaRef Id="827860642"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3990111633" Name="Play_CHAR_THO_Throw" DurationType="OneShot" DurationMin="1.2193521" DurationMax="1.4534165">
+					<MediaRefs>
+						<MediaRef Id="8339949"/>
+					</MediaRefs>
+				</Event>
+			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{C1C1C862-F90A-7898-F662-3B12EC8B8458}</FileHash>
+	<FileHash>{CF3E43EA-EF31-78A2-8B11-2EF89EE6C0FD}</FileHash>
 </SoundBanksInfo>

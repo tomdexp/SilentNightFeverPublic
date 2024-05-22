@@ -13,6 +13,8 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_CHAR_THO_RETRACT = 3854640606U;
+        static const AkUniqueID PLAY_CHAR_THO_THROW = 3990111633U;
         static const AkUniqueID PLAY_LDMRK_CITY = 1475694052U;
         static const AkUniqueID PLAY_LDMRK_FOREST = 702316442U;
         static const AkUniqueID PLAY_LDMRK_RAIN = 4286364483U;
