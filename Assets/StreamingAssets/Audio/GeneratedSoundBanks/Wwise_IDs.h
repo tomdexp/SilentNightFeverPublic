@@ -15,18 +15,16 @@ namespace AK
     {
         static const AkUniqueID PLAY_CHAR_THO_RETRACT = 3854640606U;
         static const AkUniqueID PLAY_CHAR_THO_THROW = 3990111633U;
-        static const AkUniqueID PLAY_LDMRK_CITY = 1475694052U;
-        static const AkUniqueID PLAY_LDMRK_FOREST = 702316442U;
-        static const AkUniqueID PLAY_LDMRK_RAIN = 4286364483U;
         static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
+        static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
         static const AkUniqueID PLAY_UI_BACK = 1386224142U;
         static const AkUniqueID PLAY_UI_DISPLACEMENT = 1341306234U;
         static const AkUniqueID PLAY_UI_ENTER = 2982660583U;
         static const AkUniqueID PLAY_UI_LOBBY_CREATED = 4198832716U;
         static const AkUniqueID PLAY_UI_LOBBY_JOINED = 1782690879U;
-        static const AkUniqueID STOP_ALL = 452547817U;
         static const AkUniqueID STOP_LM_KITCHEN = 570374180U;
+        static const AkUniqueID STOP_LM_SATT_INTERACT = 3778981049U;
     } // namespace EVENTS
 
     namespace STATES
@@ -110,7 +108,8 @@ namespace AK
         static const AkUniqueID GP_LANDMARKMETER_CITY = 823063048U;
         static const AkUniqueID GP_LANDMARKMETER_FOREST = 1268650150U;
         static const AkUniqueID GP_LANDMARKMETER_RAIN = 1311938743U;
-        static const AkUniqueID GP_LM_KITCHEN = 331898971U;
+        static const AkUniqueID GP_LM_KITCHENMETER = 2256592338U;
+        static const AkUniqueID GP_LM_SATELITTESPEED = 3546657911U;
         static const AkUniqueID GP_LM_TOMUSIC = 1716289499U;
         static const AkUniqueID GP_MUSC_SWITCH = 1886390058U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
@@ -139,7 +138,6 @@ namespace AK
         static const AkUniqueID SB_LM = 709024172U;
         static const AkUniqueID SB_MUSIC = 779753582U;
         static const AkUniqueID SB_UI = 289583631U;
-        static const AkUniqueID TEST_LANDMARK = 1286362932U;
     } // namespace BANKS
 
     namespace BUSSES
