@@ -567,7 +567,7 @@
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{535607EE-E0AC-63B9-8FD6-340E9A917C8D}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{7D9FA882-2661-1706-F858-10BDB9A5D492}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -659,6 +659,10 @@
 					<ShortName>SNF_FD_A1_132_Intro_Drums_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A1_132_Intro_Drums_V1_D8A0D580.wem</CachePath>
 				</File>
+				<File Id="1059675014" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Intro_percs.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Intro_percs_D8A0D580.wem</CachePath>
+				</File>
 			</Media>
 			<Events>
 				<Event Id="6483615" Name="Play_MUSC_GLOBAL_SWITCH" DurationType="Infinite">
@@ -687,6 +691,7 @@
 								<MediaRef Id="1031095703"/>
 								<MediaRef Id="1033699912"/>
 								<MediaRef Id="1055297783"/>
+								<MediaRef Id="1059675014"/>
 							</MediaRefs>
 						</SwitchContainer>
 					</SwitchContainers>
@@ -709,58 +714,7 @@
 				</SwitchGroup>
 			</SwitchGroups>
 		</SoundBank>
-		<SoundBank Id="1286362932" Type="User" Language="SFX" Hash="{C7556B85-7A59-EEC5-7919-FB0E7BBE2C0E}">
-			<ShortName>TEST_LANDMARK</ShortName>
-			<Path>TEST_LANDMARK.bnk</Path>
-			<Media>
-				<File Id="377728211" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>AMBPark_City Park Fountain Kyiv_B00M_ONE 1.wav</ShortName>
-					<CachePath>SFX/AMBPark_City Park Fountain Kyiv_B00M_ONE 1_18D6C688.wem</CachePath>
-				</File>
-				<File Id="1023339442" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>AMBTown_Fire Alarm School With Distant Church Bells_B00M_ONE.wav</ShortName>
-					<CachePath>SFX/AMBTown_Fire Alarm School With Distant Church Bells_B00M_ONE_1FD4CF6A.wem</CachePath>
-				</File>
-				<File Id="1026933771" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>Ambience, Forest, Calm, No Birds, Winter, Airy, Distant Traffic, Wash SND5218.wav</ShortName>
-					<CachePath>SFX/Ambience, Forest, Calm, No Birds, Winter, Airy, Distant Traffic, Wash SND5218_A3A39AFF.wem</CachePath>
-				</File>
-			</Media>
-			<Events>
-				<Event Id="1475694052" Name="Play_LDMRK_CITY" MaxAttenuation="25" DurationType="Infinite">
-					<MediaRefs>
-						<MediaRef Id="1023339442"/>
-					</MediaRefs>
-					<AuxBusRefs>
-						<AuxBusRef Id="2684572747" Name="LDMRK_CITY"/>
-					</AuxBusRefs>
-				</Event>
-				<Event Id="702316442" Name="Play_LDMRK_FOREST" MaxAttenuation="25" DurationType="Infinite">
-					<MediaRefs>
-						<MediaRef Id="1026933771"/>
-					</MediaRefs>
-					<AuxBusRefs>
-						<AuxBusRef Id="1486733157" Name="LDMRK_FOREST"/>
-					</AuxBusRefs>
-				</Event>
-				<Event Id="4286364483" Name="Play_LDMRK_RAIN" MaxAttenuation="25" DurationType="Infinite">
-					<MediaRefs>
-						<MediaRef Id="377728211"/>
-					</MediaRefs>
-					<AuxBusRefs>
-						<AuxBusRef Id="2156680276" Name="LDMRK_RAIN"/>
-					</AuxBusRefs>
-				</Event>
-				<Event Id="452547817" Name="STOP_ALL" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-			</Events>
-			<GameParameters>
-				<GameParameter Id="823063048" Name="GP_LandMarkMeter_City"/>
-				<GameParameter Id="1240670792" Name="Distance"/>
-				<GameParameter Id="1268650150" Name="GP_LandMarkMeter_Forest"/>
-				<GameParameter Id="1311938743" Name="GP_LandMarkMeter_Rain"/>
-			</GameParameters>
-		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{89460F03-BE44-B1A3-C1B3-901A3979E569}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{6C17352C-352A-8EBE-180A-9FD23AC88E96}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -1065,5 +1019,5 @@
 			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{0408AD23-304F-C61D-F0C9-48C45FF4C3A6}</FileHash>
+	<FileHash>{DE03D7D0-533D-4FE8-E2C1-C187404AEAFD}</FileHash>
 </SoundBanksInfo>
