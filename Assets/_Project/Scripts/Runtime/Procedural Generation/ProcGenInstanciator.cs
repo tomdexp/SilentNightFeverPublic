@@ -58,9 +58,9 @@ public class ProcGenInstanciator : MonoBehaviour
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _TreePrefab;
     private List<Vector2> _TreePoints;
 
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testLandmarkParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testLandmarkPrefab;
-    private List<Vector2> _testLandmarkPoints;
+    //[HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testLandmarkParameters;
+    //[HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testLandmarkPrefab;
+    //private List<Vector2> _testLandmarkPoints;
 
     [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testCubeParameters;
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testCubePrefab;
@@ -95,7 +95,7 @@ public class ProcGenInstanciator : MonoBehaviour
         // Decoration
         _FernPoints = GeneratePoints(_FernParameters, false, false, true);
         _TreePoints = GeneratePoints(_TreeParameters, false, true, true);
-        _testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
+        //_testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
 
         _testCubePoints = GeneratePoints(_testCubeParameters, false, false, true);
         _testDiscPoints = GeneratePoints(_testDiscParameters, false, false, true);
@@ -298,7 +298,7 @@ public class ProcGenInstanciator : MonoBehaviour
         SpawnPrefabs(_teamAPoints, _teamAPrefab);
         SpawnPrefabs(_teamBPoints, _teamBPrefab);
         SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
-        SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
+        //SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
         SpawnPrefabs(_FernPoints, _FernPrefab);
         SpawnPrefabs(_TreePoints, _TreePrefab);
         SpawnPrefabs(_testCubePoints, _testCubePrefab);
@@ -317,7 +317,7 @@ public class ProcGenInstanciator : MonoBehaviour
         if (_landmarksPrefabList.IsNullOrEmpty()) Logger.LogError("Landmark prefabs are missing");
         if (!_FernPrefab) Logger.LogError("Fern prefab is missing");
         if (!_TreePrefab) Logger.LogError("Tree prefab is missing");
-        if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
+        //if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
         if (!_testCubePrefab) Logger.LogError("Test Cube prefab is missing");
         if (!_testDiscPrefab) Logger.LogError("Test Disc prefab is missing");
         if (!_CrowdPrefab) Logger.LogError("Crowd prefab is missing");
