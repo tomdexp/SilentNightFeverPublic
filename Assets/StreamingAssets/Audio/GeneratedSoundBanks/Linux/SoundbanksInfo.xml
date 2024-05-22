@@ -9,6 +9,369 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
+		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{2E473FFC-1AD4-BFE5-08BA-FE32BB0704EE}">
+			<ShortName>SB_UI</ShortName>
+			<Path>SB_UI.bnk</Path>
+			<Media>
+				<File Id="336625967" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Lobby_Joined_V0-001.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Lobby_Joined_V0-001_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="388899620" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Lobby_Joined_V0-002.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Lobby_Joined_V0-002_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="635533247" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Enter_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Enter_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="749240576" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Lobby_Created_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Lobby_Created_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="794560131" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Back_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Back_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="1049734392" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Diplacement_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Diplacement_V0_EDCD4836.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="1386224142" Name="Play_UI_Back" DurationType="OneShot" DurationMin="0.19773959" DurationMax="0.19773959">
+					<MediaRefs>
+						<MediaRef Id="794560131"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1341306234" Name="Play_UI_Displacement" DurationType="OneShot" DurationMin="0.061395835" DurationMax="0.061395835">
+					<MediaRefs>
+						<MediaRef Id="1049734392"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2982660583" Name="Play_UI_Enter" DurationType="OneShot" DurationMin="0.13770834" DurationMax="0.13770834">
+					<MediaRefs>
+						<MediaRef Id="635533247"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4198832716" Name="Play_UI_Lobby_Created" DurationType="OneShot" DurationMin="0.8359375" DurationMax="0.8359375">
+					<MediaRefs>
+						<MediaRef Id="749240576"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1782690879" Name="Play_UI_Lobby_Joined" DurationType="OneShot" DurationMin="0.27540624" DurationMax="0.49123958">
+					<MediaRefs>
+						<MediaRef Id="336625967"/>
+						<MediaRef Id="388899620"/>
+					</MediaRefs>
+				</Event>
+			</Events>
+		</SoundBank>
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{AA4E4808-E605-1D97-D5FF-9B86E38B0723}">
+			<ShortName>SB_LM</ShortName>
+			<Path>SB_LM.bnk</Path>
+			<Media>
+				<File Id="17834369" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-011.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-011_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="23489565" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-003.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-003_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="50904851" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-017.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-017_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="65070717" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-015.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-015_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="166306997" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_INSECT.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_INSECT_3FED40EA.wem</CachePath>
+				</File>
+				<File Id="190333546" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-005.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-005_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="218256844" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-009.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-009_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="296200420" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-018.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-018_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="313773868" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-005.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-005_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="348382969" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-006.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-006_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="349162507" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-014.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-014_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="418053353" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-003.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-003_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="424901032" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-004.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-004_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="438578685" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_BOILLING 2.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_BOILLING 2_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="439590637" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-013.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-013_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="478749577" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-010.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-010_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="485557544" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-001.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-001_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="532424619" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-012.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-012_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="538013469" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-008.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-008_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="582382125" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-006.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-006_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="610089515" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-004.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-004_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="635085928" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-007.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-007_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="711538849" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_FRYING.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_FRYING_7405C108.wem</CachePath>
+				</File>
+				<File Id="725068715" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-001.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-001_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="787266648" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_FIRE.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_FIRE_0663369B.wem</CachePath>
+				</File>
+				<File Id="864355252" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_BOILLING.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_BOILLING_FC6C8F12.wem</CachePath>
+				</File>
+				<File Id="948804932" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-002.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-002_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="991971920" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-002.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-002_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="998182840" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-016.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-016_EDCD4836.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="2140948254" Name="Play_LM_Kitchen" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="17834369"/>
+						<MediaRef Id="23489565"/>
+						<MediaRef Id="50904851"/>
+						<MediaRef Id="65070717"/>
+						<MediaRef Id="166306997"/>
+						<MediaRef Id="190333546"/>
+						<MediaRef Id="218256844"/>
+						<MediaRef Id="296200420"/>
+						<MediaRef Id="313773868"/>
+						<MediaRef Id="348382969"/>
+						<MediaRef Id="349162507"/>
+						<MediaRef Id="418053353"/>
+						<MediaRef Id="424901032"/>
+						<MediaRef Id="438578685"/>
+						<MediaRef Id="439590637"/>
+						<MediaRef Id="478749577"/>
+						<MediaRef Id="485557544"/>
+						<MediaRef Id="532424619"/>
+						<MediaRef Id="538013469"/>
+						<MediaRef Id="582382125"/>
+						<MediaRef Id="610089515"/>
+						<MediaRef Id="635085928"/>
+						<MediaRef Id="711538849"/>
+						<MediaRef Id="725068715"/>
+						<MediaRef Id="787266648"/>
+						<MediaRef Id="864355252"/>
+						<MediaRef Id="948804932"/>
+						<MediaRef Id="991971920"/>
+						<MediaRef Id="998182840"/>
+					</MediaRefs>
+					<AuxBusRefs>
+						<AuxBusRef Id="2768191745" Name="LM_Kitchen"/>
+					</AuxBusRefs>
+				</Event>
+				<Event Id="570374180" Name="Stop_LM_Kitchen" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+			</Events>
+			<GameParameters>
+				<GameParameter Id="1240670792" Name="Distance"/>
+			</GameParameters>
+		</SoundBank>
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{B863BB93-6825-5C31-4A86-CD794335BA53}">
+			<ShortName>SB_MUSIC</ShortName>
+			<Path>SB_MUSIC.bnk</Path>
+			<Media>
+				<File Id="112696517" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Voice_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Voice_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="162076403" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Lead_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Lead_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="177634168" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Exposition_Drums_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Exposition_Drums_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="196322221" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse2_Voice_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse2_Voice_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="248899126" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse1_Voice_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse1_Voice_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="261774264" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse_Drums_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse_Drums_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="264880505" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Intro_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Intro_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="301353085" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Exposition_Lead_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Exposition_Lead_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="410070274" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Chords_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="457124064" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Exposition_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Exposition_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="516737288" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Drums_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Drums_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="520650177" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="584774517" Language="SFX" Streaming="true" Location="Loose">
+					<ShortName>SNF_FD_A1_132_Chorus1_Drums_V1.wav</ShortName>
+					<Path>Media/584774517.wem</Path>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Drums_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="618553296" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Chorus1_Voice_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Voice_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="686981056" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="717906061" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Exposition_Chords_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Exposition_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="790597649" Language="SFX" Streaming="true" Location="Loose">
+					<ShortName>SNF_FD_A1_132_Chorus1_Chords_V1.wav</ShortName>
+					<Path>Media/790597649.wem</Path>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="934732765" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse2_Chords_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse2_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="1031095703" Language="SFX" Streaming="true" Location="Loose">
+					<ShortName>SNF_FD_A1_132_Chorus1_Lead_V1.wav</ShortName>
+					<Path>Media/1031095703.wem</Path>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Lead_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="1033699912" Language="SFX" Streaming="true" Location="Loose">
+					<ShortName>SNF_FD_A1_132_Chorus1_Bass_V1.wav</ShortName>
+					<Path>Media/1033699912.wem</Path>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="1055297783" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Intro_Drums_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Intro_Drums_V1_D8A0D580.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="6483615" Name="Play_MUSC_GLOBAL_SWITCH" DurationType="Infinite">
+					<SwitchContainers>
+						<SwitchContainer>
+							<SwitchValue GroupType="Switch" GroupId="4276095236" Id="3307480612"/>
+							<MediaRefs>
+								<MediaRef Id="112696517"/>
+								<MediaRef Id="162076403"/>
+								<MediaRef Id="177634168"/>
+								<MediaRef Id="196322221"/>
+								<MediaRef Id="248899126"/>
+								<MediaRef Id="261774264"/>
+								<MediaRef Id="264880505"/>
+								<MediaRef Id="301353085"/>
+								<MediaRef Id="410070274"/>
+								<MediaRef Id="457124064"/>
+								<MediaRef Id="516737288"/>
+								<MediaRef Id="520650177"/>
+								<MediaRef Id="584774517"/>
+								<MediaRef Id="618553296"/>
+								<MediaRef Id="686981056"/>
+								<MediaRef Id="717906061"/>
+								<MediaRef Id="790597649"/>
+								<MediaRef Id="934732765"/>
+								<MediaRef Id="1031095703"/>
+								<MediaRef Id="1033699912"/>
+								<MediaRef Id="1055297783"/>
+							</MediaRefs>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+			</Events>
+			<GameParameters>
+				<GameParameter Id="1716289499" Name="GP_LM_toMusic"/>
+				<GameParameter Id="1886390058" Name="GP_MUSC_SWITCH"/>
+			</GameParameters>
+			<SwitchGroups>
+				<SwitchGroup Id="4276095236" Name="Musc_Global_Switch">
+					<GameParameterRef Id="1886390058"/>
+					<Switches>
+						<Switch Id="3220119664" Name="CR_A2"/>
+						<Switch Id="3220119667" Name="CR_A1"/>
+						<Switch Id="3307480612" Name="FD_A1"/>
+						<Switch Id="3307480615" Name="FD_A2"/>
+					</Switches>
+				</SwitchGroup>
+			</SwitchGroups>
+		</SoundBank>
 		<SoundBank Id="1286362932" Type="User" Language="SFX" Hash="{C7556B85-7A59-EEC5-7919-FB0E7BBE2C0E}">
 			<ShortName>TEST_LANDMARK</ShortName>
 			<Path>TEST_LANDMARK.bnk</Path>
@@ -60,13 +423,14 @@
 				<GameParameter Id="1311938743" Name="GP_LandMarkMeter_Rain"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{8392BBB4-A7F7-710B-10AE-C1D69C9CD651}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{C823AF45-0F36-BA04-750E-97B2B5277F76}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
 				<Custom>
 					<Plugin Id="70340969" Name="Meter City" LibName="Wwise Meter" LibId="8454147"/>
 					<Plugin Id="597421931" Name="Meter Forest" LibName="Wwise Meter" LibId="8454147"/>
+					<Plugin Id="815989359" Name="Meter (Custom)" LibName="Wwise Meter" LibId="8454147"/>
 					<Plugin Id="916400883" Name="Meter Rain" LibName="Wwise Meter" LibId="8454147"/>
 				</Custom>
 				<ShareSets>
@@ -118,8 +482,18 @@
 						</Custom>
 					</PluginRefs>
 				</AuxBus>
+				<AuxBus Id="2768191745" Name="LM_Kitchen">
+					<PluginRefs>
+						<Custom>
+							<PluginRef Id="815989359"/>
+						</Custom>
+					</PluginRefs>
+				</AuxBus>
 			</AuxBusses>
 			<GameParameters>
+				<GameParameter Id="115457093" Name="CP_ACC_LP"/>
+				<GameParameter Id="331898971" Name="GP_LM_Kitchen"/>
+				<GameParameter Id="756044085" Name="GP_ACC_HP"/>
 				<GameParameter Id="822163944" Name="SS_Air_RPM"/>
 				<GameParameter Id="823063048" Name="GP_LandMarkMeter_City"/>
 				<GameParameter Id="987834118" Name="GP_PARAM_MUSC_Volume"/>
@@ -129,31 +503,23 @@
 				<GameParameter Id="1311938743" Name="GP_LandMarkMeter_Rain"/>
 				<GameParameter Id="1351367891" Name="SS_Air_Fear"/>
 				<GameParameter Id="1656280998" Name="RPM_FA_SSGrain"/>
+				<GameParameter Id="1716289499" Name="GP_LM_toMusic"/>
 				<GameParameter Id="1791284502" Name="Proximity_FA_SSGrain"/>
-				<GameParameter Id="2166846796" Name="CP_Access_LP"/>
+				<GameParameter Id="1886390058" Name="GP_MUSC_SWITCH"/>
 				<GameParameter Id="2317409760" Name="Instrument_FA_SSGrain"/>
 				<GameParameter Id="2428833394" Name="Simulation_FA_SSGrain"/>
 				<GameParameter Id="2481728872" Name="Immersion_FA_SSGrain"/>
 				<GameParameter Id="2648548617" Name="SS_Air_Month"/>
 				<GameParameter Id="2715217995" Name="Density_FA_SSGrain"/>
-				<GameParameter Id="2745718364" Name="GP_Access_HP"/>
 				<GameParameter Id="3002758120" Name="SS_Air_Freefall"/>
 				<GameParameter Id="3074696722" Name="SS_Air_Size"/>
 				<GameParameter Id="3203397129" Name="SS_Air_TimeOfDay"/>
-				<GameParameter Id="3319484834" Name="GP_Access_Notch"/>
 				<GameParameter Id="3715662592" Name="SS_Air_Storm"/>
 				<GameParameter Id="3847924954" Name="SS_Air_Presence"/>
-				<GameParameter Id="4083545613" Name="GP_globalLandmarks_Music"/>
 				<GameParameter Id="4160247818" Name="SS_Air_Turbulence"/>
+				<GameParameter Id="4172717105" Name="GP_ACC_Notch"/>
 			</GameParameters>
 			<StateGroups>
-				<StateGroup Id="384614222" Name="Test_Rounting_State">
-					<States>
-						<State Id="748895195" Name="None"/>
-						<State Id="2793951418" Name="Player_B_and_D"/>
-						<State Id="3768106970" Name="Player_A_and_C"/>
-					</States>
-				</StateGroup>
 				<StateGroup Id="1679017340" Name="GS_IsDucked_City">
 					<States>
 						<State Id="748895195" Name="None"/>
@@ -184,6 +550,15 @@
 						<Switch Id="3306124271" Name="EXPOSITION"/>
 						<Switch Id="3701922001" Name="CHORUS_2_VERSE_2"/>
 						<Switch Id="3840766212" Name="VERSE"/>
+					</Switches>
+				</SwitchGroup>
+				<SwitchGroup Id="4276095236" Name="Musc_Global_Switch">
+					<GameParameterRef Id="1886390058"/>
+					<Switches>
+						<Switch Id="3220119664" Name="CR_A2"/>
+						<Switch Id="3220119667" Name="CR_A1"/>
+						<Switch Id="3307480612" Name="FD_A1"/>
+						<Switch Id="3307480615" Name="FD_A2"/>
 					</Switches>
 				</SwitchGroup>
 			</SwitchGroups>
@@ -316,297 +691,32 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="3991942870" Type="User" Language="SFX" Hash="{57943FDB-07D3-5B43-5232-213F45AA67AC}">
-			<ShortName>MUSIC</ShortName>
-			<Path>MUSIC.bnk</Path>
+		<SoundBank Id="2208305301" Type="User" Language="SFX" Hash="{692C6C99-F333-5E09-C40E-7842DEE9A8EF}">
+			<ShortName>SB_CHAR</ShortName>
+			<Path>SB_CHAR.bnk</Path>
 			<Media>
-				<File Id="112696517" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Voice_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Voice_V1_D8A0D580.wem</CachePath>
+				<File Id="8339949" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>THONGUE_TRHOW.wav</ShortName>
+					<CachePath>SFX/THONGUE_TRHOW_EDCD4836.wem</CachePath>
 				</File>
-				<File Id="162076403" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Lead_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Lead_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="177634168" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Exposition_Drums_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Exposition_Drums_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="196322221" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Verse2_Voice_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Verse2_Voice_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="248899126" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Verse1_Voice_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Verse1_Voice_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="261774264" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Verse_Drums_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Verse_Drums_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="264880505" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Intro_Bass_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Intro_Bass_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="301353085" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Exposition_Lead_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Exposition_Lead_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="410070274" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Chords_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Chords_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="457124064" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Exposition_Bass_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Exposition_Bass_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="516737288" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Drums_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Drums_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="520650177" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Bass_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Bass_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="584774517" Language="SFX" Streaming="true" Location="Loose">
-					<ShortName>SNF_FD_A1_132_Chorus1_Drums_V1.wav</ShortName>
-					<Path>Media/584774517.wem</Path>
-					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Drums_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="618553296" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Chorus1_Voice_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Voice_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="686981056" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Verse_Bass_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Verse_Bass_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="717906061" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Exposition_Chords_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Exposition_Chords_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="790597649" Language="SFX" Streaming="true" Location="Loose">
-					<ShortName>SNF_FD_A1_132_Chorus1_Chords_V1.wav</ShortName>
-					<Path>Media/790597649.wem</Path>
-					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Chords_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="934732765" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Verse2_Chords_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Verse2_Chords_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="1031095703" Language="SFX" Streaming="true" Location="Loose">
-					<ShortName>SNF_FD_A1_132_Chorus1_Lead_V1.wav</ShortName>
-					<Path>Media/1031095703.wem</Path>
-					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Lead_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="1033699912" Language="SFX" Streaming="true" Location="Loose">
-					<ShortName>SNF_FD_A1_132_Chorus1_Bass_V1.wav</ShortName>
-					<Path>Media/1033699912.wem</Path>
-					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Bass_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="1055297783" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_FD_A1_132_Intro_Drums_V1.wav</ShortName>
-					<CachePath>SFX/SNF_FD_A1_132_Intro_Drums_V1_D8A0D580.wem</CachePath>
+				<File Id="827860642" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>THONGUE_RETRACT.wav</ShortName>
+					<CachePath>SFX/THONGUE_RETRACT_EDCD4836.wem</CachePath>
 				</File>
 			</Media>
 			<Events>
-				<Event Id="1517493057" Name="Play_TEST_2" DurationType="Infinite">
+				<Event Id="3854640606" Name="Play_CHAR_THO_Retract" DurationType="OneShot" DurationMin="1.2138506" DurationMax="1.4040467">
 					<MediaRefs>
-						<MediaRef Id="112696517"/>
-						<MediaRef Id="162076403"/>
-						<MediaRef Id="177634168"/>
-						<MediaRef Id="196322221"/>
-						<MediaRef Id="248899126"/>
-						<MediaRef Id="261774264"/>
-						<MediaRef Id="264880505"/>
-						<MediaRef Id="301353085"/>
-						<MediaRef Id="410070274"/>
-						<MediaRef Id="457124064"/>
-						<MediaRef Id="516737288"/>
-						<MediaRef Id="520650177"/>
-						<MediaRef Id="584774517"/>
-						<MediaRef Id="618553296"/>
-						<MediaRef Id="686981056"/>
-						<MediaRef Id="717906061"/>
-						<MediaRef Id="790597649"/>
-						<MediaRef Id="934732765"/>
-						<MediaRef Id="1031095703"/>
-						<MediaRef Id="1033699912"/>
-						<MediaRef Id="1055297783"/>
+						<MediaRef Id="827860642"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3990111633" Name="Play_CHAR_THO_Throw" DurationType="OneShot" DurationMin="1.2193521" DurationMax="1.4534165">
+					<MediaRefs>
+						<MediaRef Id="8339949"/>
 					</MediaRefs>
 				</Event>
 			</Events>
-			<GameParameters>
-				<GameParameter Id="4083545613" Name="GP_globalLandmarks_Music"/>
-			</GameParameters>
-		</SoundBank>
-		<SoundBank Id="4140304029" Type="User" Language="SFX" Hash="{D7436C4C-1C86-D1E6-00A9-65914A95FB68}">
-			<ShortName>CHAR</ShortName>
-			<Path>CHAR.bnk</Path>
-			<Media>
-				<File Id="13579002" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_2.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_2_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="83115897" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_12.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_12_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="120321904" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-011.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-011_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="196424188" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-014.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-014_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="208955684" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_8.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_8_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="212345873" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_11.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_11_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="292027753" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-008.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-008_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="312660724" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_6.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_6_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="385021251" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_9.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_9_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="443463249" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-003.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-003_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="473891525" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-006.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-006_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="496398886" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_5.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_5_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="501561552" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-012.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-012_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="543847855" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_3.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_3_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="565429229" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_10.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_10_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="667917611" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_4.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_4_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="774643939" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-001.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-001_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="780124715" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-005.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-005_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="826520899" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_14.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_14_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="853584307" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-004.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-004_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="906163957" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-002.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-002_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="907646128" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_7.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_7_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="949190687" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_1.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_1_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="952657171" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-010.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-010_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="967009965" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-013.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-013_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="968987531" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-009.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-009_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="1031600161" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_BASE_13.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_BASE_13_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="1040138121" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX_CHARA_FS_LEAF_-007.wav</ShortName>
-					<CachePath>SFX/SFX_CHARA_FS_LEAF_-007_EDCD4836.wem</CachePath>
-				</File>
-			</Media>
-			<Events>
-				<Event Id="1273048044" Name="Play_Walk_Test" DurationType="Infinite">
-					<MediaRefs>
-						<MediaRef Id="13579002"/>
-						<MediaRef Id="83115897"/>
-						<MediaRef Id="208955684"/>
-						<MediaRef Id="212345873"/>
-						<MediaRef Id="312660724"/>
-						<MediaRef Id="385021251"/>
-						<MediaRef Id="496398886"/>
-						<MediaRef Id="543847855"/>
-						<MediaRef Id="565429229"/>
-						<MediaRef Id="667917611"/>
-						<MediaRef Id="826520899"/>
-						<MediaRef Id="907646128"/>
-						<MediaRef Id="949190687"/>
-						<MediaRef Id="1031600161"/>
-					</MediaRefs>
-					<SwitchContainers>
-						<SwitchContainer>
-							<SwitchValue GroupType="Switch" GroupId="815511118" Id="54442137"/>
-							<MediaRefs>
-								<MediaRef Id="120321904"/>
-								<MediaRef Id="196424188"/>
-								<MediaRef Id="292027753"/>
-								<MediaRef Id="443463249"/>
-								<MediaRef Id="473891525"/>
-								<MediaRef Id="501561552"/>
-								<MediaRef Id="774643939"/>
-								<MediaRef Id="780124715"/>
-								<MediaRef Id="853584307"/>
-								<MediaRef Id="906163957"/>
-								<MediaRef Id="952657171"/>
-								<MediaRef Id="967009965"/>
-								<MediaRef Id="968987531"/>
-								<MediaRef Id="1040138121"/>
-							</MediaRefs>
-						</SwitchContainer>
-					</SwitchContainers>
-				</Event>
-			</Events>
-			<SwitchGroups>
-				<SwitchGroup Id="815511118" Name="GRD_MATERIAL">
-					<Switches>
-						<Switch Id="54442137" Name="LEAF"/>
-						<Switch Id="4248645337" Name="GRASS"/>
-					</Switches>
-				</SwitchGroup>
-			</SwitchGroups>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{43687641-8D12-9503-ADDD-C3EE3B7BEA9F}</FileHash>
+	<FileHash>{DE3E5FF5-55AA-04AA-44EC-22DAFFDC6DD2}</FileHash>
 </SoundBanksInfo>
