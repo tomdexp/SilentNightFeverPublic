@@ -75,10 +75,10 @@ public class GameRecorder : NetworkBehaviour
     {
         _procGenInstanciator.OnMapGenerated -= RegisterLandmarksLocation;
 
-        for (int i = 0; i < _procGenInstanciator._landmarksPoints.Count; i++)
+        for (int i = 0; i < _procGenInstanciator._spawnedLandmarks.Count; i++)
         {
             // TODO : For now, we only spawn one type of prefab, this will need to be changed when spawn different prefabs
-            _gameInfos.LandmarksLocation.Add(new LandmarksInfos(_procGenInstanciator._landmarksPrefab.name, _procGenInstanciator._landmarksPoints[i]));
+            _gameInfos.LandmarksLocation.Add(new LandmarksInfos(_procGenInstanciator._spawnedLandmarks[i].name, _procGenInstanciator._spawnedLandmarks[i].transform.position));
         }
     }
 

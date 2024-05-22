@@ -12,6 +12,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 using Sirenix.Utilities;
+using Random = UnityEngine.Random;
 
 public class ProcGenInstanciator : MonoBehaviour
 {
@@ -36,8 +37,9 @@ public class ProcGenInstanciator : MonoBehaviour
 
     [Title("    Landmarks")]
     [SerializeField] private ProcGenParameters _landmarksParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] public NetworkObject _landmarksPrefab;
-    public List<Vector2> _landmarksPoints;
+    [SerializeField] public List<SpawnableNetworkObject> _landmarksPrefabList;
+    [HideInInspector] public List<Vector2> _landmarksPoints;
+    public List<NetworkObject> _spawnedLandmarks;
 
     [Title("    Crowd")]
     [SerializeField] private ProcGenParameters _CrowdParameters;
@@ -107,7 +109,7 @@ public class ProcGenInstanciator : MonoBehaviour
     {
         // Generate Map ground
         NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -1f, _regionSize.y / 2), Quaternion.identity);
-        ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 100, 1, _regionSize.y / 10 + _regionSize.y / 100);
+        ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 25, 1, _regionSize.y / 10 + _regionSize.x / 25);
         InstanceFinder.ServerManager.Spawn(ground);
 
         // Generate Map invisible wall boundings
@@ -152,7 +154,7 @@ public class ProcGenInstanciator : MonoBehaviour
         {
             // We create a copy of AlreadySpawnedPoints but the point are centered arround the region size we are trying to spawn our new points. (Hard to explain sorry)
             List<List<Vector2>> tmpAlreadySpawnedPoints = new();
-            List<float> tmpAlreadySpawnedPointsRadius = new ();
+            List<float> tmpAlreadySpawnedPointsRadius = new();
 
 
             for (int i = 0; i < _alreadySpawnedPoints.Count; i++)
@@ -184,8 +186,8 @@ public class ProcGenInstanciator : MonoBehaviour
         for (int i = 0; i < points.Count; i++)
         {
             Vector2 point = points[i];
-            point.x += parameters._edgeDistance;
-            point.y += parameters._edgeDistance;
+            point.x += (parameters._edgeDistance/100 * _regionSize.x)/2;
+            point.y += (parameters._edgeDistance/100 * _regionSize.y)/2;
             points[i] = point;
         }
 
@@ -209,6 +211,79 @@ public class ProcGenInstanciator : MonoBehaviour
         }
     }
 
+    // Tries to spawns each prefabs respecting the min and max amount specified
+    private void SpawnPrefabs(List<Vector2> pointsLocation, List<SpawnableNetworkObject> SNOList)
+    {
+        List<SpawnableNetworkObject> minList = new();
+
+        // We create a list with min*element there is in our SNOList
+        foreach (var SNO in SNOList)
+        {
+            for (int i = 0; i < SNO.Min; i++)
+            {
+                minList.Add(SNO);
+            }
+        }
+
+        int spawnIndex = 0;
+
+        // For each element of our minList, we spawn its prefab the it and tell the SNOList we spawned it
+        while (!minList.IsNullOrEmpty() && spawnIndex < pointsLocation.Count)
+        {
+            int random = Random.Range(0, minList.Count-1);
+            NetworkObject prefab = minList[random].Object;
+            minList.RemoveAt(random);
+
+            foreach (var SNO in SNOList)
+            {
+                if (SNO.Object == prefab)
+                {
+                    SNO.Min -= 1;
+                    SNO.Max -= 1;
+                    if (SNO.Max == 0)
+                    {
+                        SNOList.Remove(SNO);
+                    }
+                    break;
+                }
+            }
+
+            NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[spawnIndex].x, 0, pointsLocation[spawnIndex].y), Quaternion.identity);
+            _spawnedLandmarks.Add(pref);
+            pref.transform.Rotate(new Vector3(0, Random.Range(0, 360), 0));
+            InstanceFinder.ServerManager.Spawn(pref);
+
+            spawnIndex++;
+        }
+
+        // Then we spawn the remaining elements from the SNOList (considering the max attributes)
+        while (!SNOList.IsNullOrEmpty() && spawnIndex < pointsLocation.Count)
+        {
+            int random = Random.Range(0, SNOList.Count-1);
+            NetworkObject prefab = SNOList[random].Object;
+            SNOList[random].Max -= 1;
+
+            if (SNOList[random].Max == 0)
+            {
+                SNOList.RemoveAt(random);
+            }
+
+            NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[spawnIndex].x, 0, pointsLocation[spawnIndex].y), Quaternion.identity);
+            _spawnedLandmarks.Add(pref);
+            pref.transform.Rotate(new Vector3(0, Random.Range(0, 360), 0));
+            InstanceFinder.ServerManager.Spawn(pref);
+
+            spawnIndex++;
+        }
+
+        if (spawnIndex < pointsLocation.Count)
+        {
+            Debug.LogWarning("Max number of prefab too low, spawned less landmarks than anticipated, spawned : " + spawnIndex + " instead of : " + pointsLocation.Count);
+        }
+    }
+
+
+
     [Button, HideIf("@_readyToSpawnPrefabs == false")]
     public void SpawnAllPrefabs()
     {
@@ -220,7 +295,7 @@ public class ProcGenInstanciator : MonoBehaviour
 
         SpawnPrefabs(_teamAPoints, _teamAPrefab);
         SpawnPrefabs(_teamBPoints, _teamBPrefab);
-        SpawnPrefabs(_landmarksPoints, _landmarksPrefab);
+        SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
         SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
         SpawnPrefabs(_FernPoints, _FernPrefab);
         SpawnPrefabs(_TreePoints, _TreePrefab);
@@ -237,7 +312,7 @@ public class ProcGenInstanciator : MonoBehaviour
         if (!_playerPrefab) Logger.LogError("Player prefab is missing");
         if (!_teamAPrefab) Logger.LogError("Team A prefab is missing");
         if (!_teamBPrefab) Logger.LogError("Team B prefab is missing");
-        if (!_landmarksPrefab) Logger.LogError("Landmarks prefab is missing");
+        if (_landmarksPrefabList.IsNullOrEmpty()) Logger.LogError("Landmark prefabs are missing");
         if (!_FernPrefab) Logger.LogError("Fern prefab is missing");
         if (!_TreePrefab) Logger.LogError("Tree prefab is missing");
         if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
@@ -268,4 +343,17 @@ public class ProcGenInstanciator : MonoBehaviour
         _teamAPoints = GeneratePoints(_teamAParameters, true, false, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true, false, true);
     }
+}
+
+[System.Serializable]
+public class SpawnableNetworkObject
+{
+    [HideLabel] public NetworkObject Object;
+
+    [HorizontalGroup("MinMax", Width = 0.4f), MinValue(0)]
+    public int Min;
+
+    [HorizontalGroup("MinMax", Width = 0.4f), MinValue("@Min"), PropertySpace(SpaceBefore = 0, SpaceAfter = 15)]
+    public int Max;
+
 }
