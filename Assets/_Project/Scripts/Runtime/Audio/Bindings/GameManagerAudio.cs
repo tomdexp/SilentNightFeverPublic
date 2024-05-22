@@ -38,33 +38,33 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
         private void OnGameStarted()
         {
             Logger.LogTrace("GameManagerAudio: OnGameStarted", Logger.LogType.Server, this);
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventGameStart, transform.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventGameStart, AudioManager.Instance.gameObject);
         }
 
         [Server]
         private void OnAnyRoundStarted(byte _)
         {
             Logger.LogTrace("GameManagerAudio: OnAnyRoundStarted", Logger.LogType.Server, this);
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundStart, transform.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundStart, AudioManager.Instance.gameObject);
             // pick a new track number
             int randomTrackNumber = UnityEngine.Random.Range(
                 AudioManager.Instance.AudioManagerData.RTPC_GP_MUSC_SWITCH_MinValue, 
                 AudioManager.Instance.AudioManagerData.RTPC_GP_MUSC_SWITCH_MaxValue+1); // we do +1 because Random.Range is exclusive on the max value
-            AudioManager.Instance.SetNetworkedRTPC(AudioManager.Instance.AudioManagerData.RTPC_GP_MUSC_SWITCH.Id, randomTrackNumber, transform.gameObject);
+            AudioManager.Instance.SetNetworkedRTPC(AudioManager.Instance.AudioManagerData.RTPC_GP_MUSC_SWITCH.Id, randomTrackNumber, AudioManager.Instance.gameObject);
         }
 
         [Server]
         private void OnAnyRoundEnded(byte _)
         {
             Logger.LogTrace("GameManagerAudio: OnAnyRoundEnded", Logger.LogType.Server, this);
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundEnd, transform.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundEnd, AudioManager.Instance.gameObject);
         }
 
         [Server]
         private void OnGameEnded(PlayerTeamType _)
         {
             Logger.LogTrace("GameManagerAudio: OnGameEnded", Logger.LogType.Server, this);
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventGameEnd, transform.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventGameEnd, AudioManager.Instance.gameObject);
         }
     }
 }

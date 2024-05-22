@@ -21,6 +21,8 @@ namespace _Project.Scripts.Runtime.Audio
         public AudioManagerData AudioManagerData;
         public event Action OnBanksLoadStart;
         public event Action OnBanksLoadComplete;
+        
+        private AkGameObj _akGameObj;
 
         private void Start()
         {
@@ -31,6 +33,7 @@ namespace _Project.Scripts.Runtime.Audio
                 PlayAudioLocal(AudioManagerData.EventApplicationStart, gameObject);
                 LocalStaticValues.HasApplicationStartWwiseEventFired = true;
             }
+            _akGameObj = GetComponent<AkGameObj>();
         }
 
         private void LoadAllBanks()
@@ -194,6 +197,12 @@ namespace _Project.Scripts.Runtime.Audio
             }
             Logger.LogTrace("Setting RTPC locally (ID: " + rtpcId + ") to " + value, Logger.LogType.Local, this);
             AkSoundEngine.SetRTPCValue(rtpcId, value, go);
+        }
+
+        public void RegisterListener(AkAudioListener listener)
+        {
+            Logger.LogTrace("Registering listener to AudioManager...", Logger.LogType.Local, this);
+            listener.StartListeningToEmitter(_akGameObj);
         }
     }
 }
