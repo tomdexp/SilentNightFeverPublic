@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 4975146737159548950}
   - component: {fileID: 1164885223900012662}
   - component: {fileID: 1112135905158568140}
+  - component: {fileID: 4699279218560999015}
   m_Layer: 0
   m_Name: Landmark_Zoom
   m_TagString: Untagged
@@ -238,6 +239,7 @@ MonoBehaviour:
   _isActive: 0
   _hasJustMoved: 0
   _isMoving: 0
+  <Speed>k__BackingField: 0
 --- !u!114 &1060372313705864457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +380,28 @@ MonoBehaviour:
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 1060372313705864457}
   _networkObjectCache: {fileID: 1060372313705864457}
+--- !u!114 &4699279218560999015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2752661708555439820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9518f6a0705d4cd408651207276fa7a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &3481199698151648183
 GameObject:
   m_ObjectHideFlags: 0

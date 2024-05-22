@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
@@ -23,6 +24,9 @@ namespace _Project.Scripts.Runtime.Audio
         public event Action OnBanksLoadComplete;
         
         private AkGameObj _akGameObj;
+        
+        private List<AkAudioListener> _listeners = new List<AkAudioListener>();
+        private List<AkGameObj> _emitters = new List<AkGameObj>();
 
         private void Start()
         {
@@ -192,17 +196,43 @@ namespace _Project.Scripts.Runtime.Audio
         {
             if (rtpcId == 0)
             {
-                Logger.Log(AudioManagerData.RTPCNotFoundLogLevel, Logger.LogType.Local,
+                if(AudioManagerData.RPTCLog) Logger.Log(AudioManagerData.RTPCNotFoundLogLevel, Logger.LogType.Local,
                     $"Tried to set an RTPC with ID {rtpcId} but was not found, it means that the RTPC is probably not assigned properly in AudioManagerData", this);
             }
-            Logger.LogTrace("Setting RTPC locally (ID: " + rtpcId + ") to " + value, Logger.LogType.Local, this);
+            if(AudioManagerData.RPTCLog) Logger.LogTrace("Setting RTPC locally (ID: " + rtpcId + ") to " + value, Logger.LogType.Local, this);
             AkSoundEngine.SetRTPCValue(rtpcId, value, go);
         }
 
         public void RegisterListener(AkAudioListener listener)
         {
             Logger.LogTrace("Registering listener to AudioManager...", Logger.LogType.Local, this);
-            listener.StartListeningToEmitter(_akGameObj);
+            _listeners.Add(listener);
+            BindListenersAndEmitters();
+        }
+        
+        public void RegisterEmitter(AkGameObj emitter)
+        {
+            Logger.LogTrace($"Registering emitter ({emitter.name}) to AudioManager...", Logger.LogType.Local, this);
+            _emitters.Add(emitter);
+            BindListenersAndEmitters();
+        }
+        
+        private void BindListenersAndEmitters()
+        {
+            Logger.LogTrace("Binding listeners and emitters...", Logger.LogType.Local, this);
+            
+            foreach (var listener in _listeners)
+            {
+                listener.StartListeningToEmitter(_akGameObj);
+            }
+
+            foreach (var akGameObj in _emitters)
+            {
+                foreach (var akAudioListener in _listeners)
+                {
+                    akAudioListener.StartListeningToEmitter(akGameObj);
+                }
+            }
         }
     }
 }

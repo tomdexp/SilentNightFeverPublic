@@ -32,23 +32,28 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
         [SerializeField, ReadOnly] private bool _isActive;
         [SerializeField, ReadOnly] private bool _hasJustMoved;
         [SerializeField, ReadOnly] private bool _isMoving;
+        [field: SerializeField, ReadOnly] public float Speed { get; private set; }
         
         public event Action OnStartTurning;
         public event Action OnStopTurning;
         public event Action OnStep;
         
         private WaitForSeconds _waitForSeconds;
-        
 
-        public override void OnStartServer()
+        protected override void OnStart()
         {
-            base.OnStartServer();
-            _sliderRotationTracker.OnSignedAngleChanged += OnSignedAngleChanged;
+            base.OnStart();
             _sliderRigidbody = _sliderRotationTracker.GetComponent<Rigidbody>();
             if (!_sliderRigidbody)
             {
                 Logger.LogError("No Rigidbody component found on the Rotation Tracker", Logger.LogType.Server, this);
             }
+        }
+
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            _sliderRotationTracker.OnSignedAngleChanged += OnSignedAngleChanged;
             _waitForSeconds = new WaitForSeconds(Data.MinSecondsBetweenStepForContinuation);
             StartCoroutine(CheckForStartAndEndEvents());
         }
@@ -101,6 +106,11 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
             yield return new WaitForSeconds(0.1f);
             _sliderRigidbody.isKinematic = false;
             _isActive = true;
+        }
+
+        private void FixedUpdate()
+        {
+            Speed = _sliderRigidbody.angularVelocity.magnitude;
         }
 
         private IEnumerator CheckForStartAndEndEvents()
