@@ -11,6 +11,7 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
     {
         private Landmark_Zoom _landmarkZoom;
         private AkGameObj _akGameObj;
+        private float _lastRtpc;
         private float _minTurnSpeed = 0f;
         private float _maxTurnSpeed = 0.37f;
 
@@ -45,6 +46,8 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
             if (!AudioManager.HasInstance) return;
             var t = Mathf.InverseLerp(_minTurnSpeed, _maxTurnSpeed, _landmarkZoom.Speed);
             var rtpc = Mathf.Lerp(AudioManager.Instance.AudioManagerData.RTPC_GP_LM_SatelliteSpeed_MinValue, AudioManager.Instance.AudioManagerData.RTPC_GP_LM_SatelliteSpeed_MaxValue, t);
+            if (Mathf.Approximately(rtpc, _lastRtpc)) return;
+            _lastRtpc = rtpc;
             AudioManager.Instance.SetLocalRTPC(AudioManager.Instance.AudioManagerData.RTPC_GP_LM_SatelliteSpeed, rtpc, transform.gameObject);
         }
 
