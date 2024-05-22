@@ -122,6 +122,8 @@ GameObject:
   - component: {fileID: 6755230157824269870}
   - component: {fileID: -8035802715321130305}
   - component: {fileID: 471431532809524801}
+  - component: {fileID: 8790166564602415153}
+  - component: {fileID: 4931237188118287232}
   m_Layer: 0
   m_Name: Test NPC
   m_TagString: Untagged
@@ -138,9 +140,9 @@ Transform:
   m_GameObject: {fileID: 5642245386794544270}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -46.07119, y: 25.022383, z: -2.754466}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6948445491161786703}
   m_Father: {fileID: 0}
@@ -216,7 +218,7 @@ MonoBehaviour:
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: -46.07119, y: 25.022383, z: -2.754466}
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -253,3 +255,39 @@ MonoBehaviour:
   _overrideType: 3
   _updateHostVisibility: 1
   _observerConditions: []
+--- !u!135 &8790166564602415153
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5642245386794544270}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4931237188118287232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5642245386794544270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf7be2589ba4667b4dca0a24dd3a3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _avoidanceRadius: 1
+  _avoidanceSpeed: 1
+  _comeBackToOriginalPositionSpeed: 1

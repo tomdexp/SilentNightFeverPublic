@@ -3,6 +3,7 @@ using _Project.Scripts.Runtime.Networking;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI
 {
@@ -13,6 +14,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void Start()
         {
+            Logger.LogDebug("BootstrapUIDocumentBinder Start", context:this);
             _uiDocument = GetComponent<UIDocument>();
             if (_uiDocument == null)
             {
@@ -23,13 +25,7 @@ namespace _Project.Scripts.Runtime.UI
             _toggleVisibilityInputAction.performed += OnToggleVisibilityInputAction;
             _toggleVisibilityInputAction.Enable();
             
-            BootstrapManager.Instance.OnJoinCodeReceived += code =>
-            {
-                var joinCodeInput = _uiDocument.rootVisualElement.Q("join-code-input-field") as TextField;
-                joinCodeInput.value = code;
-                var joinCodeLabel = _uiDocument.rootVisualElement.Q("current-join-code") as Label;
-                joinCodeLabel.text = "Join Code : " + code;
-            };
+            BootstrapManager.Instance.OnJoinCodeReceived += OnJoinCodeReceived;
             
             if (_uiDocument == null)
             {
@@ -74,11 +70,20 @@ namespace _Project.Scripts.Runtime.UI
         {
             _toggleVisibilityInputAction.Disable();
             _toggleVisibilityInputAction.performed -= OnToggleVisibilityInputAction;
+            if(BootstrapManager.HasInstance) BootstrapManager.Instance.OnJoinCodeReceived -= OnJoinCodeReceived;
         }
 
         private void OnToggleVisibilityInputAction(InputAction.CallbackContext context)
         {
             _uiDocument.enabled = !_uiDocument.enabled;
+        }
+        
+        private void OnJoinCodeReceived(string code)
+        {
+            var joinCodeInput = _uiDocument.rootVisualElement.Q("join-code-input-field") as TextField;
+            joinCodeInput.value = code;
+            var joinCodeLabel = _uiDocument.rootVisualElement.Q("current-join-code") as Label;
+            joinCodeLabel.text = "Join Code : " + code;
         }
     }
 }

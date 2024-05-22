@@ -1,9 +1,9 @@
-﻿using System;
+﻿using System.Collections;
 using _Project.Scripts.Runtime.Landmarks.Components;
+using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using FishNet.Object;
 using Sirenix.OdinInspector;
-using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Landmarks
@@ -23,5 +23,30 @@ namespace _Project.Scripts.Runtime.Landmarks
             }
             Logger.LogInfo($"Landmark {name} has been initialized", context:this);
         }
+
+        private void Start()
+        {
+            if(IsServerStarted) StartCoroutine(TrySubscribeToGameManagerEvent());
+        }
+
+        private void OnDestroy()
+        {
+            if (IsServerStarted && GameManager.HasInstance)
+            {
+                GameManager.Instance.OnAnyRoundStarted -= ResetLandmark;
+            }
+        }
+
+        private IEnumerator TrySubscribeToGameManagerEvent()
+        {
+            while (!GameManager.HasInstance)
+            {
+                yield return null;
+            }
+            GameManager.Instance.OnAnyRoundStarted += ResetLandmark;
+            Logger.LogDebug($"Subscribed ResetLandmark to GameManager event for Landmark {name}", Logger.LogType.Server, context:this);
+        }
+
+        protected abstract void ResetLandmark(byte roundNumber);
     }
 }

@@ -10,6 +10,7 @@ namespace _Project.Scripts.Runtime.Audio
     {
         [Title("Global Settings")]
         public Logger.LogLevel EventNotFoundLogLevel = Logger.LogLevel.Warning;
+        public Logger.LogLevel RTPCNotFoundLogLevel = Logger.LogLevel.Warning;
         
         [Title("Banks Settings")]
         public BankLoadConfig[] BanksToLoadOnApplicationStart;
@@ -17,6 +18,15 @@ namespace _Project.Scripts.Runtime.Audio
         [Title("Players Panning Settings")]
         public float[] LeftSpeakerVolumeOffset = new float[2] {0, -96}; 
         public float[] RightSpeakerVolumeOffset = new float[2] {-96, 0};
+        
+        [Space(10)]
+        [Title("Wwise RTPC", "GP_MUSC_SWITCH")]
+        [Tooltip("This RTPC value will change on any new round, so that the music switch to a new track")]
+        public AK.Wwise.RTPC RTPC_GP_MUSC_SWITCH;
+        [Tooltip("Inclusive Min Value (which means a number will be generated between Min and Max, including Min and Max)")]
+        public int RTPC_GP_MUSC_SWITCH_MinValue = 1;
+        [Tooltip("Inclusive Max Value (which means a number will be generated between Min and Max, including Min and Max)")]
+        public int RTPC_GP_MUSC_SWITCH_MaxValue = 4;
         
         [Title("AkEvent References", "Global Events")]
         [Tooltip("Called at the start of the application, will only be called ONCE, when the application start, not when the game start, or a round start")]
@@ -44,7 +54,9 @@ namespace _Project.Scripts.Runtime.Audio
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIButtonHover;
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
-        public AK.Wwise.Event EventUIButtonClick;
+        public AK.Wwise.Event EventUIButtonClickEnter;
+        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
+        public AK.Wwise.Event EventUIButtonClickBack;
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIOnlineLobbyCreated;
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
@@ -57,6 +69,9 @@ namespace _Project.Scripts.Runtime.Audio
         [Title("AkEvent References", "Landmark Events")]
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventLandmarkKitchenFoodEaten;
+        public AK.Wwise.Event EventLandmarkZoomStartTurning;
+        public AK.Wwise.Event EventLandmarkZoomStopTurning;
+        public AK.Wwise.Event EventLandmarkZoomStep;
         
         
         [Serializable]

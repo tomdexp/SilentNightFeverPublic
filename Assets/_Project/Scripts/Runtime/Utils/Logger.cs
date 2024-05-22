@@ -120,6 +120,11 @@ namespace _Project.Scripts.Runtime.Utils
             LogInternal(LogLevel.Error, type, message, context);
         }
         
+        public static void Log<T>(LogLevel level, LogType type, string message, T context = default)
+        {
+            LogInternal(level, type, message, context);
+        }
+        
         // Unified internal logging method for both generic and non-generic use
         private static void LogInternal<T>(LogLevel level, LogType type, string message, T context)
         {
