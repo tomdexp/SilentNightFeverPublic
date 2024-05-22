@@ -27,6 +27,12 @@ namespace _Project.Scripts.Runtime.Landmarks
         private void Start()
         {
             if(IsServerStarted) StartCoroutine(TrySubscribeToGameManagerEvent());
+            OnStart();
+        }
+
+        protected virtual void OnStart()
+        {
+            
         }
 
         private void OnDestroy()
