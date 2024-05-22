@@ -114,6 +114,7 @@ namespace AK
         static const AkUniqueID GP_LM_TOMUSIC = 1716289499U;
         static const AkUniqueID GP_MUSC_SWITCH = 1886390058U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
+        static const AkUniqueID GP_SFX_TOMUSIC = 783337961U;
         static const AkUniqueID IMMERSION_FA_SSGRAIN = 2481728872U;
         static const AkUniqueID INSTRUMENT_FA_SSGRAIN = 2317409760U;
         static const AkUniqueID PROXIMITY_FA_SSGRAIN = 1791284502U;
@@ -147,6 +148,7 @@ namespace AK
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
         static const AkUniqueID MUSIC = 3991942870U;
         static const AkUniqueID MUTED_MASTER = 3967932291U;
+        static const AkUniqueID SFX = 393239870U;
     } // namespace BUSSES
 
     namespace AUX_BUSSES
