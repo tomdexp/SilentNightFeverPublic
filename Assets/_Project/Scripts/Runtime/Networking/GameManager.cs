@@ -3,6 +3,7 @@ using System.Collections;
 using _Project.Scripts.Runtime.Networking.Rounds;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
+using _Project.Scripts.Runtime.UI;
 using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using DG.Tweening;
@@ -32,12 +33,11 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnFirstRoundEnded; // TODO : Implement
         public event Action OnFinalRoundStarted; // TODO : Implement
         public event Action OnFinalRoundEnded; // TODO : Implement
-        public event Action<float> OnBeforeSceneChange; // arg = seconds before scene change
+        public event Action OnBeforeSceneChange;
         public event Action OnAfterSceneChange;
         public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
         
         private float _deltaTimeCounter;
-        
         private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
         private byte _teamBTongueBindCount;
         private TongueAnchor _playerACharacterTongueAnchor;
@@ -48,9 +48,6 @@ namespace _Project.Scripts.Runtime.Networking
         private PlayerStickyTongue _playerBStickyTongue;
         private PlayerStickyTongue _playerCStickyTongue;
         private PlayerStickyTongue _playerDStickyTongue;
-        
-        private float _minSecondsBeforeSceneLoad = 1.0f;
-        
         
         protected override void Awake()
         {
@@ -94,7 +91,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
-                Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Enabling Split Screen Cameras per default", Logger.LogType.Local, this);
+                Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Enabling Split Screen Cameras and Player Joining per default", Logger.LogType.Local, this);
                 CameraManager.Instance.TryEnableSplitScreenCameras();
                 PlayerManager.Instance.SetPlayerJoiningEnabled(true);
             }
@@ -123,8 +120,8 @@ namespace _Project.Scripts.Runtime.Networking
         private IEnumerator LoadGlobalSceneCoroutine(SceneType sceneType)
         {
             Logger.LogInfo("Loading Scene : " + sceneType + "...", Logger.LogType.Local, this);
-            OnBeforeSceneChange?.Invoke(_minSecondsBeforeSceneLoad);
-            yield return new WaitForSeconds(_minSecondsBeforeSceneLoad);
+            OnBeforeSceneChange?.Invoke();
+            yield return TransitionManager.Instance.BeginSceneChangeTransition();
             var stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
             SceneLoadData sld = new SceneLoadData(sceneType.ToString());
@@ -132,6 +129,7 @@ namespace _Project.Scripts.Runtime.Networking
             stopwatch.Stop();
             Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
             UnLoadCurrentScene();
+            yield return TransitionManager.Instance.EndSceneChangeTransition();
             OnAfterSceneChange?.Invoke();
             switch (sceneType)
             {
