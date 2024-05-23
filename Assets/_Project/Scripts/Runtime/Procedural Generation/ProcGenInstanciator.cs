@@ -2,10 +2,12 @@ using FishNet;
 using FishNet.Object;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Utils;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 using Sirenix.Utilities;
@@ -74,9 +76,12 @@ public class ProcGenInstanciator : MonoBehaviour
     private List<float> _alreadySpawnedPointsRadius = new();
 
     private bool _readyToSpawnPrefabs = false;
+    private int _framesBetweenSpawn = 1; // to avoid blocking the main thread, we launch the main method in a coroutine and wait between each spawn
 
     // Events
+    public event Action OnBeginMapGeneration;
     public event Action OnMapGenerated;
+    public event Action OnBeginPrefabSpawning;
     public event Action OnPrefabSpawned;
 
     private void Awake()
@@ -85,9 +90,15 @@ public class ProcGenInstanciator : MonoBehaviour
     }
 
     [Button]
-    public void GenerateMap()
+    public IEnumerator GenerateMap()
     {
-        GenerateTerrain();
+        Logger.LogDebug("Generating map...", Logger.LogType.Server, this);
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        
+        OnBeginMapGeneration?.Invoke(); 
+        
+        yield return GenerateTerrain();
+        
         _teamAPoints = GeneratePoints(_teamAParameters, true, true, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true, true, true);
         _landmarksPoints = GeneratePoints(_landmarksParameters, true, true, true);
@@ -102,38 +113,46 @@ public class ProcGenInstanciator : MonoBehaviour
 
         _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
 
-
         _readyToSpawnPrefabs = true;
+        
         OnMapGenerated?.Invoke();
+        
+        stopwatch.Stop();
+        Logger.LogDebug("Map generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
     }
 
-    private void GenerateTerrain()
+    private IEnumerator GenerateTerrain()
     {
         // Generate Map ground
         NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -1f, _regionSize.y / 2), Quaternion.identity);
         ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 25, 1, _regionSize.y / 10 + _regionSize.x / 25);
         InstanceFinder.ServerManager.Spawn(ground);
+        yield return new WaitForFrames(_framesBetweenSpawn);
 
         // Generate Map invisible wall boundings
         // North
         NetworkObject wallNorth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, _regionSize.y + 1), Quaternion.identity);
         wallNorth.transform.localScale = new Vector3(_regionSize.x + 1, 4, 1);
         InstanceFinder.ServerManager.Spawn(wallNorth);
+        yield return new WaitForFrames(_framesBetweenSpawn);
 
         // South
         NetworkObject wallSouth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, -1), Quaternion.identity);
         wallSouth.transform.localScale = new Vector3(_regionSize.x + 1, 4, 1);
         InstanceFinder.ServerManager.Spawn(wallSouth);
+        yield return new WaitForFrames(_framesBetweenSpawn);
 
         // East
         NetworkObject wallEast = Instantiate(_invisibleWall, new Vector3(_regionSize.y + 1, 1, _regionSize.y / 2), Quaternion.identity);
         wallEast.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
         InstanceFinder.ServerManager.Spawn(wallEast);
+        yield return new WaitForFrames(_framesBetweenSpawn);
 
         // West
         NetworkObject wallWest = Instantiate(_invisibleWall, new Vector3(-1, 1, _regionSize.y / 2), Quaternion.identity);
         wallWest.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
         InstanceFinder.ServerManager.Spawn(wallWest);
+        yield return new WaitForFrames(_framesBetweenSpawn);
     }
 
     /// <summary>
@@ -181,7 +200,7 @@ public class ProcGenInstanciator : MonoBehaviour
 
         if (points.Count < parameters._numOfPoints && forceExactNumber)
         {
-            Debug.Log("Not enougth points, something went wrong? \n Number of spawned objects : " + points.Count);
+            Logger.LogWarning("Not enough points, something went wrong? \n Number of spawned objects : " + points.Count, Logger.LogType.Server, this);
         }
 
 
@@ -203,18 +222,19 @@ public class ProcGenInstanciator : MonoBehaviour
         return points;
     }
 
-    private void SpawnPrefabs(List<Vector2> pointsLocation, NetworkObject prefab)
+    private IEnumerator SpawnPrefabs(List<Vector2> pointsLocation, NetworkObject prefab)
     {
         for (int i = 0; i < pointsLocation.Count; i++)
         {
             NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
             pref.transform.Rotate(new Vector3(0, UnityEngine.Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
+            yield return new WaitForFrames(_framesBetweenSpawn);
         }
     }
 
     // Tries to spawns each prefabs respecting the min and max amount specified
-    private void SpawnPrefabs(List<Vector2> pointsLocation, List<SpawnableNetworkObject> SNOList)
+    private IEnumerator SpawnPrefabs(List<Vector2> pointsLocation, List<SpawnableNetworkObject> SNOList)
     {
         List<SpawnableNetworkObject> minList = new();
 
@@ -254,8 +274,8 @@ public class ProcGenInstanciator : MonoBehaviour
             _spawnedLandmarks.Add(pref);
             pref.transform.Rotate(new Vector3(0, Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
-
             spawnIndex++;
+            yield return new WaitForFrames(_framesBetweenSpawn);
         }
 
         // Then we spawn the remaining elements from the SNOList (considering the max attributes)
@@ -289,22 +309,31 @@ public class ProcGenInstanciator : MonoBehaviour
     [Button, HideIf("@_readyToSpawnPrefabs == false")]
     public void SpawnAllPrefabs()
     {
+        StartCoroutine(SpawnAllPrefabsCoroutine());
+    }
+
+    public IEnumerator SpawnAllPrefabsCoroutine()
+    {
+        Logger.LogDebug("Spawning prefabs...", Logger.LogType.Server, this);
+        OnBeginPrefabSpawning?.Invoke();
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         if (_readyToSpawnPrefabs == false)
         {
             Debug.LogError("You must generate spawn points before trying to spawn them");
-            return;
+            yield break;
         }
-
-        SpawnPrefabs(_teamAPoints, _teamAPrefab);
-        SpawnPrefabs(_teamBPoints, _teamBPrefab);
-        SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
-        //SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
-        SpawnPrefabs(_FernPoints, _FernPrefab);
-        SpawnPrefabs(_TreePoints, _TreePrefab);
-        SpawnPrefabs(_testCubePoints, _testCubePrefab);
-        SpawnPrefabs(_testDiscPoints, _testDiscPrefab);
-        SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
+        yield return SpawnPrefabs(_teamAPoints, _teamAPrefab);
+        yield return SpawnPrefabs(_teamBPoints, _teamBPrefab);
+        yield return SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
+        //yield return SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
+        yield return SpawnPrefabs(_FernPoints, _FernPrefab);
+        yield return SpawnPrefabs(_TreePoints, _TreePrefab);
+        yield return SpawnPrefabs(_testCubePoints, _testCubePrefab);
+        yield return SpawnPrefabs(_testDiscPoints, _testDiscPrefab);
+        yield return SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
         OnPrefabSpawned?.Invoke();
+        stopwatch.Stop();
+        Logger.LogDebug("Prefabs spawned in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
     }
 
     private void VerifyPrefabSetup()

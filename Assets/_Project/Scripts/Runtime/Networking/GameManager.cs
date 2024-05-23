@@ -200,33 +200,45 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
-                StartGame();
+                StartCoroutine(StartGame());
             }
         }
         
         [ServerRpc(RequireOwnership = false)]
         private void StartGameServerRpc()
         {
-            StartGame();
+            StartCoroutine(StartGame());
         }
         
-        private void StartGame()
+        private IEnumerator StartGame()
         {
             if (IsGameStarted.Value)
             {
                 Logger.LogDebug("Game already started !", Logger.LogType.Server, this);
-                return;
+                yield break;
             }
             Logger.LogTrace("Attempting to start game...", Logger.LogType.Server, this);
             if (!PlayerManager.HasInstance)
             {
                 Logger.LogError("No player manager instance found ! It should be spawned by the Default Spawn Objects script", Logger.LogType.Server, this);
-                return;
+                yield break;
             }
             if (PlayerManager.Instance.NumberOfPlayers != 4)
             {
                 Logger.LogWarning("Not enough players to start the game ! (current : " + PlayerManager.Instance.NumberOfPlayers +"/4)", Logger.LogType.Server, this);
-                return;
+                yield break;
+            }
+            IsGameStarted.Value = true;
+            var procGen = FindAnyObjectByType<ProcGenInstanciator>();
+            if (procGen)
+            {
+                // we found a procGenInstanciator, so we generate the map before starting the game and spawning the players
+                yield return procGen.GenerateMap();
+                yield return procGen.SpawnAllPrefabsCoroutine();
+            }
+            else
+            {
+                Logger.LogWarning("No ProcGenInstanciator found, the map will not be generated, ignore this if this is intended", Logger.LogType.Server, this);
             }
             PlayerManager.Instance.SpawnAllPlayers();
             PlayerManager.Instance.TrySetPlayerChangingTeamEnabled(false);
@@ -235,7 +247,6 @@ namespace _Project.Scripts.Runtime.Networking
             StartCoroutine(StartRounds());
             OnGameStarted?.Invoke();
             Logger.LogInfo("Game started !", Logger.LogType.Server, this);
-            IsGameStarted.Value = true;
         }
 
         private void SubscribeToTongueChangeEvents()
