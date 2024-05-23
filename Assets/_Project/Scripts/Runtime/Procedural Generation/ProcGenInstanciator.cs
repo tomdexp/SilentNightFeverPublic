@@ -11,6 +11,7 @@ using _Project.Scripts.Runtime.Utils;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 using Sirenix.Utilities;
+using UnityEngine.Profiling;
 using Random = UnityEngine.Random;
 
 public class ProcGenInstanciator : MonoBehaviour
@@ -94,6 +95,7 @@ public class ProcGenInstanciator : MonoBehaviour
     {
         Logger.LogDebug("Generating map...", Logger.LogType.Server, this);
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        Profiler.BeginSample("GenerateMap");
         
         OnBeginMapGeneration?.Invoke(); 
         
@@ -116,6 +118,7 @@ public class ProcGenInstanciator : MonoBehaviour
         _readyToSpawnPrefabs = true;
         
         OnMapGenerated?.Invoke();
+        Profiler.EndSample();
         
         stopwatch.Stop();
         Logger.LogDebug("Map generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
