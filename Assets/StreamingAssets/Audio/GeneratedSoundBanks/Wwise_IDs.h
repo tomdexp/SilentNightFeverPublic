@@ -25,6 +25,7 @@ namespace AK
         static const AkUniqueID PLAY_UI_LOBBY_JOINED = 1782690879U;
         static const AkUniqueID STOP_LM_KITCHEN = 570374180U;
         static const AkUniqueID STOP_LM_SATT_INTERACT = 3778981049U;
+        static const AkUniqueID STOP_MUSC_GLOBAL_SWITCH = 3658594925U;
     } // namespace EVENTS
 
     namespace STATES
