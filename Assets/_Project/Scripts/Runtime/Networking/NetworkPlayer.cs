@@ -16,6 +16,7 @@ namespace _Project.Scripts.Runtime.Networking
     public class NetworkPlayer : NetworkBehaviour
     {
        [field: SerializeField] public PlayerData PlayerData { get; private set; }
+       public bool IsOnline => !Owner.IsHost;
        private readonly SyncVar<RealPlayerInfo> _realPlayerInfo = new SyncVar<RealPlayerInfo>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
        private PlayerController _playerController;
        private List<PlayerEffect> _appliedPlayerEffects = new List<PlayerEffect>();

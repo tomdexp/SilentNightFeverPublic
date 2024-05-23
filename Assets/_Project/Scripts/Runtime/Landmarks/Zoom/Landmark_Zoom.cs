@@ -4,6 +4,7 @@ using System.Linq;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils;
+using FishNet.Object;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -20,6 +21,7 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
         
         [Title("Landmark Zoom Reference")]
         [SerializeField] private RotationTracker _sliderRotationTracker;
+        [SerializeField] private NetworkObject[] _anchors;
         
         
         [Title("Debug (Read-Only)")]
@@ -47,6 +49,15 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
             if (!_sliderRigidbody)
             {
                 Logger.LogError("No Rigidbody component found on the Rotation Tracker", Logger.LogType.Server, this);
+            }
+        }
+
+        public override void OnStartNetwork()
+        {
+            base.OnStartNetwork();
+            foreach (var nob in _anchors)
+            {
+                nob.UnsetParent();
             }
         }
 
@@ -101,9 +112,10 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
             _sliderRigidbody.velocity = Vector3.zero;
             _sliderRigidbody.angularVelocity = Vector3.zero;
             _sliderRigidbody.isKinematic = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
             _sliderRigidbody.transform.localEulerAngles = Vector3.zero;
-            yield return new WaitForSeconds(0.1f);
+            OnSignedAngleChanged(0);
+            yield return new WaitForSeconds(0.5f);
             _sliderRigidbody.isKinematic = false;
             _isActive = true;
         }

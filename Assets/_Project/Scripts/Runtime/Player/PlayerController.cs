@@ -180,15 +180,25 @@ namespace _Project.Scripts.Runtime.Player
 
             if (_otherPlayerAttachedFromTongue)
             {
-                _distanceToAttachedPlayer = Vector3.Distance(transform.position, _otherPlayerAttachedFromTongue.transform.position);
-                _influencedByAttachedTongue = _distanceToAttachedPlayer > _networkPlayer.PlayerData.OtherTongueMinDistance;
-                if (_influencedByAttachedTongue)
+                if (_otherPlayerAttachedFromTongue.GetNetworkPlayer().IsOnline)
                 {
-                    var direction = _otherPlayerAttachedFromTongue.transform.position - transform.position;
-                    direction.y = 0;
-                    direction.Normalize();
-                    // add the direction to the movement
-                    movement += direction * _networkPlayer.PlayerData.OtherTongueAttachedForce;
+                    _distanceToAttachedPlayer =
+                        Vector3.Distance(transform.position, _otherPlayerAttachedFromTongue.transform.position);
+                    _influencedByAttachedTongue =
+                        _distanceToAttachedPlayer > _networkPlayer.PlayerData.OtherTongueMinDistance;
+                    if (_influencedByAttachedTongue)
+                    {
+                        var direction = _otherPlayerAttachedFromTongue.transform.position - transform.position;
+                        direction.y = 0;
+                        direction.Normalize();
+                        // add the direction to the movement
+                        movement += direction * _networkPlayer.PlayerData.OtherTongueAttachedForce;
+                    }
+                }
+                else
+                {
+                    _influencedByAttachedTongue = false;
+                    _distanceToAttachedPlayer = 0;
                 }
             }
             else
@@ -196,6 +206,7 @@ namespace _Project.Scripts.Runtime.Player
                 _influencedByAttachedTongue = false;
                 _distanceToAttachedPlayer = 0;
             }
+            
             
             if(VoodooPuppetDirection.Value != Vector2.zero)
             {

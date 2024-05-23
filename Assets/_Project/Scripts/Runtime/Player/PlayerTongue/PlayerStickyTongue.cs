@@ -552,5 +552,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         {
             return _networkPlayer;
         }
+        
+        
     }
 }

@@ -25,10 +25,17 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [Tooltip("If set, when unbind the ownership of the anchor will be the same as this object")]
         public NetworkObject LinkedNetworkObjectForOwnership;
         public RigidbodyAnchorBehavior RigidbodyBehavior = RigidbodyAnchorBehavior.KinematicWhenNotOwner;
-        
+        [Tooltip("If set, when a client is remote, it will simulate the force of the rigidbody")]
+        public bool RemoteClientSimulateForce = false;
+        [ShowIf("@RemoteClientSimulateForce")]
+        public float RemoteClientSimulateForceMultiplier = 10f;
+        [ShowIf("@RemoteClientSimulateForce")]
+        public float RemoteClientSimulateForceMinDistance = 3f;
+
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private float _rigidbodySpeed;
         [SerializeField, ReadOnly] private PlayerStickyTongue _currentStickTongue;
+        [SerializeField, ReadOnly] private int _ownerId;
 
         public enum RigidbodyAnchorBehavior
         {
@@ -72,6 +79,24 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         private void Update()
         {
             _rigidbodySpeed = _rigidbody.velocity.magnitude;
+            _ownerId = NetworkObject.Owner.ClientId;
+            if(RemoteClientSimulateForce) SimulateForceForRemoteClient();
+        }
+        
+        // The server takes care to simulate the force of the rigidbody for the remote client
+        private void SimulateForceForRemoteClient()
+        {
+            if (!IsServerStarted) return;
+            if (!_currentStickTongue) return;
+            if (!_currentStickTongue.GetNetworkPlayer().IsOnline) return;
+            var playerPosition = _currentStickTongue.GetNetworkPlayer().transform.position;
+            // get the distance between the player and the anchor and return a value from 0 to 1 based on MaxDistance
+            var distance = Vector3.Distance(playerPosition, transform.position);
+            if (distance < RemoteClientSimulateForceMinDistance) return;
+            var direction = (playerPosition - transform.position).normalized;
+            var force = direction * RemoteClientSimulateForceMultiplier;
+            _rigidbody.AddForce(force);
+            Logger.LogTrace("SimulateForceForRemoteClient : " + force, Logger.LogType.Server, this);
         }
 
         public override void OnStartServer()
