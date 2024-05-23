@@ -15,6 +15,7 @@ namespace AK
     {
         static const AkUniqueID PLAY_CHAR_THO_RETRACT = 3854640606U;
         static const AkUniqueID PLAY_CHAR_THO_THROW = 3990111633U;
+        static const AkUniqueID PLAY_CHAR_THO_TOUCHED = 2214496751U;
         static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
