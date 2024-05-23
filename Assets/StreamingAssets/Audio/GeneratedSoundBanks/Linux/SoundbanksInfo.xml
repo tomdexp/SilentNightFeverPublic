@@ -67,7 +67,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{01B8A867-1B65-2089-77BF-E3ADFB467987}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{8CA25F00-C13C-1B42-528C-B185F5A81EEB}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -567,7 +567,7 @@
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{379AF7BC-55AE-C53D-B54B-E7CD86B3AF8F}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{69F9BBB8-B5EC-FF0C-3E32-BA8D21FF5639}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -816,6 +816,7 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="3658594925" Name="Stop_MUSC_GLOBAL_SWITCH" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 			<GameParameters>
 				<GameParameter Id="783337961" Name="GP_SFX_toMusic"/>
@@ -1112,32 +1113,41 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="2208305301" Type="User" Language="SFX" Hash="{423561A9-479C-7CA6-6891-12FDF38A1C20}">
+		<SoundBank Id="2208305301" Type="User" Language="SFX" Hash="{7D58F6A1-1E40-3E94-65BD-70FD9B8ED14A}">
 			<ShortName>SB_CHAR</ShortName>
 			<Path>SB_CHAR.bnk</Path>
 			<Media>
-				<File Id="8339949" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>THONGUE_TRHOW.wav</ShortName>
-					<CachePath>SFX/THONGUE_TRHOW_EDCD4836.wem</CachePath>
+				<File Id="786559962" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Tongue_Throw_V0.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Tongue_Throw_V0_EDCD4836.wem</CachePath>
 				</File>
-				<File Id="827860642" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>THONGUE_RETRACT.wav</ShortName>
-					<CachePath>SFX/THONGUE_RETRACT_EDCD4836.wem</CachePath>
+				<File Id="808323350" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Tongue_Retract_V0.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Tongue_Retract_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="890209686" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Tongue_Touched_V0.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Tongue_Touched_V0_EDCD4836.wem</CachePath>
 				</File>
 			</Media>
 			<Events>
-				<Event Id="3854640606" Name="Play_CHAR_THO_Retract" DurationType="OneShot" DurationMin="1.2138506" DurationMax="1.4040467">
+				<Event Id="3854640606" Name="Play_CHAR_THO_Retract" DurationType="OneShot" DurationMin="0.30121806" DurationMax="0.34841537">
 					<MediaRefs>
-						<MediaRef Id="827860642"/>
+						<MediaRef Id="808323350"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3990111633" Name="Play_CHAR_THO_Throw" DurationType="OneShot" DurationMin="1.2193521" DurationMax="1.4534165">
+				<Event Id="3990111633" Name="Play_CHAR_THO_Throw" DurationType="OneShot" DurationMin="0.2862329" DurationMax="0.34117758">
 					<MediaRefs>
-						<MediaRef Id="8339949"/>
+						<MediaRef Id="786559962"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2214496751" Name="Play_CHAR_THO_Touched" DurationType="OneShot" DurationMin="0.36302084" DurationMax="0.36302084">
+					<MediaRefs>
+						<MediaRef Id="890209686"/>
 					</MediaRefs>
 				</Event>
 			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{1AEF7ACF-B02C-C996-A6D5-DEF92A40EC7B}</FileHash>
+	<FileHash>{768E1C13-0543-4347-9C11-22ED6526C4E5}</FileHash>
 </SoundBanksInfo>

@@ -1113,7 +1113,7 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="2208305301" Type="User" Language="SFX" Hash="{0C705B01-D7BA-6AA1-2C34-854E72EBC1EB}">
+		<SoundBank Id="2208305301" Type="User" Language="SFX" Hash="{7D58F6A1-1E40-3E94-65BD-70FD9B8ED14A}">
 			<ShortName>SB_CHAR</ShortName>
 			<Path>SB_CHAR.bnk</Path>
 			<Media>
@@ -1124,6 +1124,10 @@
 				<File Id="808323350" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Tongue_Retract_V0.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_Tongue_Retract_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="890209686" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Tongue_Touched_V0.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Tongue_Touched_V0_EDCD4836.wem</CachePath>
 				</File>
 			</Media>
 			<Events>
@@ -1137,8 +1141,13 @@
 						<MediaRef Id="786559962"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="2214496751" Name="Play_CHAR_THO_Touched" DurationType="OneShot" DurationMin="0.36302084" DurationMax="0.36302084">
+					<MediaRefs>
+						<MediaRef Id="890209686"/>
+					</MediaRefs>
+				</Event>
 			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{60278F1A-7A7B-3275-54F2-23A8BFE7976C}</FileHash>
+	<FileHash>{8CB86D15-ABAD-6C77-B954-AAED07695F86}</FileHash>
 </SoundBanksInfo>

@@ -33,8 +33,7 @@ MonoBehaviour:
   - Bank:
       idInternal: 0
       valueGuidInternal: 
-      WwiseObjectReference: {fileID: 11400000, guid: 9121748171f83f048a3ec543ec430e8f,
-        type: 2}
+      WwiseObjectReference: {fileID: 0}
     DecodeBankOnLoad: 1
     SaveDecodedBank: 0
   - Bank:
@@ -53,9 +52,10 @@ MonoBehaviour:
   RTPC_GP_MUSC_SWITCH:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  RTPC_GP_MUSC_SWITCH_MinValue: 1
-  RTPC_GP_MUSC_SWITCH_MaxValue: 4
+    WwiseObjectReference: {fileID: 11400000, guid: c023194eaa086c1478d0471b356d3156,
+      type: 2}
+  RTPC_GP_MUSC_SWITCH_MinValue: 2
+  RTPC_GP_MUSC_SWITCH_MaxValue: 2
   RTPC_GP_LM_SatelliteSpeed:
     idInternal: 0
     valueGuidInternal: 
@@ -78,8 +78,7 @@ MonoBehaviour:
   EventGameStart:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: e51caf919b6fb104c9b22df442c75d2e,
-      type: 2}
+    WwiseObjectReference: {fileID: 0}
   EventGameEnd:
     idInternal: 0
     valueGuidInternal: 
@@ -87,11 +86,13 @@ MonoBehaviour:
   EventRoundStart:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: e51caf919b6fb104c9b22df442c75d2e,
+      type: 2}
   EventRoundEnd:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 16109d47e305b11448ae8aa0c2e3090c,
+      type: 2}
   EventPlayerTongueThrow:
     idInternal: 0
     valueGuidInternal: 
@@ -101,6 +102,11 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: a43903307adc505488fb75536230a2ba,
+      type: 2}
+  EventPlayerTongueInteractOrBind:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 43503265047385242ac6c6ccd9b208fe,
       type: 2}
   EventUIButtonHover:
     idInternal: 0
