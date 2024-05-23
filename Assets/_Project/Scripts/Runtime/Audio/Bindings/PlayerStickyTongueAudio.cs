@@ -21,12 +21,16 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
             }
             _playerStickyTongue.OnTongueOut += OnTongueOut;
             _playerStickyTongue.OnTongueRetractStart += OnTongueRetractStart;
+            _playerStickyTongue.OnTongueBind += OnTongueInteractOrBind;
+            _playerStickyTongue.OnTongueInteract += OnTongueInteractOrBind;
         }
 
         private void OnDestroy()
         {
             _playerStickyTongue.OnTongueOut -= OnTongueOut;
             _playerStickyTongue.OnTongueRetractStart -= OnTongueRetractStart;
+            _playerStickyTongue.OnTongueBind -= OnTongueInteractOrBind;
+            _playerStickyTongue.OnTongueInteract -= OnTongueInteractOrBind;
         }
 
         // Since OnTongueOut is already replicated, we just play the audio locally
@@ -39,6 +43,12 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
         private void OnTongueRetractStart()
         {
             AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerTongueRetract, _playerAkAudioListener.gameObject);
+        }
+        
+        // Since OnTongueBind and OnTongueInteract are already replicated, we just play the audio locally
+        private void OnTongueInteractOrBind()
+        {
+            AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerTongueInteractOrBind, _playerAkAudioListener.gameObject);
         }
     }
 }

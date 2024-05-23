@@ -55,6 +55,7 @@ namespace _Project.Scripts.Runtime.Audio
         [Title("AkEvent References", "Player Events")]
         public AK.Wwise.Event EventPlayerTongueThrow;
         public AK.Wwise.Event EventPlayerTongueRetract;
+        public AK.Wwise.Event EventPlayerTongueInteractOrBind;
         
         [Title("AkEvent References", "UI Events")]
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
