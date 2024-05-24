@@ -130,26 +130,22 @@ public class ProcGenInstanciator : MonoBehaviour
         NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -1f, _regionSize.y / 2), Quaternion.identity);
         ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 25, 1, _regionSize.y / 10 + _regionSize.x / 25);
         InstanceFinder.ServerManager.Spawn(ground);
-        yield return new WaitForFrames(_framesBetweenSpawn);
 
         // Generate Map invisible wall boundings
         // North
         NetworkObject wallNorth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, _regionSize.y + 1), Quaternion.identity);
         wallNorth.transform.localScale = new Vector3(_regionSize.x + 1, 4, 1);
         InstanceFinder.ServerManager.Spawn(wallNorth);
-        yield return new WaitForFrames(_framesBetweenSpawn);
 
         // South
         NetworkObject wallSouth = Instantiate(_invisibleWall, new Vector3(_regionSize.x / 2, 1, -1), Quaternion.identity);
         wallSouth.transform.localScale = new Vector3(_regionSize.x + 1, 4, 1);
         InstanceFinder.ServerManager.Spawn(wallSouth);
-        yield return new WaitForFrames(_framesBetweenSpawn);
 
         // East
         NetworkObject wallEast = Instantiate(_invisibleWall, new Vector3(_regionSize.y + 1, 1, _regionSize.y / 2), Quaternion.identity);
         wallEast.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
         InstanceFinder.ServerManager.Spawn(wallEast);
-        yield return new WaitForFrames(_framesBetweenSpawn);
 
         // West
         NetworkObject wallWest = Instantiate(_invisibleWall, new Vector3(-1, 1, _regionSize.y / 2), Quaternion.identity);
