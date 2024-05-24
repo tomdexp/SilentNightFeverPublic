@@ -77,7 +77,7 @@ public class ProcGenInstanciator : MonoBehaviour
     private List<float> _alreadySpawnedPointsRadius = new();
 
     private bool _readyToSpawnPrefabs = false;
-    private int _framesBetweenSpawn = 1; // to avoid blocking the main thread, we launch the main method in a coroutine and wait between each spawn
+    private readonly int _framesBetweenSpawn = 1; // to avoid blocking the main thread, we launch the main method in a coroutine and wait between each spawn
 
     // Events
     public event Action OnBeginMapGeneration;

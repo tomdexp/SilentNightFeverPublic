@@ -744,11 +744,12 @@ namespace _Project.Scripts.Runtime.Networking
                     readys += "Player " + playerReadyInfo.PlayerIndexType + " : Ready " + playerReadyInfo.IsPlayerReady + " | ";
                 }
                 Logger.LogTrace("Readys: " + readys, Logger.LogType.Server, this);
-            }
-
-            if (AllPlayerAreReady() && IsServerStarted)
-            {
-                OnAllPlayersReady?.Invoke();
+                
+                // Verify is this is a "set" operation to avoid firing multiple times
+                if (AllPlayerAreReady() && IsServerStarted && asServer)
+                {
+                    OnAllPlayersReady?.Invoke();
+                }
             }
         }
         private bool AllPlayerAreReady()

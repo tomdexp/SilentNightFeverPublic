@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FishNet;
 using TMPro;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -54,8 +55,9 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnAllPlayersReady()
         {
-            if (GameManager.HasInstance)
+            if (GameManager.HasInstance && InstanceFinder.IsServerStarted)
             {
+                Logger.LogDebug("All players are ready, loading game scene", Logger.LogType.Server, this);
                 GameManager.Instance.LoadGameScene();
             }
         }

@@ -119,16 +119,44 @@ namespace _Project.Scripts.Runtime.Networking
 
         private IEnumerator LoadGlobalSceneCoroutine(SceneType sceneType)
         {
-            Logger.LogInfo("Loading Scene : " + sceneType + "...", Logger.LogType.Local, this);
+            if (!IsServerStarted)
+            {
+                Logger.LogWarning("Only the server can change scenes !", Logger.LogType.Local, this);
+                yield break;
+            }
+            bool hasFinishedLoading = false;
+            bool hasAllClientsLoaded = false;
+            int totalNumberOfClients = NetworkManager.ClientManager.Clients.Count;
+            int numberOfClientsLoaded = 0;
+            Logger.LogInfo("Loading Scene : " + sceneType + "...", Logger.LogType.Server, this);
             OnBeforeSceneChange?.Invoke();
             yield return TransitionManager.Instance.BeginSceneChangeTransition();
             var stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
-            SceneLoadData sld = new SceneLoadData(sceneType.ToString());
+            SceneLoadData sld = new SceneLoadData(sceneType.ToString())
+            {
+                ReplaceScenes = ReplaceOption.All // That tells the server to replace all scenes with the new one
+            };
+            SceneManager.OnLoadEnd += (_) => hasFinishedLoading = true;
+            SceneManager.OnClientPresenceChangeEnd += (args) =>
+            {
+                Logger.LogInfo($"Client ID:{args.Connection.ClientId}, has finished loading the new scene {sceneType.ToString()}", Logger.LogType.Server, this);
+                numberOfClientsLoaded++;
+                if (numberOfClientsLoaded == totalNumberOfClients)
+                {
+                    Logger.LogInfo("All clients have finished loading the new scene !", Logger.LogType.Server, this);
+                    hasAllClientsLoaded = true;
+                }
+            };
             SceneManager.LoadGlobalScenes(sld);
+            while (!hasFinishedLoading || !hasAllClientsLoaded)
+            {
+                Logger.LogTrace("Waiting for scene to load...", Logger.LogType.Server, this);
+                yield return null;
+            }
             stopwatch.Stop();
-            Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
-            UnLoadCurrentScene();
+            Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+            //yield return UnLoadCurrentScene();
             yield return TransitionManager.Instance.EndSceneChangeTransition();
             OnAfterSceneChange?.Invoke();
             switch (sceneType)
@@ -149,14 +177,20 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
-        private void UnLoadCurrentScene()
+        private IEnumerator UnLoadCurrentScene()
         {
+            bool hasFinishedUnloading = false;
             Logger.LogInfo("Unloading current scene...", Logger.LogType.Local, this);
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             var stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
             SceneUnloadData sld = new SceneUnloadData(currentSceneName);
+            SceneManager.OnUnloadEnd += (_) => hasFinishedUnloading = true;
             SceneManager.UnloadGlobalScenes(sld);
+            while (!hasFinishedUnloading)
+            {
+                yield return null;
+            }
             stopwatch.Stop();
             Logger.LogInfo("Scene unloaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
         }
