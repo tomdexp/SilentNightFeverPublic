@@ -9,6 +9,12 @@ namespace _Project.Scripts.Runtime.Player
     [CreateAssetMenu(fileName = nameof(PlayerData), menuName = "Scriptable Objects/" + nameof(PlayerData))]
     public class PlayerData : ScriptableObject
     {
+        [Title("Player Color Settings")]
+        public Color PlayerAColor = Color.red;
+        public Color PlayerBColor = Color.blue;
+        public Color PlayerCColor = Color.green;
+        public Color PlayerDColor = Color.yellow;
+        
         [Title("Player Movement Settings")]
         [PropertyRange(0,100)] public float PlayerMovementSpeed = 5f;
         [PropertyRange(0,100)] public float PlayerMinMovementSpeed = 1f;

@@ -7,10 +7,6 @@ namespace _Project.Scripts.Runtime.Player
     [RequireComponent(typeof(NetworkPlayer))]
     public class PlayerColorByIndex : MonoBehaviour
     {
-        [SerializeField] private Color _colorPlayerA;
-        [SerializeField] private Color _colorPlayerB;
-        [SerializeField] private Color _colorPlayerC;
-        [SerializeField] private Color _colorPlayerD;
         private NetworkPlayer _networkPlayer;
         private MeshRenderer[] _meshRenderers;
 
@@ -35,16 +31,16 @@ namespace _Project.Scripts.Runtime.Player
             switch (playerIndexType)
             {
                 case PlayerIndexType.A:
-                    SetColor(_colorPlayerA);
+                    SetColor(_networkPlayer.PlayerData.PlayerAColor);
                     break;
                 case PlayerIndexType.B:
-                    SetColor(_colorPlayerB);
+                    SetColor(_networkPlayer.PlayerData.PlayerBColor);
                     break;
                 case PlayerIndexType.C:
-                    SetColor(_colorPlayerC);
+                    SetColor(_networkPlayer.PlayerData.PlayerCColor);
                     break;
                 case PlayerIndexType.D:
-                    SetColor(_colorPlayerD);
+                    SetColor(_networkPlayer.PlayerData.PlayerDColor);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
