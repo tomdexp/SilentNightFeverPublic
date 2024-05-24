@@ -36,13 +36,18 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [SerializeField, ReadOnly] private TongueAnchor _currentBindTongueAnchor;
         [SerializeField, ReadOnly] private MeshRenderer _tongueRenderer;
         [SerializeField, ReadOnly] private bool _isTongueActionPressed;
+        [SerializeField, ReadOnly] private float _underTensionTime;
         public event Action OnTongueOut;
         public event Action OnTongueIn;
         public event Action OnTongueRetractStart;
         public event Action OnTongueBind;
         public event Action OnTongueUnbind;
         public event Action OnTongueInteract;
+        
+        public readonly SyncEvent OnTongueBreak = new();
+        public readonly SyncEvent OnTongueCooldownEnd = new();
         public Transform TongueTip => _tongueTip;
+        public float DistanceToTongueTip => Vector3.Distance(_tongueTip.position, _tongueOrigin.position);
         
         public override void OnStartServer()
         {
@@ -118,8 +123,10 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             {
                 RetractTongue();
             }
+
+            HandleTongueBreak();
         }
-        
+
         private void OnDestroy()
         {
             if (GameManager.HasInstance) GameManager.Instance.OnAnyRoundEnded -= ResetTongueClientRpc;
@@ -132,6 +139,43 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 yield return null;
             }
             GameManager.Instance.OnAnyRoundEnded += ResetTongueClientRpc;
+        }
+        
+        private void HandleTongueBreak()
+        {
+            // we can only break if we are attached to another Player
+            if (!_isTongueBind || !_currentBindTongueAnchor || !_currentBindTongueAnchor.IsCharacterAnchor)
+            {
+                DecreaseTension();
+                return;
+            };
+            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Checking if tongue should break with distance of {DistanceToTongueTip}", Logger.LogType.Client, this);
+            // check if distance is superior to the break distance
+            if (DistanceToTongueTip >= _networkPlayer.PlayerData.TongueBreakDistance)
+            {
+                // add to the timer tension
+                _underTensionTime += Time.deltaTime;
+                if (_underTensionTime < _networkPlayer.PlayerData.TongueBreakTensionSeconds) return;
+                Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue broke with distance of {DistanceToTongueTip}", Logger.LogType.Client, this);
+                RetractTongue(true);
+                OnTongueBreak.Invoke();
+                StartCoroutine(TongueBreakCooldown());
+                _underTensionTime = 0;
+            }
+            else
+            {
+                DecreaseTension();
+            }
+        }
+
+        private void DecreaseTension()
+        {
+            if (_underTensionTime <= 0)
+            {
+                _underTensionTime = 0;
+                return;
+            }
+            _underTensionTime -= Time.deltaTime * _networkPlayer.PlayerData.TongueBreakTensionLossFactor;
         }
 
         public void TryUseTongue()
@@ -433,6 +477,17 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             _obiSolver.enabled = value;
             _tongueRenderer.enabled = value;
             Logger.LogTrace($"PlayerStickyTongue.SetTongueVisibilityClientRpc : {value}", Logger.LogType.Client, this);
+        }
+        
+        private IEnumerator TongueBreakCooldown()
+        {
+            if (!_canThrowTongue) yield break;
+            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue break cooldown started", Logger.LogType.Client, this);
+            _canThrowTongue = false;
+            yield return new WaitForSeconds(_networkPlayer.PlayerData.TongueBreakCooldown);
+            _canThrowTongue = true;
+            OnTongueCooldownEnd.Invoke();
+            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue break cooldown is over", Logger.LogType.Client, this);
         }
         
         private void ReplicateOnTongueOut()
