@@ -22,6 +22,8 @@ namespace _Project.Scripts.Runtime.Player
         [Title("References")]
         [SerializeField, Required] private TongueAnchor _characterTongueAnchor;
         [SerializeField, Required] private Collider _playerCollider;
+        [SerializeField, Required] private Transform _cameraFollowTarget;
+        [SerializeField, Required] private Transform _cameraLookAtTarget;
         
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private bool _canRotate = true;
@@ -81,6 +83,14 @@ namespace _Project.Scripts.Runtime.Player
             if (!_networkTransform)
             {
                 Logger.LogError("No NetworkTransform found on PlayerController", context:this);
+            }
+            if (!_cameraFollowTarget)
+            {
+                Logger.LogError("No CameraFollowTarget set on PlayerController", context:this);
+            }
+            if (!_cameraLookAtTarget)
+            {
+                Logger.LogError("No CameraLookAtTarget set on PlayerController", context:this);
             }
         }
         
@@ -287,8 +297,8 @@ namespace _Project.Scripts.Runtime.Player
                     if (cinemachineCamera)
                     {
                         // Bind the player controller to the Cinemachine Camera
-                        cinemachineCamera.Follow = transform;
-                        cinemachineCamera.LookAt = transform;
+                        cinemachineCamera.Follow = _cameraFollowTarget;
+                        cinemachineCamera.LookAt = _cameraLookAtTarget;
                         Logger.LogDebug("Bound player " + realPlayerInfo.PlayerIndexType + " to camera " + cinemachineCamera.name, context: this);
                     }
                     return;
