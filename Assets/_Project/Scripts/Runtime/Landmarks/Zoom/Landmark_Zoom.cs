@@ -112,10 +112,11 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
             _sliderRigidbody.velocity = Vector3.zero;
             _sliderRigidbody.angularVelocity = Vector3.zero;
             _sliderRigidbody.isKinematic = true;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
             _sliderRigidbody.transform.localEulerAngles = Vector3.zero;
-            OnSignedAngleChanged(0);
-            yield return new WaitForSeconds(0.5f);
+            CameraManager.Instance.SetFov(PlayerTeamType.A, CameraManager.Instance.DefaultPlayerFov);
+            CameraManager.Instance.SetFov(PlayerTeamType.B, CameraManager.Instance.DefaultPlayerFov);
+            yield return new WaitForSeconds(0.1f);
             _sliderRigidbody.isKinematic = false;
             _isActive = true;
         }
