@@ -36,6 +36,7 @@ Transform:
   - {fileID: 8309971342730298951}
   - {fileID: 416220957554427408}
   - {fileID: 649036607594880425}
+  - {fileID: 8290310618218130130}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3667370609337106282
@@ -55,6 +56,7 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 1871456323344089724}
+  - {fileID: 8239259958503473684}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField:
   - {fileID: 2446924290083654152}
@@ -125,9 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7804963b535e4cd4ac24161cb1235e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 3667370609337106282}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 3667370609337106282}
 --- !u!1 &2681110486080592896
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +444,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845b1df9a2fa44d6b42e1ee157b94bb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5178535355924465833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8290310618218130130}
+  - component: {fileID: 3103174439867991740}
+  m_Layer: 0
+  m_Name: CameraTargetGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8290310618218130130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5178535355924465833}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5965639699121598886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3103174439867991740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5178535355924465833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5eb80d8e62d9d145bb50fb783c0f731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionMode: 1
+  RotationMode: 0
+  UpdateMethod: 1
+  Targets:
+  - Object: {fileID: 8309971342730298951}
+    Weight: 1
+    Radius: 0
+  m_LegacyTargets: []
 --- !u!1 &5372907993622678594
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,8 +555,12 @@ MonoBehaviour:
   UseRigidbodyStabilization: 0
   LinkedNetworkObjectForOwnership: {fileID: 2446924290083654152}
   RigidbodyBehavior: 1
+  RemoteClientSimulateForce: 0
+  RemoteClientSimulateForceMultiplier: 10
+  RemoteClientSimulateForceMinDistance: 3
   _rigidbodySpeed: 0
   _currentStickTongue: {fileID: 0}
+  _ownerId: 0
 --- !u!114 &8749983927361594511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2119,6 +2177,8 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 2446924290083654152}
   _characterTongueAnchor: {fileID: 5544350275412729865}
   _playerCollider: {fileID: 565583427948159049}
+  _cameraFollowTarget: {fileID: 8309971342730298951}
+  _cameraLookAtTarget: {fileID: 8290310618218130130}
   _canRotate: 1
   _canMove: 1
   _otherPlayerAttachedFromTongue: {fileID: 0}
@@ -2387,10 +2447,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e78dfbe0814d978f0ed628676efcd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _colorPlayerA: {r: 0.20212281, g: 1, b: 0, a: 1}
-  _colorPlayerB: {r: 0.9502846, g: 1, b: 0, a: 1}
-  _colorPlayerC: {r: 0, g: 1, b: 0.95960426, a: 1}
-  _colorPlayerD: {r: 1, g: 0.2025823, b: 0, a: 1}
 --- !u!114 &665524915870132987
 MonoBehaviour:
   m_ObjectHideFlags: 0

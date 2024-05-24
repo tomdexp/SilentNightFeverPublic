@@ -31,6 +31,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         public float RemoteClientSimulateForceMultiplier = 10f;
         [ShowIf("@RemoteClientSimulateForce")]
         public float RemoteClientSimulateForceMinDistance = 3f;
+        public bool IsCharacterAnchor => DefaultOwnershipIsLinkedNetworkObject; // For now only character anchor has this set to true
 
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private float _rigidbodySpeed;
