@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 231928515017589480}
   - component: {fileID: 2379640079323419446}
   - component: {fileID: 4329907806245908306}
+  - component: {fileID: 2438716328225718716}
   m_Layer: 0
   m_Name: Tongue
   m_TagString: Untagged
@@ -419,6 +420,8 @@ MonoBehaviour:
   _currentBindTongueAnchor: {fileID: 0}
   _tongueRenderer: {fileID: 0}
   _isTongueActionPressed: 0
+  _underTensionTime: 0
+  _editorNormalizedTension: 0
 --- !u!114 &2379640079323419446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +445,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 845b1df9a2fa44d6b42e1ee157b94bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2438716328225718716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3834563963156707654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99135f8274204cce9bcd92bd73a48ee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5178535355924465833

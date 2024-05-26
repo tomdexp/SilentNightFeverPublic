@@ -1,5 +1,6 @@
 ﻿using _Project.Scripts.Runtime.Landmarks.Voodoo;
 using DG.Tweening;
+using Lofelt.NiceVibrations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -67,6 +68,10 @@ namespace _Project.Scripts.Runtime.Player
         public float TongueBreakTensionSeconds = 2f;
         [Tooltip("To avoid player doing back and forward to reset the tension timer, we decrease the tension by this factor on the update loop")]
         public float TongueBreakTensionLossFactor = 0.1f;
+        
+        [Title("Tongue Feedbacks")]
+        public AnimationCurve TongueTensionVibrationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        public HapticClip TongueTensionVibrationClip;
         
         [Title("Landmark Datas")]
         public LandmarkData_Voodoo LandmarkData_Voodoo;

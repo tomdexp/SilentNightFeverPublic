@@ -5,6 +5,8 @@ using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
 using FishNet.Connection;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
+using FishNet.Transporting;
 using Micosmo.SensorToolkit;
 using Obi;
 using Sirenix.OdinInspector;
@@ -37,6 +39,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [SerializeField, ReadOnly] private MeshRenderer _tongueRenderer;
         [SerializeField, ReadOnly] private bool _isTongueActionPressed;
         [SerializeField, ReadOnly] private float _underTensionTime;
+        [SerializeField, ReadOnly] private float _editorNormalizedTension;
         public event Action OnTongueOut;
         public event Action OnTongueIn;
         public event Action OnTongueRetractStart;
@@ -48,6 +51,11 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         public readonly SyncEvent OnTongueCooldownEnd = new();
         public Transform TongueTip => _tongueTip;
         public float DistanceToTongueTip => Vector3.Distance(_tongueTip.position, _tongueOrigin.position);
+        
+        // This variable needs to be synchronized in order to play the audio for everyone
+        public readonly SyncVar<float> NormalizedTension = new SyncVar<float>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner, .1f, Channel.Unreliable));
+        private float _lastNormalizedTension;
+        [ServerRpc(RunLocally = true)] private void SetNormalizedTension(float value, Channel channel = Channel.Unreliable) => NormalizedTension.Value = value;
         
         public override void OnStartServer()
         {
@@ -113,6 +121,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
 
         private void Update()
         {
+            _editorNormalizedTension = NormalizedTension.Value;
             if(!IsOwner) return;
             if (!_isTongueOut)
             {
@@ -124,7 +133,17 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 RetractTongue();
             }
 
+            HandleNormalizedTension();
             HandleTongueBreak();
+        }
+
+        private void HandleNormalizedTension()
+        {
+            var normalizedTension = Mathf.InverseLerp(0, _networkPlayer.PlayerData.TongueBreakDistance, DistanceToTongueTip);
+            var tension = Mathf.Lerp(0, 100, normalizedTension);
+            if (!(Mathf.Abs(_lastNormalizedTension - tension) > 0.01f)) return;
+            SetNormalizedTension(tension);
+            _lastNormalizedTension = tension;
         }
 
         private void OnDestroy()
