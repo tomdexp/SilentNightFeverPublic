@@ -8,16 +8,12 @@ namespace _Project.Scripts.Runtime.Player
     public class PlayerColorByIndex : MonoBehaviour
     {
         private NetworkPlayer _networkPlayer;
-        private MeshRenderer[] _meshRenderers;
+        [SerializeField] private MeshRenderer[] _meshRenderers;
+        [SerializeField] private SkinnedMeshRenderer[] _skinnedMeshRenderers;
 
         private void Awake()
         {
             _networkPlayer = GetComponent<NetworkPlayer>();
-            _meshRenderers = GetComponentsInChildren<MeshRenderer>();
-            foreach (var meshRenderer in _meshRenderers)
-            {
-                meshRenderer.material = new Material(meshRenderer.material);
-            }
         }
 
         private void Update()
@@ -52,6 +48,10 @@ namespace _Project.Scripts.Runtime.Player
             foreach (var meshRenderer in _meshRenderers)
             {
                 meshRenderer.material.color = color;
+            }
+            foreach (var skinnedMeshRenderer in _skinnedMeshRenderers)
+            {
+                skinnedMeshRenderer.material.color = color;
             }
         }
     }
