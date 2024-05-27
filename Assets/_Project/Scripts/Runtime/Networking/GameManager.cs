@@ -262,6 +262,7 @@ namespace _Project.Scripts.Runtime.Networking
                 yield break;
             }
             IsGameStarted.Value = true;
+            yield return TransitionManager.Instance.BeginLoadingGameTransition();
             var procGen = FindAnyObjectByType<ProcGenInstanciator>();
             if (procGen)
             {
@@ -277,8 +278,9 @@ namespace _Project.Scripts.Runtime.Networking
             PlayerManager.Instance.TrySetPlayerChangingTeamEnabled(false);
             SubscribeToTongueChangeEvents();
             SetupRounds();
-            StartCoroutine(StartRounds());
+            yield return StartRounds();
             OnGameStarted?.Invoke();
+            yield return TransitionManager.Instance.EndLoadingGameTransition();
             Logger.LogInfo("Game started !", Logger.LogType.Server, this);
         }
 
@@ -410,11 +412,13 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
+                yield return TransitionManager.Instance.BeginLoadingRoundTransition();
                 yield return new WaitForSeconds(GameManagerData.SecondsBetweenRounds);
             }
             OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
             Logger.LogInfo("Starting round " + CurrentRoundNumber.Value, Logger.LogType.Server, this);
             GetCurrentRound().StartRound();
+            yield return TransitionManager.Instance.EndLoadingRoundTransition();
         }
 
         private void EndCurrentRound(PlayerTeamType teamType)
