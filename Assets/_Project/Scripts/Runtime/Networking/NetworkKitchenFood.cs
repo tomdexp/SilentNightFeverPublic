@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Player.PlayerEffects;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
 using FishNet;
@@ -18,7 +19,9 @@ namespace _Project.Scripts.Runtime.Networking
         
         private IEnumerator ConsumeCoroutine(PlayerStickyTongue tongue)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
+            PlayAudioServerRpc();
+            yield return new WaitForSeconds(1f);
             PlayerManager.Instance.TryGiveEffectToPlayer<PE_KitchenFood>(tongue.GetNetworkPlayer().GetPlayerIndexType());
             DespawnServerRpc();
         }
@@ -28,8 +31,16 @@ namespace _Project.Scripts.Runtime.Networking
         {
             if (IsServerStarted)
             {
+                // TODO: This might not play well because it destroys the object, I don't know how Wwise handles this
                 Despawn();
             }
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void PlayAudioServerRpc()
+        {
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventLandmarkKitchenFoodEaten, gameObject);
+        }
+        
     }
 }
