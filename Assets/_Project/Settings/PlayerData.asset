@@ -32,12 +32,8 @@ MonoBehaviour:
   PlayerSizeDownChangeDuration: 1
   PlayerSizeUpChangeEase: 31
   PlayerSizeDownChangeEase: 31
-  TongueAbilityCooldownSeconds: 1
   TongueThrowSpeed: 20
   TongueRetractSpeed: 10
-  MaxTongueDistance: 5
-  TongueForce: 10
-  TongueSphereCastRadius: 0.3
   TongueThrowEase: 18
   TongueRetractEase: 18
   SmoothPlayerMassChangeOnTongueMoveDuration: 1
@@ -46,5 +42,44 @@ MonoBehaviour:
   OtherTongueMinDistance: 3
   TongueMissDuration: 0.3
   TongueMissPercentOfMaxDistance: 0.5
+  TongueBreakDistance: 4.5
+  TongueBreakCooldown: 5
+  TongueBreakTensionSeconds: 2
+  TongueBreakTensionLossFactor: 0.5
+  TongueTensionVibrationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  TongueTensionVibrationClip: {fileID: -8404250095460277587, guid: fafb36cf7b1ae455cb46b5f952075a53,
+    type: 3}
   LandmarkData_Voodoo: {fileID: 11400000, guid: 78d165634d22ad548b60e77237c14bb8,
     type: 2}
