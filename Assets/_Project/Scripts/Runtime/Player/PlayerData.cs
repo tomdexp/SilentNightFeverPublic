@@ -16,6 +16,9 @@ namespace _Project.Scripts.Runtime.Player
         public Color PlayerCColor = Color.green;
         public Color PlayerDColor = Color.yellow;
         
+        [Title("NPC Color Settings")]
+        public Color[] NPCColors = new Color[4] {Color.red, Color.blue, Color.green, Color.yellow};
+        
         [Title("Player Movement Settings")]
         [PropertyRange(0,100)] public float PlayerMovementSpeed = 5f;
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
