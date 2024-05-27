@@ -16,6 +16,11 @@ MonoBehaviour:
   PlayerBColor: {r: 0.9502846, g: 1, b: 0, a: 1}
   PlayerCColor: {r: 0, g: 1, b: 0.95960426, a: 1}
   PlayerDColor: {r: 1, g: 0.2025823, b: 0, a: 1}
+  NPCColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   PlayerMovementSpeed: 5
   PlayerMinMovementSpeed: 1
   PlayerMaxMovementSpeed: 10
@@ -42,9 +47,9 @@ MonoBehaviour:
   OtherTongueMinDistance: 3
   TongueMissDuration: 0.3
   TongueMissPercentOfMaxDistance: 0.5
-  TongueBreakDistance: 4.5
+  TongueBreakDistance: 3.5
   TongueBreakCooldown: 5
-  TongueBreakTensionSeconds: 2
+  TongueBreakTensionSeconds: 1
   TongueBreakTensionLossFactor: 0.5
   TongueTensionVibrationCurve:
     serializedVersion: 2

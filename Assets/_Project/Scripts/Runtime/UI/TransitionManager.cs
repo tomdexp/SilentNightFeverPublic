@@ -25,5 +25,29 @@ namespace _Project.Scripts.Runtime.UI
             Logger.LogDebug("EndSceneChangeTransition", Logger.LogType.Server, this);
             yield return _transitionSceneChange.EndTransition();
         }
+        
+        public IEnumerator BeginLoadingGameTransition()
+        {
+            Logger.LogDebug("BeginLoadingGameTransition", Logger.LogType.Server, this);
+            yield return _transitionLoadingGame.BeginTransition();
+        }
+        
+        public IEnumerator EndLoadingGameTransition()
+        {
+            Logger.LogDebug("EndLoadingGameTransition", Logger.LogType.Server, this);
+            yield return _transitionLoadingGame.EndTransition();
+        }
+        
+        public IEnumerator BeginLoadingRoundTransition()
+        {
+            Logger.LogDebug("BeginLoadingRoundTransition", Logger.LogType.Server, this);
+            yield return _transitionLoadingRound.BeginTransition();
+        }
+        
+        public IEnumerator EndLoadingRoundTransition()
+        {
+            Logger.LogDebug("EndLoadingRoundTransition", Logger.LogType.Server, this);
+            yield return _transitionLoadingRound.EndTransition();
+        }
     }
 }
