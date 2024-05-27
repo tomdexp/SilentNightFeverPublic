@@ -156,7 +156,6 @@ namespace _Project.Scripts.Runtime.Networking
             }
             stopwatch.Stop();
             Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
-            //yield return UnLoadCurrentScene();
             yield return TransitionManager.Instance.EndSceneChangeTransition();
             OnAfterSceneChange?.Invoke();
             switch (sceneType)

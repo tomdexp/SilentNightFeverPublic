@@ -27,6 +27,12 @@ namespace _Project.Scripts.Editor
             GoToData("Assets/_Project/Settings/BuildConfigs/Full_Release.buildconfiguration");
         }
 
+        [MenuItem("Silent Night Fever/Open LandmarksData")]
+        private static void GoToLandmarksData()
+        {
+            GoToData("Assets/_Project/Settings/Resources/LandmarkDatas/LandmarkData_Kitchen.asset");
+        }
+
         private static void GoToData(string path)
         {
             EditorUtility.FocusProjectWindow();

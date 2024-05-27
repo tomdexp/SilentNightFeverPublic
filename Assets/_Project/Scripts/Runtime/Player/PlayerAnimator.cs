@@ -11,29 +11,34 @@ namespace _Project.Scripts.Runtime.Player
     {
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private bool _isMoving;
+        [SerializeField, ReadOnly] private float _speed;
         
         private Animator _animator;
-        private Rigidbody _rigidbody;
+        private Transform _transform;
+        
+        private Vector3 _lastPosition;
         private static readonly int IsMovingParam = Animator.StringToHash("IsMoving");
 
         private void Start()
         {
             _animator = GetComponent<Animator>();
-            _rigidbody = GetComponentInParent<PlayerController>().GetComponent<Rigidbody>();
+            _transform = GetComponentInParent<PlayerController>().transform;
             if (!_animator)
             {
                 Logger.LogError("No Animator found on Player", Logger.LogType.Local, this);
             }
-            if (!_rigidbody)
+            if (!_transform)
             {
-                Logger.LogError("No Rigidbody found on Player", Logger.LogType.Local, this);
+                Logger.LogError("No Transform found on PlayerController", Logger.LogType.Local, this);
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            _isMoving = _rigidbody.velocity.magnitude > 0.1f;
+            _speed = (_transform.position - _lastPosition).magnitude / Time.deltaTime;
+            _isMoving = _speed > 0.01f;
             _animator.SetBool(IsMovingParam, _isMoving);
+            _lastPosition = _transform.position;
         }
     }
 }
