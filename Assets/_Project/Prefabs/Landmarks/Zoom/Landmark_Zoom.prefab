@@ -70,7 +70,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 592755735215392480}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -128,7 +128,7 @@ MonoBehaviour:
   RigidbodyBehavior: 1
   RemoteClientSimulateForce: 1
   RemoteClientSimulateForceMultiplier: 100
-  RemoteClientSimulateForceMaxDistance: 3
+  RemoteClientSimulateForceMinDistance: 3
   _rigidbodySpeed: 0
   _currentStickTongue: {fileID: 0}
   _ownerId: 0
@@ -400,7 +400,7 @@ MonoBehaviour:
   - {fileID: 2999487261455320136}
   - {fileID: 3038542018063726409}
   SerializedTransformProperties:
-    Position: {x: 0.21, y: 0, z: 11.41}
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -773,7 +773,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4192146070051473400}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -831,7 +831,7 @@ MonoBehaviour:
   RigidbodyBehavior: 1
   RemoteClientSimulateForce: 1
   RemoteClientSimulateForceMultiplier: 100
-  RemoteClientSimulateForceMaxDistance: 3
+  RemoteClientSimulateForceMinDistance: 3
   _rigidbodySpeed: 0
   _currentStickTongue: {fileID: 0}
   _ownerId: 0
@@ -1037,7 +1037,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5151214054106926807}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1095,7 +1095,7 @@ MonoBehaviour:
   RigidbodyBehavior: 1
   RemoteClientSimulateForce: 1
   RemoteClientSimulateForceMultiplier: 100
-  RemoteClientSimulateForceMaxDistance: 3
+  RemoteClientSimulateForceMinDistance: 3
   _rigidbodySpeed: 0
   _currentStickTongue: {fileID: 0}
   _ownerId: 0
@@ -1301,7 +1301,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5390255383797501908}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1359,7 +1359,7 @@ MonoBehaviour:
   RigidbodyBehavior: 1
   RemoteClientSimulateForce: 1
   RemoteClientSimulateForceMultiplier: 100
-  RemoteClientSimulateForceMaxDistance: 3
+  RemoteClientSimulateForceMinDistance: 3
   _rigidbodySpeed: 0
   _currentStickTongue: {fileID: 0}
   _ownerId: 0
@@ -1615,9 +1615,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5557610426966917760}
   serializedVersion: 4
-  m_Mass: 50
+  m_Mass: 10
   m_Drag: 0
-  m_AngularDrag: 20
+  m_AngularDrag: 100
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
