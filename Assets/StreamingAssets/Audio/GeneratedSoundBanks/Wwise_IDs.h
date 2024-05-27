@@ -13,12 +13,20 @@ namespace AK
 {
     namespace EVENTS
     {
-        static const AkUniqueID PLAY_LDMRK_CITY = 1475694052U;
-        static const AkUniqueID PLAY_LDMRK_FOREST = 702316442U;
-        static const AkUniqueID PLAY_LDMRK_RAIN = 4286364483U;
-        static const AkUniqueID PLAY_TEST_2 = 1517493057U;
-        static const AkUniqueID PLAY_WALK_TEST = 1273048044U;
-        static const AkUniqueID STOP_ALL = 452547817U;
+        static const AkUniqueID PLAY_CHAR_THO_RETRACT = 3854640606U;
+        static const AkUniqueID PLAY_CHAR_THO_THROW = 3990111633U;
+        static const AkUniqueID PLAY_CHAR_THO_TOUCHED = 2214496751U;
+        static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
+        static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
+        static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
+        static const AkUniqueID PLAY_UI_BACK = 1386224142U;
+        static const AkUniqueID PLAY_UI_DISPLACEMENT = 1341306234U;
+        static const AkUniqueID PLAY_UI_ENTER = 2982660583U;
+        static const AkUniqueID PLAY_UI_LOBBY_CREATED = 4198832716U;
+        static const AkUniqueID PLAY_UI_LOBBY_JOINED = 1782690879U;
+        static const AkUniqueID STOP_LM_KITCHEN = 570374180U;
+        static const AkUniqueID STOP_LM_SATT_INTERACT = 3778981049U;
+        static const AkUniqueID STOP_MUSC_GLOBAL_SWITCH = 3658594925U;
     } // namespace EVENTS
 
     namespace STATES
@@ -46,18 +54,6 @@ namespace AK
                 static const AkUniqueID NONE = 748895195U;
             } // namespace STATE
         } // namespace MUSC_A1_FD
-
-        namespace TEST_ROUNTING_STATE
-        {
-            static const AkUniqueID GROUP = 384614222U;
-
-            namespace STATE
-            {
-                static const AkUniqueID NONE = 748895195U;
-                static const AkUniqueID PLAYER_A_AND_C = 3768106970U;
-                static const AkUniqueID PLAYER_B_AND_D = 2793951418U;
-            } // namespace STATE
-        } // namespace TEST_ROUNTING_STATE
 
     } // namespace STATES
 
@@ -89,20 +85,37 @@ namespace AK
             } // namespace SWITCH
         } // namespace MUSC_A1_FD
 
+        namespace MUSC_GLOBAL_SWITCH
+        {
+            static const AkUniqueID GROUP = 4276095236U;
+
+            namespace SWITCH
+            {
+                static const AkUniqueID CR_A1 = 3220119667U;
+                static const AkUniqueID CR_A2 = 3220119664U;
+                static const AkUniqueID FD_A1 = 3307480612U;
+                static const AkUniqueID FD_A2 = 3307480615U;
+            } // namespace SWITCH
+        } // namespace MUSC_GLOBAL_SWITCH
+
     } // namespace SWITCHES
 
     namespace GAME_PARAMETERS
     {
-        static const AkUniqueID CP_ACCESS_LP = 2166846796U;
+        static const AkUniqueID CP_ACC_LP = 115457093U;
         static const AkUniqueID DENSITY_FA_SSGRAIN = 2715217995U;
         static const AkUniqueID DISTANCE = 1240670792U;
-        static const AkUniqueID GP_ACCESS_HP = 2745718364U;
-        static const AkUniqueID GP_ACCESS_NOTCH = 3319484834U;
-        static const AkUniqueID GP_GLOBALLANDMARKS_MUSIC = 4083545613U;
+        static const AkUniqueID GP_ACC_HP = 756044085U;
+        static const AkUniqueID GP_ACC_NOTCH = 4172717105U;
         static const AkUniqueID GP_LANDMARKMETER_CITY = 823063048U;
         static const AkUniqueID GP_LANDMARKMETER_FOREST = 1268650150U;
         static const AkUniqueID GP_LANDMARKMETER_RAIN = 1311938743U;
+        static const AkUniqueID GP_LM_KITCHENMETER = 2256592338U;
+        static const AkUniqueID GP_LM_SATELITTESPEED = 3546657911U;
+        static const AkUniqueID GP_LM_TOMUSIC = 1716289499U;
+        static const AkUniqueID GP_MUSC_SWITCH = 1886390058U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
+        static const AkUniqueID GP_SFX_TOMUSIC = 783337961U;
         static const AkUniqueID IMMERSION_FA_SSGRAIN = 2481728872U;
         static const AkUniqueID INSTRUMENT_FA_SSGRAIN = 2317409760U;
         static const AkUniqueID PROXIMITY_FA_SSGRAIN = 1791284502U;
@@ -123,9 +136,10 @@ namespace AK
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID CHAR = 4140304029U;
-        static const AkUniqueID MUSIC = 3991942870U;
-        static const AkUniqueID TEST_LANDMARK = 1286362932U;
+        static const AkUniqueID SB_CHAR = 2208305301U;
+        static const AkUniqueID SB_LM = 709024172U;
+        static const AkUniqueID SB_MUSIC = 779753582U;
+        static const AkUniqueID SB_UI = 289583631U;
     } // namespace BANKS
 
     namespace BUSSES
@@ -134,6 +148,7 @@ namespace AK
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
         static const AkUniqueID MUSIC = 3991942870U;
         static const AkUniqueID MUTED_MASTER = 3967932291U;
+        static const AkUniqueID SFX = 393239870U;
     } // namespace BUSSES
 
     namespace AUX_BUSSES
@@ -141,6 +156,7 @@ namespace AK
         static const AkUniqueID LDMRK_CITY = 2684572747U;
         static const AkUniqueID LDMRK_FOREST = 1486733157U;
         static const AkUniqueID LDMRK_RAIN = 2156680276U;
+        static const AkUniqueID LM_KITCHEN = 2768191745U;
     } // namespace AUX_BUSSES
 
     namespace AUDIO_DEVICES

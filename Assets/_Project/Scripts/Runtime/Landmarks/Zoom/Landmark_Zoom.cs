@@ -4,6 +4,7 @@ using System.Linq;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils;
+using FishNet.Object;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -20,6 +21,7 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
         
         [Title("Landmark Zoom Reference")]
         [SerializeField] private RotationTracker _sliderRotationTracker;
+        [SerializeField] private NetworkObject[] _anchors;
         
         
         [Title("Debug (Read-Only)")]
@@ -32,23 +34,37 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
         [SerializeField, ReadOnly] private bool _isActive;
         [SerializeField, ReadOnly] private bool _hasJustMoved;
         [SerializeField, ReadOnly] private bool _isMoving;
+        [field: SerializeField, ReadOnly] public float Speed { get; private set; }
         
         public event Action OnStartTurning;
         public event Action OnStopTurning;
         public event Action OnStep;
         
         private WaitForSeconds _waitForSeconds;
-        
 
-        public override void OnStartServer()
+        protected override void OnStart()
         {
-            base.OnStartServer();
-            _sliderRotationTracker.OnSignedAngleChanged += OnSignedAngleChanged;
+            base.OnStart();
             _sliderRigidbody = _sliderRotationTracker.GetComponent<Rigidbody>();
             if (!_sliderRigidbody)
             {
                 Logger.LogError("No Rigidbody component found on the Rotation Tracker", Logger.LogType.Server, this);
             }
+        }
+
+        public override void OnStartNetwork()
+        {
+            base.OnStartNetwork();
+            foreach (var nob in _anchors)
+            {
+                nob.UnsetParent();
+            }
+        }
+
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            _sliderRotationTracker.OnSignedAngleChanged += OnSignedAngleChanged;
             _waitForSeconds = new WaitForSeconds(Data.MinSecondsBetweenStepForContinuation);
             StartCoroutine(CheckForStartAndEndEvents());
         }
@@ -98,9 +114,16 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
             _sliderRigidbody.isKinematic = true;
             yield return new WaitForSeconds(0.1f);
             _sliderRigidbody.transform.localEulerAngles = Vector3.zero;
+            CameraManager.Instance.SetFov(PlayerTeamType.A, CameraManager.Instance.DefaultPlayerFov);
+            CameraManager.Instance.SetFov(PlayerTeamType.B, CameraManager.Instance.DefaultPlayerFov);
             yield return new WaitForSeconds(0.1f);
             _sliderRigidbody.isKinematic = false;
             _isActive = true;
+        }
+
+        private void FixedUpdate()
+        {
+            Speed = _sliderRigidbody.angularVelocity.magnitude;
         }
 
         private IEnumerator CheckForStartAndEndEvents()

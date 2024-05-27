@@ -44,7 +44,7 @@ namespace _Project.Scripts.Runtime.Landmarks.Voodoo
         {
             if(!IsServerStarted) return;
             if(!PlayerManager.HasInstance) return;
-            if(PlayerManager.Instance.NumberOfPlayers != 4) return;
+            if(!PlayerManager.Instance.AreAllPlayerSpawnedLocally) return;
             ApplyVoodooPuppetDirection(_playerAPuppet, _playerAPuppetInitialPosition, ref _playerADirection, PlayerIndexType.A);
             ApplyVoodooPuppetDirection(_playerBPuppet, _playerBPuppetInitialPosition, ref _playerBDirection, PlayerIndexType.B);
             ApplyVoodooPuppetDirection(_playerCPuppet, _playerCPuppetInitialPosition, ref _playerCDirection, PlayerIndexType.C);

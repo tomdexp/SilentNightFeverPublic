@@ -1,5 +1,6 @@
 ﻿using QFSW.QC;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 namespace _Project.Scripts.Runtime.Utils
 {
@@ -31,6 +32,18 @@ namespace _Project.Scripts.Runtime.Utils
         public static void GetHoldButtonToAnchorTongue()
         {
             Logger.LogInfo($"Options {nameof(HoldButtonToAnchorTongue)} is " + HoldButtonToAnchorTongue);
+        }
+        
+        public enum Language
+        {
+            English,
+            French
+        }
+        
+        [Command("/options.set.localization", "Set the localization")]
+        public static void SetLocalizations(Language language)
+        {
+            LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)language];
         }
         
         [Command("/options.list", "List all options and their values")]

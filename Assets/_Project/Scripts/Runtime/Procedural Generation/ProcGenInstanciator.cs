@@ -1,6 +1,5 @@
 using FishNet;
 using FishNet.Object;
-using Mono.CSharp;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
@@ -8,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
-using Unity.Mathematics;
+using _Project.Scripts.Runtime.Utils;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 using Sirenix.Utilities;
+using UnityEngine.Profiling;
 using Random = UnityEngine.Random;
 
 public class ProcGenInstanciator : MonoBehaviour
@@ -37,7 +37,12 @@ public class ProcGenInstanciator : MonoBehaviour
 
     [Title("    Landmarks")]
     [SerializeField] private ProcGenParameters _landmarksParameters;
-    [SerializeField] public List<SpawnableNetworkObject> _landmarksPrefabList;
+    [SerializeField, ValidateInput("MaxLandmarksSuperiorOrEqualToLandmarkCount", "The number of Landmarks that should " +
+        "spawn is less than the Landmarks you can spawn with these parameters " +
+        "(increase the max count of some of your landmarks or add more landmarks."
+        , InfoMessageType.Warning)]
+    public List<SpawnableNetworkObject> _landmarksPrefabList;
+
     [HideInInspector] public List<Vector2> _landmarksPoints;
     [HideInInspector] public List<NetworkObject> _spawnedLandmarks;
 
@@ -56,9 +61,9 @@ public class ProcGenInstanciator : MonoBehaviour
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _TreePrefab;
     private List<Vector2> _TreePoints;
 
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testLandmarkParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testLandmarkPrefab;
-    private List<Vector2> _testLandmarkPoints;
+    //[HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testLandmarkParameters;
+    //[HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testLandmarkPrefab;
+    //private List<Vector2> _testLandmarkPoints;
 
     [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testCubeParameters;
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testCubePrefab;
@@ -72,9 +77,12 @@ public class ProcGenInstanciator : MonoBehaviour
     private List<float> _alreadySpawnedPointsRadius = new();
 
     private bool _readyToSpawnPrefabs = false;
+    private readonly int _framesBetweenSpawn = 1; // to avoid blocking the main thread, we launch the main method in a coroutine and wait between each spawn
 
     // Events
+    public event Action OnBeginMapGeneration;
     public event Action OnMapGenerated;
+    public event Action OnBeginPrefabSpawning;
     public event Action OnPrefabSpawned;
 
     private void Awake()
@@ -83,9 +91,16 @@ public class ProcGenInstanciator : MonoBehaviour
     }
 
     [Button]
-    public void GenerateMap()
+    public IEnumerator GenerateMap()
     {
-        GenerateTerrain();
+        Logger.LogDebug("Generating map...", Logger.LogType.Server, this);
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        Profiler.BeginSample("GenerateMap");
+        
+        OnBeginMapGeneration?.Invoke(); 
+        
+        yield return GenerateTerrain();
+        
         _teamAPoints = GeneratePoints(_teamAParameters, true, true, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true, true, true);
         _landmarksPoints = GeneratePoints(_landmarksParameters, true, true, true);
@@ -93,19 +108,23 @@ public class ProcGenInstanciator : MonoBehaviour
         // Decoration
         _FernPoints = GeneratePoints(_FernParameters, false, false, true);
         _TreePoints = GeneratePoints(_TreeParameters, false, true, true);
-        _testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
+        //_testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
 
         _testCubePoints = GeneratePoints(_testCubeParameters, false, false, true);
         _testDiscPoints = GeneratePoints(_testDiscParameters, false, false, true);
 
         _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
 
-
         _readyToSpawnPrefabs = true;
+        
         OnMapGenerated?.Invoke();
+        Profiler.EndSample();
+        
+        stopwatch.Stop();
+        Logger.LogDebug("Map generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
     }
 
-    private void GenerateTerrain()
+    private IEnumerator GenerateTerrain()
     {
         // Generate Map ground
         NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -1f, _regionSize.y / 2), Quaternion.identity);
@@ -132,6 +151,7 @@ public class ProcGenInstanciator : MonoBehaviour
         NetworkObject wallWest = Instantiate(_invisibleWall, new Vector3(-1, 1, _regionSize.y / 2), Quaternion.identity);
         wallWest.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
         InstanceFinder.ServerManager.Spawn(wallWest);
+        yield return new WaitForFrames(_framesBetweenSpawn);
     }
 
     /// <summary>
@@ -179,7 +199,7 @@ public class ProcGenInstanciator : MonoBehaviour
 
         if (points.Count < parameters._numOfPoints && forceExactNumber)
         {
-            Debug.Log("Not enougth points, something went wrong? \n Number of spawned objects : " + points.Count);
+            Logger.LogWarning("Not enough points, something went wrong? \n Number of spawned objects : " + points.Count, Logger.LogType.Server, this);
         }
 
 
@@ -201,18 +221,19 @@ public class ProcGenInstanciator : MonoBehaviour
         return points;
     }
 
-    private void SpawnPrefabs(List<Vector2> pointsLocation, NetworkObject prefab)
+    private IEnumerator SpawnPrefabs(List<Vector2> pointsLocation, NetworkObject prefab)
     {
         for (int i = 0; i < pointsLocation.Count; i++)
         {
             NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
             pref.transform.Rotate(new Vector3(0, UnityEngine.Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
+            yield return new WaitForFrames(_framesBetweenSpawn);
         }
     }
 
     // Tries to spawns each prefabs respecting the min and max amount specified
-    private void SpawnPrefabs(List<Vector2> pointsLocation, List<SpawnableNetworkObject> SNOList)
+    private IEnumerator SpawnPrefabs(List<Vector2> pointsLocation, List<SpawnableNetworkObject> SNOList)
     {
         List<SpawnableNetworkObject> minList = new();
 
@@ -248,12 +269,12 @@ public class ProcGenInstanciator : MonoBehaviour
                 }
             }
 
-            NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[spawnIndex].x, 0, pointsLocation[spawnIndex].y), Quaternion.identity);
+            NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[spawnIndex].x, -1, pointsLocation[spawnIndex].y), Quaternion.identity);
             _spawnedLandmarks.Add(pref);
             pref.transform.Rotate(new Vector3(0, Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
-
             spawnIndex++;
+            yield return new WaitForFrames(_framesBetweenSpawn);
         }
 
         // Then we spawn the remaining elements from the SNOList (considering the max attributes)
@@ -287,22 +308,31 @@ public class ProcGenInstanciator : MonoBehaviour
     [Button, HideIf("@_readyToSpawnPrefabs == false")]
     public void SpawnAllPrefabs()
     {
+        StartCoroutine(SpawnAllPrefabsCoroutine());
+    }
+
+    public IEnumerator SpawnAllPrefabsCoroutine()
+    {
+        Logger.LogDebug("Spawning prefabs...", Logger.LogType.Server, this);
+        OnBeginPrefabSpawning?.Invoke();
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         if (_readyToSpawnPrefabs == false)
         {
             Debug.LogError("You must generate spawn points before trying to spawn them");
-            return;
+            yield break;
         }
-
-        SpawnPrefabs(_teamAPoints, _teamAPrefab);
-        SpawnPrefabs(_teamBPoints, _teamBPrefab);
-        SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
-        SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
-        SpawnPrefabs(_FernPoints, _FernPrefab);
-        SpawnPrefabs(_TreePoints, _TreePrefab);
-        SpawnPrefabs(_testCubePoints, _testCubePrefab);
-        SpawnPrefabs(_testDiscPoints, _testDiscPrefab);
-        SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
+        yield return SpawnPrefabs(_teamAPoints, _teamAPrefab);
+        yield return SpawnPrefabs(_teamBPoints, _teamBPrefab);
+        yield return SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
+        //yield return SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
+        yield return SpawnPrefabs(_FernPoints, _FernPrefab);
+        yield return SpawnPrefabs(_TreePoints, _TreePrefab);
+        yield return SpawnPrefabs(_testCubePoints, _testCubePrefab);
+        yield return SpawnPrefabs(_testDiscPoints, _testDiscPrefab);
+        yield return SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
         OnPrefabSpawned?.Invoke();
+        stopwatch.Stop();
+        Logger.LogDebug("Prefabs spawned in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
     }
 
     private void VerifyPrefabSetup()
@@ -315,7 +345,7 @@ public class ProcGenInstanciator : MonoBehaviour
         if (_landmarksPrefabList.IsNullOrEmpty()) Logger.LogError("Landmark prefabs are missing");
         if (!_FernPrefab) Logger.LogError("Fern prefab is missing");
         if (!_TreePrefab) Logger.LogError("Tree prefab is missing");
-        if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
+        //if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
         if (!_testCubePrefab) Logger.LogError("Test Cube prefab is missing");
         if (!_testDiscPrefab) Logger.LogError("Test Disc prefab is missing");
         if (!_CrowdPrefab) Logger.LogError("Crowd prefab is missing");
@@ -342,6 +372,20 @@ public class ProcGenInstanciator : MonoBehaviour
     {
         _teamAPoints = GeneratePoints(_teamAParameters, true, false, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true, false, true);
+    }
+
+    private bool MaxLandmarksSuperiorOrEqualToLandmarkCount()
+    {
+        int sum = 0;
+
+        foreach (var SNO in _landmarksPrefabList)
+        {
+            sum += SNO.Max;
+        }
+
+        bool res = (sum >= _landmarksParameters._numOfPoints);
+
+        return res;
     }
 }
 

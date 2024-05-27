@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: AudioManagerData
   m_EditorClassIdentifier: 
   EventNotFoundLogLevel: 3
+  RTPCNotFoundLogLevel: 3
+  RPTCLog: 0
   BanksToLoadOnApplicationStart:
   - Bank:
       idInternal: 0
@@ -31,16 +33,37 @@ MonoBehaviour:
   - Bank:
       idInternal: 0
       valueGuidInternal: 
-      WwiseObjectReference: {fileID: 11400000, guid: 9121748171f83f048a3ec543ec430e8f,
+      WwiseObjectReference: {fileID: 11400000, guid: c9b95171c45d7694199cf180a1335280,
+        type: 2}
+    DecodeBankOnLoad: 1
+    SaveDecodedBank: 0
+  - Bank:
+      idInternal: 0
+      valueGuidInternal: 
+      WwiseObjectReference: {fileID: 11400000, guid: 35eab507cb86d304e847f210d266c0d9,
         type: 2}
     DecodeBankOnLoad: 1
     SaveDecodedBank: 0
   LeftSpeakerVolumeOffset:
   - 0
-  - -96
+  - -40
   RightSpeakerVolumeOffset:
-  - -96
+  - -40
   - 0
+  RTPC_GP_MUSC_SWITCH:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: c023194eaa086c1478d0471b356d3156,
+      type: 2}
+  RTPC_GP_MUSC_SWITCH_MinValue: 2
+  RTPC_GP_MUSC_SWITCH_MaxValue: 2
+  RTPC_GP_LM_SatelliteSpeed:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 436caef6a51cdca4ea1b6dbf960c6eb5,
+      type: 2}
+  RTPC_GP_LM_SatelliteSpeed_MinValue: 0
+  RTPC_GP_LM_SatelliteSpeed_MaxValue: 10
   EventApplicationStart:
     idInternal: 0
     valueGuidInternal: 
@@ -64,24 +87,37 @@ MonoBehaviour:
   EventRoundStart:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: e51caf919b6fb104c9b22df442c75d2e,
+      type: 2}
   EventRoundEnd:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 16109d47e305b11448ae8aa0c2e3090c,
+      type: 2}
   EventPlayerTongueThrow:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 07bd3746f68221e4eb8cb74dd051c914,
+      type: 2}
   EventPlayerTongueRetract:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: a43903307adc505488fb75536230a2ba,
+      type: 2}
+  EventPlayerTongueInteractOrBind:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 43503265047385242ac6c6ccd9b208fe,
+      type: 2}
   EventUIButtonHover:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
-  EventUIButtonClick:
+  EventUIButtonClickEnter:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventUIButtonClickBack:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
@@ -105,3 +141,13 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
+  EventLandmarkZoomStartTurning:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 4d943f5781625574e9e69edfebb68679,
+      type: 2}
+  EventLandmarkZoomStopTurning:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: f15c46a9637dd9142a7fe06f5caaaa09,
+      type: 2}

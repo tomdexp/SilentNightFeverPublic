@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MenuText_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 07dd5ae9a91e7c34d85ef6005058778c, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 826150481046011913
+  m_TableData:
+  - m_Id: 116230307840
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645169790976
+    m_Localized: Parameters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 727541727232
+    m_Localized: Credits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 776715747328
+    m_Localized: Quit game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2276808572928
+    m_Localized: Online
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2330885734400
+    m_Localized: Local
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2408560050176
+    m_Localized: Create lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2649212436480
+    m_Localized: Join lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2744725127168
+    m_Localized: Lobby code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2888451342336
+    m_Localized: Waiting for other players
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3038347378688
+    m_Localized: Player {PlayerNumber}
+    m_Metadata:
+      m_Items:
+      - rid: 826150481046011913
+  - m_Id: 3130542374912
+    m_Localized: Join code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3279301754880
+    m_Localized: Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5424658890752
+    m_Localized: Play Online
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9024118308864
+    m_Localized: Local Lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9255547420672
+    m_Localized: Team Selection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9367531143168
+    m_Localized: Team {TeamLetter}
+    m_Metadata:
+      m_Items:
+      - rid: 826150481046011913
+  - m_Id: 27757025017856
+    m_Localized: Loading game...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28367606628352
+    m_Localized: Loading round...
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 826150481046011913
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 9367531143168
+        - id: 3038347378688

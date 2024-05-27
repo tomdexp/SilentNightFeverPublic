@@ -18,6 +18,7 @@ namespace _Project.Scripts.Runtime.Utils.Singletons
                     if (instance == null) {
                         var go = new GameObject(typeof(T).Name + " Auto-Generated");
                         instance = go.AddComponent<T>();
+                        Logger.LogError("NetworkPersistentSingleton: " + typeof(T).Name + " has been auto-generated, its not normal, in can happen sometimes in the Editor, quit and play again !", context:instance);
                     }
                 }
 

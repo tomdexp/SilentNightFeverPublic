@@ -61,7 +61,7 @@ namespace _Project.Scripts.Runtime.UI
         public override void SetupMenu()
         {
             _needSetup = true;
-            _joinCodeLabel.text = "Join code : " +BootstrapManager.Instance.CurrentJoinCode;
+            _joinCodeLabel.text = BootstrapManager.Instance.CurrentJoinCode;
             _isSetup = true;
             _parentMenu = _potentialParentMenu;
             _parentMenu.OpenSubMenuAndCloseCurrentMenu(this);

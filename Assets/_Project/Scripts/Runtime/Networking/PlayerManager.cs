@@ -13,6 +13,7 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Transporting;
 using Sirenix.OdinInspector;
+using Unity.Services.CloudSave.Models.Data.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -40,6 +41,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         public readonly SyncVar<bool> CanPlayerUseTongue = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
         public int NumberOfPlayers => _realPlayerInfos.Count;
+        public bool AreAllPlayerSpawnedLocally => _numberOfPlayerSpawnedLocally == 4;
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged;
         public event Action<List<PlayerReadyInfo>> OnPlayersReadyChanged;
         public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;
@@ -383,6 +385,37 @@ namespace _Project.Scripts.Runtime.Networking
         {
             OnTeamManagementStarted?.Invoke();
         }
+        
+        public void MapPlayerTeams()
+        {
+            RealPlayerInfo[] tempRealPlayerInfos = new RealPlayerInfo[_realPlayerInfos.Count];
+            PlayerReadyInfo[] tempPlayerReadyInfos = new PlayerReadyInfo[_playerReadyInfos.Count];
+            List<RealPlayerInfo> tempListRealPlayerInfos = new List<RealPlayerInfo>();
+            List<PlayerReadyInfo> tempListPlayerReadyInfos = new List<PlayerReadyInfo>();
+            _realPlayerInfos.Collection.CopyTo(tempRealPlayerInfos);
+            _playerReadyInfos.Collection.CopyTo(tempPlayerReadyInfos);
+            for (int i = 0; i < tempRealPlayerInfos.Length; i++)
+            {
+                tempListRealPlayerInfos.Add(tempRealPlayerInfos[i]);
+                tempListPlayerReadyInfos.Add(tempPlayerReadyInfos[i]);
+            }
+            // TODO: Map players to teams by using SwapRealPlayers method
+        }
+
+        private void SwapRealPlayers(PlayerIndexType player1, PlayerIndexType player2)
+        {
+            RealPlayerInfo realPlayer1 = _realPlayerInfos.Collection.First(x => x.PlayerIndexType == player1);
+            RealPlayerInfo realPlayer2 = _realPlayerInfos.Collection.First(x => x.PlayerIndexType == player2);
+            int index1 = _realPlayerInfos.IndexOf(realPlayer1);
+            int index2 = _realPlayerInfos.IndexOf(realPlayer2);
+            RealPlayerInfo copy1 = _realPlayerInfos[index1];
+            RealPlayerInfo copy2 = _realPlayerInfos[index2];
+            copy1.PlayerIndexType = player2;
+            copy2.PlayerIndexType = player1;
+            _realPlayerInfos[index1] = copy1;
+            _realPlayerInfos[index2] = copy2;
+        }
+        
         #endregion
 
         #region ===========  Change Team Functions =========== 
@@ -711,11 +744,12 @@ namespace _Project.Scripts.Runtime.Networking
                     readys += "Player " + playerReadyInfo.PlayerIndexType + " : Ready " + playerReadyInfo.IsPlayerReady + " | ";
                 }
                 Logger.LogTrace("Readys: " + readys, Logger.LogType.Server, this);
-            }
-
-            if (AllPlayerAreReady() && IsServerStarted)
-            {
-                OnAllPlayersReady?.Invoke();
+                
+                // Verify is this is a "set" operation to avoid firing multiple times
+                if (AllPlayerAreReady() && IsServerStarted && asServer)
+                {
+                    OnAllPlayersReady?.Invoke();
+                }
             }
         }
         private bool AllPlayerAreReady()
@@ -965,9 +999,14 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             _numberOfPlayerSpawnedLocally = 0;
+            
             SetPlayerJoiningEnabledClientRpc(false);
             SetPlayerLeavingEnabledClientRpc(false);
             SetPlayerChangingTeamEnabledClientRpc(false);
+            
+            // We must change the player index type of real player info with the indexes of playerTeamInfos
+            // we sort the _realPlayerInfos based
+            
             foreach (RealPlayerInfo realPlayerInfo in _realPlayerInfos)
             {
                 Logger.LogTrace("Spawning player for real player " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context: this);
@@ -1160,6 +1199,37 @@ namespace _Project.Scripts.Runtime.Networking
         public IEnumerable<NetworkPlayer> GetNetworkPlayers(PlayerTeamType teamType)
         {
             return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None).Where(x => x.GetPlayerTeamType() == teamType);
+        }
+
+        private bool IsPlayerTeamsInfoValid()
+        {
+            // check that there is 4 players
+            if (_playerTeamInfos.Count != 4)
+            {
+                Logger.LogWarning("PlayerTeamInfos count is not 4.", context: this);
+                return false;
+            }
+            // check that there is no duplicate PlayerIndexType
+            foreach (PlayerTeamInfo playerTeamInfo in _playerTeamInfos.Collection)
+            {
+                if (_playerTeamInfos.Collection.Count(x => x.PlayerIndexType == playerTeamInfo.PlayerIndexType) > 1)
+                {
+                    Logger.LogWarning("Duplicate PlayerIndexType " + playerTeamInfo.PlayerIndexType, context: this);
+                    return false;
+                }
+            }
+            // check that there is 2 players in each team
+            if (_playerTeamInfos.Collection.Count(x => x.PlayerTeamType == PlayerTeamType.A) != 2)
+            {
+                Logger.LogWarning("Team A count is not 2.", context: this);
+                return false;
+            }
+            if (_playerTeamInfos.Collection.Count(x => x.PlayerTeamType == PlayerTeamType.B) != 2)
+            {
+                Logger.LogWarning("Team B count is not 2.", context: this);
+                return false;
+            }
+            return true;
         }
 
         [Server]

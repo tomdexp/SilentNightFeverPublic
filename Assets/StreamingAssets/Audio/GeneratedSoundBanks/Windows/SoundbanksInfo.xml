@@ -9,10 +9,72 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{AA4E4808-E605-1D97-D5FF-9B86E38B0723}">
+		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{2E473FFC-1AD4-BFE5-08BA-FE32BB0704EE}">
+			<ShortName>SB_UI</ShortName>
+			<Path>SB_UI.bnk</Path>
+			<Media>
+				<File Id="336625967" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Lobby_Joined_V0-001.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Lobby_Joined_V0-001_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="388899620" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Lobby_Joined_V0-002.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Lobby_Joined_V0-002_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="635533247" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Enter_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Enter_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="749240576" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Lobby_Created_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Lobby_Created_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="794560131" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Back_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Back_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="1049734392" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Diplacement_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Diplacement_V0_EDCD4836.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="1386224142" Name="Play_UI_Back" DurationType="OneShot" DurationMin="0.19773959" DurationMax="0.19773959">
+					<MediaRefs>
+						<MediaRef Id="794560131"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1341306234" Name="Play_UI_Displacement" DurationType="OneShot" DurationMin="0.061395835" DurationMax="0.061395835">
+					<MediaRefs>
+						<MediaRef Id="1049734392"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2982660583" Name="Play_UI_Enter" DurationType="OneShot" DurationMin="0.13770834" DurationMax="0.13770834">
+					<MediaRefs>
+						<MediaRef Id="635533247"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4198832716" Name="Play_UI_Lobby_Created" DurationType="OneShot" DurationMin="0.8359375" DurationMax="0.8359375">
+					<MediaRefs>
+						<MediaRef Id="749240576"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1782690879" Name="Play_UI_Lobby_Joined" DurationType="OneShot" DurationMin="0.27540624" DurationMax="0.49123958">
+					<MediaRefs>
+						<MediaRef Id="336625967"/>
+						<MediaRef Id="388899620"/>
+					</MediaRefs>
+				</Event>
+			</Events>
+		</SoundBank>
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{8CA25F00-C13C-1B42-528C-B185F5A81EEB}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
+				<File Id="13498521" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-012.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-012_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="17834369" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-011.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-011_EDCD4836.wem</CachePath>
@@ -21,17 +83,65 @@
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-003.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-003_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="27926747" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-009.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-009_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="38716722" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-031.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-031_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="50904851" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-017.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-017_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="60471561" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-046.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-046_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="60713050" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-024.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-024_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="65070717" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-015.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-015_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="85743001" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-062.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-062_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="92705667" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-029.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-029_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="111868121" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-023.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-023_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="118107900" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-057.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-057_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="118333241" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-052.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-052_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="147183084" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-047.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-047_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="166306997" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_INSECT.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_INSECT_3FED40EA.wem</CachePath>
+				</File>
+				<File Id="169619405" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-039.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-039_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="185021290" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-040.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-040_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="190333546" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-005.wav</ShortName>
@@ -41,13 +151,41 @@
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-009.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-009_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="220555366" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-025.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-025_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="221952407" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-043.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-043_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="242589726" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-008.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-008_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="286161819" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-015.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-015_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="296200420" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-018.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-018_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="313240152" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-033.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-033_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="313773868" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-005.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-005_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="335158505" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-050.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-050_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="337955544" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-037.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-037_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="348382969" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-006.wav</ShortName>
@@ -57,13 +195,45 @@
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-014.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-014_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="370154571" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-061.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-061_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="371994418" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-045.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-045_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="393906511" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-063.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-063_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="404322692" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-010.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-010_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="407857897" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-001.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-001_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="418053353" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-003.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-003_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="419864368" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-007.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-007_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="424901032" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-004.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-004_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="432599002" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-055.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-055_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="438248183" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-020.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-020_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="438578685" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_BOILLING 2.wav</ShortName>
@@ -73,13 +243,29 @@
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-013.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-013_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="443738727" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-042.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-042_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="478749577" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-010.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-010_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="481623153" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-035.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-035_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="485557544" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-001.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-001_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="485910215" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-016.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-016_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="523014846" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-018.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-018_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="532424619" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-012.wav</ShortName>
@@ -89,9 +275,21 @@
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-008.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-008_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="543792647" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-058.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-058_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="574412320" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-041.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-041_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="582382125" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-006.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-006_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="605795599" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-030.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-030_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="610089515" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-004.wav</ShortName>
@@ -101,25 +299,137 @@
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-007.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-007_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="636839558" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-028.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-028_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="653735353" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CHAIN LOOP.wav</ShortName>
+					<CachePath>SFX/SATELLITE CHAIN LOOP_15794110.wem</CachePath>
+				</File>
+				<File Id="656340435" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-048.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-048_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="658807246" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-044.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-044_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="680684592" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-060.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-060_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="711538849" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_FRYING.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_FRYING_7405C108.wem</CachePath>
+				</File>
+				<File Id="715784344" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-034.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-034_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="725068715" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-001.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Dishes_V0-001_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="738990797" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-011.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-011_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="749046767" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-049.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-049_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="787266648" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_FIRE.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_FIRE_0663369B.wem</CachePath>
+				</File>
+				<File Id="788747924" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-004.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-004_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="799076491" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-064.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-064_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="817383649" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-032.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-032_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="862893652" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-027.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-027_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="864355252" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_LP_LM_Kitchen_V0_BOILLING.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_LP_LM_Kitchen_V0_BOILLING_FC6C8F12.wem</CachePath>
 				</File>
+				<File Id="867774023" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-054.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-054_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="880952476" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-014.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-014_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="883373781" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-021.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-021_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="883468908" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-038.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-038_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="892578910" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-051.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-051_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="897049267" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-019.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-019_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="900623662" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-005.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-005_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="948804932" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-002.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-002_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="956030670" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-002.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-002_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="957844976" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-022.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-022_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="963936143" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-003.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-003_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="964662358" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-036.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-036_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="967768713" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-017.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-017_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="976566236" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-013.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-013_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="988344191" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE TREE LOOP.wav</ShortName>
+					<CachePath>SFX/SATELLITE TREE LOOP_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="988508209" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-053.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-053_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="991969635" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-056.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-056_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="991971920" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-002.wav</ShortName>
@@ -128,6 +438,18 @@
 				<File Id="998182840" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Glass_V0-016.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Glass_V0-016_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="1047423430" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-059.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-059_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="1058251199" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-006.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-006_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="1068746338" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SATELLITE CLICS OS-026.wav</ShortName>
+					<CachePath>SFX/SATELLITE CLICS OS-026_EDCD4836.wem</CachePath>
 				</File>
 			</Media>
 			<Events>
@@ -167,68 +489,358 @@
 						<AuxBusRef Id="2768191745" Name="LM_Kitchen"/>
 					</AuxBusRefs>
 				</Event>
+				<Event Id="3999988379" Name="Play_LM_SATT_Interact" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="13498521"/>
+						<MediaRef Id="27926747"/>
+						<MediaRef Id="38716722"/>
+						<MediaRef Id="60471561"/>
+						<MediaRef Id="60713050"/>
+						<MediaRef Id="85743001"/>
+						<MediaRef Id="92705667"/>
+						<MediaRef Id="111868121"/>
+						<MediaRef Id="118107900"/>
+						<MediaRef Id="118333241"/>
+						<MediaRef Id="147183084"/>
+						<MediaRef Id="169619405"/>
+						<MediaRef Id="185021290"/>
+						<MediaRef Id="220555366"/>
+						<MediaRef Id="221952407"/>
+						<MediaRef Id="242589726"/>
+						<MediaRef Id="286161819"/>
+						<MediaRef Id="313240152"/>
+						<MediaRef Id="335158505"/>
+						<MediaRef Id="337955544"/>
+						<MediaRef Id="370154571"/>
+						<MediaRef Id="371994418"/>
+						<MediaRef Id="393906511"/>
+						<MediaRef Id="404322692"/>
+						<MediaRef Id="407857897"/>
+						<MediaRef Id="419864368"/>
+						<MediaRef Id="432599002"/>
+						<MediaRef Id="438248183"/>
+						<MediaRef Id="443738727"/>
+						<MediaRef Id="481623153"/>
+						<MediaRef Id="485910215"/>
+						<MediaRef Id="523014846"/>
+						<MediaRef Id="543792647"/>
+						<MediaRef Id="574412320"/>
+						<MediaRef Id="605795599"/>
+						<MediaRef Id="636839558"/>
+						<MediaRef Id="653735353"/>
+						<MediaRef Id="656340435"/>
+						<MediaRef Id="658807246"/>
+						<MediaRef Id="680684592"/>
+						<MediaRef Id="715784344"/>
+						<MediaRef Id="738990797"/>
+						<MediaRef Id="749046767"/>
+						<MediaRef Id="788747924"/>
+						<MediaRef Id="799076491"/>
+						<MediaRef Id="817383649"/>
+						<MediaRef Id="862893652"/>
+						<MediaRef Id="867774023"/>
+						<MediaRef Id="880952476"/>
+						<MediaRef Id="883373781"/>
+						<MediaRef Id="883468908"/>
+						<MediaRef Id="892578910"/>
+						<MediaRef Id="897049267"/>
+						<MediaRef Id="900623662"/>
+						<MediaRef Id="956030670"/>
+						<MediaRef Id="957844976"/>
+						<MediaRef Id="963936143"/>
+						<MediaRef Id="964662358"/>
+						<MediaRef Id="967768713"/>
+						<MediaRef Id="976566236"/>
+						<MediaRef Id="988344191"/>
+						<MediaRef Id="988508209"/>
+						<MediaRef Id="991969635"/>
+						<MediaRef Id="1047423430"/>
+						<MediaRef Id="1058251199"/>
+						<MediaRef Id="1068746338"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="570374180" Name="Stop_LM_Kitchen" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="3778981049" Name="Stop_LM_SATT_Interact" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 			<GameParameters>
 				<GameParameter Id="1240670792" Name="Distance"/>
+				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="1286362932" Type="User" Language="SFX" Hash="{C7556B85-7A59-EEC5-7919-FB0E7BBE2C0E}">
-			<ShortName>TEST_LANDMARK</ShortName>
-			<Path>TEST_LANDMARK.bnk</Path>
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{69F9BBB8-B5EC-FF0C-3E32-BA8D21FF5639}">
+			<ShortName>SB_MUSIC</ShortName>
+			<Path>SB_MUSIC.bnk</Path>
 			<Media>
-				<File Id="377728211" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>AMBPark_City Park Fountain Kyiv_B00M_ONE 1.wav</ShortName>
-					<CachePath>SFX/AMBPark_City Park Fountain Kyiv_B00M_ONE 1_18D6C688.wem</CachePath>
+				<File Id="52317261" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Verse_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Verse_Bass_V1_D8A0D580.wem</CachePath>
 				</File>
-				<File Id="1023339442" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>AMBTown_Fire Alarm School With Distant Church Bells_B00M_ONE.wav</ShortName>
-					<CachePath>SFX/AMBTown_Fire Alarm School With Distant Church Bells_B00M_ONE_1FD4CF6A.wem</CachePath>
+				<File Id="97108453" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Break de Batterie_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Break de Batterie_Bass_V1_D8A0D580.wem</CachePath>
 				</File>
-				<File Id="1026933771" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>Ambience, Forest, Calm, No Birds, Winter, Airy, Distant Traffic, Wash SND5218.wav</ShortName>
-					<CachePath>SFX/Ambience, Forest, Calm, No Birds, Winter, Airy, Distant Traffic, Wash SND5218_A3A39AFF.wem</CachePath>
+				<File Id="112696517" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Voice_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Voice_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="162076403" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Lead_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Lead_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="166146095" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Fin_Pad_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Fin_Pad_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="177634168" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Exposition_Drums_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Exposition_Drums_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="196322221" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse2_Voice_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse2_Voice_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="237531611" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse_Bass_V1-001.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse_Bass_V1-001_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="248899126" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse1_Voice_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse1_Voice_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="264880505" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Intro_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Intro_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="301353085" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Exposition_Lead_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Exposition_Lead_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="337157351" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse_Drums_V1-001.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse_Drums_V1-001_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="355773382" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Fin_Drum_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Fin_Drum_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="359463219" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Refrain_Piano_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Refrain_Piano_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="383277738" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Break de Batterie_Drum_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Break de Batterie_Drum_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="387859306" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Intro_Drum_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Intro_Drum_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="410070274" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Chords_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="417753889" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Intro_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Intro_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="428160179" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Fin_Arpegiateur_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Fin_Arpegiateur_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="457124064" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Exposition_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Exposition_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="476578401" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Refrain_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Refrain_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="477821830" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Intro_Pad_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Intro_Pad_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="513757787" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Verse_Piano_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Verse_Piano_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="516737288" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Drums_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Drums_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="520650177" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_PreChorus3+Chorus3_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_PreChorus3+Chorus3_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="551197104" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Refrain_Melodie_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Refrain_Melodie_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="584774517" Language="SFX" Streaming="true" Location="Loose">
+					<ShortName>SNF_FD_A1_132_Chorus1_Drums_V1.wav</ShortName>
+					<Path>Media/584774517.wem</Path>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Drums_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="610499988" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Fin_Melodie_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Fin_Melodie_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="618553296" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Chorus1_Voice_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Voice_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="674060658" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Intro_Arpegiatteur_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Intro_Arpegiatteur_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="688651663" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Refrain_Drum_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Refrain_Drum_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="711786783" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Refrain_Pad_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Refrain_Pad_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="717906061" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Exposition_Chords_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Exposition_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="733719335" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Refrain_Arpegiateur_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Refrain_Arpegiateur_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="754771903" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Verse_Pad_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Verse_Pad_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="790597649" Language="SFX" Streaming="true" Location="Loose">
+					<ShortName>SNF_FD_A1_132_Chorus1_Chords_V1.wav</ShortName>
+					<Path>Media/790597649.wem</Path>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="802986830" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Fin_Bass_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Fin_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="815208291" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Verse_Melodie_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Verse_Melodie_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="934732765" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse2_Chords_V1.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse2_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="938802493" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Verse_Bass_V1-002.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Verse_Bass_V1-002_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="951337219" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Verse_Drum_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Verse_Drum_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="969312343" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_CR_A1_120_Intro_Piano_V1.wav</ShortName>
+					<CachePath>SFX/SNF_CR_A1_120_Intro_Piano_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="1031095703" Language="SFX" Streaming="true" Location="Loose">
+					<ShortName>SNF_FD_A1_132_Chorus1_Lead_V1.wav</ShortName>
+					<Path>Media/1031095703.wem</Path>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Lead_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="1033699912" Language="SFX" Streaming="true" Location="Loose">
+					<ShortName>SNF_FD_A1_132_Chorus1_Bass_V1.wav</ShortName>
+					<Path>Media/1033699912.wem</Path>
+					<CachePath>SFX/SNF_FD_A1_132_Chorus1_Bass_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="1059675014" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_FD_A1_132_Intro_percs.wav</ShortName>
+					<CachePath>SFX/SNF_FD_A1_132_Intro_percs_D8A0D580.wem</CachePath>
 				</File>
 			</Media>
 			<Events>
-				<Event Id="1475694052" Name="Play_LDMRK_CITY" MaxAttenuation="25" DurationType="Infinite">
-					<MediaRefs>
-						<MediaRef Id="1023339442"/>
-					</MediaRefs>
-					<AuxBusRefs>
-						<AuxBusRef Id="2684572747" Name="LDMRK_CITY"/>
-					</AuxBusRefs>
+				<Event Id="6483615" Name="Play_MUSC_GLOBAL_SWITCH" DurationType="Infinite">
+					<SwitchContainers>
+						<SwitchContainer>
+							<SwitchValue GroupType="Switch" GroupId="4276095236" Id="3307480612"/>
+							<MediaRefs>
+								<MediaRef Id="112696517"/>
+								<MediaRef Id="162076403"/>
+								<MediaRef Id="177634168"/>
+								<MediaRef Id="196322221"/>
+								<MediaRef Id="237531611"/>
+								<MediaRef Id="248899126"/>
+								<MediaRef Id="264880505"/>
+								<MediaRef Id="301353085"/>
+								<MediaRef Id="337157351"/>
+								<MediaRef Id="410070274"/>
+								<MediaRef Id="457124064"/>
+								<MediaRef Id="516737288"/>
+								<MediaRef Id="520650177"/>
+								<MediaRef Id="584774517"/>
+								<MediaRef Id="618553296"/>
+								<MediaRef Id="717906061"/>
+								<MediaRef Id="790597649"/>
+								<MediaRef Id="934732765"/>
+								<MediaRef Id="938802493"/>
+								<MediaRef Id="1031095703"/>
+								<MediaRef Id="1033699912"/>
+								<MediaRef Id="1059675014"/>
+							</MediaRefs>
+						</SwitchContainer>
+						<SwitchContainer>
+							<SwitchValue GroupType="Switch" GroupId="4276095236" Id="3220119667"/>
+							<MediaRefs>
+								<MediaRef Id="52317261"/>
+								<MediaRef Id="97108453"/>
+								<MediaRef Id="166146095"/>
+								<MediaRef Id="355773382"/>
+								<MediaRef Id="359463219"/>
+								<MediaRef Id="383277738"/>
+								<MediaRef Id="387859306"/>
+								<MediaRef Id="417753889"/>
+								<MediaRef Id="428160179"/>
+								<MediaRef Id="476578401"/>
+								<MediaRef Id="477821830"/>
+								<MediaRef Id="513757787"/>
+								<MediaRef Id="551197104"/>
+								<MediaRef Id="610499988"/>
+								<MediaRef Id="674060658"/>
+								<MediaRef Id="688651663"/>
+								<MediaRef Id="711786783"/>
+								<MediaRef Id="733719335"/>
+								<MediaRef Id="754771903"/>
+								<MediaRef Id="802986830"/>
+								<MediaRef Id="815208291"/>
+								<MediaRef Id="951337219"/>
+								<MediaRef Id="969312343"/>
+							</MediaRefs>
+						</SwitchContainer>
+					</SwitchContainers>
 				</Event>
-				<Event Id="702316442" Name="Play_LDMRK_FOREST" MaxAttenuation="25" DurationType="Infinite">
-					<MediaRefs>
-						<MediaRef Id="1026933771"/>
-					</MediaRefs>
-					<AuxBusRefs>
-						<AuxBusRef Id="1486733157" Name="LDMRK_FOREST"/>
-					</AuxBusRefs>
-				</Event>
-				<Event Id="4286364483" Name="Play_LDMRK_RAIN" MaxAttenuation="25" DurationType="Infinite">
-					<MediaRefs>
-						<MediaRef Id="377728211"/>
-					</MediaRefs>
-					<AuxBusRefs>
-						<AuxBusRef Id="2156680276" Name="LDMRK_RAIN"/>
-					</AuxBusRefs>
-				</Event>
-				<Event Id="452547817" Name="STOP_ALL" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="3658594925" Name="Stop_MUSC_GLOBAL_SWITCH" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 			<GameParameters>
-				<GameParameter Id="823063048" Name="GP_LandMarkMeter_City"/>
-				<GameParameter Id="1240670792" Name="Distance"/>
-				<GameParameter Id="1268650150" Name="GP_LandMarkMeter_Forest"/>
-				<GameParameter Id="1311938743" Name="GP_LandMarkMeter_Rain"/>
+				<GameParameter Id="783337961" Name="GP_SFX_toMusic"/>
+				<GameParameter Id="1716289499" Name="GP_LM_toMusic"/>
+				<GameParameter Id="1886390058" Name="GP_MUSC_SWITCH"/>
 			</GameParameters>
+			<SwitchGroups>
+				<SwitchGroup Id="4276095236" Name="Musc_Global_Switch">
+					<GameParameterRef Id="1886390058"/>
+					<Switches>
+						<Switch Id="3220119664" Name="CR_A2"/>
+						<Switch Id="3220119667" Name="CR_A1"/>
+						<Switch Id="3307480612" Name="FD_A1"/>
+						<Switch Id="3307480615" Name="FD_A2"/>
+					</Switches>
+				</SwitchGroup>
+			</SwitchGroups>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{F86CC4C3-44F0-7FF1-29D3-3E8C19F64E74}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{D9533CBE-D6BA-734A-6F3F-35DB443C93D5}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
 				<Custom>
+					<Plugin Id="64712744" Name="Meter (Custom)" LibName="Wwise Meter" LibId="8454147"/>
 					<Plugin Id="70340969" Name="Meter City" LibName="Wwise Meter" LibId="8454147"/>
 					<Plugin Id="597421931" Name="Meter Forest" LibName="Wwise Meter" LibId="8454147"/>
 					<Plugin Id="815989359" Name="Meter (Custom)" LibName="Wwise Meter" LibId="8454147"/>
@@ -244,6 +856,13 @@
 				</AudioDevices>
 			</Plugins>
 			<Busses>
+				<Bus Id="393239870" Name="SFX">
+					<PluginRefs>
+						<Custom>
+							<PluginRef Id="64712744"/>
+						</Custom>
+					</PluginRefs>
+				</Bus>
 				<Bus Id="1061412920" Name="Landmarks">
 					<PluginRefs>
 						<ShareSets>
@@ -293,8 +912,8 @@
 			</AuxBusses>
 			<GameParameters>
 				<GameParameter Id="115457093" Name="CP_ACC_LP"/>
-				<GameParameter Id="331898971" Name="GP_LM_Kitchen"/>
 				<GameParameter Id="756044085" Name="GP_ACC_HP"/>
+				<GameParameter Id="783337961" Name="GP_SFX_toMusic"/>
 				<GameParameter Id="822163944" Name="SS_Air_RPM"/>
 				<GameParameter Id="823063048" Name="GP_LandMarkMeter_City"/>
 				<GameParameter Id="987834118" Name="GP_PARAM_MUSC_Volume"/>
@@ -307,6 +926,7 @@
 				<GameParameter Id="1716289499" Name="GP_LM_toMusic"/>
 				<GameParameter Id="1791284502" Name="Proximity_FA_SSGrain"/>
 				<GameParameter Id="1886390058" Name="GP_MUSC_SWITCH"/>
+				<GameParameter Id="2256592338" Name="GP_LM_KitchenMeter"/>
 				<GameParameter Id="2317409760" Name="Instrument_FA_SSGrain"/>
 				<GameParameter Id="2428833394" Name="Simulation_FA_SSGrain"/>
 				<GameParameter Id="2481728872" Name="Immersion_FA_SSGrain"/>
@@ -315,6 +935,7 @@
 				<GameParameter Id="3002758120" Name="SS_Air_Freefall"/>
 				<GameParameter Id="3074696722" Name="SS_Air_Size"/>
 				<GameParameter Id="3203397129" Name="SS_Air_TimeOfDay"/>
+				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 				<GameParameter Id="3715662592" Name="SS_Air_Storm"/>
 				<GameParameter Id="3847924954" Name="SS_Air_Presence"/>
 				<GameParameter Id="4160247818" Name="SS_Air_Turbulence"/>
@@ -492,14 +1113,41 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="3991942870" Type="User" Language="SFX" Hash="{8075EEFB-2136-8445-22D7-93138A5F3A36}">
-			<ShortName>MUSIC</ShortName>
-			<Path>MUSIC.bnk</Path>
-		</SoundBank>
-		<SoundBank Id="4140304029" Type="User" Language="SFX" Hash="{4F03C495-6C2D-A05C-1FFF-D72BC886E0F5}">
-			<ShortName>CHAR</ShortName>
-			<Path>CHAR.bnk</Path>
+		<SoundBank Id="2208305301" Type="User" Language="SFX" Hash="{7D58F6A1-1E40-3E94-65BD-70FD9B8ED14A}">
+			<ShortName>SB_CHAR</ShortName>
+			<Path>SB_CHAR.bnk</Path>
+			<Media>
+				<File Id="786559962" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Tongue_Throw_V0.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Tongue_Throw_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="808323350" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Tongue_Retract_V0.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Tongue_Retract_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="890209686" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Tongue_Touched_V0.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Tongue_Touched_V0_EDCD4836.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="3854640606" Name="Play_CHAR_THO_Retract" DurationType="OneShot" DurationMin="0.30121806" DurationMax="0.34841537">
+					<MediaRefs>
+						<MediaRef Id="808323350"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3990111633" Name="Play_CHAR_THO_Throw" DurationType="OneShot" DurationMin="0.2862329" DurationMax="0.34117758">
+					<MediaRefs>
+						<MediaRef Id="786559962"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2214496751" Name="Play_CHAR_THO_Touched" DurationType="OneShot" DurationMin="0.36302084" DurationMax="0.36302084">
+					<MediaRefs>
+						<MediaRef Id="890209686"/>
+					</MediaRefs>
+				</Event>
+			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{66F52AD7-25EC-3F1B-7A5B-FC1E32F5DD9F}</FileHash>
+	<FileHash>{8CB86D15-ABAD-6C77-B954-AAED07695F86}</FileHash>
 </SoundBanksInfo>

@@ -3,6 +3,7 @@ using System.Collections;
 using _Project.Scripts.Runtime.Networking.Rounds;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
+using _Project.Scripts.Runtime.UI;
 using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using DG.Tweening;
@@ -32,12 +33,11 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnFirstRoundEnded; // TODO : Implement
         public event Action OnFinalRoundStarted; // TODO : Implement
         public event Action OnFinalRoundEnded; // TODO : Implement
-        public event Action<float> OnBeforeSceneChange; // arg = seconds before scene change
+        public event Action OnBeforeSceneChange;
         public event Action OnAfterSceneChange;
         public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
         
         private float _deltaTimeCounter;
-        
         private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
         private byte _teamBTongueBindCount;
         private TongueAnchor _playerACharacterTongueAnchor;
@@ -48,9 +48,6 @@ namespace _Project.Scripts.Runtime.Networking
         private PlayerStickyTongue _playerBStickyTongue;
         private PlayerStickyTongue _playerCStickyTongue;
         private PlayerStickyTongue _playerDStickyTongue;
-        
-        private float _minSecondsBeforeSceneLoad = 1.0f;
-        
         
         protected override void Awake()
         {
@@ -94,7 +91,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
-                Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Enabling Split Screen Cameras per default", Logger.LogType.Local, this);
+                Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Enabling Split Screen Cameras and Player Joining per default", Logger.LogType.Local, this);
                 CameraManager.Instance.TryEnableSplitScreenCameras();
                 PlayerManager.Instance.SetPlayerJoiningEnabled(true);
             }
@@ -122,16 +119,44 @@ namespace _Project.Scripts.Runtime.Networking
 
         private IEnumerator LoadGlobalSceneCoroutine(SceneType sceneType)
         {
-            Logger.LogInfo("Loading Scene : " + sceneType + "...", Logger.LogType.Local, this);
-            OnBeforeSceneChange?.Invoke(_minSecondsBeforeSceneLoad);
-            yield return new WaitForSeconds(_minSecondsBeforeSceneLoad);
+            if (!IsServerStarted)
+            {
+                Logger.LogWarning("Only the server can change scenes !", Logger.LogType.Local, this);
+                yield break;
+            }
+            bool hasFinishedLoading = false;
+            bool hasAllClientsLoaded = false;
+            int totalNumberOfClients = NetworkManager.ClientManager.Clients.Count;
+            int numberOfClientsLoaded = 0;
+            Logger.LogInfo("Loading Scene : " + sceneType + "...", Logger.LogType.Server, this);
+            OnBeforeSceneChange?.Invoke();
+            yield return TransitionManager.Instance.BeginSceneChangeTransition();
             var stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
-            SceneLoadData sld = new SceneLoadData(sceneType.ToString());
+            SceneLoadData sld = new SceneLoadData(sceneType.ToString())
+            {
+                ReplaceScenes = ReplaceOption.All // That tells the server to replace all scenes with the new one
+            };
+            SceneManager.OnLoadEnd += (_) => hasFinishedLoading = true;
+            SceneManager.OnClientPresenceChangeEnd += (args) =>
+            {
+                Logger.LogInfo($"Client ID:{args.Connection.ClientId}, has finished loading the new scene {sceneType.ToString()}", Logger.LogType.Server, this);
+                numberOfClientsLoaded++;
+                if (numberOfClientsLoaded == totalNumberOfClients)
+                {
+                    Logger.LogInfo("All clients have finished loading the new scene !", Logger.LogType.Server, this);
+                    hasAllClientsLoaded = true;
+                }
+            };
             SceneManager.LoadGlobalScenes(sld);
+            while (!hasFinishedLoading || !hasAllClientsLoaded)
+            {
+                Logger.LogTrace("Waiting for scene to load...", Logger.LogType.Server, this);
+                yield return null;
+            }
             stopwatch.Stop();
-            Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
-            UnLoadCurrentScene();
+            Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+            yield return TransitionManager.Instance.EndSceneChangeTransition();
             OnAfterSceneChange?.Invoke();
             switch (sceneType)
             {
@@ -151,14 +176,20 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
-        private void UnLoadCurrentScene()
+        private IEnumerator UnLoadCurrentScene()
         {
+            bool hasFinishedUnloading = false;
             Logger.LogInfo("Unloading current scene...", Logger.LogType.Local, this);
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             var stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
             SceneUnloadData sld = new SceneUnloadData(currentSceneName);
+            SceneManager.OnUnloadEnd += (_) => hasFinishedUnloading = true;
             SceneManager.UnloadGlobalScenes(sld);
+            while (!hasFinishedUnloading)
+            {
+                yield return null;
+            }
             stopwatch.Stop();
             Logger.LogInfo("Scene unloaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
         }
@@ -202,42 +233,55 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
-                StartGame();
+                StartCoroutine(StartGame());
             }
         }
         
         [ServerRpc(RequireOwnership = false)]
         private void StartGameServerRpc()
         {
-            StartGame();
+            StartCoroutine(StartGame());
         }
         
-        private void StartGame()
+        private IEnumerator StartGame()
         {
             if (IsGameStarted.Value)
             {
                 Logger.LogDebug("Game already started !", Logger.LogType.Server, this);
-                return;
+                yield break;
             }
             Logger.LogTrace("Attempting to start game...", Logger.LogType.Server, this);
             if (!PlayerManager.HasInstance)
             {
                 Logger.LogError("No player manager instance found ! It should be spawned by the Default Spawn Objects script", Logger.LogType.Server, this);
-                return;
+                yield break;
             }
             if (PlayerManager.Instance.NumberOfPlayers != 4)
             {
                 Logger.LogWarning("Not enough players to start the game ! (current : " + PlayerManager.Instance.NumberOfPlayers +"/4)", Logger.LogType.Server, this);
-                return;
+                yield break;
+            }
+            IsGameStarted.Value = true;
+            yield return TransitionManager.Instance.BeginLoadingGameTransition();
+            var procGen = FindAnyObjectByType<ProcGenInstanciator>();
+            if (procGen)
+            {
+                // we found a procGenInstanciator, so we generate the map before starting the game and spawning the players
+                yield return procGen.GenerateMap();
+                yield return procGen.SpawnAllPrefabsCoroutine();
+            }
+            else
+            {
+                Logger.LogWarning("No ProcGenInstanciator found, the map will not be generated, ignore this if this is intended", Logger.LogType.Server, this);
             }
             PlayerManager.Instance.SpawnAllPlayers();
             PlayerManager.Instance.TrySetPlayerChangingTeamEnabled(false);
             SubscribeToTongueChangeEvents();
             SetupRounds();
-            StartCoroutine(StartRounds());
+            yield return StartRounds();
             OnGameStarted?.Invoke();
+            yield return TransitionManager.Instance.EndLoadingGameTransition();
             Logger.LogInfo("Game started !", Logger.LogType.Server, this);
-            IsGameStarted.Value = true;
         }
 
         private void SubscribeToTongueChangeEvents()
@@ -368,11 +412,13 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
+                yield return TransitionManager.Instance.BeginLoadingRoundTransition();
                 yield return new WaitForSeconds(GameManagerData.SecondsBetweenRounds);
             }
             OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
             Logger.LogInfo("Starting round " + CurrentRoundNumber.Value, Logger.LogType.Server, this);
             GetCurrentRound().StartRound();
+            yield return TransitionManager.Instance.EndLoadingRoundTransition();
         }
 
         private void EndCurrentRound(PlayerTeamType teamType)

@@ -5,6 +5,8 @@ using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
 using FishNet.Connection;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
+using FishNet.Transporting;
 using Micosmo.SensorToolkit;
 using Obi;
 using Sirenix.OdinInspector;
@@ -36,10 +38,24 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [SerializeField, ReadOnly] private TongueAnchor _currentBindTongueAnchor;
         [SerializeField, ReadOnly] private MeshRenderer _tongueRenderer;
         [SerializeField, ReadOnly] private bool _isTongueActionPressed;
+        [SerializeField, ReadOnly] private float _underTensionTime;
+        [SerializeField, ReadOnly] private float _editorNormalizedTension;
         public event Action OnTongueOut;
         public event Action OnTongueIn;
         public event Action OnTongueRetractStart;
+        public event Action OnTongueBind;
+        public event Action OnTongueUnbind;
+        public event Action OnTongueInteract;
+        
+        public readonly SyncEvent OnTongueBreak = new();
+        public readonly SyncEvent OnTongueCooldownEnd = new();
         public Transform TongueTip => _tongueTip;
+        public float DistanceToTongueTip => Vector3.Distance(_tongueTip.position, _tongueOrigin.position);
+        
+        // This variable needs to be synchronized in order to play the audio for everyone
+        public readonly SyncVar<float> NormalizedTension = new SyncVar<float>(new SyncTypeSettings(WritePermission.ClientUnsynchronized, ReadPermission.ExcludeOwner, .1f, Channel.Unreliable));
+        private float _lastNormalizedTension;
+        [ServerRpc(RunLocally = true)] private void SetNormalizedTension(float value, Channel channel = Channel.Unreliable) => NormalizedTension.Value = value;
         
         public override void OnStartServer()
         {
@@ -74,6 +90,12 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                     Logger.LogTrace("PlayerStickyTongue.OnTongueIn is registered for Replication", Logger.LogType.Client, this);
                     OnTongueRetractStart += ReplicateOnTongueRetractStart;
                     Logger.LogTrace("PlayerStickyTongue.OnTongueRetractStart is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueBind += ReplicateOnTongueBind;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueBind is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueUnbind += ReplicateOnTongueUnbind;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueUnbind is registered for Replication", Logger.LogType.Client, this);
+                    OnTongueInteract += ReplicateOnTongueInteract;
+                    Logger.LogTrace("PlayerStickyTongue.OnTongueInteract is registered for Replication", Logger.LogType.Client, this);
                 }
             }
         }
@@ -88,11 +110,18 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 Logger.LogTrace("PlayerStickyTongue.OnTongueIn is unregistered for Replication", Logger.LogType.Client, this);
                 OnTongueRetractStart -= ReplicateOnTongueRetractStart;
                 Logger.LogTrace("PlayerStickyTongue.OnTongueRetractStart is unregistered for Replication", Logger.LogType.Client, this);
+                OnTongueBind -= ReplicateOnTongueBind;
+                Logger.LogTrace("PlayerStickyTongue.OnTongueBind is unregistered for Replication", Logger.LogType.Client, this);
+                OnTongueUnbind -= ReplicateOnTongueUnbind;
+                Logger.LogTrace("PlayerStickyTongue.OnTongueUnbind is unregistered for Replication", Logger.LogType.Client, this);
+                OnTongueInteract -= ReplicateOnTongueInteract;
+                Logger.LogTrace("PlayerStickyTongue.OnTongueInteract is unregistered for Replication", Logger.LogType.Client, this);
             }
         }
 
         private void Update()
         {
+            _editorNormalizedTension = NormalizedTension.Value;
             if(!IsOwner) return;
             if (!_isTongueOut)
             {
@@ -103,8 +132,20 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             {
                 RetractTongue();
             }
+
+            HandleNormalizedTension();
+            HandleTongueBreak();
         }
-        
+
+        private void HandleNormalizedTension()
+        {
+            var normalizedTension = Mathf.InverseLerp(0, _networkPlayer.PlayerData.TongueBreakDistance, DistanceToTongueTip);
+            var tension = Mathf.Lerp(0, 100, normalizedTension);
+            if (!(Mathf.Abs(_lastNormalizedTension - tension) > 0.01f)) return;
+            SetNormalizedTension(tension);
+            _lastNormalizedTension = tension;
+        }
+
         private void OnDestroy()
         {
             if (GameManager.HasInstance) GameManager.Instance.OnAnyRoundEnded -= ResetTongueClientRpc;
@@ -117,6 +158,43 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 yield return null;
             }
             GameManager.Instance.OnAnyRoundEnded += ResetTongueClientRpc;
+        }
+        
+        private void HandleTongueBreak()
+        {
+            // we can only break if we are attached to another Player
+            if (!_isTongueBind || !_currentBindTongueAnchor || !_currentBindTongueAnchor.IsCharacterAnchor)
+            {
+                DecreaseTension();
+                return;
+            };
+            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Checking if tongue should break with distance of {DistanceToTongueTip}", Logger.LogType.Client, this);
+            // check if distance is superior to the break distance
+            if (DistanceToTongueTip >= _networkPlayer.PlayerData.TongueBreakDistance)
+            {
+                // add to the timer tension
+                _underTensionTime += Time.deltaTime;
+                if (_underTensionTime < _networkPlayer.PlayerData.TongueBreakTensionSeconds) return;
+                Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue broke with distance of {DistanceToTongueTip}", Logger.LogType.Client, this);
+                RetractTongue(true);
+                OnTongueBreak.Invoke();
+                StartCoroutine(TongueBreakCooldown());
+                _underTensionTime = 0;
+            }
+            else
+            {
+                DecreaseTension();
+            }
+        }
+
+        private void DecreaseTension()
+        {
+            if (_underTensionTime <= 0)
+            {
+                _underTensionTime = 0;
+                return;
+            }
+            _underTensionTime -= Time.deltaTime * _networkPlayer.PlayerData.TongueBreakTensionLossFactor;
         }
 
         public void TryUseTongue()
@@ -295,6 +373,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             fixedJoint.connectedAnchor = Vector3.zero;
             fixedJoint.anchor = Vector3.zero;
             _tongueTipRigidbody.isKinematic = false;
+            OnTongueBind?.Invoke();
         }
 
         private IEnumerator UnbindTongueFromAnchorCoroutine()
@@ -308,7 +387,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             {
                 Destroy(fixedJoint);
             }
-
+            OnTongueUnbind?.Invoke();
             yield return Retract();
             SetTongueVisibilityServerRpc(false);
             _isTongueOut = false;
@@ -321,6 +400,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             _tongueTip.position = _tongueOrigin.position;
             SetTongueVisibilityServerRpc(true);
             yield return ThrowTo(tongueInteractable.Target.position);
+            OnTongueInteract?.Invoke();
             yield return new WaitForSeconds(_networkPlayer.PlayerData.TongueInteractDuration);
             yield return Retract();
             SetTongueVisibilityServerRpc(false);
@@ -418,6 +498,17 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             Logger.LogTrace($"PlayerStickyTongue.SetTongueVisibilityClientRpc : {value}", Logger.LogType.Client, this);
         }
         
+        private IEnumerator TongueBreakCooldown()
+        {
+            if (!_canThrowTongue) yield break;
+            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue break cooldown started", Logger.LogType.Client, this);
+            _canThrowTongue = false;
+            yield return new WaitForSeconds(_networkPlayer.PlayerData.TongueBreakCooldown);
+            _canThrowTongue = true;
+            OnTongueCooldownEnd.Invoke();
+            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Tongue break cooldown is over", Logger.LogType.Client, this);
+        }
+        
         private void ReplicateOnTongueOut()
         {
             OnTongueOutServerRpc();
@@ -472,6 +563,60 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             if(!Owner.IsLocalClient) OnTongueRetractStart?.Invoke();
         }
         
+        private void ReplicateOnTongueBind()
+        {
+            OnTongueBindServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnTongueBindServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueBind?.Invoke();
+            OnTongueBindClientRpc();
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnTongueBindClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueBind?.Invoke();
+        }
+        
+        private void ReplicateOnTongueUnbind()
+        {
+            OnTongueUnbindServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnTongueUnbindServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueUnbind?.Invoke();
+            OnTongueUnbindClientRpc();
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnTongueUnbindClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueUnbind?.Invoke();
+        }
+        
+        private void ReplicateOnTongueInteract()
+        {
+            OnTongueInteractServerRpc();
+        }
+        
+        [ServerRpc]
+        private void OnTongueInteractServerRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueInteract?.Invoke();
+            OnTongueInteractClientRpc();
+        }
+        
+        [ObserversRpc(ExcludeServer = true, ExcludeOwner = true)]
+        private void OnTongueInteractClientRpc()
+        {
+            if(!Owner.IsLocalClient) OnTongueInteract?.Invoke();
+        }
+        
         public TongueAnchor GetCurrentBindTongueAnchor()
         {
             return _currentBindTongueAnchor;
@@ -481,5 +626,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         {
             return _networkPlayer;
         }
+        
+        
     }
 }

@@ -11,25 +11,20 @@ using Logger = _Project.Scripts.Runtime.Utils.Logger;
 public class NetworkMapSpawner : NetworkBehaviour
 {
     private ProcGenInstanciator _procGenInstanciator;
-    [SerializeField] private bool _gameIsPlaying;
 
-    void Start()
+    public override void OnStartServer()
     {
+        base.OnStartServer();
         _procGenInstanciator = GetComponent<ProcGenInstanciator>();
-        if (IsServerStarted)
-        {
-            StartCoroutine(TrySubscribingToGameStartedEvent());
-            StartCoroutine(TrySubscribingToAllPlayerSpawnedLocallyEvent());
-        }
+        StartCoroutine(TrySubscribingToGameStartedEvent());
+        StartCoroutine(TrySubscribingToAllPlayerSpawnedLocallyEvent());
     }
 
-    private void OnDestroy()
+    public override void OnStopServer()
     {
-        if (GameManager.HasInstance) GameManager.Instance.IsGameStarted.OnChange -= OnGameStarted;
+        base.OnStopServer();
         if (GameManager.HasInstance) GameManager.Instance.OnAnyRoundStarted -= OnRoundStart;
         if (PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayerSpawnedLocally -= OnAllPlayerSpawnedLocally;
-        _procGenInstanciator.OnMapGenerated -= OnMapGenerated;
-        _procGenInstanciator.OnPrefabSpawned -= OnPrefabSpawned;
     }
 
     private IEnumerator TrySubscribingToGameStartedEvent()
@@ -38,7 +33,6 @@ public class NetworkMapSpawner : NetworkBehaviour
         {
             yield return null;
         }
-        GameManager.Instance.IsGameStarted.OnChange += OnGameStarted;
         GameManager.Instance.OnAnyRoundStarted += OnRoundStart;
     }
     
@@ -56,18 +50,6 @@ public class NetworkMapSpawner : NetworkBehaviour
     {
         TryPlacePlayers();
     }
-
-
-    // When game start, generate map
-    private void OnGameStarted(bool prev, bool next, bool asServer)
-    {
-        if (next == true && prev == false && _gameIsPlaying == false)
-        {
-            _gameIsPlaying = true;
-            _procGenInstanciator.OnMapGenerated += OnMapGenerated;
-            _procGenInstanciator.GenerateMap();
-        }
-    }
     
     private void OnRoundStart(byte roundIndex)
     {
@@ -75,22 +57,6 @@ public class NetworkMapSpawner : NetworkBehaviour
         Logger.LogDebug("New round started, generating new player points", Logger.LogType.Server, this);
         _procGenInstanciator.GenerateNewPlayerPoints();
         TryPlacePlayers();
-    }
-
-    // When game map is generated, spawn elements on it
-    private void OnMapGenerated()
-    {
-        _procGenInstanciator.OnMapGenerated -= OnMapGenerated;
-        _procGenInstanciator.OnPrefabSpawned += OnPrefabSpawned;
-
-        _procGenInstanciator.SpawnAllPrefabs();
-
-    }
-
-    // When elements are spawned on the map, we place the players
-    private void OnPrefabSpawned()
-    {
-        _procGenInstanciator.OnPrefabSpawned -= OnPrefabSpawned;
     }
 
     public void TryPlacePlayers()
