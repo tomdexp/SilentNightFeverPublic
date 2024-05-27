@@ -12,34 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787205e54fa544de9f107b9220d66d4f, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  PlayerAColor: {r: 0.20212281, g: 1, b: 0, a: 1}
-  PlayerBColor: {r: 0.9502846, g: 1, b: 0, a: 1}
-  PlayerCColor: {r: 0, g: 1, b: 0.95960426, a: 1}
-  PlayerDColor: {r: 1, g: 0.2025823, b: 0, a: 1}
+  PlayerAColor: {r: 0.40392157, g: 0.78431374, b: 0.09411765, a: 1}
+  PlayerBColor: {r: 0.6039216, g: 0.10588236, b: 0.4784314, a: 1}
+  PlayerCColor: {r: 0.85098046, g: 0.654902, b: 0.07450981, a: 1}
+  PlayerDColor: {r: 0.10588236, g: 0.427451, b: 0.6039216, a: 1}
   PlayerMovementSpeed: 5
   PlayerMinMovementSpeed: 1
   PlayerMaxMovementSpeed: 10
-  PlayerRotationSpeed: 5
+  PlayerRotationSpeed: 8
   CameraOffsetRadius: 3
   CameraHeight: 6
   CameraFov: 60
   CameraFovChangeDuration: 1
   CameraFovChangeEase: 1
-  PlayerDefaultSize: 1
-  PlayerMinSize: 0.5
+  PlayerDefaultSize: 39.9
+  PlayerMinSize: 20.3
   PlayerMaxSize: 2
   PlayerSizeUpChangeDuration: 1
   PlayerSizeDownChangeDuration: 1
   PlayerSizeUpChangeEase: 31
   PlayerSizeDownChangeEase: 31
-  TongueThrowSpeed: 20
-  TongueRetractSpeed: 10
+  TongueThrowSpeed: 15
+  TongueRetractSpeed: 12
   TongueThrowEase: 18
   TongueRetractEase: 18
   SmoothPlayerMassChangeOnTongueMoveDuration: 1
   TongueInteractDuration: 0.5
   OtherTongueAttachedForce: 10
-  OtherTongueMinDistance: 3
+  OtherTongueMinDistance: 14.48
   TongueMissDuration: 0.3
   TongueMissPercentOfMaxDistance: 0.5
   TongueBreakDistance: 4.5
