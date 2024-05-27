@@ -40,7 +40,7 @@ namespace _Project.Scripts.Runtime.UI.Transitions
             _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             _canvasGroup.alpha = _fadeValue.Value;
         }

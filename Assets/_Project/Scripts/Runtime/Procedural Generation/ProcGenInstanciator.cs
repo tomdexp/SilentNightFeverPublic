@@ -84,6 +84,7 @@ public class ProcGenInstanciator : MonoBehaviour
     public event Action OnMapGenerated;
     public event Action OnBeginPrefabSpawning;
     public event Action OnPrefabSpawned;
+    public event Action<float, string> OnLoadingProgressChanged;
 
     private void Awake()
     {
@@ -101,11 +102,14 @@ public class ProcGenInstanciator : MonoBehaviour
         
         yield return GenerateTerrain();
         
+        OnLoadingProgressChanged?.Invoke(2/10f, "Generating players points");
         _teamAPoints = GeneratePoints(_teamAParameters, true, true, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true, true, true);
+        OnLoadingProgressChanged?.Invoke(3/10f, "Generating landmarks points");
         _landmarksPoints = GeneratePoints(_landmarksParameters, true, true, true);
 
         // Decoration
+        OnLoadingProgressChanged?.Invoke(4/10f, "Generating environment points");
         _FernPoints = GeneratePoints(_FernParameters, false, false, true);
         _TreePoints = GeneratePoints(_TreeParameters, false, true, true);
         //_testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
@@ -113,6 +117,7 @@ public class ProcGenInstanciator : MonoBehaviour
         _testCubePoints = GeneratePoints(_testCubeParameters, false, false, true);
         _testDiscPoints = GeneratePoints(_testDiscParameters, false, false, true);
 
+        OnLoadingProgressChanged?.Invoke(5/10f, "Generating crowd points");
         _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
 
         _readyToSpawnPrefabs = true;
@@ -126,6 +131,7 @@ public class ProcGenInstanciator : MonoBehaviour
 
     private IEnumerator GenerateTerrain()
     {
+        OnLoadingProgressChanged?.Invoke(1/10f, "Generating terrain");
         // Generate Map ground
         NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -1f, _regionSize.y / 2), Quaternion.identity);
         ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 25, 1, _regionSize.y / 10 + _regionSize.x / 25);
@@ -228,8 +234,8 @@ public class ProcGenInstanciator : MonoBehaviour
             NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
             pref.transform.Rotate(new Vector3(0, UnityEngine.Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
-            yield return new WaitForFrames(_framesBetweenSpawn);
         }
+        yield return null;
     }
 
     // Tries to spawns each prefabs respecting the min and max amount specified
@@ -321,14 +327,19 @@ public class ProcGenInstanciator : MonoBehaviour
             Debug.LogError("You must generate spawn points before trying to spawn them");
             yield break;
         }
+        OnLoadingProgressChanged?.Invoke(6/10f, "Spawning players 1/2");
         yield return SpawnPrefabs(_teamAPoints, _teamAPrefab);
+        OnLoadingProgressChanged?.Invoke(7/10f, "Spawning players 2/2");
         yield return SpawnPrefabs(_teamBPoints, _teamBPrefab);
+        OnLoadingProgressChanged?.Invoke(8/10f, "Spawning landmarks");
         yield return SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
         //yield return SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
+        OnLoadingProgressChanged?.Invoke(9/10f, "Spawning environment");
         yield return SpawnPrefabs(_FernPoints, _FernPrefab);
         yield return SpawnPrefabs(_TreePoints, _TreePrefab);
         yield return SpawnPrefabs(_testCubePoints, _testCubePrefab);
         yield return SpawnPrefabs(_testDiscPoints, _testDiscPrefab);
+        OnLoadingProgressChanged?.Invoke(10/10f, "Spawning crowd");
         yield return SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
         OnPrefabSpawned?.Invoke();
         stopwatch.Stop();
