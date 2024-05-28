@@ -151,7 +151,7 @@ namespace _Project.Scripts.Runtime.Networking
             SceneManager.LoadGlobalScenes(sld);
             while (!hasFinishedLoading || !hasAllClientsLoaded)
             {
-                Logger.LogTrace("Waiting for scene to load...", Logger.LogType.Server, this);
+                //Logger.LogTrace("Waiting for scene to load...", Logger.LogType.Server, this);
                 yield return null;
             }
             stopwatch.Stop();
@@ -263,6 +263,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             IsGameStarted.Value = true;
             yield return TransitionManager.Instance.BeginLoadingGameTransition();
+            yield return new WaitForSeconds(1f);
             var procGen = FindAnyObjectByType<ProcGenInstanciator>();
             if (procGen)
             {
