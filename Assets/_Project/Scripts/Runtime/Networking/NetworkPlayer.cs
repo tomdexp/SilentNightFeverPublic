@@ -138,10 +138,7 @@ namespace _Project.Scripts.Runtime.Networking
            {
                SetSize(newSize);
            }
-           else
-           { 
-               SetSizeServerRpc(newSize);
-           }
+           SetSizeServerRpc(newSize);
        }
 
        [ServerRpc(RequireOwnership = false)]
