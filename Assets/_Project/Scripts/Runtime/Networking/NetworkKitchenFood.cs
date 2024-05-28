@@ -19,9 +19,9 @@ namespace _Project.Scripts.Runtime.Networking
         
         private IEnumerator ConsumeCoroutine(PlayerStickyTongue tongue)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(PlayerData.SecondsBeforeFruitSoundEaten);
             PlayAudioServerRpc();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(PlayerData.SecondsBeforeFruitIsConsumed);
             PlayerManager.Instance.TryGiveEffectToPlayer<PE_KitchenFood>(tongue.GetNetworkPlayer().GetPlayerIndexType());
             DespawnServerRpc();
         }
