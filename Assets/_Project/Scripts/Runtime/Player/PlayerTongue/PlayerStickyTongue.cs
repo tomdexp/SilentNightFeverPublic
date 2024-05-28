@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using _Project.Scripts.Runtime.Networking;
-using _Project.Scripts.Runtime.Utils;
+using _Project.Scripts.Runtime.Utils.ApplicationSettings;
 using DG.Tweening;
 using FishNet.Connection;
 using FishNet.Object;
@@ -23,6 +23,8 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [SerializeField, Required] private NetworkPlayer _networkPlayer;
         [SerializeField, Required] private Transform _tongueTip;
         [SerializeField, Required] private TriggerSensor _fovSensor;
+        [SerializeField, Required] private TriggerSensor _radiusSensor;
+        [SerializeField, Required] private TriggerSensor _closeRadiusSensor;
         [SerializeField, Required] private FOVCollider _fovCollider;
         [SerializeField, Required] private ObiSolver _obiSolver;
         [SerializeField, Required] private ObiRope _obiRope;
@@ -128,7 +130,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 _tongueTip.position = _tongueOrigin.position;
             }
 
-            if (GameOptions.HoldButtonToAnchorTongue && _isTongueBind && !_isTongueActionPressed)
+            if (ApplicationSettings.HoldButtonToAnchorTongue.Value && _isTongueBind && !_isTongueActionPressed)
             {
                 RetractTongue();
             }
@@ -205,7 +207,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             {
                 ThrowTongue();
             }
-            else if (_isTongueOut && !GameOptions.HoldButtonToAnchorTongue)
+            else if (_isTongueOut && !ApplicationSettings.HoldButtonToAnchorTongue.Value)
             {
                 RetractTongue();
             }
@@ -214,7 +216,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         public void TryRetractTongue()
         {
             _isTongueActionPressed = false;
-            if (!GameOptions.HoldButtonToAnchorTongue) return;
+            if (!ApplicationSettings.HoldButtonToAnchorTongue.Value) return;
             Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} is trying to retract tongue.", Logger.LogType.Client, this);
             if (_isTongueOut)
             {
@@ -237,11 +239,24 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
 
             Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Throwing tongue locally", Logger.LogType.Client, this);
 
-            bool didHit = _fovSensor.Detections.Count > 0;
+            bool didHit = false;
+
+            if (_closeRadiusSensor.Detections.Count > 0) // It means there is an ally close to the player, so it takes priority
+            {
+                didHit = true;
+            }
+            else if (ApplicationSettings.UseRadialTongueSensor.Value)
+            {
+                didHit = _radiusSensor.Detections.Count > 0;
+            }
+            else
+            {
+                didHit = _fovSensor.Detections.Count > 0;
+            }
 
             if (didHit)
             {
-                Signal signal = _fovSensor.GetStrongestSignal();
+                Signal signal = GetStrongestSignalFromAll();
                 Logger.LogTrace(
                     $"Player {_networkPlayer.GetPlayerIndexType()} : Hit something with tongue: " +
                     signal.Object.name, Logger.LogType.Client, context:this);
@@ -626,7 +641,23 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         {
             return _networkPlayer;
         }
-        
+
+        private Signal GetStrongestSignalFromAll()
+        {
+            bool hasCloseAlly = _closeRadiusSensor.Detections.Count > 0;
+            if (hasCloseAlly)
+            {
+                return _closeRadiusSensor.GetStrongestSignal();
+            }
+            if (ApplicationSettings.UseRadialTongueSensor.Value)
+            {
+                return _radiusSensor.GetStrongestSignal();
+            }
+            else
+            {
+                return _fovSensor.GetStrongestSignal();
+            }
+        }
         
     }
 }

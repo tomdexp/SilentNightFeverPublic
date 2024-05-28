@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerEffects;
 using DG.Tweening;
@@ -171,6 +172,7 @@ namespace _Project.Scripts.Runtime.Networking
            var scaleDirection = newSize > currentSize ? 1 : -1;
            // TODO : Fix ground alignment after scaling
            var newY = newSize/2;
+           AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerSizeChange, gameObject);
            if (scaleDirection == 1) // scaling up
            {
                // use dotween to scale up

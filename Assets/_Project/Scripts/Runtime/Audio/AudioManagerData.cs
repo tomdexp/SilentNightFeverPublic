@@ -77,6 +77,9 @@ namespace _Project.Scripts.Runtime.Audio
         public AK.Wwise.Event EventPlayerTongueRetract;
         [TabGroup("References/Events/Subgroup", "Player", SdfIconType.PeopleFill, TextColor = "lightgreen")]
         public AK.Wwise.Event EventPlayerTongueInteractOrBind;
+        [TabGroup("References/Events/Subgroup", "Player", SdfIconType.PeopleFill, TextColor = "lightgreen")]
+        public AK.Wwise.Event EventPlayerSizeChange;
+        
         
         [TabGroup("References", "Events", SdfIconType.MusicNote, TextColor = "lightmagenta")]
         [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
@@ -103,7 +106,6 @@ namespace _Project.Scripts.Runtime.Audio
         
         [TabGroup("References", "Events", SdfIconType.MusicNote, TextColor = "lightmagenta")]
         [TabGroup("References/Events/Subgroup", "Landmarks", SdfIconType.PinMapFill, TextColor = "lightorange")]
-        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventLandmarkKitchenFoodEaten;
         [TabGroup("References/Events/Subgroup", "Landmarks", SdfIconType.PinMapFill, TextColor = "lightorange")]
         public AK.Wwise.Event EventLandmarkZoomStartTurning;
