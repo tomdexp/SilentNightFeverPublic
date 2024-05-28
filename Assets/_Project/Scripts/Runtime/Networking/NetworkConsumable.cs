@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
 using FishNet.Object;
 using Sirenix.OdinInspector;
@@ -10,6 +11,7 @@ namespace _Project.Scripts.Runtime.Networking
     [RequireComponent(typeof(TongueInteractable))]
     public abstract class NetworkConsumable : NetworkBehaviour
     {
+        [field:SerializeField] public PlayerData PlayerData { get; private set; }
         private TongueInteractable _tongueInteractable;
 
         private void Awake()
