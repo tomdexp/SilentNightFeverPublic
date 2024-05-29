@@ -170,7 +170,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 DecreaseTension();
                 return;
             };
-            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Checking if tongue should break with distance of {DistanceToTongueTip}", Logger.LogType.Client, this);
+            // Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Checking if tongue should break with distance of {DistanceToTongueTip}", Logger.LogType.Client, this);
             // check if distance is superior to the break distance
             if (DistanceToTongueTip >= _networkPlayer.PlayerData.TongueBreakDistance)
             {
