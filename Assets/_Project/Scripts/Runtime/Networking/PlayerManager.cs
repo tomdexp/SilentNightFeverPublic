@@ -389,31 +389,40 @@ namespace _Project.Scripts.Runtime.Networking
         public void MapPlayerTeams()
         {
             RealPlayerInfo[] tempRealPlayerInfos = new RealPlayerInfo[_realPlayerInfos.Count];
-            PlayerReadyInfo[] tempPlayerReadyInfos = new PlayerReadyInfo[_playerReadyInfos.Count];
-            List<RealPlayerInfo> tempListRealPlayerInfos = new List<RealPlayerInfo>();
-            List<PlayerReadyInfo> tempListPlayerReadyInfos = new List<PlayerReadyInfo>();
+            PlayerTeamInfo[] tempPlayerTeamInfos = new PlayerTeamInfo[_playerReadyInfos.Count];
+            List<PlayerTeamInfo> tempListPlayerTeamInfos = new List<PlayerTeamInfo>();
             _realPlayerInfos.Collection.CopyTo(tempRealPlayerInfos);
-            _playerReadyInfos.Collection.CopyTo(tempPlayerReadyInfos);
+            _playerTeamInfos.Collection.CopyTo(tempPlayerTeamInfos);
             for (int i = 0; i < tempRealPlayerInfos.Length; i++)
             {
-                tempListRealPlayerInfos.Add(tempRealPlayerInfos[i]);
-                tempListPlayerReadyInfos.Add(tempPlayerReadyInfos[i]);
+                tempListPlayerTeamInfos.Add(tempPlayerTeamInfos[i]);
             }
-            // TODO: Map players to teams by using SwapRealPlayers method
+            PlayerIndexType[] teamA = new PlayerIndexType[2];
+            PlayerIndexType[] teamB = new PlayerIndexType[2];
+            teamA = tempListPlayerTeamInfos.Where(x => x.PlayerTeamType == PlayerTeamType.A).Select(x => x.PlayerIndexType).ToArray();
+            teamB = tempListPlayerTeamInfos.Where(x => x.PlayerTeamType == PlayerTeamType.B).Select(x => x.PlayerIndexType).ToArray();
+            RealPlayerInfo newPlayerA = GetRealPlayerInfoFromPlayerIndexType(teamA[0]);
+            RealPlayerInfo newPlayerB = GetRealPlayerInfoFromPlayerIndexType(teamB[0]);
+            RealPlayerInfo newPlayerC = GetRealPlayerInfoFromPlayerIndexType(teamA[1]);
+            RealPlayerInfo newPlayerD = GetRealPlayerInfoFromPlayerIndexType(teamB[1]);
+            newPlayerA.PlayerIndexType = PlayerIndexType.A;
+            newPlayerB.PlayerIndexType = PlayerIndexType.B;
+            newPlayerC.PlayerIndexType = PlayerIndexType.C;
+            newPlayerD.PlayerIndexType = PlayerIndexType.D;
+            List<RealPlayerInfo> newRealPlayerInfos = new List<RealPlayerInfo>
+            {
+                newPlayerA,
+                newPlayerB,
+                newPlayerC,
+                newPlayerD
+            };
+            _realPlayerInfos.Clear();
+            _realPlayerInfos.AddRange(newRealPlayerInfos);
         }
-
-        private void SwapRealPlayers(PlayerIndexType player1, PlayerIndexType player2)
+        
+        private RealPlayerInfo GetRealPlayerInfoFromPlayerIndexType(PlayerIndexType playerIndexType)
         {
-            RealPlayerInfo realPlayer1 = _realPlayerInfos.Collection.First(x => x.PlayerIndexType == player1);
-            RealPlayerInfo realPlayer2 = _realPlayerInfos.Collection.First(x => x.PlayerIndexType == player2);
-            int index1 = _realPlayerInfos.IndexOf(realPlayer1);
-            int index2 = _realPlayerInfos.IndexOf(realPlayer2);
-            RealPlayerInfo copy1 = _realPlayerInfos[index1];
-            RealPlayerInfo copy2 = _realPlayerInfos[index2];
-            copy1.PlayerIndexType = player2;
-            copy2.PlayerIndexType = player1;
-            _realPlayerInfos[index1] = copy1;
-            _realPlayerInfos[index2] = copy2;
+            return _realPlayerInfos.Collection.First(x => x.PlayerIndexType == playerIndexType);
         }
         
         #endregion
@@ -748,6 +757,7 @@ namespace _Project.Scripts.Runtime.Networking
                 // Verify is this is a "set" operation to avoid firing multiple times
                 if (AllPlayerAreReady() && IsServerStarted && asServer)
                 {
+                    MapPlayerTeams();
                     OnAllPlayersReady?.Invoke();
                 }
             }

@@ -12,6 +12,7 @@ namespace _Project.Scripts.Runtime.UI.Transitions
                 .To(() => _fadeValue.Value, x => _fadeValue.Value = x, 1, Data.TransitionFadeInDuration)
                 .SetEase(Data.TransitionFadeInEase);
             yield return tween.WaitForCompletion();
+            _fadeValue.Value = 1;
         }
 
         public override IEnumerator EndTransition()
@@ -20,6 +21,7 @@ namespace _Project.Scripts.Runtime.UI.Transitions
                 .To(() => _fadeValue.Value, x => _fadeValue.Value = x, 0, Data.TransitionFadeOutDuration)
                 .SetEase(Data.TransitionFadeOutEase);
             yield return tween.WaitForCompletion();
+            _fadeValue.Value = 0;
         }
     }
 }

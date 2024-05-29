@@ -24,6 +24,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         [SerializeField, Required] private Transform _tongueTip;
         [SerializeField, Required] private TriggerSensor _fovSensor;
         [SerializeField, Required] private TriggerSensor _radiusSensor;
+        [SerializeField, Required] private TriggerSensor _closeRadiusSensor;
         [SerializeField, Required] private FOVCollider _fovCollider;
         [SerializeField, Required] private ObiSolver _obiSolver;
         [SerializeField, Required] private ObiRope _obiRope;
@@ -169,7 +170,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
                 DecreaseTension();
                 return;
             };
-            Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Checking if tongue should break with distance of {DistanceToTongueTip}", Logger.LogType.Client, this);
+            // Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Checking if tongue should break with distance of {DistanceToTongueTip}", Logger.LogType.Client, this);
             // check if distance is superior to the break distance
             if (DistanceToTongueTip >= _networkPlayer.PlayerData.TongueBreakDistance)
             {
@@ -239,8 +240,12 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             Logger.LogTrace($"Player {_networkPlayer.GetPlayerIndexType()} : Throwing tongue locally", Logger.LogType.Client, this);
 
             bool didHit = false;
-            
-            if (ApplicationSettings.UseRadialTongueSensor.Value)
+
+            if (_closeRadiusSensor.Detections.Count > 0) // It means there is an ally close to the player, so it takes priority
+            {
+                didHit = true;
+            }
+            else if (ApplicationSettings.UseRadialTongueSensor.Value)
             {
                 didHit = _radiusSensor.Detections.Count > 0;
             }
@@ -251,7 +256,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
 
             if (didHit)
             {
-                Signal signal = ApplicationSettings.UseRadialTongueSensor.Value ? _radiusSensor.GetStrongestSignal() : _fovSensor.GetStrongestSignal();
+                Signal signal = GetStrongestSignalFromAll();
                 Logger.LogTrace(
                     $"Player {_networkPlayer.GetPlayerIndexType()} : Hit something with tongue: " +
                     signal.Object.name, Logger.LogType.Client, context:this);
@@ -636,7 +641,23 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         {
             return _networkPlayer;
         }
-        
+
+        private Signal GetStrongestSignalFromAll()
+        {
+            bool hasCloseAlly = _closeRadiusSensor.Detections.Count > 0;
+            if (hasCloseAlly)
+            {
+                return _closeRadiusSensor.GetStrongestSignal();
+            }
+            if (ApplicationSettings.UseRadialTongueSensor.Value)
+            {
+                return _radiusSensor.GetStrongestSignal();
+            }
+            else
+            {
+                return _fovSensor.GetStrongestSignal();
+            }
+        }
         
     }
 }

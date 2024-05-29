@@ -23,6 +23,7 @@ namespace _Project.Scripts.Runtime.UI.Transitions
                 To(() => _fadeValue.Value, x => _fadeValue.Value = x, 1, Data.TransitionLoadingGameFadeInDuration)
                 .SetEase(Data.TransitionLoadingGameFadeInEase);
             yield return tween.WaitForCompletion();
+            _fadeValue.Value = 1;
         }
 
         public override IEnumerator EndTransition()
@@ -32,6 +33,7 @@ namespace _Project.Scripts.Runtime.UI.Transitions
                 .SetEase(Data.TransitionLoadingGameFadeOutEase);
             yield return tween.WaitForCompletion();
             UnbindFromLoadingTextAndProgressbar();
+            _fadeValue.Value = 0;
         }
 
         private void BindToLoadingTextAndProgressbar()
