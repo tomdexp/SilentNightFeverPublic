@@ -28,6 +28,7 @@ namespace _Project.Scripts.Runtime.Utils
             if (!signal.Object.TryGetComponent(out TongueCollider tongueCollider)) return false;
             var tongueAnchor = tongueCollider.GetComponentInParent<TongueAnchor>();
             if (!tongueAnchor) return false;
+            if (!tongueAnchor.LinkedNetworkObjectForOwnership) return false;
             var targetNetworkPlayer = tongueAnchor.LinkedNetworkObjectForOwnership.GetComponent<NetworkPlayer>();
             if (!targetNetworkPlayer) return false;
             if (targetNetworkPlayer.GetPlayerTeamType() != _networkPlayer.GetPlayerTeamType()) return false;
