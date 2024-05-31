@@ -75,9 +75,11 @@ public class ProcGenInstanciator : MonoBehaviour
 
     private List<List<Vector2>> _alreadySpawnedPoints = new();
     private List<float> _alreadySpawnedPointsRadius = new();
+    private List<NetworkObject> _spawnedObjects = new(); // used for regenerating the maps by despawning all the objects
 
     private bool _readyToSpawnPrefabs = false;
     private readonly int _framesBetweenSpawn = 1; // to avoid blocking the main thread, we launch the main method in a coroutine and wait between each spawn
+    private List<SpawnableNetworkObject> _copyLandmarksPrefabList; // make a copy of the list to avoid modifying the original list for regenerating the map
 
     // Events
     public event Action OnBeginMapGeneration;
@@ -89,6 +91,7 @@ public class ProcGenInstanciator : MonoBehaviour
     private void Awake()
     {
         VerifyPrefabSetup();
+        _copyLandmarksPrefabList = _landmarksPrefabList.Select(x => (SpawnableNetworkObject)x.Clone()).ToList();
     }
 
     [Button]
@@ -96,7 +99,33 @@ public class ProcGenInstanciator : MonoBehaviour
     {
         Logger.LogDebug("Generating map...", Logger.LogType.Server, this);
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        Profiler.BeginSample("GenerateMap");
+        
+        // clone the list to avoid modifying the original list
+        _landmarksPrefabList = _copyLandmarksPrefabList.Select(x => (SpawnableNetworkObject)x.Clone()).ToList();
+        
+        _alreadySpawnedPoints.Clear();
+        _alreadySpawnedPointsRadius.Clear();
+        _readyToSpawnPrefabs = false;
+        
+        if (_spawnedObjects.Count > 0)
+        {
+            Logger.LogDebug("Despawning all objects because we are regenerating the maps", Logger.LogType.Server, this);
+            foreach (var obj in _spawnedObjects)
+            {
+                InstanceFinder.ServerManager.Despawn(obj);
+            }
+            _spawnedObjects.Clear();
+        }
+        
+        if(_spawnedLandmarks.Count > 0)
+        {
+            Logger.LogDebug("Despawning all landmarks because we are regenerating the maps", Logger.LogType.Server, this);
+            foreach (var obj in _spawnedLandmarks)
+            {
+                InstanceFinder.ServerManager.Despawn(obj);
+            }
+            _spawnedLandmarks.Clear();
+        }
         
         OnBeginMapGeneration?.Invoke(); 
         
@@ -123,8 +152,6 @@ public class ProcGenInstanciator : MonoBehaviour
         _readyToSpawnPrefabs = true;
         
         OnMapGenerated?.Invoke();
-        Profiler.EndSample();
-        
         stopwatch.Stop();
         Logger.LogDebug("Map generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
     }
@@ -157,6 +184,13 @@ public class ProcGenInstanciator : MonoBehaviour
         NetworkObject wallWest = Instantiate(_invisibleWall, new Vector3(-1, 1, _regionSize.y / 2), Quaternion.identity);
         wallWest.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
         InstanceFinder.ServerManager.Spawn(wallWest);
+        
+        _spawnedObjects.Add(ground);
+        _spawnedObjects.Add(wallNorth);
+        _spawnedObjects.Add(wallSouth);
+        _spawnedObjects.Add(wallEast);
+        _spawnedObjects.Add(wallWest);
+        
         yield return new WaitForFrames(_framesBetweenSpawn);
     }
 
@@ -234,6 +268,7 @@ public class ProcGenInstanciator : MonoBehaviour
             NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
             pref.transform.Rotate(new Vector3(0, UnityEngine.Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
+            _spawnedObjects.Add(pref);
         }
         yield return null;
     }
@@ -401,7 +436,7 @@ public class ProcGenInstanciator : MonoBehaviour
 }
 
 [System.Serializable]
-public class SpawnableNetworkObject
+public class SpawnableNetworkObject : ICloneable
 {
     [HideLabel] public NetworkObject Object;
 
@@ -411,4 +446,13 @@ public class SpawnableNetworkObject
     [HorizontalGroup("MinMax", Width = 0.4f), MinValue("@Min"), PropertySpace(SpaceBefore = 0, SpaceAfter = 15)]
     public int Max;
 
+    public object Clone()
+    {
+        return new SpawnableNetworkObject
+        {
+            Object = Object,
+            Min = Min,
+            Max = Max
+        };
+    }
 }

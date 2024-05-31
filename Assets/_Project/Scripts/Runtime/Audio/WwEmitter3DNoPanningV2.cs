@@ -61,6 +61,14 @@ namespace _Project.Scripts.Runtime.Audio
             }
         }
 
+        private void OnDestroy()
+        {
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.IsGameStarted.OnChange -= OnGameStarted;
+            }
+        }
+
         private IEnumerator TryFindPlayers()
         {
             Logger.LogTrace("Finding players...", Logger.LogType.Local, this);

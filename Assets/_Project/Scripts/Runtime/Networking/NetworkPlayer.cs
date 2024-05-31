@@ -166,7 +166,10 @@ namespace _Project.Scripts.Runtime.Networking
                Logger.LogWarning("Tried to set size to " + newSize + " which is out of bounds", Logger.LogType.Client, this);
                yield break;
            }
-           
+
+           // check if there is any change in size
+           if (Mathf.Approximately(newSize, transform.localScale.x)) yield break;
+
            // check if we are scaling up or down compared to our current size, based on the scale.x
            var currentSize = transform.localScale.x;
            var scaleDirection = newSize > currentSize ? 1 : -1;
