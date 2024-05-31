@@ -29,6 +29,9 @@ namespace _Project.Scripts.Runtime.Player
         [PropertyRange(0,100)] public float PlayerMaxMovementSpeed = 10f;
         [PropertyRange(0,100)] public float PlayerRotationSpeed = 5f;
 
+        [Title("Player Animation Settings")] 
+        public float PlayerMaxSpeedForAnimation = 4.2f;
+
         [Title("Player Camera Settings")] 
         public float CameraOffsetRadius = 3;
         public float CameraHeight = 6;

@@ -37,6 +37,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnAfterSceneChange;
         public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
         
+        private bool _isSubscribedToTongueChangeEvents;
         private float _deltaTimeCounter;
         private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
         private byte _teamBTongueBindCount;
@@ -293,6 +294,12 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void SubscribeToTongueChangeEvents()
         {
+            if (_isSubscribedToTongueChangeEvents)
+            {
+                Logger.LogDebug("Already subscribed to tongue change events ! Which means the game is probably resetting", Logger.LogType.Server, this);
+                return;
+            }
+            
             _playerAStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.A).GetPlayerController().GetTongue();
             _playerBStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.B).GetPlayerController().GetTongue();
             _playerCStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.C).GetPlayerController().GetTongue();
@@ -307,6 +314,8 @@ namespace _Project.Scripts.Runtime.Networking
             _playerBCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
             _playerCCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
             _playerDCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
+            
+            _isSubscribedToTongueChangeEvents = true;
         }
 
         private void OnAnyPlayerTongueBindChange(PlayerStickyTongue tongue)
@@ -366,6 +375,7 @@ namespace _Project.Scripts.Runtime.Networking
             if(_playerBCharacterTongueAnchor) _playerBCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
             if(_playerCCharacterTongueAnchor) _playerCCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
             if(_playerDCharacterTongueAnchor) _playerDCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
+            _isSubscribedToTongueChangeEvents = false;
         }
 
         private void SetupRounds()
@@ -562,6 +572,21 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 Logger.LogError("The current round is already ended !", Logger.LogType.Server, this);
             }
+        }
+
+        public void ResetGame()
+        {
+            if (!IsServerStarted) return;
+            
+            IsGameStarted.Value = false;
+            Rounds.Clear();
+            RoundsResults.Clear();
+            CurrentRoundNumber.Value = 0;
+            CurrentRoundTimer.Value = 0;
+            _deltaTimeCounter = 0;
+            _teamATongueBindCount = 0;
+            _teamBTongueBindCount = 0;
+            StartCoroutine(StartGame());
         }
         
         public int GetWinCount(PlayerTeamType teamType)

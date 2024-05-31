@@ -16,5 +16,11 @@ namespace _Project.Scripts.Runtime.Utils
             }
             if(GameManager.HasInstance) GameManager.Instance.TryForceRoundWinner(teamType);
         }
+
+        [Command("/game.reset", "Reset the game")]
+        public static void ResetGame()
+        {
+            if (GameManager.HasInstance) GameManager.Instance.ResetGame();
+        }
     }
 }
