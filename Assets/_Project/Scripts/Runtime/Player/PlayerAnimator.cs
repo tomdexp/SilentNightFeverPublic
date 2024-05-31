@@ -9,15 +9,20 @@ namespace _Project.Scripts.Runtime.Player
     [RequireComponent(typeof(Animator))]
     public class PlayerAnimator : MonoBehaviour
     {
+        [Title("Reference")]
+        [SerializeField] private PlayerData _playerData;
+        
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private bool _isMoving;
         [SerializeField, ReadOnly] private float _speed;
+        [SerializeField, ReadOnly] private float _movementSpeed;
         
         private Animator _animator;
         private Transform _transform;
         
         private Vector3 _lastPosition;
         private static readonly int IsMovingParam = Animator.StringToHash("IsMoving");
+        private static readonly int MovementSpeedParam = Animator.StringToHash("MovementSpeed");
 
         private void Start()
         {
@@ -39,6 +44,12 @@ namespace _Project.Scripts.Runtime.Player
             _isMoving = _speed > 0.01f;
             _animator.SetBool(IsMovingParam, _isMoving);
             _lastPosition = _transform.position;
+        }
+
+        private void LateUpdate()
+        {
+            _movementSpeed = _speed / _playerData.PlayerMaxSpeedForAnimation;
+            _animator.SetFloat(MovementSpeedParam, _movementSpeed);
         }
     }
 }
