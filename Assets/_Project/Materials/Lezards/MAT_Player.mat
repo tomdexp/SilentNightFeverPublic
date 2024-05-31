@@ -25,43 +25,23 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Accessori_Mask:
+        m_Texture: {fileID: 2800000, guid: 68dd4c1ec7e93d14c975660454c1296f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Body_Gradiant_Map:
         m_Texture: {fileID: 2800000, guid: 57cca2ef4b789994ea69ece587352a5e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Body_Mask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Eyes_Gradiant_Map:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Eyes_Mask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Headset_Gradiant_Map:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Headset_Mask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 3da1abe86a229e94c84a14c2252b110d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Metalic_Smoothness_AO_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5c1bbb32f2dbc2a48acae413b327cb5c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Walkman_Gradiant_Map:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Walkman_Mask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -83,10 +63,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Body_Albedo: {r: 1, g: 1, b: 1, a: 0}
-    - _Eyes_Albedo: {r: 1, g: 1, b: 1, a: 0}
-    - _Headset_Albedo: {r: 1, g: 1, b: 1, a: 0}
-    - _Walkman_Albedo: {r: 1, g: 1, b: 1, a: 0}
+    - _Accessori_Albedo: {r: 0.53239787, g: 0.25485048, b: 0.7830189, a: 0}
+    - _Body_Albedo: {r: 0.19235004, g: 0.8509804, b: 0.10980392, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &7502999995648287824
