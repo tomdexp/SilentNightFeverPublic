@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.06666667, g: 0.32156864, b: 0.30588236, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.03
+  m_FogDensity: 0.02
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.21568628, g: 0.33333334, b: 0.4509804, a: 1}
@@ -2748,7 +2748,7 @@ PrefabInstance:
     - target: {fileID: 319283216897820012, guid: 13f7756713278c7409bed62b65c1b283,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 695140624012402206, guid: 13f7756713278c7409bed62b65c1b283,
         type: 3}
@@ -2805,6 +2805,11 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e8b7fd345f991bc4491455ac496c4083, type: 2}
+    - target: {fileID: 1684576749018864021, guid: 13f7756713278c7409bed62b65c1b283,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 53ad5bc3e097e24419838607f819e135, type: 2}
     - target: {fileID: 2264939067082794169, guid: 13f7756713278c7409bed62b65c1b283,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -2865,6 +2870,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7885553615131260964, guid: 13f7756713278c7409bed62b65c1b283,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 53ad5bc3e097e24419838607f819e135, type: 2}
+    - target: {fileID: 8345964600560675743, guid: 13f7756713278c7409bed62b65c1b283,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 53ad5bc3e097e24419838607f819e135, type: 2}
+    - target: {fileID: 8723788534612117944, guid: 13f7756713278c7409bed62b65c1b283,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 53ad5bc3e097e24419838607f819e135, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -5998,6 +6018,11 @@ PrefabInstance:
       propertyPath: _componentIndexCache
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7788906338880513963, guid: a0f76f131c87b2b49a076fad47775432,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d3f3b2fa53f3c8548a6d0bcb5315aaf3, type: 2}
     - target: {fileID: 8136817130307620576, guid: a0f76f131c87b2b49a076fad47775432,
         type: 3}
       propertyPath: _networkObjectCache
@@ -6057,6 +6082,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _componentIndexCache
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961298838616612036, guid: a0f76f131c87b2b49a076fad47775432,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.076
       objectReference: {fileID: 0}
     - target: {fileID: 9088587693405555293, guid: a0f76f131c87b2b49a076fad47775432,
         type: 3}

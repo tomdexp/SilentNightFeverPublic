@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Ground
-  m_Shader: {fileID: -6465566751694194690, guid: ca0b2bb1ad127b447ba4e2e18b5cf6c9,
+  m_Name: MAT_LandmarksGround
+  m_Shader: {fileID: -6465566751694194690, guid: e6a32f984df10c14eb2b01ca4c63d41d,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -26,7 +26,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AO_Map_A:
-        m_Texture: {fileID: 2800000, guid: b8b9fb542dcb0db4d8a07416623ae625, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AO_Map_B:
@@ -38,11 +38,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Color_B:
-        m_Texture: {fileID: 2800000, guid: 620097016af3a34499e590ea514db70c, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map_A:
-        m_Texture: {fileID: 2800000, guid: 5e9e52a12b6965f4cae61a24c75a6e60, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map_B:
@@ -63,17 +63,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AO_Strenght_A: 1
-    - _AO_Strenght_B: 0
+    - _AO_Strenght_A: 0
+    - _AO_Strenght_B: 0.24
     - _Normal_Strenght_A: 1
-    - _Normal_Strenght_B: 0
+    - _Normal_Strenght_B: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Albedo_A: {r: 0.6084906, g: 1, b: 0.6476415, a: 0}
-    - _Albedo_B: {r: 1, g: 0.8965093, b: 0, a: 0}
-    - _Tilling_A: {r: 7, g: 7, b: 0, a: 0}
-    - _Tilling_B: {r: 7, g: 7, b: 0, a: 0}
+    - _Albedo_A: {r: 0, g: 0, b: 0, a: 0}
+    - _Albedo_B: {r: 0.5188679, g: 0.26981133, b: 0, a: 0}
+    - _Tilling_A: {r: 2, g: 2, b: 0, a: 0}
+    - _Tilling_B: {r: 2, g: 2, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4109378192951623082
