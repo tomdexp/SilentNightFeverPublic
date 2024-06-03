@@ -210,7 +210,7 @@ namespace _Project.Scripts.Runtime.Networking
         }
 
         [ObserversRpc]
-        private void SetPlayerLeavingEnabledClientRpc(bool value)
+        public void SetPlayerLeavingEnabledClientRpc(bool value)
         {
             SetPlayerLeavingEnabled(value);
         }

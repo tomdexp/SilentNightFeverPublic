@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using FishNet;
+using FishNet.Transporting;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
@@ -9,7 +11,20 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
     {
         public abstract string MenuName { get; }
 
-        private IEnumerator Start()
+        private void Start()
+        {
+            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+        }
+
+        private void OnClientConnectionState(ClientConnectionStateArgs args)
+        {
+            if (args.ConnectionState == LocalConnectionState.Started)
+            {
+                StartCoroutine(TryRegisterMenu());
+            }
+        }
+
+        private IEnumerator TryRegisterMenu()
         {
             while(!UIManager.HasInstance) yield return null;
             UIManager.Instance.RegisterMenu(this);

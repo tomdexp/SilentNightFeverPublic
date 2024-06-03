@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -54,6 +56,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 Logger.LogTrace($"Opening first menu {GetMenuType(next).Name}", Logger.LogType.Client,this);
             }
             _menus[next].Open();
+            FindAnyObjectByType<MenuToGoOnReset>().SetMenuName(_menus[next].MenuName);
         }
 
         [Server]
@@ -90,15 +93,64 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             Logger.LogTrace($"Registering menu {menu.MenuName}", Logger.LogType.Client,this);
             _menus.Add(menu);
             SortMenuByNames();
-            if (menu is PressStartMenu)
+            CheckAllMenuRegistered();
+        }
+
+        private void CheckAllMenuRegistered()
+        {
+            var menus = FindObjectsByType<MenuBase>(FindObjectsSortMode.None);
+            bool allMenusRegistered = true;
+            foreach (var menu in menus)
             {
-                GoToMenu<PressStartMenu>();
+                if (!_menus.Contains(menu))
+                {
+                    allMenusRegistered = false;
+                }
+            }
+            
+            if (allMenusRegistered)
+            {
+                Logger.LogTrace("All menus registered", Logger.LogType.Client, this);
+                // if menuToGoOnReset is empty, set it to the first menu (yes this is quite ugly but it works)
+                // We always find the object, because this script is a network behaviour and is destroyed and recreated on network reset
+                if (string.IsNullOrEmpty(FindAnyObjectByType<MenuToGoOnReset>().MenuName))
+                {
+                    Logger.LogTrace("Setting MenuToGoOnReset to PressStartMenu", Logger.LogType.Client, this);
+                    FindAnyObjectByType<MenuToGoOnReset>().SetMenuName(nameof(PressStartMenu));
+                }
+                var newMenuName = FindAnyObjectByType<MenuToGoOnReset>().MenuName;
+                var newMenu = _menus.FirstOrDefault(menu => menu.MenuName == newMenuName);
+                // close all menus except the one we want to go to
+                for (int i = 0; i < _menus.Count; i++)
+                {
+                    if (_menus[i] != newMenu)
+                    {
+                        _menus[i].Close();
+                    }
+                }
+                _currentMenuIndex.Value = _menus.IndexOf(newMenu);
             }
         }
         
         private void SortMenuByNames()
         {
             _menus = _menus.OrderBy(menu => menu.MenuName).ToList();
+        }
+
+        public void SwitchToMetroCamera()
+        {
+            var metroCamera = FindAnyObjectByType<MetroCamera>();
+            var canvasCamera = FindAnyObjectByType<MetroWorldSpaceCanvasCamera>();
+            metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
+            canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
+        }
+        
+        public void SwitchToCanvasCamera()
+        {
+            var metroCamera = FindAnyObjectByType<MetroCamera>();
+            var canvasCamera = FindAnyObjectByType<MetroWorldSpaceCanvasCamera>();
+            metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
+            canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
         }
     }
 }
