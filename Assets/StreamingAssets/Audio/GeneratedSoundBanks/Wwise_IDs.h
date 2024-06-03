@@ -17,8 +17,14 @@ namespace AK
         static const AkUniqueID PLAY_CHAR_THO_THROW = 3990111633U;
         static const AkUniqueID PLAY_CHAR_THO_TOUCHED = 2214496751U;
         static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
+<<<<<<< Updated upstream
+=======
+        static const AkUniqueID PLAY_LM_KITCHEN_FRUIT_EATEN = 2054335947U;
+        static const AkUniqueID PLAY_LM_SATT_AMBIANCE = 2151245937U;
+>>>>>>> Stashed changes
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
+        static const AkUniqueID PLAY_PLAYER_SIZE_UP = 1820042269U;
         static const AkUniqueID PLAY_UI_BACK = 1386224142U;
         static const AkUniqueID PLAY_UI_DISPLACEMENT = 1341306234U;
         static const AkUniqueID PLAY_UI_ENTER = 2982660583U;
