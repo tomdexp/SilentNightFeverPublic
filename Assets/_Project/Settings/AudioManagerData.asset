@@ -33,7 +33,7 @@ MonoBehaviour:
   - Bank:
       idInternal: 0
       valueGuidInternal: 
-      WwiseObjectReference: {fileID: 11400000, guid: c9b95171c45d7694199cf180a1335280,
+      WwiseObjectReference: {fileID: 11400000, guid: c806585a238e2e344953295e190ff790,
         type: 2}
     DecodeBankOnLoad: 1
     SaveDecodedBank: 0
@@ -55,8 +55,8 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: c023194eaa086c1478d0471b356d3156,
       type: 2}
-  RTPC_GP_MUSC_SWITCH_MinValue: 2
-  RTPC_GP_MUSC_SWITCH_MaxValue: 2
+  RTPC_GP_MUSC_SWITCH_MinValue: 1
+  RTPC_GP_MUSC_SWITCH_MaxValue: 3
   RTPC_GP_LM_SatelliteSpeed:
     idInternal: 0
     valueGuidInternal: 
@@ -108,6 +108,11 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 43503265047385242ac6c6ccd9b208fe,
+      type: 2}
+  EventPlayerSizeChange:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 7ea120f56223d8f4188d6938827bacd6,
       type: 2}
   EventUIButtonHover:
     idInternal: 0
