@@ -35,6 +35,8 @@ namespace _Project.Scripts.Runtime.Networking
         [SerializeField] private InputAction _goToRightTeamInputAction;
         [SerializeField] private InputAction _nextHatInputAction;
         [SerializeField] private InputAction _previousHatInputAction;
+        [SerializeField] private InputAction _confirmHatInputAction;
+        [SerializeField] private InputAction _cancelHatInputAction;
         [SerializeField] private InputAction _joinAndFullFakePlayerInputAction;
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
         private readonly SyncList<PlayerTeamInfo> _playerTeamInfos = new SyncList<PlayerTeamInfo>();
@@ -56,6 +58,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnTeamManagementStarted;
         public event Action OnCharacterCustomizationStarted;
         public event Action OnAllPlayersReady;
+        public event Action OnAllPlayersConfirmedHat;
 
         private int _numberOfPlayerSpawnedLocally = 0;
         
@@ -118,17 +121,16 @@ namespace _Project.Scripts.Runtime.Networking
             _realPlayerInfos.OnChange += OnChangedRealPlayerInfos;
             _playerTeamInfos.OnChange += OnChangedPlayerTeamInfos;
             _playerReadyInfos.OnChange += OnChangedPlayersReadyInfos;
-
             _playerHatInfos.OnChange += OnChangedPlayerHatInfos;
-
             _joinInputAction.performed += JoinInputActionPerformed;
             _goToRightTeamInputAction.performed += GoToRightTeamInputActionPerformed;
             _goToLeftTeamInputAction.performed += GoToLeftTeamInputActionPerformed;
             _leaveInputAction.performed += LeaveInputActionPerformed;
             _joinAndFullFakePlayerInputAction.performed += JoinAndFullFakePlayerInputActionOnPerformed;
-
             _nextHatInputAction.performed += NextHatInputActionOnPerformed;
             _previousHatInputAction.performed += PreviousHatInputActionOnPerformed;
+            _confirmHatInputAction.performed += ConfirmHatInputActionOnPerformed;
+            _cancelHatInputAction.performed += CancelHatInputActionOnPerformed;
 
             //_joinInputAction.Enable();
             //_leaveInputAction.Enable();
@@ -136,10 +138,10 @@ namespace _Project.Scripts.Runtime.Networking
             //_goToLeftTeamInputAction.Enable();
             //_readyInputAction.Enable();
             //_cancelReadyInputAction.Enable();
-
-            _nextHatInputAction.Enable();
-            _previousHatInputAction.Enable();
-
+            //_confirmHatInputAction.Enable();
+            //_cancelHatInputAction.Enable();
+            //_nextHatInputAction.Enable();
+            //_previousHatInputAction.Enable();
             _joinAndFullFakePlayerInputAction.Enable();
         }
 
@@ -158,14 +160,16 @@ namespace _Project.Scripts.Runtime.Networking
             //_goToLeftTeamInputAction.Disable();
             // _readyInputAction.Disable();
             // _cancelReadyInputAction.Enable();
-
+            // _confirmHatInputAction.Disable();
+            // _cancelHatInputAction.Disable();
             //_nextHatInputAction.Disable();
             //_previousHatInputAction.Disable();
-
             _joinAndFullFakePlayerInputAction.Disable();
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
             _readyInputAction.performed -= ConfirmTeamInputActionPerformed;
+            _confirmHatInputAction.performed -= ConfirmHatInputActionOnPerformed;
+            _cancelHatInputAction.performed -= CancelHatInputActionOnPerformed;
             _cancelReadyInputAction.performed -= CancelConfirmTeamInputActionPerformed;
             _goToRightTeamInputAction.performed -= GoToRightTeamInputActionPerformed;
             _goToLeftTeamInputAction.performed -= GoToLeftTeamInputActionPerformed;
@@ -915,7 +919,7 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
-                Logger.LogInfo("Team management already started", Logger.LogType.Client, context: this);
+                Logger.LogInfo("Character customization already started", Logger.LogType.Client, context: this);
             }
         }
 
@@ -960,11 +964,13 @@ namespace _Project.Scripts.Runtime.Networking
             Logger.LogTrace("SetPlayerConfirmHatEnabled: " + value, context: this);
             if (value)
             {
-                // TODO :
+                _confirmHatInputAction.Enable();
+                _cancelHatInputAction.Enable();
             }
             else
             {
-                // TODO :
+                _confirmHatInputAction.Disable();
+                _cancelHatInputAction.Disable();
             }
         }
 
@@ -997,10 +1003,6 @@ namespace _Project.Scripts.Runtime.Networking
             ChangeHatServerRpc(playerIndexType, next);
         }
 
-        private bool HasPlayerConfirmedHat(PlayerIndexType playerIndexType)
-        {
-            return _playerHatInfos.Collection.Any(playerHatInfo => playerHatInfo.PlayerIndexType == playerIndexType && playerHatInfo.HasConfirmed);
-        }
 
         [ServerRpc(RequireOwnership = false)]
         private void ChangeHatServerRpc(PlayerIndexType playerIndexType, bool next)
@@ -1039,6 +1041,12 @@ namespace _Project.Scripts.Runtime.Networking
                     hats += "Player " + playerHatInfo.PlayerIndexType + " : Hat " + playerHatInfo.PlayerHatType.ToString() + " | ";
                 }
                 Logger.LogTrace("Hats: " + hats, Logger.LogType.Server, this);
+
+                // Verify is this is a "set" operation to avoid firing multiple times
+                if (AllPlayerConfirmedHat() && IsServerStarted && asServer)
+                {
+                    OnAllPlayersConfirmedHat?.Invoke();
+                }
             }
         }
 
@@ -1056,6 +1064,81 @@ namespace _Project.Scripts.Runtime.Networking
         #endregion
 
         #region =========== Confirm Customization Function ===========
+
+        private void TryConfirmHat(InputAction.CallbackContext context, bool confirm)
+        {
+            // Reconstruct the RealPlayerInfo
+            var realPlayerInfo = new RealPlayerInfo
+            {
+                ClientId = (byte)LocalConnection.ClientId,
+                DevicePath = context.control.device.path
+            };
+            var exist = DoesRealPlayerExist(realPlayerInfo);
+            if (!exist)
+            {
+                Logger.LogWarning("Can't change team for RealPlayer with clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath + " as it does not exist.", context: this);
+                return;
+            }
+
+
+            var playerIndexType = GetPlayerIndexTypeFromRealPlayerInfo(realPlayerInfo);
+
+            if (HasPlayerConfirmedHat(playerIndexType) && confirm)
+            {
+                Logger.LogWarning($"Can't confirm hat because player {playerIndexType} with id {realPlayerInfo.ClientId} has already chosen a hat.", context: this);
+                return;
+            }
+            if (!HasPlayerConfirmedHat(playerIndexType) && !confirm)
+            {
+                Logger.LogWarning($"Can't un-confirm hat because player {playerIndexType} with id {realPlayerInfo.ClientId} hasn't chose a hat.", context: this);
+                return;
+            }
+
+            ConfirmHatServerRpc(playerIndexType, confirm);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ConfirmHatServerRpc(PlayerIndexType playerIndexType, bool confirm)
+        {
+            // Get the player
+            var playerHatInfo = _playerHatInfos.Collection.First(x => x.PlayerIndexType == playerIndexType);
+            var index = _playerHatInfos.IndexOf(playerHatInfo);
+            PlayerHatInfo copy = _playerHatInfos[index];
+            copy.HasConfirmed = confirm;
+
+            _playerHatInfos[index] = copy;
+            Logger.LogDebug("Player " + playerIndexType + " confirmed hat state is : " + confirm.ToString(), Logger.LogType.Server, this);
+        }
+
+
+        private bool HasPlayerConfirmedHat(PlayerIndexType playerIndexType)
+        {
+            return _playerHatInfos.Collection.Any(playerHatInfo => playerHatInfo.PlayerIndexType == playerIndexType && playerHatInfo.HasConfirmed);
+        }
+
+        private bool AllPlayerConfirmedHat()
+        {
+            bool res = true;
+            foreach (var playerHatInfo in _playerHatInfos.Collection)
+            {
+                if (playerHatInfo.HasConfirmed != true)
+                {
+                    return false;
+                }
+            }
+
+            return res;
+        }
+
+        private void ConfirmHatInputActionOnPerformed(InputAction.CallbackContext obj)
+        {
+            TryConfirmHat(obj, true);
+        }
+
+        private void CancelHatInputActionOnPerformed(InputAction.CallbackContext obj)
+        {
+            TryConfirmHat(obj, false);
+        }
 
         #endregion
 

@@ -323,6 +323,56 @@ MonoBehaviour:
       m_Action: Previous Hat Input
       m_Flags: 0
     m_Flags: 0
+  _confirmHatInputAction:
+    m_Name: Confirm Hat Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2815ef7f-e118-434b-8a34-0a6060299d14
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 7d3d36f1-f291-4901-ae23-0fbd39ffe5c3
+      m_Path: <Keyboard>/c
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Confirm Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 55fa3aa2-a623-4aca-9910-b64ac3d88bf0
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Confirm Hat Input
+      m_Flags: 0
+    m_Flags: 0
+  _cancelHatInputAction:
+    m_Name: Cancel Hat Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: fea7ad78-054d-4949-b960-d47281a074df
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: b2b4aa38-233f-4992-85fe-6929cf39bb4f
+      m_Path: <Keyboard>/x
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cancel Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 970484fa-6171-4b31-9aee-67e57afe0d25
+      m_Path: <Gamepad>/buttonNorth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cancel Hat Input
+      m_Flags: 0
+    m_Flags: 0
   _joinAndFullFakePlayerInputAction:
     m_Name: Join And Full Fake Player Input
     m_Type: 0
