@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -50,6 +51,15 @@ namespace _Project.Scripts.Runtime.Player
         {
             _movementSpeed = _speed / _playerData.PlayerMaxSpeedForAnimation;
             _animator.SetFloat(MovementSpeedParam, _movementSpeed);
+        }
+
+        public void PlayFootstepSound(AnimationEvent animationEvent)
+        {
+            if (animationEvent.animatorClipInfo.weight < 0.5f) return;
+            if (AudioManager.HasInstance)
+            { 
+                AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerFootstep, gameObject);
+            }
         }
     }
 }
