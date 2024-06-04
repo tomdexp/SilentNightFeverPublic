@@ -17,6 +17,17 @@ namespace _Project.Scripts.Runtime.Utils
             if(PlayerManager.HasInstance) PlayerManager.Instance.SetPlayerJoiningEnabledClientRpc(value);
         }
         
+        [Command("/player.set.leaving", "Enable or disable the player leaving")]
+        public static void SetPlayerLeaving(bool value)
+        {
+            if (!InstanceFinder.IsServerStarted)
+            {
+                Logger.LogError("Only the server can set this value !");
+                return;
+            }
+            if(PlayerManager.HasInstance) PlayerManager.Instance.SetPlayerLeavingEnabledClientRpc(value);
+        }
+        
         [Command("/player.fake.all.ready", "Make all fake players ready")]
         public static void SetFakePlayersReady()
         {

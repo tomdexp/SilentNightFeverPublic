@@ -67,6 +67,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void PlayHoverFeedbacks()
         {
+            if(!_button.interactable) return;
             if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonHover, AudioManager.Instance.gameObject);
             if(_buttonType == ButtonType.Enter)
             {
@@ -78,18 +79,6 @@ namespace _Project.Scripts.Runtime.UI
             }
         }
         
-        private void PlayUnHoverFeedbacks()
-        {
-            if(_buttonType == ButtonType.Enter)
-            {
-                transform.DOScale(_originalScale, _uiData.HoverEnterDuration).SetEase(_uiData.HoverEnterEase);
-            }
-            else
-            {
-                transform.DOScale(_originalScale, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
-            }
-        }
-
         public void OnPointerExit(PointerEventData eventData)
         {
             PlayUnHoverFeedbacks();
@@ -98,6 +87,19 @@ namespace _Project.Scripts.Runtime.UI
         public void OnDeselect(BaseEventData eventData)
         {
             PlayUnHoverFeedbacks();
+        }
+        
+        private void PlayUnHoverFeedbacks()
+        {
+            if(!_button.interactable) return;
+            if(_buttonType == ButtonType.Enter)
+            {
+                transform.DOScale(_originalScale, _uiData.HoverEnterDuration).SetEase(_uiData.HoverEnterEase);
+            }
+            else
+            {
+                transform.DOScale(_originalScale, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
+            }
         }
     }
 }
