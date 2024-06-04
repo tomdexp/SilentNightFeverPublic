@@ -43,5 +43,10 @@ namespace _Project.Scripts.Runtime.UI
         public float ClickBackScale = 0.9f;
         public float ClickBackDuration = 0.1f;
         public Ease ClickBackEase = Ease.Linear;
+
+        [Title("Team Selection Canvas Settings")]
+        public float SecondsAfterAllPlayersReadyToStartCustomization = 3;
+        public float PlayerTeamLabelMovementDuration = 1;
+        public Ease PlayerTeamLabelMovementEase = Ease.Linear;
     }
 }

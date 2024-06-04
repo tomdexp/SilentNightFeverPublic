@@ -168,6 +168,7 @@ namespace _Project.Scripts.Runtime.Networking
            }
 
            // check if there is any change in size
+           AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerSizeChange, gameObject);
            if (Mathf.Approximately(newSize, transform.localScale.x)) yield break;
 
            // check if we are scaling up or down compared to our current size, based on the scale.x
@@ -175,7 +176,6 @@ namespace _Project.Scripts.Runtime.Networking
            var scaleDirection = newSize > currentSize ? 1 : -1;
            // TODO : Fix ground alignment after scaling
            var newY = newSize/2;
-           AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerSizeChange, gameObject);
            if (scaleDirection == 1) // scaling up
            {
                // use dotween to scale up

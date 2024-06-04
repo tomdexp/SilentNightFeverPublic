@@ -79,6 +79,8 @@ namespace _Project.Scripts.Runtime.Audio
         public AK.Wwise.Event EventPlayerTongueInteractOrBind;
         [TabGroup("References/Events/Subgroup", "Player", SdfIconType.PeopleFill, TextColor = "lightgreen")]
         public AK.Wwise.Event EventPlayerSizeChange;
+        [TabGroup("References/Events/Subgroup", "Player", SdfIconType.PeopleFill, TextColor = "lightgreen")]
+        public AK.Wwise.Event EventPlayerFootstep;
         
         
         [TabGroup("References", "Events", SdfIconType.MusicNote, TextColor = "lightmagenta")]
