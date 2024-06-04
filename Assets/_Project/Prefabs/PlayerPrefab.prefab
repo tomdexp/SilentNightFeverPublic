@@ -208,7 +208,6 @@ MonoBehaviour:
   _networkBehaviours:
   - {fileID: 1871456323344089724}
   - {fileID: 8239259958503473684}
-  - {fileID: 0}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField:
   - {fileID: 2446924290083654152}
@@ -589,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7904d899be414394b70994aa3380a54c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 3
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 3667370609337106282}
   _networkObjectCache: {fileID: 2446924290083654152}
   _tongueThrowDirection: {fileID: 1073948188837269571}
@@ -1157,7 +1156,7 @@ GameObject:
   - component: {fileID: 8972299229243801359}
   - component: {fileID: 1039724280745310760}
   m_Layer: 0
-  m_Name: Plant 2
+  m_Name: Plant2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1527,7 +1526,7 @@ GameObject:
   - component: {fileID: 7440370732225673504}
   - component: {fileID: 3536390147190386139}
   m_Layer: 0
-  m_Name: Plant 4
+  m_Name: Plant4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3109,6 +3108,7 @@ MonoBehaviour:
   - {fileID: 9141821169382468748}
   - {fileID: 852417808486132929}
   - {fileID: 3505088727478025733}
+  - {fileID: 6030282202973295259}
   - {fileID: 231928515017589480}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 1871456323344089724}
   <NestedRootNetworkBehaviours>k__BackingField: []
@@ -3317,10 +3317,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6415bf6f9e9a9e4a972285e8c67c5b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 3
   _addedNetworkObject: {fileID: 3667370609337106282}
-  _networkObjectCache: {fileID: 3667370609337106282}
-  _randomHat: 1
+  _networkObjectCache: {fileID: 2446924290083654152}
+  _randomHat: 0
   _hatContainer: {fileID: 3283338906715252111}
 --- !u!1 &9217126397475910344
 GameObject:
