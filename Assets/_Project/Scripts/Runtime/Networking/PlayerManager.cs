@@ -1008,6 +1008,12 @@ namespace _Project.Scripts.Runtime.Networking
                 Logger.LogWarning("Not enough real players to spawn all players.", Logger.LogType.Server, context: this);
                 return;
             }
+            if (_numberOfPlayerSpawnedLocally == 4)
+            {
+                Logger.LogDebug("Players already spawned. Which probably means the game manager is resetting", Logger.LogType.Server, context: this);
+                return;
+            }
+            
             _numberOfPlayerSpawnedLocally = 0;
             
             SetPlayerJoiningEnabledClientRpc(false);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FishNet;
+using FishNet.Connection;
 using FishNet.Object;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -40,8 +41,6 @@ namespace _Project.Scripts.Runtime.Landmarks.Kitchen
             }
         }
         
-        
-
         private void SpawnFoods()
         {
             Logger.LogDebug("Spawning foods for Landmark " + nameof(Landmark_Kitchen), Logger.LogType.Server, this);
@@ -53,6 +52,12 @@ namespace _Project.Scripts.Runtime.Landmarks.Kitchen
                 ServerManager.Spawn(nob);
                 Logger.LogDebug($"Spawned {nob.name} at {spawnPoint.position}", Logger.LogType.Server, this);
             }
+        }
+
+        public override void OnDespawnServer(NetworkConnection connection)
+        {
+            base.OnDespawnServer(connection);
+            DespawnAllFoods();
         }
 
         private void OnDrawGizmos()
@@ -68,6 +73,12 @@ namespace _Project.Scripts.Runtime.Landmarks.Kitchen
         protected override void ResetLandmark(byte _)
         {
             Logger.LogDebug("Resetting Landmark " + nameof(Landmark_Kitchen), Logger.LogType.Server, this);
+            DespawnAllFoods();
+            SpawnFoods();
+        }
+        
+        private void DespawnAllFoods()
+        {
             if (_spawnedFoods.Count != 0)
             {
                 foreach (var spawnedFood in _spawnedFoods)
@@ -75,8 +86,6 @@ namespace _Project.Scripts.Runtime.Landmarks.Kitchen
                     ServerManager.Despawn(spawnedFood);
                 }
             }
-            
-            SpawnFoods();
         }
     }
 }

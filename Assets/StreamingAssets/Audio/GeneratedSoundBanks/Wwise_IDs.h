@@ -13,10 +13,12 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_CHAR_FS = 1806510664U;
         static const AkUniqueID PLAY_CHAR_THO_RETRACT = 3854640606U;
         static const AkUniqueID PLAY_CHAR_THO_THROW = 3990111633U;
         static const AkUniqueID PLAY_CHAR_THO_TOUCHED = 2214496751U;
         static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
+        static const AkUniqueID PLAY_LM_SATT_AMBIANCE = 2151245937U;
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
         static const AkUniqueID PLAY_UI_BACK = 1386224142U;
@@ -112,6 +114,7 @@ namespace AK
         static const AkUniqueID GP_LANDMARKMETER_RAIN = 1311938743U;
         static const AkUniqueID GP_LM_KITCHENMETER = 2256592338U;
         static const AkUniqueID GP_LM_SATELITTESPEED = 3546657911U;
+        static const AkUniqueID GP_LM_SATTELITEMETER = 488398129U;
         static const AkUniqueID GP_LM_TOMUSIC = 1716289499U;
         static const AkUniqueID GP_MUSC_SWITCH = 1886390058U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
@@ -157,6 +160,7 @@ namespace AK
         static const AkUniqueID LDMRK_FOREST = 1486733157U;
         static const AkUniqueID LDMRK_RAIN = 2156680276U;
         static const AkUniqueID LM_KITCHEN = 2768191745U;
+        static const AkUniqueID LM_SATELLITE = 2698474914U;
     } // namespace AUX_BUSSES
 
     namespace AUDIO_DEVICES
