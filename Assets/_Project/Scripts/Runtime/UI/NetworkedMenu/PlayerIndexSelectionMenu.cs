@@ -13,6 +13,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 {
+    // Also know as Team Selection Menu
     public class PlayerIndexSelectionMenu : MenuBase
     {
         public override string MenuName { get; } = "PlayerIndexSelectionMenu";
@@ -52,15 +53,21 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _canvasGroup.alpha = 1;
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
-            if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance) PlayerManager.Instance.TryStartTeamManagement();
+            if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance)
+            {
+                PlayerManager.Instance.TryStartTeamManagement();
+                PlayerManager.Instance.OnAllPlayersReady += OnAllPlayersReady;
+            }
+            if (InstanceFinder.IsServerStarted) UIManager.Instance.SwitchToCanvasCamera();
         }
-        
+
         public override void Close()
         {
             base.Close();
             _canvasGroup.alpha = 0;
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
+            if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;
         }
         
         private void OnClientConnectionState(ClientConnectionStateArgs args)
@@ -88,6 +95,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             if(InstanceFinder.ClientManager) InstanceFinder.ClientManager.OnClientConnectionState -= OnClientConnectionState;
             if (PlayerManager.HasInstance) PlayerManager.Instance.OnPlayerTeamInfosChanged -= OnPlayerTeamInfosChanged;
+            if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;
         }
 
         private void OnPlayerTeamInfosChanged(List<PlayerTeamInfo> _)
@@ -119,6 +127,21 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 {
                     GoToPlayerEnd(playerLabel, GetPlayerEnd(playerTeamInfo.ScreenPlayerIndexType));
                 }
+            }
+        }
+        
+        private void OnAllPlayersReady()
+        {
+            StartCoroutine(OnAllPlayersReadyCoroutine());
+        }
+
+        private IEnumerator OnAllPlayersReadyCoroutine()
+        {
+            PlayerManager.Instance.TryEndTeamManagement();
+            yield return new WaitForSeconds(_uiData.SecondsAfterAllPlayersReadyToStartCustomization);
+            if (InstanceFinder.IsServerStarted)
+            {
+                UIManager.Instance.GoToMenu<CustomizationMenu>();
             }
         }
         

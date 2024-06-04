@@ -359,6 +359,13 @@ namespace _Project.Scripts.Runtime.Networking
             List<PlayerTeamInfo> playerTeamInfos = new List<PlayerTeamInfo>();
             List<PlayerReadyInfo> playerReadyInfos = new List<PlayerReadyInfo>();
 
+            if (_playerTeamInfos.Count == 4)
+            {
+                Logger.LogInfo("Team management already started, resetting the players", Logger.LogType.Server, context: this);
+                _playerTeamInfos.Clear();
+                _playerReadyInfos.Clear();
+            }
+            
             if (_playerTeamInfos.Count < _realPlayerInfos.Count)
             {
                 for (int i = 0; i < _realPlayerInfos.Count; i++)
@@ -383,8 +390,34 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
-                Logger.LogInfo("Team management already started", Logger.LogType.Client, context: this);
+                Logger.LogInfo("Team management already started, resettings the players", Logger.LogType.Client, context: this);
             }
+        }
+        
+        public void TryEndTeamManagement()
+        {
+            if (!IsServerStarted)
+            {
+                EndTeamManagementServerRpc();
+            }
+            else
+            {
+                EndTeamManagement();
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]    
+        private void EndTeamManagementServerRpc()
+        {
+            EndTeamManagement();
+        }
+
+        private void EndTeamManagement()
+        {
+            SetPlayerLeavingEnabledClientRpc(false);
+            SetPlayerChangingTeamEnabledClientRpc(false);
+            SetPlayerConfirmTeamEnabledClientRpc(false);
+            SetPlayerJoiningEnabledClientRpc(false);
         }
 
         [ObserversRpc]
@@ -690,7 +723,7 @@ namespace _Project.Scripts.Runtime.Networking
         #region =========== Confirm Team Functions =========== 
 
         [ObserversRpc]
-        private void SetPlayerConfirmTeamEnabledClientRpc(bool value)
+        public void SetPlayerConfirmTeamEnabledClientRpc(bool value)
         {
             SetPlayerConfirmTeamEnabled(value);
         }
