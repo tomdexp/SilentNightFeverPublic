@@ -57,13 +57,31 @@ namespace _Project.Scripts.Runtime.Audio
         {
             if (next == true && prev == false)
             {
-                FindPlayers();
+                StartCoroutine(TryFindPlayers());
             }
         }
 
-        private void FindPlayers()
+        private void OnDestroy()
+        {
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.IsGameStarted.OnChange -= OnGameStarted;
+            }
+        }
+
+        private IEnumerator TryFindPlayers()
         {
             Logger.LogTrace("Finding players...", Logger.LogType.Local, this);
+            
+            while (!PlayerManager.HasInstance)
+            {
+                yield return null;
+            }
+
+            while (!PlayerManager.Instance.AreAllPlayerSpawnedLocally)
+            {
+                yield return null;
+            }
             
             _players.Clear();
             _playerListeners.Clear();
@@ -80,12 +98,12 @@ namespace _Project.Scripts.Runtime.Audio
             if (!Player1 || !Player2 || !Player3 || !Player4)
             {
                 Logger.LogError("Could not find all players!", Logger.LogType.Local, this);
-                return;
+                yield break;
             }
             if (!Player1Listener || !Player2Listener || !Player3Listener || !Player4Listener)
             {
                 Logger.LogError("Could not find all audio listeners!", Logger.LogType.Local, this);
-                return;
+                yield break;
             }
             
             _playerListeners.Add(Player1, Player1Listener);

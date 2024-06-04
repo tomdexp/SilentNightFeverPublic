@@ -17,7 +17,7 @@ namespace _Project.Scripts.Runtime.UI.Transitions
         [Title("References")] 
         public UIData Data;
         
-        protected readonly SyncVar<float> _fadeValue = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers, 30f, Channel.Unreliable));
+        protected readonly SyncVar<float> _fadeValue = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers, 1f, Channel.Reliable));
         private CanvasGroup _canvasGroup;
 
         public abstract IEnumerator BeginTransition();
@@ -40,7 +40,7 @@ namespace _Project.Scripts.Runtime.UI.Transitions
             _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             _canvasGroup.alpha = _fadeValue.Value;
         }

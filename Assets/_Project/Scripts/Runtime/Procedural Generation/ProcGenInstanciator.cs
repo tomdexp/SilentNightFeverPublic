@@ -75,19 +75,23 @@ public class ProcGenInstanciator : MonoBehaviour
 
     private List<List<Vector2>> _alreadySpawnedPoints = new();
     private List<float> _alreadySpawnedPointsRadius = new();
+    private List<NetworkObject> _spawnedObjects = new(); // used for regenerating the maps by despawning all the objects
 
     private bool _readyToSpawnPrefabs = false;
     private readonly int _framesBetweenSpawn = 1; // to avoid blocking the main thread, we launch the main method in a coroutine and wait between each spawn
+    private List<SpawnableNetworkObject> _copyLandmarksPrefabList; // make a copy of the list to avoid modifying the original list for regenerating the map
 
     // Events
     public event Action OnBeginMapGeneration;
     public event Action OnMapGenerated;
     public event Action OnBeginPrefabSpawning;
     public event Action OnPrefabSpawned;
+    public event Action<float, string> OnLoadingProgressChanged;
 
     private void Awake()
     {
         VerifyPrefabSetup();
+        _copyLandmarksPrefabList = _landmarksPrefabList.Select(x => (SpawnableNetworkObject)x.Clone()).ToList();
     }
 
     [Button]
@@ -95,17 +99,46 @@ public class ProcGenInstanciator : MonoBehaviour
     {
         Logger.LogDebug("Generating map...", Logger.LogType.Server, this);
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        Profiler.BeginSample("GenerateMap");
+        
+        // clone the list to avoid modifying the original list
+        _landmarksPrefabList = _copyLandmarksPrefabList.Select(x => (SpawnableNetworkObject)x.Clone()).ToList();
+        
+        _alreadySpawnedPoints.Clear();
+        _alreadySpawnedPointsRadius.Clear();
+        _readyToSpawnPrefabs = false;
+        
+        if (_spawnedObjects.Count > 0)
+        {
+            Logger.LogDebug("Despawning all objects because we are regenerating the maps", Logger.LogType.Server, this);
+            foreach (var obj in _spawnedObjects)
+            {
+                InstanceFinder.ServerManager.Despawn(obj);
+            }
+            _spawnedObjects.Clear();
+        }
+        
+        if(_spawnedLandmarks.Count > 0)
+        {
+            Logger.LogDebug("Despawning all landmarks because we are regenerating the maps", Logger.LogType.Server, this);
+            foreach (var obj in _spawnedLandmarks)
+            {
+                InstanceFinder.ServerManager.Despawn(obj);
+            }
+            _spawnedLandmarks.Clear();
+        }
         
         OnBeginMapGeneration?.Invoke(); 
         
         yield return GenerateTerrain();
         
+        OnLoadingProgressChanged?.Invoke(2/10f, "Generating players points");
         _teamAPoints = GeneratePoints(_teamAParameters, true, true, true);
         _teamBPoints = GeneratePoints(_teamBParameters, true, true, true);
+        OnLoadingProgressChanged?.Invoke(3/10f, "Generating landmarks points");
         _landmarksPoints = GeneratePoints(_landmarksParameters, true, true, true);
 
         // Decoration
+        OnLoadingProgressChanged?.Invoke(4/10f, "Generating environment points");
         _FernPoints = GeneratePoints(_FernParameters, false, false, true);
         _TreePoints = GeneratePoints(_TreeParameters, false, true, true);
         //_testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
@@ -113,19 +146,19 @@ public class ProcGenInstanciator : MonoBehaviour
         _testCubePoints = GeneratePoints(_testCubeParameters, false, false, true);
         _testDiscPoints = GeneratePoints(_testDiscParameters, false, false, true);
 
+        OnLoadingProgressChanged?.Invoke(5/10f, "Generating crowd points");
         _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
 
         _readyToSpawnPrefabs = true;
         
         OnMapGenerated?.Invoke();
-        Profiler.EndSample();
-        
         stopwatch.Stop();
         Logger.LogDebug("Map generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
     }
 
     private IEnumerator GenerateTerrain()
     {
+        OnLoadingProgressChanged?.Invoke(1/10f, "Generating terrain");
         // Generate Map ground
         NetworkObject ground = Instantiate(_ground, new Vector3(_regionSize.x / 2, -1f, _regionSize.y / 2), Quaternion.identity);
         ground.transform.localScale = new Vector3(_regionSize.x / 10 + _regionSize.x / 25, 1, _regionSize.y / 10 + _regionSize.x / 25);
@@ -151,6 +184,13 @@ public class ProcGenInstanciator : MonoBehaviour
         NetworkObject wallWest = Instantiate(_invisibleWall, new Vector3(-1, 1, _regionSize.y / 2), Quaternion.identity);
         wallWest.transform.localScale = new Vector3(1, 4, _regionSize.y + 1);
         InstanceFinder.ServerManager.Spawn(wallWest);
+        
+        _spawnedObjects.Add(ground);
+        _spawnedObjects.Add(wallNorth);
+        _spawnedObjects.Add(wallSouth);
+        _spawnedObjects.Add(wallEast);
+        _spawnedObjects.Add(wallWest);
+        
         yield return new WaitForFrames(_framesBetweenSpawn);
     }
 
@@ -228,8 +268,9 @@ public class ProcGenInstanciator : MonoBehaviour
             NetworkObject pref = Instantiate(prefab, new Vector3(pointsLocation[i].x, 0, pointsLocation[i].y), Quaternion.identity);
             pref.transform.Rotate(new Vector3(0, UnityEngine.Random.Range(0, 360), 0));
             InstanceFinder.ServerManager.Spawn(pref);
-            yield return new WaitForFrames(_framesBetweenSpawn);
+            _spawnedObjects.Add(pref);
         }
+        yield return null;
     }
 
     // Tries to spawns each prefabs respecting the min and max amount specified
@@ -321,14 +362,19 @@ public class ProcGenInstanciator : MonoBehaviour
             Debug.LogError("You must generate spawn points before trying to spawn them");
             yield break;
         }
+        OnLoadingProgressChanged?.Invoke(6/10f, "Spawning players 1/2");
         yield return SpawnPrefabs(_teamAPoints, _teamAPrefab);
+        OnLoadingProgressChanged?.Invoke(7/10f, "Spawning players 2/2");
         yield return SpawnPrefabs(_teamBPoints, _teamBPrefab);
+        OnLoadingProgressChanged?.Invoke(8/10f, "Spawning landmarks");
         yield return SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
         //yield return SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
+        OnLoadingProgressChanged?.Invoke(9/10f, "Spawning environment");
         yield return SpawnPrefabs(_FernPoints, _FernPrefab);
         yield return SpawnPrefabs(_TreePoints, _TreePrefab);
         yield return SpawnPrefabs(_testCubePoints, _testCubePrefab);
         yield return SpawnPrefabs(_testDiscPoints, _testDiscPrefab);
+        OnLoadingProgressChanged?.Invoke(10/10f, "Spawning crowd");
         yield return SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
         OnPrefabSpawned?.Invoke();
         stopwatch.Stop();
@@ -390,7 +436,7 @@ public class ProcGenInstanciator : MonoBehaviour
 }
 
 [System.Serializable]
-public class SpawnableNetworkObject
+public class SpawnableNetworkObject : ICloneable
 {
     [HideLabel] public NetworkObject Object;
 
@@ -400,4 +446,13 @@ public class SpawnableNetworkObject
     [HorizontalGroup("MinMax", Width = 0.4f), MinValue("@Min"), PropertySpace(SpaceBefore = 0, SpaceAfter = 15)]
     public int Max;
 
+    public object Clone()
+    {
+        return new SpawnableNetworkObject
+        {
+            Object = Object,
+            Min = Min,
+            Max = Max
+        };
+    }
 }

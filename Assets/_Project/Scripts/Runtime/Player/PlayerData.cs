@@ -16,6 +16,9 @@ namespace _Project.Scripts.Runtime.Player
         public Color PlayerCColor = Color.green;
         public Color PlayerDColor = Color.yellow;
         
+        [Title("NPC Color Settings")]
+        public Color[] NPCColors = new Color[4] {Color.red, Color.blue, Color.green, Color.yellow};
+        
         [Title("Player Movement Settings")]
         [PropertyRange(0,100)] public float PlayerMovementSpeed = 5f;
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
@@ -25,6 +28,9 @@ namespace _Project.Scripts.Runtime.Player
         [Tooltip("NOT IMPLEMENTED YET")]
         [PropertyRange(0,100)] public float PlayerMaxMovementSpeed = 10f;
         [PropertyRange(0,100)] public float PlayerRotationSpeed = 5f;
+
+        [Title("Player Animation Settings")] 
+        public float PlayerMaxSpeedForAnimation = 4.2f;
 
         [Title("Player Camera Settings")] 
         public float CameraOffsetRadius = 3;
@@ -68,6 +74,10 @@ namespace _Project.Scripts.Runtime.Player
         public float TongueBreakTensionSeconds = 2f;
         [Tooltip("To avoid player doing back and forward to reset the tension timer, we decrease the tension by this factor on the update loop")]
         public float TongueBreakTensionLossFactor = 0.1f;
+        [Tooltip("The time before the sound of the kitchen food being eaten is played (WARNING : It is cumulated with SecondsBeforeFruitIsConsumed)")]
+        public float SecondsBeforeFruitSoundEaten = 0.5f;
+        [Tooltip("The time before the fruit is consumed after the sound has been played (WARNING : It is cumulated with SecondsBeforeFruitSoundEaten)")]
+        public float SecondsBeforeFruitIsConsumed = 1f;
         
         [Title("Tongue Feedbacks")]
         public AnimationCurve TongueTensionVibrationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);

@@ -8,7 +8,7 @@ namespace _Project.Scripts.Runtime.Networking
     public class GameManagerData : ScriptableObject
     {
         [Title("Game Manager Settings")]
-        public float SecondsBetweenStartOfTheGameAndFirstRound = 5;
+        public float SecondsBetweenStartOfTheGameAndFirstRound = 1;
         public float SecondsBetweenRounds = 5;
         public float SecondsBetweenLastRoundCompletionAndEndOfTheGame = 5;
         

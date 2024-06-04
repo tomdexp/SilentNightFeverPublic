@@ -37,6 +37,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnAfterSceneChange;
         public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
         
+        private bool _isSubscribedToTongueChangeEvents;
         private float _deltaTimeCounter;
         private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
         private byte _teamBTongueBindCount;
@@ -88,6 +89,12 @@ namespace _Project.Scripts.Runtime.Networking
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+            }
+            else if (currentSceneName == "MenuV2Scene")
+            {
+                Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Special case where we disable Split Screen Cameras and Player Joining", Logger.LogType.Local, this);
+                CameraManager.Instance.TryDisableSplitScreenCameras();
+                PlayerManager.Instance.SetPlayerJoiningEnabled(false);
             }
             else
             {
@@ -151,12 +158,11 @@ namespace _Project.Scripts.Runtime.Networking
             SceneManager.LoadGlobalScenes(sld);
             while (!hasFinishedLoading || !hasAllClientsLoaded)
             {
-                Logger.LogTrace("Waiting for scene to load...", Logger.LogType.Server, this);
+                //Logger.LogTrace("Waiting for scene to load...", Logger.LogType.Server, this);
                 yield return null;
             }
             stopwatch.Stop();
             Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
-            //yield return UnLoadCurrentScene();
             yield return TransitionManager.Instance.EndSceneChangeTransition();
             OnAfterSceneChange?.Invoke();
             switch (sceneType)
@@ -263,6 +269,8 @@ namespace _Project.Scripts.Runtime.Networking
                 yield break;
             }
             IsGameStarted.Value = true;
+            yield return TransitionManager.Instance.BeginLoadingGameTransition();
+            yield return new WaitForSeconds(1f);
             var procGen = FindAnyObjectByType<ProcGenInstanciator>();
             if (procGen)
             {
@@ -278,13 +286,20 @@ namespace _Project.Scripts.Runtime.Networking
             PlayerManager.Instance.TrySetPlayerChangingTeamEnabled(false);
             SubscribeToTongueChangeEvents();
             SetupRounds();
-            StartCoroutine(StartRounds());
+            yield return StartRounds();
             OnGameStarted?.Invoke();
+            yield return TransitionManager.Instance.EndLoadingGameTransition();
             Logger.LogInfo("Game started !", Logger.LogType.Server, this);
         }
 
         private void SubscribeToTongueChangeEvents()
         {
+            if (_isSubscribedToTongueChangeEvents)
+            {
+                Logger.LogDebug("Already subscribed to tongue change events ! Which means the game is probably resetting", Logger.LogType.Server, this);
+                return;
+            }
+            
             _playerAStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.A).GetPlayerController().GetTongue();
             _playerBStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.B).GetPlayerController().GetTongue();
             _playerCStickyTongue = PlayerManager.Instance.GetNetworkPlayer(PlayerIndexType.C).GetPlayerController().GetTongue();
@@ -299,6 +314,8 @@ namespace _Project.Scripts.Runtime.Networking
             _playerBCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
             _playerCCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
             _playerDCharacterTongueAnchor.OnTongueBindChange += OnAnyPlayerTongueBindChange;
+            
+            _isSubscribedToTongueChangeEvents = true;
         }
 
         private void OnAnyPlayerTongueBindChange(PlayerStickyTongue tongue)
@@ -358,6 +375,7 @@ namespace _Project.Scripts.Runtime.Networking
             if(_playerBCharacterTongueAnchor) _playerBCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
             if(_playerCCharacterTongueAnchor) _playerCCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
             if(_playerDCharacterTongueAnchor) _playerDCharacterTongueAnchor.OnTongueBindChange -= OnAnyPlayerTongueBindChange;
+            _isSubscribedToTongueChangeEvents = false;
         }
 
         private void SetupRounds()
@@ -411,11 +429,13 @@ namespace _Project.Scripts.Runtime.Networking
             }
             else
             {
+                yield return TransitionManager.Instance.BeginLoadingRoundTransition();
                 yield return new WaitForSeconds(GameManagerData.SecondsBetweenRounds);
             }
             OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
             Logger.LogInfo("Starting round " + CurrentRoundNumber.Value, Logger.LogType.Server, this);
             GetCurrentRound().StartRound();
+            yield return TransitionManager.Instance.EndLoadingRoundTransition();
         }
 
         private void EndCurrentRound(PlayerTeamType teamType)
@@ -552,6 +572,21 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 Logger.LogError("The current round is already ended !", Logger.LogType.Server, this);
             }
+        }
+
+        public void ResetGame()
+        {
+            if (!IsServerStarted) return;
+            
+            IsGameStarted.Value = false;
+            Rounds.Clear();
+            RoundsResults.Clear();
+            CurrentRoundNumber.Value = 0;
+            CurrentRoundTimer.Value = 0;
+            _deltaTimeCounter = 0;
+            _teamATongueBindCount = 0;
+            _teamBTongueBindCount = 0;
+            StartCoroutine(StartGame());
         }
         
         public int GetWinCount(PlayerTeamType teamType)
