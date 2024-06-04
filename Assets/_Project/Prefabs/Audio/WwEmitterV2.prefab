@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1796953705648559829}
   - component: {fileID: 2410484843128416693}
+  - component: {fileID: 6139635231352241260}
   - component: {fileID: 1384718321121725172}
   - component: {fileID: 7549713969443628828}
   - component: {fileID: 9147176689266855027}
@@ -56,6 +57,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6139635231352241260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4260323307893241468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c008874219a74602a852547dc66fd383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EventEnterZoneAtLeastOnePlayer: {fileID: 7549713969443628828}
+  EventExitZoneNoPlayer: {fileID: 9147176689266855027}
+  _isInCollider: 0
+  _currentNumberPlayer: 0
+  _players: []
+  Player1: {fileID: 0}
+  Player2: {fileID: 0}
+  Player3: {fileID: 0}
+  Player4: {fileID: 0}
 --- !u!114 &1384718321121725172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,7 +120,7 @@ MonoBehaviour:
   data:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 4cf49ff4ad274454388d44b2c250a2af,
+    WwiseObjectReference: {fileID: 11400000, guid: ad92d5686e4f6474d8c9a119ce812444,
       type: 2}
   useCallbacks: 0
   Callbacks: []
@@ -128,7 +150,7 @@ MonoBehaviour:
   data:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 918fbc3a1c95337469241fc6906a9498,
+    WwiseObjectReference: {fileID: 11400000, guid: 862f4fc55c75dd941a8ccd2aee465119,
       type: 2}
   useCallbacks: 0
   Callbacks: []
