@@ -560,14 +560,10 @@
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{32CCF2DC-70D4-6A5D-0A9E-A5377520B47B}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{EF22F9BC-1984-E063-F7E9-23F2EA0FD446}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
-				<File Id="25861552" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>Test_Transition_SFX_Os.wav</ShortName>
-					<CachePath>SFX/Test_Transition_SFX_Os_EDCD4836.wem</CachePath>
-				</File>
 				<File Id="36775885" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A2_160_Chorus1&amp;2_Bass_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A2_160_Chorus1&amp;2_Bass_V1_D8A0D580.wem</CachePath>
@@ -615,10 +611,6 @@
 				<File Id="169011874" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A2_160_Verse_Chords_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A2_160_Verse_Chords_V1_D8A0D580.wem</CachePath>
-				</File>
-				<File Id="170382054" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>Test_Transition_SFX_Loop-001.wav</ShortName>
-					<CachePath>SFX/Test_Transition_SFX_Loop-001_830FDB21.wem</CachePath>
 				</File>
 				<File Id="172120453" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A2_160_Verse_Snare_V1.wav</ShortName>
@@ -997,12 +989,7 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
-				<Event Id="3658594925" Name="Stop_MUSC_GLOBAL_SWITCH" DurationType="Infinite">
-					<MediaRefs>
-						<MediaRef Id="25861552"/>
-						<MediaRef Id="170382054"/>
-					</MediaRefs>
-				</Event>
+				<Event Id="3658594925" Name="Stop_MUSC_GLOBAL_SWITCH" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 			<GameParameters>
 				<GameParameter Id="82071987" Name="GP_MUSC_SpeedRead"/>
@@ -1439,5 +1426,5 @@
 			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{F6B48E83-8553-303B-1067-B551166E488F}</FileHash>
+	<FileHash>{188ABEBF-4B68-47FA-9C18-E8366F6B5FE1}</FileHash>
 </SoundBanksInfo>
