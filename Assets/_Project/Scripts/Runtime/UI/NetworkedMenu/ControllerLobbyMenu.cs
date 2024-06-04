@@ -12,7 +12,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
     public class ControllerLobbyMenu : MenuBase
     {
         public override string MenuName { get; } = "ControllerLobbyMenu";
-        [SerializeField] private float _secondsBeforeStartWhenAllControllerConnected = 5;
+        [SerializeField] private float _secondsBeforeStartWhenAllControllerConnected = 2.5f;
         private CanvasGroup _canvasGroup;
         private bool _timerStarted;
 

@@ -11,7 +11,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
     {
         public abstract string MenuName { get; }
 
-        private void Start()
+        public virtual void Start()
         {
             InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
         }

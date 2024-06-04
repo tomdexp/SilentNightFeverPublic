@@ -172,7 +172,7 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 183e470d-7ba0-4fe0-84f9-b6f0cbbdcea3
-    m_Processors: 
+    m_Processors: AxisDeadzone
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
@@ -229,7 +229,7 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: b648e8bc-9d1a-4dee-ae83-893ce2d0ea1c
-    m_Processors: 
+    m_Processors: AxisDeadzone
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
@@ -306,6 +306,7 @@ MonoBehaviour:
       m_Action: Join And Full Fake Player Input
       m_Flags: 0
     m_Flags: 0
+  _changeTeamCooldownSeconds: 0.25
 --- !u!114 &6486713339912833431
 MonoBehaviour:
   m_ObjectHideFlags: 0

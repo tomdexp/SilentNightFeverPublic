@@ -34,6 +34,7 @@ namespace _Project.Scripts.Runtime.Networking
         [SerializeField] private InputAction _goToLeftTeamInputAction;
         [SerializeField] private InputAction _goToRightTeamInputAction;
         [SerializeField] private InputAction _joinAndFullFakePlayerInputAction;
+        [SerializeField] private float _changeTeamCooldownSeconds = 1f;
         private readonly SyncList<RealPlayerInfo> _realPlayerInfos = new SyncList<RealPlayerInfo>();
         private readonly SyncList<PlayerTeamInfo> _playerTeamInfos = new SyncList<PlayerTeamInfo>();
         private readonly SyncList<PlayerReadyInfo> _playerReadyInfos = new SyncList<PlayerReadyInfo>();
@@ -58,6 +59,11 @@ namespace _Project.Scripts.Runtime.Networking
         private PlayerController _playerControllerB;
         private PlayerController _playerControllerC;
         private PlayerController _playerControllerD;
+        
+        private bool _changeTeamCooldownPlayerA;
+        private bool _changeTeamCooldownPlayerB;
+        private bool _changeTeamCooldownPlayerC;
+        private bool _changeTeamCooldownPlayerD;
         
 
         public override void OnStartServer()
@@ -360,7 +366,8 @@ namespace _Project.Scripts.Runtime.Networking
                     playerTeamInfos.Add(new PlayerTeamInfo
                     {
                         PlayerIndexType = _realPlayerInfos[i].PlayerIndexType,
-                        PlayerTeamType = PlayerTeamType.Z
+                        PlayerTeamType = PlayerTeamType.Z,
+                        ScreenPlayerIndexType = PlayerIndexType.Z
                     });
                     playerReadyInfos.Add(new PlayerReadyInfo
                     {
@@ -513,16 +520,129 @@ namespace _Project.Scripts.Runtime.Networking
         [ServerRpc(RequireOwnership = false)]
         private void ChangeTeamServerRpc(PlayerIndexType playerIndexType, bool goToLeft)
         {
-            // Structures cannot have their values modified when they reside within a collection. You must instead create a local variable for the collection index you wish to modify, change values on the local copy, then set the local copy back into the collection
+            // Structures cannot have their values modified when they reside within a collection.
+            // You must instead create a local variable for the collection index you wish to modify, change values on the local copy, then set the local copy back into the collection
+
+            // Check if the input is in cooldown
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    if (_changeTeamCooldownPlayerA) return;
+                    break;
+                case PlayerIndexType.B:
+                    if (_changeTeamCooldownPlayerB) return;
+                    break;
+                case PlayerIndexType.C:
+                    if (_changeTeamCooldownPlayerC) return;
+                    break;
+                case PlayerIndexType.D:
+                    if (_changeTeamCooldownPlayerD) return;
+                    break;
+                case PlayerIndexType.Z:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
+            }
+
+            StartCoroutine(ChangeTeamCooldownCoroutine(playerIndexType));
+            
+            // Player can go in the team Z (middle), A(left) or B(right)
+            PlayerTeamType previousTeam = _playerTeamInfos.Collection.First(x => x.PlayerIndexType == playerIndexType).PlayerTeamType;
             PlayerTeamType newTeam = PlayerTeamType.Z;
             if (goToLeft)
             {
-                newTeam = PlayerTeamType.A;
+                switch (previousTeam)
+                {
+                    case PlayerTeamType.A:
+                        return;
+                    case PlayerTeamType.B:
+                        newTeam = PlayerTeamType.Z;
+                        break;
+                    case PlayerTeamType.Z:
+                        newTeam = PlayerTeamType.A;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
             else
             {
-                newTeam = PlayerTeamType.B;
+                switch (previousTeam)
+                {
+                    case PlayerTeamType.A:
+                        newTeam = PlayerTeamType.Z;
+                        break;
+                    case PlayerTeamType.B:
+                        return;
+                    case PlayerTeamType.Z:
+                        newTeam = PlayerTeamType.B;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
+            
+            // Check if team is full (2 players max) and find first free screen slot, ignore if the Team is Z
+            // Find the first free screen slot
+            PlayerIndexType newScreenPlayerIndexType = PlayerIndexType.Z;
+            if (newTeam != PlayerTeamType.Z)
+            {
+                int numOfPlayersInThisTeam = 0;
+                foreach (PlayerTeamInfo teamInfo in _playerTeamInfos.Collection)
+                {
+                    if (teamInfo.PlayerTeamType == newTeam)
+                    {
+                        numOfPlayersInThisTeam++;
+                    }
+                }
+                if (numOfPlayersInThisTeam >= 2)
+                {
+                    Logger.LogDebug("Player " + playerIndexType + " can't change team to " + newTeam + " because team is already full " + numOfPlayersInThisTeam, Logger.LogType.Server, this);
+                    return;
+                }
+            
+                // If there is no player in the team, assign the first screen slot
+                if (numOfPlayersInThisTeam == 0 && newTeam == PlayerTeamType.A)
+                {
+                    newScreenPlayerIndexType = PlayerIndexType.A;
+                }
+                if (numOfPlayersInThisTeam == 0 && newTeam == PlayerTeamType.B)
+                {
+                    newScreenPlayerIndexType = PlayerIndexType.B;
+                }
+            
+                // If there is already exactly 1 player, check its screen index and assign the other one
+                if (numOfPlayersInThisTeam == 1)
+                {
+                    foreach (PlayerTeamInfo teamInfo in _playerTeamInfos.Collection)
+                    {
+                        if (teamInfo.PlayerTeamType == newTeam)
+                        {
+                            PlayerIndexType occupiedScreenPlayerIndexType = teamInfo.ScreenPlayerIndexType;
+                            switch (occupiedScreenPlayerIndexType)
+                            {
+                                case PlayerIndexType.A:
+                                    newScreenPlayerIndexType = PlayerIndexType.C;
+                                    break;
+                                case PlayerIndexType.B:
+                                    newScreenPlayerIndexType = PlayerIndexType.D;
+                                    break;
+                                case PlayerIndexType.C:
+                                    newScreenPlayerIndexType = PlayerIndexType.A;
+                                    break;
+                                case PlayerIndexType.D:
+                                    newScreenPlayerIndexType = PlayerIndexType.B;
+                                    break;
+                                case PlayerIndexType.Z:
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                    }
+                }
+            }
+            
             // get the index of the player in the list
             var playerTeamInfo = _playerTeamInfos.Collection.First(x => x.PlayerIndexType == playerIndexType);
             var index = _playerTeamInfos.IndexOf(playerTeamInfo);
@@ -533,6 +653,7 @@ namespace _Project.Scripts.Runtime.Networking
                 return;
             }
             copy.PlayerTeamType = newTeam;
+            copy.ScreenPlayerIndexType = newScreenPlayerIndexType;
             _playerTeamInfos[index] = copy;
             Logger.LogDebug("Player " + playerIndexType + " changed team to " + newTeam, Logger.LogType.Server, this);
         }
@@ -589,16 +710,16 @@ namespace _Project.Scripts.Runtime.Networking
                 _readyInputAction.Enable();
                 _readyInputAction.performed += ConfirmTeamInputActionPerformed;
 
-                _cancelReadyInputAction.Disable();
-                _cancelReadyInputAction.performed -= CancelConfirmTeamInputActionPerformed;
+                _cancelReadyInputAction.Enable();
+                _cancelReadyInputAction.performed += CancelConfirmTeamInputActionPerformed;
             }
             else
             {
                 _readyInputAction.performed -= ConfirmTeamInputActionPerformed;
                 _readyInputAction.Disable();
-
-                _cancelReadyInputAction.Enable();
-                _cancelReadyInputAction.performed += CancelConfirmTeamInputActionPerformed;
+                
+                _cancelReadyInputAction.Disable();
+                _cancelReadyInputAction.performed -= CancelConfirmTeamInputActionPerformed;
             }
         }
 
@@ -698,7 +819,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         public void TryCancelConfirmTeam(InputAction.CallbackContext context)
         {
-            if (_canChangeTeam)
+            if (!_canChangeTeam)
             {
                 Logger.LogWarning("Can't quit team yet, the variable _canChangeTeam is currently true", context: this);
                 return;
@@ -1150,6 +1271,11 @@ namespace _Project.Scripts.Runtime.Networking
             return _realPlayerInfos.Collection;
         }
         
+        public List<PlayerReadyInfo> GetPlayerReadyInfos()
+        {
+            return _playerReadyInfos.Collection;
+        }
+        
         public bool DoesRealPlayerExist(RealPlayerInfo realPlayerInfo)
         {
             return _realPlayerInfos.Collection.Any(x => x.ClientId == realPlayerInfo.ClientId && x.DevicePath == realPlayerInfo.DevicePath);
@@ -1264,6 +1390,74 @@ namespace _Project.Scripts.Runtime.Networking
                     break;
                 case PlayerIndexType.D:
                     _playerControllerD.VoodooPuppetDirection.Value = direction;
+                    break;
+                case PlayerIndexType.Z:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
+            }
+        }
+
+        public List<PlayerTeamInfo> GetPlayerTeamInfos()
+        {
+            return _playerTeamInfos.Collection;
+        }
+        
+        private IEnumerator ChangeTeamCooldownCoroutine(PlayerIndexType playerIndexType)
+        {
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    if (_changeTeamCooldownPlayerA) yield break;
+                    break;
+                case PlayerIndexType.B:
+                    if (_changeTeamCooldownPlayerB) yield break;
+                    break;
+                case PlayerIndexType.C:
+                    if (_changeTeamCooldownPlayerC) yield break;
+                    break;
+                case PlayerIndexType.D:
+                    if (_changeTeamCooldownPlayerD) yield break;
+                    break;
+                case PlayerIndexType.Z:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
+            }
+            
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    _changeTeamCooldownPlayerA = true;
+                    break;
+                case PlayerIndexType.B:
+                    _changeTeamCooldownPlayerB = true;
+                    break;
+                case PlayerIndexType.C:
+                    _changeTeamCooldownPlayerC = true;
+                    break;
+                case PlayerIndexType.D:
+                    _changeTeamCooldownPlayerD = true;
+                    break;
+                case PlayerIndexType.Z:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
+            }
+            yield return new WaitForSeconds(_changeTeamCooldownSeconds);
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    _changeTeamCooldownPlayerA = false;
+                    break;
+                case PlayerIndexType.B:
+                    _changeTeamCooldownPlayerB = false;
+                    break;
+                case PlayerIndexType.C:
+                    _changeTeamCooldownPlayerC = false;
+                    break;
+                case PlayerIndexType.D:
+                    _changeTeamCooldownPlayerD = false;
                     break;
                 case PlayerIndexType.Z:
                     break;
