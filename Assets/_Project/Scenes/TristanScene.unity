@@ -4306,13 +4306,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1103036101350480297, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
+      propertyPath: _scenePathHash
+      value: 62373428
+      objectReference: {fileID: 0}
+    - target: {fileID: 1103036101350480297, guid: 4903701332e325b43b223d49e314f23c,
+        type: 3}
       propertyPath: <SceneId>k__BackingField
-      value: 267891833539470779
+      value: 267891836962422974
       objectReference: {fileID: 0}
     - target: {fileID: 5331434031878257407, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
       propertyPath: m_Name
-      value: Player D
+      value: Player D Mannequin
       objectReference: {fileID: 0}
     - target: {fileID: 7786845258027487931, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
@@ -4327,6 +4332,12 @@ PrefabInstance:
 --- !u!4 &598254326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 874502458043941542, guid: 4903701332e325b43b223d49e314f23c,
+    type: 3}
+  m_PrefabInstance: {fileID: 598254325}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &598254327 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4308283473412503374, guid: 4903701332e325b43b223d49e314f23c,
     type: 3}
   m_PrefabInstance: {fileID: 598254325}
   m_PrefabAsset: {fileID: 0}
@@ -6470,6 +6481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 874466421}
+  - component: {fileID: 874466422}
   m_Layer: 0
   m_Name: Customizer
   m_TagString: Untagged
@@ -6496,6 +6508,22 @@ Transform:
   - {fileID: 1342517228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &874466422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874466420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f0d86d5779b0994689cade5d14760df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerAMannequinArrows: {fileID: 3472334041883746827}
+  _playerBMannequinArrows: {fileID: 1486433478}
+  _playerCMannequinArrows: {fileID: 598254327}
+  _playerDMannequinArrows: {fileID: 1342517229}
 --- !u!1 &882775855
 GameObject:
   m_ObjectHideFlags: 0
@@ -10018,13 +10046,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1103036101350480297, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
+      propertyPath: _scenePathHash
+      value: 62373428
+      objectReference: {fileID: 0}
+    - target: {fileID: 1103036101350480297, guid: 4903701332e325b43b223d49e314f23c,
+        type: 3}
       propertyPath: <SceneId>k__BackingField
-      value: 267891834845250041
+      value: 267891834487249869
       objectReference: {fileID: 0}
     - target: {fileID: 5331434031878257407, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
       propertyPath: m_Name
-      value: Player B
+      value: Player B Mannequin
       objectReference: {fileID: 0}
     - target: {fileID: 7786845258027487931, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
@@ -10039,6 +10072,12 @@ PrefabInstance:
 --- !u!4 &1342517228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 874502458043941542, guid: 4903701332e325b43b223d49e314f23c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1342517227}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1342517229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4308283473412503374, guid: 4903701332e325b43b223d49e314f23c,
     type: 3}
   m_PrefabInstance: {fileID: 1342517227}
   m_PrefabAsset: {fileID: 0}
@@ -11582,13 +11621,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1103036101350480297, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
+      propertyPath: _scenePathHash
+      value: 62373428
+      objectReference: {fileID: 0}
+    - target: {fileID: 1103036101350480297, guid: 4903701332e325b43b223d49e314f23c,
+        type: 3}
       propertyPath: <SceneId>k__BackingField
-      value: 267891833472896377
+      value: 267891837454245850
       objectReference: {fileID: 0}
     - target: {fileID: 5331434031878257407, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
       propertyPath: m_Name
-      value: Player C
+      value: Player C Mannequin
       objectReference: {fileID: 0}
     - target: {fileID: 7786845258027487931, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
@@ -11603,6 +11647,12 @@ PrefabInstance:
 --- !u!4 &1486433477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 874502458043941542, guid: 4903701332e325b43b223d49e314f23c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1486433476}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1486433478 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4308283473412503374, guid: 4903701332e325b43b223d49e314f23c,
     type: 3}
   m_PrefabInstance: {fileID: 1486433476}
   m_PrefabAsset: {fileID: 0}
@@ -16878,13 +16928,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1103036101350480297, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
+      propertyPath: _scenePathHash
+      value: 62373428
+      objectReference: {fileID: 0}
+    - target: {fileID: 1103036101350480297, guid: 4903701332e325b43b223d49e314f23c,
+        type: 3}
       propertyPath: <SceneId>k__BackingField
-      value: 267891833669474786
+      value: 267891833606649127
       objectReference: {fileID: 0}
     - target: {fileID: 5331434031878257407, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
       propertyPath: m_Name
-      value: Player A
+      value: Player A Mannequin
       objectReference: {fileID: 0}
     - target: {fileID: 7786845258027487931, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
@@ -16896,6 +16951,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4903701332e325b43b223d49e314f23c, type: 3}
+--- !u!1 &3472334041883746827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4308283473412503374, guid: 4903701332e325b43b223d49e314f23c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3472334041883746826}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
