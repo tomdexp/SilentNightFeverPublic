@@ -1,3 +1,5 @@
+using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Player;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Sirenix.OdinInspector;
@@ -8,6 +10,9 @@ using UnityEngine;
 
 public class HatSetter : NetworkBehaviour
 {
+    [SerializeField] private PlayerIndexType _playerIndexType = 0;
+    [Space]
+
     [SerializeField] private bool _randomHat = true;
     [SerializeField, Required] private GameObject _hatContainer = null;
     private MeshRenderer[] _hats;
@@ -39,7 +44,6 @@ public class HatSetter : NetworkBehaviour
     {
         base.OnStartServer();
 
-        _randomHat = true;
         if (_randomHat == true)
         {
             _randomHatIndex.Value = Random.Range(0, _hats.Length);
@@ -53,6 +57,50 @@ public class HatSetter : NetworkBehaviour
         SetHatByIndex(_randomHatIndex.Value);
     }
 
+    public override void OnStartNetwork()
+    {
+        base.OnStartNetwork();
+
+
+        if (TryGetComponent(out NetworkPlayer NP))
+        {
+            _playerIndexType = NP.GetPlayerIndexType();
+        };
+        StartCoroutine(TrySubscribingToEvents());
+    }
+    public override void OnStopNetwork()
+    {
+        base.OnStopNetwork();
+
+        // PlayerManager.HasInstance avant de desouscrire
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.Instance.OnPlayerHatInfosChanged -= OnPlayerHatInfosChanged;
+        }
+    }
+
+
+    private IEnumerator TrySubscribingToEvents()
+    {
+        while (!PlayerManager.HasInstance)
+        {
+            yield return null;
+        }
+        PlayerManager.Instance.OnPlayerHatInfosChanged += OnPlayerHatInfosChanged;
+    }
+
+    private void OnPlayerHatInfosChanged(List<_Project.Scripts.Runtime.Player.PlayerHatInfo> hatInfos)
+    {
+        foreach (var hatInfo in hatInfos)
+        {
+            if (hatInfo.PlayerIndexType == _playerIndexType)
+            {
+                SetHatByName(hatInfo.PlayerHatType.ToString());
+            }
+        }
+    }
+
+
     private void SetHat(int prev, int next, bool asServer)
     {
         SetHatByIndex(next);
@@ -62,7 +110,33 @@ public class HatSetter : NetworkBehaviour
     {
         if (_hats.IsNullOrEmpty()) { return; }
 
+        DisableHats();
+
         _hats[index].gameObject.SetActive(true);
+    }
+
+    private void SetHatByName(string hatName)
+    {
+        if (_hats.IsNullOrEmpty()) { return; }
+
+        DisableHats();
+
+        foreach (var hat in _hats)
+        {
+            if (hat.name == hatName)
+            {
+                hat.gameObject.SetActive(true);
+                return;
+            }
+        }
+    }
+
+    private void DisableHats()
+    {
+        foreach (var hat in _hats)
+        {
+            hat.gameObject.SetActive(false);
+        }
     }
 
 }
