@@ -20,6 +20,7 @@ namespace _Project.Scripts.Runtime.UI
         
         [SerializeField] private ButtonType _buttonType;
         [SerializeField, Required] private UIData _uiData;
+        [SerializeField] private bool _keepFocusOnClicked = false;
         
         private Button _button;
         private float _originalScale;
@@ -41,7 +42,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnClick()
         {
-            StartCoroutine(DisableCooldown());
+            //StartCoroutine(DisableCooldown());
             if (_buttonType == ButtonType.Enter)
             {
                 if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickEnter, AudioManager.Instance.gameObject);

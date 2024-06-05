@@ -16,6 +16,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private Button _optionsButton;
         [SerializeField, Required] private Button _creditsButton;
         [SerializeField, Required] private Button _quitButton;
+        [SerializeField, Required] private Button _languageSelectionButton;
         private CanvasGroup _canvasGroup;
 
         private void Awake()
@@ -38,10 +39,16 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             {
                 Logger.LogError("Quit Button not set", Logger.LogType.Client, this);
             }
+            
             BindNavigableVertical(_playButton, _optionsButton);
             BindNavigableVertical(_optionsButton, _creditsButton);
             BindNavigableVertical(_creditsButton, _quitButton);
             BindNavigableVertical(_quitButton, _playButton);
+            
+            BindNavigableHorizontal(_languageSelectionButton, _playButton);
+            BindNavigableHorizontal(_languageSelectionButton, _optionsButton);
+            BindNavigableHorizontal(_languageSelectionButton, _creditsButton);
+            BindNavigableHorizontal(_languageSelectionButton, _quitButton);
         }
 
         public override void Open()
@@ -81,7 +88,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         private void CreditsButtonClicked()
         {
-            Logger.LogWarning("Credits not implemented yet", Logger.LogType.Client, this);
+            if (UIManager.HasInstance) UIManager.Instance.GoToMenu<CreditsMenu>();
         }
 
         private void QuitButtonClicked()
