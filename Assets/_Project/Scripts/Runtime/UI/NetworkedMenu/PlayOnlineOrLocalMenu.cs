@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Utils;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
-            _canvasGroup.alpha = 0;
+            _canvasGroup.CloseInstant();
             if (!_playOnlineButton)
             {
                 Debug.LogError("Play Online Button not set");
@@ -25,14 +26,14 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             {
                 Debug.LogError("Play Local Button not set");
             }
+            BindNavigableVertical(_playOnlineButton, _playLocalButton);
+            BindNavigableVertical(_playLocalButton, _playOnlineButton); // Loop back
         }
 
         public override void Open()
         {
             base.Open();
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.Open();
             UIManager.Instance.SwitchToCanvasCamera();
             _playOnlineButton.onClick.AddListener(PlayOnlineButtonClicked);
             _playLocalButton.onClick.AddListener(PlayLocalButtonClicked);
@@ -41,9 +42,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void Close()
         {
             base.Close();
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.Close();
             _playOnlineButton.onClick.RemoveListener(PlayOnlineButtonClicked);
             _playLocalButton.onClick.RemoveListener(PlayLocalButtonClicked);
         }

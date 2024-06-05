@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Runtime.Utils;
@@ -8,12 +9,14 @@ using FishNet.Object.Synchronizing;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 {
     public class UIManager : NetworkSingleton<UIManager>
     {
+        public bool IsNavigationWithMouse { get; private set; }
         [SerializeField] private InputAction _goBackAction;
         [SerializeField] private List<MenuBase> _menus = new List<MenuBase>();
         private readonly SyncVar<int> _currentMenuIndex = new SyncVar<int>(-1);
@@ -33,7 +36,50 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _goBackAction.Disable();
             _goBackAction.performed -= OnGoBack;
         }
-        
+
+        private void LateUpdate()
+        {
+            HandleMouseOrGamepadNavigation();
+        }
+
+        private void HandleMouseOrGamepadNavigation()
+        {
+            // If we detect a press from a gamepad, hide the mouse cursor and lock it
+            if (Gamepad.current != null && IsNavigationWithMouse)
+            {
+                var gamepadButtonPressedThisFrame = false;
+                foreach (var x in Gamepad.current.allControls)
+                {
+                    if (x is ButtonControl && x.IsPressed() && !x.synthetic)
+                    {
+                        gamepadButtonPressedThisFrame = true;
+                        break;
+                    }
+                }
+                if (gamepadButtonPressedThisFrame)
+                {
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Confined;
+                    Mouse.current.WarpCursorPosition(new Vector2(0,0));
+                    // put the cursor position at the bottom right
+                    IsNavigationWithMouse = false;
+                    if (_menus.Count > 0)
+                    {
+                        if (_currentMenuIndex.Value != -1)
+                            _menus[_currentMenuIndex.Value].TrySelectDefault();
+                    }
+                }
+            }
+            
+            // If we detect a press from the mouse, show the mouse cursor and unlock it
+            if (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                IsNavigationWithMouse = true;
+            }
+        }
+
         private void OnGoBack(InputAction.CallbackContext context)
         {
             if (_currentMenuIndex.Value == -1)
@@ -46,6 +92,13 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void OnCurrentMenuIndexChanged(int prev, int next, bool asServer)
         {
+            if (asServer) return;
+            if (_menus.Count == 0)
+            {
+                Logger.LogDebug("No menus registered yet", Logger.LogType.Client,this);
+                StartCoroutine(RetryOnCurrentMenuIndexChanged(prev, next, false));
+                return;
+            }
             if (prev != -1)
             {
                 _menus[prev].Close();
@@ -54,9 +107,28 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             else
             {
                 Logger.LogTrace($"Opening first menu {GetMenuType(next).Name}", Logger.LogType.Client,this);
+                // close all menu except the first one
+                for (int i = 1; i < _menus.Count; i++)
+                {
+                    if (i != next)
+                    {
+                        _menus[i].Close();
+                    }
+                }
             }
             _menus[next].Open();
             FindAnyObjectByType<MenuToGoOnReset>().SetMenuName(_menus[next].MenuName);
+        }
+        
+        
+        // Special case when the network is reset, the client receive the CurrentMenuIndex before the menus are registered, so we need to wait for the menus to be registered and retry
+        private IEnumerator RetryOnCurrentMenuIndexChanged(int prev, int next, bool asServer)
+        {
+            while (!AreAllMenusRegistered())
+            {
+                yield return null;
+            }
+            OnCurrentMenuIndexChanged(prev, next, asServer);
         }
 
         [Server]
@@ -95,22 +167,24 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             SortMenuByNames();
             CheckAllMenuRegistered();
         }
+        
+        public string GetCurrentMenuName()
+        {
+            if (_currentMenuIndex.Value == -1)
+            {
+                return null;
+            }
+            return _menus[_currentMenuIndex.Value].MenuName;
+        }
 
         private void CheckAllMenuRegistered()
         {
-            var menus = FindObjectsByType<MenuBase>(FindObjectsSortMode.None);
-            bool allMenusRegistered = true;
-            foreach (var menu in menus)
-            {
-                if (!_menus.Contains(menu))
-                {
-                    allMenusRegistered = false;
-                }
-            }
-            
-            if (allMenusRegistered)
+            if (AreAllMenusRegistered())
             {
                 Logger.LogTrace("All menus registered", Logger.LogType.Client, this);
+                
+                if (!IsServerStarted) return; // because we are going to modify a SyncVar only the server can modify
+                
                 // if menuToGoOnReset is empty, set it to the first menu (yes this is quite ugly but it works)
                 // We always find the object, because this script is a network behaviour and is destroyed and recreated on network reset
                 if (string.IsNullOrEmpty(FindAnyObjectByType<MenuToGoOnReset>().MenuName))
@@ -130,6 +204,20 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 }
                 _currentMenuIndex.Value = _menus.IndexOf(newMenu);
             }
+        }
+        
+        private bool AreAllMenusRegistered()
+        {
+            var menus = FindObjectsByType<MenuBase>(FindObjectsSortMode.None);
+            bool allMenusRegistered = true;
+            foreach (var menu in menus)
+            {
+                if (!_menus.Contains(menu))
+                {
+                    allMenusRegistered = false;
+                }
+            }
+            return allMenusRegistered;
         }
         
         private void SortMenuByNames()

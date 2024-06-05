@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
+using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
 using FishNet;
 using FishNet.Transporting;
@@ -38,9 +39,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.CloseInstant();
             _playerStartA = _playerLabelA.position;
             _playerStartB = _playerLabelB.position;
             _playerStartC = _playerLabelC.position;
@@ -50,23 +49,19 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void Open()
         {
             base.Open();
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.Open();
+            UIManager.Instance.SwitchToCanvasCamera();
             if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance)
             {
                 PlayerManager.Instance.TryStartTeamManagement();
                 PlayerManager.Instance.OnAllPlayersReady += OnAllPlayersReady;
             }
-            if (InstanceFinder.IsServerStarted) UIManager.Instance.SwitchToCanvasCamera();
         }
 
         public override void Close()
         {
             base.Close();
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.Close();
             if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;
         }
         
@@ -91,8 +86,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             UpdateUI();
         }
 
-        private void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
             if(InstanceFinder.ClientManager) InstanceFinder.ClientManager.OnClientConnectionState -= OnClientConnectionState;
             if (PlayerManager.HasInstance) PlayerManager.Instance.OnPlayerTeamInfosChanged -= OnPlayerTeamInfosChanged;
             if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;

@@ -28,6 +28,5 @@ namespace _Project.Scripts.Runtime.Networking
                 InstanceFinder.ServerManager.Spawn(go);
             }
         }
-        
     }
 }

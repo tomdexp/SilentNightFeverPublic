@@ -5993,7 +5993,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1930015131}
   - component: {fileID: 1930015133}
-  - component: {fileID: 1930015132}
+  - component: {fileID: 1930015134}
+  - component: {fileID: 1930015135}
   m_Layer: 0
   m_Name: UIManager Spawner
   m_TagString: Untagged
@@ -6016,7 +6017,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1930015132
+--- !u!114 &1930015133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930015130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c58fa419482a4157a77c09345f73197a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 1930015134}
+  _networkObjectCache: {fileID: 1930015134}
+  networkObject: {fileID: 8583629334296125534, guid: 9dd15d06d22bd024697b1b37da582f4c,
+    type: 3}
+--- !u!114 &1930015134
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6056,9 +6074,9 @@ MonoBehaviour:
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 1918214442
-  <SceneId>k__BackingField: 8238668296906579979
+  <SceneId>k__BackingField: 8238668295225914019
   <AssetPathHash>k__BackingField: 0
---- !u!114 &1930015133
+--- !u!114 &1930015135
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6067,14 +6085,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1930015130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c58fa419482a4157a77c09345f73197a, type: 3}
+  m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 1930015132}
-  _networkObjectCache: {fileID: 1930015132}
-  networkObject: {fileID: 8583629334296125534, guid: 9dd15d06d22bd024697b1b37da582f4c,
-    type: 3}
+  _overrideType: 3
+  _updateHostVisibility: 1
+  _observerConditions: []
 --- !u!1 &2031976027
 GameObject:
   m_ObjectHideFlags: 0
