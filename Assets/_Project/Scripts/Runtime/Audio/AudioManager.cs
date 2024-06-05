@@ -85,6 +85,14 @@ namespace _Project.Scripts.Runtime.Audio
         {
             ReplicateAudio(eventRef.Id, go);
         }
+
+        public void PlayAudioNetworked(IEnumerable<AK.Wwise.Event> eventsRef, GameObject go)
+        {
+            foreach (var audioEvent in eventsRef)
+            {
+                ReplicateAudio(audioEvent.Id, go);
+            }
+        }
         
         /// <summary>
         /// This method plays an event with replication over the network, beware of calling this method too often

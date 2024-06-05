@@ -59,16 +59,16 @@ namespace _Project.Scripts.Runtime.Audio
         public AK.Wwise.Event EventCharacterSelectionStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("Called when the whole game session start, so that the map is generated and its the first round")]
-        public AK.Wwise.Event EventGameStart;
+        public AK.Wwise.Event[] EventGameStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("Called when the game end, so when the last round end, and the game is over")]
-        public AK.Wwise.Event EventGameEnd;
+        public AK.Wwise.Event[] EventGameEnd;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("Called when a round start, there is a delay between when a round end, and a round start to show UI")]
-        public AK.Wwise.Event EventRoundStart;
+        public AK.Wwise.Event[] EventRoundStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("Called when a round end, so when a Team wins, will be called for the first and last round too")]
-        public AK.Wwise.Event EventRoundEnd;
+        public AK.Wwise.Event[] EventRoundEnd;
 
         [TabGroup("References", "Events", SdfIconType.MusicNote, TextColor = "lightmagenta")]
         [TabGroup("References/Events/Subgroup", "Player", SdfIconType.PeopleFill, TextColor = "lightgreen")]
