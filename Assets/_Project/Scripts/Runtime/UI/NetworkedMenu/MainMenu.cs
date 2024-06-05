@@ -81,7 +81,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         private void CreditsButtonClicked()
         {
-            Logger.LogWarning("Credits not implemented yet", Logger.LogType.Client, this);
+            if (UIManager.HasInstance) UIManager.Instance.GoToMenu<CreditsMenu>();
         }
 
         private void QuitButtonClicked()
