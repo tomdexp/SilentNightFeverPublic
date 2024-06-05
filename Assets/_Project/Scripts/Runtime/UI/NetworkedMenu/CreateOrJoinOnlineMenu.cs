@@ -1,5 +1,7 @@
 ﻿using System;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Utils;
+using FishNet;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +25,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
-            _canvasGroup.alpha = 0;
+            _canvasGroup.CloseInstant();
             if (!_createLobbyButton)
             {
                 Logger.LogError("Create Lobby Button not set");
@@ -44,14 +46,15 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             {
                 Logger.LogError("Joining Lobby Canvas Group not set");
             }
+            BindNavigableVertical(_createLobbyButton, _lobbyCodeInputField.GetComponent<Selectable>());
+            BindNavigableVertical(_lobbyCodeInputField.GetComponent<Selectable>(), _joinLobbyButton);
+            BindNavigableVertical(_joinLobbyButton, _createLobbyButton);
         }
         
         public override void Open()
         {
             base.Open();
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.Open();
             UIManager.Instance.SwitchToCanvasCamera();
             _joinLobbyButton.interactable = false;
             _joinLobbyButton.onClick.AddListener(JoinLobbyButtonClicked);
@@ -65,17 +68,13 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             if (_isCreatingLobby)
             {
-                _creatingLobbyCanvasGroup.alpha = 1;
-                _creatingLobbyCanvasGroup.interactable = true;
-                _creatingLobbyCanvasGroup.blocksRaycasts = true;
+                _creatingLobbyCanvasGroup.Open();
                 _canvasGroup.interactable = false;
                 _canvasGroup.blocksRaycasts = false;
             }
             else
             {
-                _joiningLobbyCanvasGroup.alpha = 1;
-                _joiningLobbyCanvasGroup.interactable = true;
-                _joiningLobbyCanvasGroup.blocksRaycasts = true;
+                _joiningLobbyCanvasGroup.Open();
                 _canvasGroup.interactable = false;
                 _canvasGroup.blocksRaycasts = false;
             }
@@ -83,23 +82,17 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void ServerMigrationFinished()
         {
-            _creatingLobbyCanvasGroup.alpha = 0;
-            _creatingLobbyCanvasGroup.interactable = false;
-            _creatingLobbyCanvasGroup.blocksRaycasts = false;
-            _joiningLobbyCanvasGroup.alpha = 0;
-            _joiningLobbyCanvasGroup.interactable = false;
-            _joiningLobbyCanvasGroup.blocksRaycasts = false;
+            _creatingLobbyCanvasGroup.Close();
+            _joiningLobbyCanvasGroup.Close();
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
-            UIManager.Instance.GoToMenu<ControllerLobbyMenu>();
+            if(InstanceFinder.IsServerStarted) UIManager.Instance.GoToMenu<ControllerLobbyMenu>();
         }
 
         public override void Close()
         {
             base.Close();
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.Close();
             _lobbyCodeInputField.OnLobbyCodeChanged -= LobbyCodeChanged;
             _joinLobbyButton.onClick.RemoveListener(JoinLobbyButtonClicked);
             _createLobbyButton.onClick.RemoveListener(CreateLobbyButtonClicked);
@@ -107,8 +100,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationFinished -= ServerMigrationFinished;
         }
 
-        private void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
             _lobbyCodeInputField.OnLobbyCodeChanged -= LobbyCodeChanged;
             _joinLobbyButton.onClick.RemoveListener(JoinLobbyButtonClicked);
             _createLobbyButton.onClick.RemoveListener(CreateLobbyButtonClicked);

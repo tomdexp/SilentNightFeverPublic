@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6827700426847440509}
   - component: {fileID: 3176870791487502323}
   - component: {fileID: 8583629334296125534}
+  - component: {fileID: 6010790112052279397}
   m_Layer: 0
   m_Name: 'UIManager [Networked]'
   m_TagString: Untagged
@@ -72,6 +73,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Go Back
       m_Flags: 0
+    - m_Name: 
+      m_Id: 88b2fb1c-5be7-4fcc-885b-b4245d109efe
+      m_Path: <Keyboard>/backspace
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go Back
+      m_Flags: 0
     m_Flags: 0
   _menus: []
 --- !u!114 &8583629334296125534
@@ -113,6 +122,21 @@ MonoBehaviour:
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 6
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 1918214442
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 5151756604324563907
+--- !u!114 &6010790112052279397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7893076515551752479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideType: 3
+  _updateHostVisibility: 1
+  _observerConditions: []

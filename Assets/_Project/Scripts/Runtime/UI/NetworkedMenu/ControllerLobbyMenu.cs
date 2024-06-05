@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Utils;
 using FishNet;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -17,19 +18,15 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.CloseInstant();
         }
 
         public override void Open()
         {
             base.Open();
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-            if (InstanceFinder.IsServerStarted) PlayerManager.Instance.SetPlayerJoiningEnabledClientRpc(true);
-            if (InstanceFinder.IsServerStarted) PlayerManager.Instance.SetPlayerLeavingEnabledClientRpc(true);
+            _canvasGroup.Open();
+            PlayerManager.Instance.SetPlayerJoiningEnabled(true);
+            PlayerManager.Instance.SetPlayerLeavingEnabled(true);
         }
 
         private void Update()
@@ -59,11 +56,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void Close()
         {
             base.Close();
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
-            if (InstanceFinder.IsServerStarted) PlayerManager.Instance.SetPlayerJoiningEnabledClientRpc(false);
-            if (InstanceFinder.IsServerStarted) PlayerManager.Instance.SetPlayerLeavingEnabledClientRpc(false);
+            _canvasGroup.Close();
+            PlayerManager.Instance.SetPlayerJoiningEnabled(false);
+            PlayerManager.Instance.SetPlayerLeavingEnabled(false);
         }
 
         public override void GoBack()
