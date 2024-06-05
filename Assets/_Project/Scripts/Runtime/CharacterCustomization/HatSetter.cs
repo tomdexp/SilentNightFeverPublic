@@ -32,12 +32,28 @@ public class HatSetter : NetworkBehaviour
 
     private void OnEnable()
     {
-        _randomHatIndex.OnChange += SetHat; ;
+        _randomHatIndex.OnChange += SetHat;
+
+        if (_randomHat == false)
+        {
+            if (TryGetComponent(out NetworkPlayer NP))
+            {
+                _playerIndexType = NP.GetPlayerIndexType();
+            };
+
+            // Is that ugly ? Tell me
+            // Since we enable our mannequin after the start of the server
+            // the OnStartNetwork is not called, so I do it here instead
+            StartCoroutine(TrySubscribingToEvents());
+        }
+
     }
 
     private void OnDisable()
     {
         _randomHatIndex.OnChange -= SetHat;
+
+        PlayerManager.Instance.OnPlayerHatInfosChanged -= OnPlayerHatInfosChanged;
     }
 
     public override void OnStartServer()
@@ -61,13 +77,16 @@ public class HatSetter : NetworkBehaviour
     {
         base.OnStartNetwork();
 
-
-        if (TryGetComponent(out NetworkPlayer NP))
+        if (_randomHat == false)
         {
-            _playerIndexType = NP.GetPlayerIndexType();
-        };
-        StartCoroutine(TrySubscribingToEvents());
+            if (TryGetComponent(out NetworkPlayer NP))
+            {
+                _playerIndexType = NP.GetPlayerIndexType();
+            };
+            StartCoroutine(TrySubscribingToEvents());
+        }
     }
+
     public override void OnStopNetwork()
     {
         base.OnStopNetwork();
