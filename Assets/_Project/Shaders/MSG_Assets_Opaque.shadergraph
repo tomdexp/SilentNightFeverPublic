@@ -4,12 +4,6 @@
     "m_ObjectId": "fde56542d8f24fc5b3673d675b54db7e",
     "m_Properties": [
         {
-            "m_Id": "8b7f5e34569c4e78a51739e146d0ca3a"
-        },
-        {
-            "m_Id": "5eeac745e7de401ea7436bbd2827c4ac"
-        },
-        {
             "m_Id": "0ae71f9fb4094129a9e474a123b75953"
         },
         {
@@ -37,15 +31,6 @@
             "m_Id": "2495697241754beaa1cf88923b1acaf3"
         },
         {
-            "m_Id": "cac08147536f43ff922cdcfc1e192d16"
-        },
-        {
-            "m_Id": "5fee482730334d56b5e403ca2b57e65d"
-        },
-        {
-            "m_Id": "884d18229bfa413cb0f7c13631d3adde"
-        },
-        {
             "m_Id": "24b53d94caa0447e9a60e4f226b55dab"
         }
     ],
@@ -60,9 +45,6 @@
         },
         {
             "m_Id": "0180e4bceae34630b30080092f03b3b2"
-        },
-        {
-            "m_Id": "a1408ee332b248a4881ab6bb1aa25045"
         },
         {
             "m_Id": "015e6e7b8c094da98287775aa896dabd"
@@ -564,34 +546,6 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "9740fc1533cb45bc8fa26248f9e85119"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "a2e6d49b02594b7f915ca2cb73f34446"
-                },
-                "m_SlotId": 4
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "7844e472737046d8843542fdbec174f1"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "a2e6d49b02594b7f915ca2cb73f34446"
-                },
-                "m_SlotId": 5
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "4d71000d1d074ef2a0bdc804c755ab58"
                 },
                 "m_SlotId": 0
             }
@@ -1868,7 +1822,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Smoothness",
     "m_StageCapability": 2,
-    "m_Value": 0.5,
+    "m_Value": 0.0,
     "m_DefaultValue": 0.5,
     "m_Labels": []
 }
@@ -2097,10 +2051,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1598.0,
-            "y": 991.0,
-            "width": 248.0,
-            "height": 34.0
+            "x": -1558.0,
+            "y": 909.0,
+            "width": 173.0,
+            "height": 34.00006103515625
         }
     },
     "m_Slots": [
@@ -2427,34 +2381,6 @@
 
 {
     "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "5eeac745e7de401ea7436bbd2827c4ac",
-    "m_Guid": {
-        "m_GuidSerialized": "f5a5cc50-e6ff-4aca-93fa-a4d280f824e4"
-    },
-    "m_Name": "SSS Intensity",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "SSS Intensity",
-    "m_DefaultReferenceName": "_SSS_Intensity",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": 1.0,
-    "m_FloatType": 0,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
-    }
-}
-
-{
-    "m_SGVersion": 1,
     "m_Type": "UnityEditor.ShaderGraph.GradientNoiseNode",
     "m_ObjectId": "5f7ca6e54f7745d18691ff23275b0eb1",
     "m_Group": {
@@ -2493,36 +2419,6 @@
         "m_SerializableColors": []
     },
     "m_HashType": 0
-}
-
-{
-    "m_SGVersion": 3,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
-    "m_ObjectId": "5fee482730334d56b5e403ca2b57e65d",
-    "m_Guid": {
-        "m_GuidSerialized": "ea912290-4c4b-4639-9f5b-c803f84b4aa7"
-    },
-    "m_Name": "SSS Color",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "SSS Color",
-    "m_DefaultReferenceName": "_SSS_Color",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "r": 1.0,
-        "g": 1.0,
-        "b": 1.0,
-        "a": 0.0
-    },
-    "isMainColor": false,
-    "m_ColorMode": 0
 }
 
 {
@@ -3581,36 +3477,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
-    "m_ObjectId": "884d18229bfa413cb0f7c13631d3adde",
-    "m_Guid": {
-        "m_GuidSerialized": "d66440a0-7904-44b1-af6f-f4a52299fc96"
-    },
-    "m_Name": "ThicknessTexture",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "ThicknessTexture",
-    "m_DefaultReferenceName": "_ThicknessTexture",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
-        "m_Guid": ""
-    },
-    "isMainTexture": false,
-    "useTilingAndOffset": false,
-    "m_Modifiable": true,
-    "m_DefaultType": 0
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "88b23352439240f185396f9f7f7b59b3",
     "m_Id": 0,
@@ -3677,34 +3543,6 @@
         "e31": 0.0,
         "e32": 0.0,
         "e33": 1.0
-    }
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "8b7f5e34569c4e78a51739e146d0ca3a",
-    "m_Guid": {
-        "m_GuidSerialized": "3e48e021-f333-4dfb-88bf-0c338c40da17"
-    },
-    "m_Name": "SSS Power",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "SSS Power",
-    "m_DefaultReferenceName": "_SSS_Power",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": 1.0,
-    "m_FloatType": 0,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
     }
 }
 
@@ -4138,30 +3976,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
-    "m_ObjectId": "a1408ee332b248a4881ab6bb1aa25045",
-    "m_Name": "SSS",
-    "m_ChildObjectList": [
-        {
-            "m_Id": "5fee482730334d56b5e403ca2b57e65d"
-        },
-        {
-            "m_Id": "884d18229bfa413cb0f7c13631d3adde"
-        },
-        {
-            "m_Id": "cac08147536f43ff922cdcfc1e192d16"
-        },
-        {
-            "m_Id": "8b7f5e34569c4e78a51739e146d0ca3a"
-        },
-        {
-            "m_Id": "5eeac745e7de401ea7436bbd2827c4ac"
-        }
-    ]
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SampleTexture2DNode",
     "m_ObjectId": "a2e6d49b02594b7f915ca2cb73f34446",
     "m_Group": {
@@ -4169,13 +3983,13 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1342.0001220703125,
-            "y": 986.0,
-            "width": 183.0001220703125,
-            "height": 251.0
+            "x": -1333.0,
+            "y": 905.0000610351563,
+            "width": 155.0,
+            "height": 178.99993896484376
         }
     },
     "m_Slots": [
@@ -4599,7 +4413,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1342.0001220703125,
@@ -4949,7 +4763,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "c97c4396b63b4c12a74bac7cecd26bec",
     "m_Id": 0,
-    "m_DisplayName": "Metalic / Smoothness / AO Map",
+    "m_DisplayName": "Metalic / AO Map",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -5026,34 +4840,6 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "cac08147536f43ff922cdcfc1e192d16",
-    "m_Guid": {
-        "m_GuidSerialized": "de5cc776-0883-4ab3-8b85-1e38ae481c9c"
-    },
-    "m_Name": "Normal Influence",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Normal Influence",
-    "m_DefaultReferenceName": "_Normal_Influence",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": 1.0,
-    "m_FloatType": 0,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
     }
 }
 
@@ -5550,10 +5336,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1499.0,
-            "y": 733.9999389648438,
+            "x": -1527.0,
+            "y": 790.0,
             "width": 147.0,
-            "height": 34.00006103515625
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -5865,7 +5651,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1367.0,
@@ -6097,10 +5883,10 @@
     "m_Guid": {
         "m_GuidSerialized": "fe516776-245e-4769-8a8c-8af9bd51e02a"
     },
-    "m_Name": "Metalic / Smoothness / AO Map",
+    "m_Name": "Metalic / AO Map",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Metalic / Smoothness / AO Map",
-    "m_DefaultReferenceName": "_Metalic_Smoothness_AO_Map",
+    "m_RefNameGeneratedByDisplayName": "Metalic / AO Map",
+    "m_DefaultReferenceName": "_Metalic_AO_Map",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
