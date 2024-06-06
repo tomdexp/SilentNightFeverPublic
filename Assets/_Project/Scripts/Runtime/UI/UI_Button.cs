@@ -42,7 +42,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnClick()
         {
-            //StartCoroutine(DisableCooldown());
+            //StartCoroutine(DisableCooldown()); // shitty idea, making a button interatacble to true causes the button to be deselected for the gamepad
             if (_buttonType == ButtonType.Enter)
             {
                 if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickEnter, AudioManager.Instance.gameObject);
