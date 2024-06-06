@@ -53,7 +53,7 @@ public class HatSetter : NetworkBehaviour
     {
         _randomHatIndex.OnChange -= SetHat;
 
-        PlayerManager.Instance.OnPlayerHatInfosChanged -= OnPlayerHatInfosChanged;
+        if(PlayerManager.HasInstance) PlayerManager.Instance.OnPlayerHatInfosChanged -= OnPlayerHatInfosChanged;
     }
 
     public override void OnStartServer()
@@ -72,20 +72,7 @@ public class HatSetter : NetworkBehaviour
 
         SetHatByIndex(_randomHatIndex.Value);
     }
-
-    public override void OnStartNetwork()
-    {
-        base.OnStartNetwork();
-
-        if (_randomHat == false)
-        {
-            if (TryGetComponent(out NetworkPlayer NP))
-            {
-                _playerIndexType = NP.GetPlayerIndexType();
-            };
-            StartCoroutine(TrySubscribingToEvents());
-        }
-    }
+    
 
     public override void OnStopNetwork()
     {

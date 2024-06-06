@@ -29,6 +29,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private Transform _playerEndB;
         [SerializeField, Required] private Transform _playerEndC;
         [SerializeField, Required] private Transform _playerEndD;
+        [SerializeField, Required] private ConfirmationPrompt _quitPlayerIndexSelectionPrompt;
         
         private Vector3 _playerStartA;
         private Vector3 _playerStartB;
@@ -63,6 +64,28 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             base.Close();
             _canvasGroup.Close();
             if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;
+        }
+
+        public override void GoBack()
+        {
+            base.GoBack();
+            if (!InstanceFinder.IsServerStarted) return;
+            StartCoroutine(GoBackCoroutine());
+        }
+        
+        private IEnumerator GoBackCoroutine()
+        {
+            _quitPlayerIndexSelectionPrompt.Open();
+            PlayerManager.Instance.TryEndTeamManagement();
+            yield return _quitPlayerIndexSelectionPrompt.WaitForResponse();
+            if (_quitPlayerIndexSelectionPrompt.IsSuccess)
+            {
+                UIManager.Instance.GoToMenu<ControllerLobbyMenu>();
+            }
+            else
+            {
+                PlayerManager.Instance.ResumeTeamManagement();
+            }
         }
         
         private void OnClientConnectionState(ClientConnectionStateArgs args)
