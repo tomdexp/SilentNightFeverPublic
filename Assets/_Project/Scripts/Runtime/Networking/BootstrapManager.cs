@@ -29,6 +29,7 @@ namespace _Project.Scripts.Runtime.Networking
         [field: SerializeField] public int CurrentAllocationId { get; private set; }
 
         public bool HasJoinCode => !string.IsNullOrEmpty(CurrentJoinCode);
+        public bool IsOnline => HasJoinCode;
 
         private string _inputFieldJoinCode;
 
@@ -51,6 +52,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action<string> OnJoinCodeReceived;
         public event Action<string> OnInvalidJoinCodeInput;
         public event Action OnOnlineSessionLeft;
+        public event Action OnKickedFromServer;
         
         private bool _isApplicationQuitting;
         private bool _isLeavingOnline;
@@ -85,7 +87,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void OnClientConnectionState(ClientConnectionStateArgs args)
         {
-            if (args.ConnectionState == LocalConnectionState.Stopped && HasJoinCode)
+            if (args.ConnectionState == LocalConnectionState.Stopped && HasJoinCode && !InstanceFinder.IsServerStarted)
             {
                 // it means we were kicked from the relay server because the host stopped the server
                 // so we go back to local server
@@ -95,7 +97,9 @@ namespace _Project.Scripts.Runtime.Networking
                     Logger.LogDebug("Application is quitting, not going back to local server.", Logger.LogType.Client, this);
                     return;
                 }
+                Logger.LogInfo("Kicked from server, going back to local server...", Logger.LogType.Client, this);
                 TryLeaveOnline();
+                OnKickedFromServer?.Invoke();
             }
         }
 
@@ -343,6 +347,8 @@ namespace _Project.Scripts.Runtime.Networking
             if (success)
             {
                 Logger.LogInfo("Successfully left online session.", Logger.LogType.Client, context:this);
+                CurrentJoinCode = string.Empty;
+                Logger.LogDebug("Join code reset.", Logger.LogType.Client, context:this);
                 OnOnlineSessionLeft?.Invoke();
             }
             return success;
@@ -404,9 +410,14 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 OnServerMigrationStarted?.Invoke();
                 
-                // Stop server
+                // Stop Client then Server
                 InstanceFinder.ClientManager.StopConnection();
                 Logger.LogDebug("Client connection stopped.", Logger.LogType.Client, this);
+                if (InstanceFinder.IsServerStarted)
+                {
+                    InstanceFinder.ServerManager.StopConnection(true);
+                    Logger.LogDebug("Server connection stopped.", Logger.LogType.Server, this);
+                }
                 CurrentJoinCode = string.Empty;
                 
                 // Configure transport to default
