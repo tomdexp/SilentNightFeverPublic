@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet.Object;
@@ -20,6 +21,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField] private InputAction _goBackAction;
         [SerializeField] private List<MenuBase> _menus = new List<MenuBase>();
         private readonly SyncVar<int> _currentMenuIndex = new SyncVar<int>(-1);
+        private ConfirmationPrompt _currentConfirmationPrompt;
+        private ConfirmationPrompt _kickedFromServerPrompt;
 
         public override void OnStartNetwork()
         {
@@ -27,6 +30,11 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _currentMenuIndex.OnChange += OnCurrentMenuIndexChanged;
             _goBackAction.performed += OnGoBack;
             _goBackAction.Enable();
+            _kickedFromServerPrompt = FindAnyObjectByType<KickedFromServerCanvas>().GetComponent<ConfirmationPrompt>();
+            if (!_kickedFromServerPrompt)
+            {
+                Logger.LogError("KickedFromServerCanvas does not have a ConfirmationPrompt component", Logger.LogType.Client, this);
+            }
         }
 
         public override void OnStopNetwork()
@@ -60,10 +68,14 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 {
                     Cursor.visible = false;
                     Cursor.lockState = CursorLockMode.Confined;
+                    // Put cursor at the bottom left corner of the screen to avoid triggering hover on UI elements
                     Mouse.current.WarpCursorPosition(new Vector2(0,0));
-                    // put the cursor position at the bottom right
                     IsNavigationWithMouse = false;
-                    if (_menus.Count > 0)
+                    if (_currentConfirmationPrompt)
+                    {
+                        _currentConfirmationPrompt.TrySelectDefault();
+                    }
+                    else if (_menus.Count > 0)
                     {
                         if (_currentMenuIndex.Value != -1)
                             _menus[_currentMenuIndex.Value].TrySelectDefault();
@@ -79,9 +91,16 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 IsNavigationWithMouse = true;
             }
         }
+        
+        
 
         private void OnGoBack(InputAction.CallbackContext context)
         {
+            if (_currentConfirmationPrompt)
+            {
+                _currentConfirmationPrompt.OnCancel();
+                return;
+            }
             if (_currentMenuIndex.Value == -1)
             {
                 Logger.LogError("No menu to go back to", Logger.LogType.Client,this);
@@ -130,10 +149,10 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             }
             OnCurrentMenuIndexChanged(prev, next, asServer);
         }
-
-        [Server]
+        
         public void GoToMenu<T>() where T : MenuBase
         {
+            if (!IsServerStarted) return;
             Logger.LogTrace($"Going to menu {typeof(T).Name}", Logger.LogType.Server,this);
             MenuBase nextMenu = GetMenu<T>();
             if (!nextMenu)
@@ -239,6 +258,18 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             var canvasCamera = FindAnyObjectByType<MetroWorldSpaceCanvasCamera>();
             metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
             canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
+        }
+
+        public void RegisterConfirmationPrompt(ConfirmationPrompt confirmationPrompt)
+        {
+            Logger.LogTrace("Registering confirmation prompt", Logger.LogType.Client, this);
+            if (_currentConfirmationPrompt)
+            {
+                Logger.LogError("A confirmation prompt is already registered", Logger.LogType.Client, this);
+                return;
+            }
+            _currentConfirmationPrompt = confirmationPrompt;
+            _currentConfirmationPrompt.OnResponseReceived += () => _currentConfirmationPrompt = null;
         }
     }
 }
