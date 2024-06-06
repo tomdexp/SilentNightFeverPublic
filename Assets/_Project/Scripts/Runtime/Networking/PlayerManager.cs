@@ -452,6 +452,14 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerConfirmTeamEnabledClientRpc(false);
             SetPlayerJoiningEnabledClientRpc(false);
         }
+        
+        public void ResumeTeamManagement()
+        {
+            SetPlayerLeavingEnabledClientRpc(true);
+            SetPlayerChangingTeamEnabledClientRpc(true);
+            SetPlayerConfirmTeamEnabledClientRpc(true);
+            SetPlayerJoiningEnabledClientRpc(true);
+        }
 
         [ObserversRpc]
         private void OnTeamManagementStartedTriggerClientRPC()
@@ -1055,6 +1063,12 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerConfirmHatEnabledClientRpc(true);
 
             List<PlayerHatInfo> playerHatInfos = new List<PlayerHatInfo>();
+            
+            if (_playerHatInfos.Count == 4)
+            {
+                Logger.LogInfo("Character customization already started, reseting it", Logger.LogType.Client, context: this);
+                _playerHatInfos.Clear();
+            }
 
             if (playerHatInfos.Count < _realPlayerInfos.Count)
             {
@@ -1071,10 +1085,30 @@ namespace _Project.Scripts.Runtime.Networking
                 Logger.LogInfo("Character customization started", Logger.LogType.Client, context: this);
                 OnCharacterCustomizationStartedTriggerClientRPC();
             }
+        }
+        
+        public void TryStopCharacterCustomization()
+        {
+            if (!IsServerStarted)
+            {
+                StopCharacterCustomizationServerRpc();
+            }
             else
             {
-                Logger.LogInfo("Character customization already started", Logger.LogType.Client, context: this);
+                StopCharacterCustomization();
             }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void StopCharacterCustomizationServerRpc()
+        {
+            StopCharacterCustomization();
+        }
+
+        private void StopCharacterCustomization()
+        {
+            SetPlayerChangingHatEnabledClientRpc(false);
+            SetPlayerConfirmHatEnabledClientRpc(false);
         }
 
 
@@ -1082,11 +1116,12 @@ namespace _Project.Scripts.Runtime.Networking
         private void OnCharacterCustomizationStartedTriggerClientRPC()
         {
             OnCharacterCustomizationStarted?.Invoke();
+            Logger.LogInfo("Character customization event invoked", Logger.LogType.Client, context: this);
         }
 
 
         [ObserversRpc]
-        private void SetPlayerChangingHatEnabledClientRpc(bool value)
+        public void SetPlayerChangingHatEnabledClientRpc(bool value)
         {
             SetPlayerChangingHatEnabled(value);
         }
@@ -1108,7 +1143,7 @@ namespace _Project.Scripts.Runtime.Networking
 
 
         [ObserversRpc]
-        private void SetPlayerConfirmHatEnabledClientRpc(bool value)
+        public void SetPlayerConfirmHatEnabledClientRpc(bool value)
         {
             SetPlayerConfirmHatEnabled(value);
         }
@@ -1376,6 +1411,11 @@ namespace _Project.Scripts.Runtime.Networking
                 Logger.LogTrace("PlayerIndexType: " + realPlayerInfo.PlayerIndexType + " for clientId " + realPlayerInfo.ClientId + " and devicePath " + realPlayerInfo.DevicePath, Logger.LogType.Server, context: this);
                 // TODO Investigate : why is this loop still required
             }
+        }
+
+        public void ResetRealPlayerInfos()
+        {
+            _realPlayerInfos.Clear();
         }
 
         [ServerRpc(RequireOwnership = false)]

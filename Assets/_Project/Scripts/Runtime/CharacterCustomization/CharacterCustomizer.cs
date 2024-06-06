@@ -1,9 +1,11 @@
-using _Project.Scripts.Runtime.Networking;
-using FishNet;
-using FishNet.Transporting;
 using System.Collections;
 using System.Collections.Generic;
+using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Player;
+using FishNet;
+using FishNet.Transporting;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 public class CharacterCustomizer : MonoBehaviour
 {
@@ -22,6 +24,7 @@ public class CharacterCustomizer : MonoBehaviour
     private void Awake()
     {
         InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+        StopCustomization();
     }
 
     private void OnClientConnectionState(ClientConnectionStateArgs args)
@@ -30,6 +33,7 @@ public class CharacterCustomizer : MonoBehaviour
         {
             PlayerManager.Instance.OnPlayerHatInfosChanged -= OnPlayerHatInfosChanged;
             PlayerManager.Instance.OnCharacterCustomizationStarted -= StartCustomization;
+            Logger.LogTrace("Unsubscribed from PlayerManager events", Logger.LogType.Client, this);
         }
 
         if (args.ConnectionState == LocalConnectionState.Started)
@@ -41,6 +45,7 @@ public class CharacterCustomizer : MonoBehaviour
     private void OnDestroy()
     {
         if (PlayerManager.HasInstance) PlayerManager.Instance.OnPlayerHatInfosChanged -= OnPlayerHatInfosChanged;
+        if (PlayerManager.HasInstance) PlayerManager.Instance.OnCharacterCustomizationStarted -= StartCustomization;
     }
 
     private IEnumerator TrySubscribingToEvents()
@@ -50,11 +55,13 @@ public class CharacterCustomizer : MonoBehaviour
             yield return null;
         }
         PlayerManager.Instance.OnCharacterCustomizationStarted += StartCustomization;
+        Logger.LogTrace("Subscribed to PlayerManager events", Logger.LogType.Client, this);
         PlayerManager.Instance.OnPlayerHatInfosChanged += OnPlayerHatInfosChanged;
     }
 
     private void StartCustomization()
     {
+        Logger.LogTrace("Starting customization by set active mannequin", Logger.LogType.Client, this);
         _playerAMannequin.gameObject.SetActive(true);
         _playerBMannequin.gameObject.SetActive(true);
         _playerCMannequin.gameObject.SetActive(true);
@@ -69,14 +76,14 @@ public class CharacterCustomizer : MonoBehaviour
         _playerDMannequin.gameObject.SetActive(false);
     }
 
-    private void OnPlayerHatInfosChanged(List<_Project.Scripts.Runtime.Player.PlayerHatInfo> hatInfos)
+    private void OnPlayerHatInfosChanged(List<PlayerHatInfo> hatInfos)
     {
         foreach (var hatInfo in hatInfos)
         {
             switch (hatInfo.PlayerIndexType)
             {
-                case _Project.Scripts.Runtime.Player.PlayerIndexType.A:
-                    if (hatInfo.HasConfirmed == true)
+                case PlayerIndexType.A:
+                    if (hatInfo.HasConfirmed)
                     {
                         _playerAMannequinArrows.gameObject.SetActive(false);
                     }
@@ -86,8 +93,8 @@ public class CharacterCustomizer : MonoBehaviour
                     }
                     break;
 
-                case _Project.Scripts.Runtime.Player.PlayerIndexType.B:
-                    if (hatInfo.HasConfirmed == true)
+                case PlayerIndexType.B:
+                    if (hatInfo.HasConfirmed)
                     {
                         _playerBMannequinArrows.gameObject.SetActive(false);
                     }
@@ -97,8 +104,8 @@ public class CharacterCustomizer : MonoBehaviour
                     }
                     break;
 
-                case _Project.Scripts.Runtime.Player.PlayerIndexType.C:
-                    if (hatInfo.HasConfirmed == true)
+                case PlayerIndexType.C:
+                    if (hatInfo.HasConfirmed)
                     {
                         _playerCMannequinArrows.gameObject.SetActive(false);
                     }
@@ -108,8 +115,8 @@ public class CharacterCustomizer : MonoBehaviour
                     }
                     break;
 
-                case _Project.Scripts.Runtime.Player.PlayerIndexType.D:
-                    if (hatInfo.HasConfirmed == true)
+                case PlayerIndexType.D:
+                    if (hatInfo.HasConfirmed)
                     {
                         _playerDMannequinArrows.gameObject.SetActive(false);
                     }
@@ -117,9 +124,6 @@ public class CharacterCustomizer : MonoBehaviour
                     {
                         _playerDMannequinArrows.gameObject.SetActive(true);
                     }
-                    break;
-
-                default:
                     break;
             }
         }

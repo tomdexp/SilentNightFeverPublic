@@ -63,6 +63,10 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             {
                 EventSystem.current.SetSelectedGameObject(_defaultSelectedOnOpen.gameObject);
             }
+            else if (!_defaultSelectedOnOpen)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
         }
         
         protected void BindNavigableVertical(Selectable selectable1, Selectable selectable2)

@@ -269,7 +269,15 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 return;
             }
             _currentConfirmationPrompt = confirmationPrompt;
-            _currentConfirmationPrompt.OnResponseReceived += () => _currentConfirmationPrompt = null;
+            _currentConfirmationPrompt.OnResponseReceived += () =>
+            {
+                Logger.LogTrace("Confirmation prompt unregistered after received response", Logger.LogType.Client, this);
+                _currentConfirmationPrompt = null;
+                if (_currentMenuIndex.Value != -1)
+                {
+                    _menus[_currentMenuIndex.Value].TrySelectDefault();
+                }
+            };
         }
     }
 }
