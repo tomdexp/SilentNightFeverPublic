@@ -1,7 +1,9 @@
-﻿using _Project.Scripts.Runtime.Networking;
+﻿using _Project.Scripts.Runtime.Landmarks.Zoom;
+using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerEffects;
 using QFSW.QC;
+using QFSW.QC.Suggestors.Tags;
 using UnityEngine;
 
 namespace _Project.Scripts.Runtime.Utils
@@ -25,6 +27,14 @@ namespace _Project.Scripts.Runtime.Utils
         {
             var targetPlayerPosition = PlayerManager.Instance.GetNetworkPlayer(targetPlayer).gameObject.transform.position;
             if (PlayerManager.HasInstance) PlayerManager.Instance.GetNetworkPlayer(sourcePlayer).GetPlayerController().Teleport(targetPlayerPosition);
+        }
+
+        [Command("/player.teleport.toLandmark", "Teleport the player to the specified landmark.")]
+        public static void TeleportPlayerToZoomLandmark(PlayerIndexType player,
+            [Suggestions("zoom", "kitchen", "voodoo")] string landmarkName)
+        {
+            if (PlayerManager.HasInstance)
+                PlayerManager.Instance.GetNetworkPlayer(player).GetPlayerController().Teleport(landmarkName);
         }
     }
 }

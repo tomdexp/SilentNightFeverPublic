@@ -19,13 +19,6 @@ MonoBehaviour:
   - Bank:
       idInternal: 0
       valueGuidInternal: 
-      WwiseObjectReference: {fileID: 11400000, guid: 497e2bd860bd0cb4fa21a53d5ecdb10c,
-        type: 2}
-    DecodeBankOnLoad: 1
-    SaveDecodedBank: 0
-  - Bank:
-      idInternal: 0
-      valueGuidInternal: 
       WwiseObjectReference: {fileID: 11400000, guid: 82a2603d1346e1e40acf91c2c6bde8a2,
         type: 2}
     DecodeBankOnLoad: 1
@@ -44,11 +37,25 @@ MonoBehaviour:
         type: 2}
     DecodeBankOnLoad: 1
     SaveDecodedBank: 0
+  - Bank:
+      idInternal: 0
+      valueGuidInternal: 
+      WwiseObjectReference: {fileID: 11400000, guid: 0dd00f181843f2942a666ba8108dd69b,
+        type: 2}
+    DecodeBankOnLoad: 1
+    SaveDecodedBank: 0
+  - Bank:
+      idInternal: 0
+      valueGuidInternal: 
+      WwiseObjectReference: {fileID: 11400000, guid: 3f0fc36b48b82b44b8ae23c5f6fa4575,
+        type: 2}
+    DecodeBankOnLoad: 1
+    SaveDecodedBank: 0
   LeftSpeakerVolumeOffset:
   - 0
-  - -40
+  - -70
   RightSpeakerVolumeOffset:
-  - -40
+  - -70
   - 0
   RTPC_GP_MUSC_SWITCH:
     idInternal: 0
@@ -56,7 +63,7 @@ MonoBehaviour:
     WwiseObjectReference: {fileID: 11400000, guid: c023194eaa086c1478d0471b356d3156,
       type: 2}
   RTPC_GP_MUSC_SWITCH_MinValue: 1
-  RTPC_GP_MUSC_SWITCH_MaxValue: 3
+  RTPC_GP_MUSC_SWITCH_MaxValue: 4
   RTPC_GP_LM_SatelliteSpeed:
     idInternal: 0
     valueGuidInternal: 
@@ -77,23 +84,50 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
   EventGameStart:
-    idInternal: 0
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 0a7e6821f5278bc4c93428c8ce78aa08,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 7494b6113b9d9c448a90bfde4e4c07c2,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 3ea77d4b699c46549ac2f89b6451213f,
+      type: 2}
+  EventGameEnd:
+  - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
-  EventGameEnd:
-    idInternal: 0
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
   EventRoundStart:
-    idInternal: 0
+  - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: e51caf919b6fb104c9b22df442c75d2e,
       type: 2}
-  EventRoundEnd:
-    idInternal: 0
+  - idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 16109d47e305b11448ae8aa0c2e3090c,
+    WwiseObjectReference: {fileID: 0}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventRoundEnd:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 3ea77d4b699c46549ac2f89b6451213f,
       type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
   EventPlayerTongueThrow:
     idInternal: 0
     valueGuidInternal: 
@@ -150,7 +184,8 @@ MonoBehaviour:
   EventLandmarkKitchenFoodEaten:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 7ea120f56223d8f4188d6938827bacd6,
+      type: 2}
   EventLandmarkZoomStartTurning:
     idInternal: 0
     valueGuidInternal: 

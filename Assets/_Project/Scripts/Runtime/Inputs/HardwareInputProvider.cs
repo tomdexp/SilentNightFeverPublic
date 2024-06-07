@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using FishNet;
+using QFSW.QC;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
@@ -117,7 +118,8 @@ namespace _Project.Scripts.Runtime.Inputs
         private void OnDebugPossess(InputAction.CallbackContext context)
         {
             if(!InstanceFinder.IsServerStarted) return; // only the host can possess players
-            
+            var console = FindAnyObjectByType<QuantumConsole>();
+            if (console && console.IsActive) return;
             // check if hold or press interact
             if (context.interaction is HoldInteraction)
             {

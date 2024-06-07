@@ -341,7 +341,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
         }
 
         [Button]
-        private void ResetTongue()
+        public void ResetTongue()
         {
             StartCoroutine(ResetTongueCoroutine());
         }

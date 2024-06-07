@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI
 {
@@ -83,6 +84,7 @@ namespace _Project.Scripts.Runtime.UI
             {
                 transform.DOScale(_uiData.HoverBackScale, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
             }
+            Logger.LogTrace($"Hovering on button {name}", Logger.LogType.Client, this);
         }
         
         public void OnPointerExit(PointerEventData eventData)

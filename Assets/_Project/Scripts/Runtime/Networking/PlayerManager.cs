@@ -12,6 +12,7 @@ using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Transporting;
+using QFSW.QC;
 using Sirenix.OdinInspector;
 using Unity.Services.CloudSave.Models.Data.Player;
 using UnityEngine;
@@ -451,6 +452,14 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerChangingTeamEnabledClientRpc(false);
             SetPlayerConfirmTeamEnabledClientRpc(false);
             SetPlayerJoiningEnabledClientRpc(false);
+        }
+        
+        public void ResumeTeamManagement()
+        {
+            SetPlayerLeavingEnabledClientRpc(true);
+            SetPlayerChangingTeamEnabledClientRpc(true);
+            SetPlayerConfirmTeamEnabledClientRpc(true);
+            SetPlayerJoiningEnabledClientRpc(true);
         }
 
         [ObserversRpc]
@@ -1055,6 +1064,12 @@ namespace _Project.Scripts.Runtime.Networking
             SetPlayerConfirmHatEnabledClientRpc(true);
 
             List<PlayerHatInfo> playerHatInfos = new List<PlayerHatInfo>();
+            
+            if (_playerHatInfos.Count == 4)
+            {
+                Logger.LogInfo("Character customization already started, reseting it", Logger.LogType.Client, context: this);
+                _playerHatInfos.Clear();
+            }
 
             if (playerHatInfos.Count < _realPlayerInfos.Count)
             {
@@ -1071,10 +1086,30 @@ namespace _Project.Scripts.Runtime.Networking
                 Logger.LogInfo("Character customization started", Logger.LogType.Client, context: this);
                 OnCharacterCustomizationStartedTriggerClientRPC();
             }
+        }
+        
+        public void TryStopCharacterCustomization()
+        {
+            if (!IsServerStarted)
+            {
+                StopCharacterCustomizationServerRpc();
+            }
             else
             {
-                Logger.LogInfo("Character customization already started", Logger.LogType.Client, context: this);
+                StopCharacterCustomization();
             }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void StopCharacterCustomizationServerRpc()
+        {
+            StopCharacterCustomization();
+        }
+
+        private void StopCharacterCustomization()
+        {
+            SetPlayerChangingHatEnabledClientRpc(false);
+            SetPlayerConfirmHatEnabledClientRpc(false);
         }
 
 
@@ -1082,11 +1117,12 @@ namespace _Project.Scripts.Runtime.Networking
         private void OnCharacterCustomizationStartedTriggerClientRPC()
         {
             OnCharacterCustomizationStarted?.Invoke();
+            Logger.LogInfo("Character customization event invoked", Logger.LogType.Client, context: this);
         }
 
 
         [ObserversRpc]
-        private void SetPlayerChangingHatEnabledClientRpc(bool value)
+        public void SetPlayerChangingHatEnabledClientRpc(bool value)
         {
             SetPlayerChangingHatEnabled(value);
         }
@@ -1108,7 +1144,7 @@ namespace _Project.Scripts.Runtime.Networking
 
 
         [ObserversRpc]
-        private void SetPlayerConfirmHatEnabledClientRpc(bool value)
+        public void SetPlayerConfirmHatEnabledClientRpc(bool value)
         {
             SetPlayerConfirmHatEnabled(value);
         }
@@ -1378,6 +1414,11 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
+        public void ResetRealPlayerInfos()
+        {
+            _realPlayerInfos.Clear();
+        }
+
         [ServerRpc(RequireOwnership = false)]
         private void TryRemoveRealPlayerServerRpc(byte clientId, string devicePath)
         {
@@ -1551,7 +1592,9 @@ namespace _Project.Scripts.Runtime.Networking
         private void PossessPlayer(PlayerIndexType sourcePlayerIndexType, PlayerIndexType targetPlayerIndexType)
         {
             if (!IsServerStarted) return;
-            // TODO NETWORKING : Only the host can possess a fake player
+            // WARNING NETWORKING : Only the host can possess a fake player
+            var console = FindAnyObjectByType<QuantumConsole>();
+            if (console && console.IsActive) return;
             var sourceNetworkPlayer = GetNetworkPlayer(sourcePlayerIndexType);
             var targetNetworkPlayer = GetNetworkPlayer(targetPlayerIndexType);
             if (targetNetworkPlayer.GetRealPlayerInfo().ClientId != 255)
@@ -1588,6 +1631,8 @@ namespace _Project.Scripts.Runtime.Networking
         private void UnpossessPlayer(PlayerIndexType playerIndexType)
         {
             if (!IsServerStarted) return;
+            var console = FindAnyObjectByType<QuantumConsole>();
+            if (console && console.IsActive) return;
             var networkPlayer = GetNetworkPlayer(playerIndexType);
             if (networkPlayer.GetRealPlayerInfo().ClientId != 255)
             {
