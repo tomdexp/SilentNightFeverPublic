@@ -13,6 +13,8 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_AMB_MAIN_MENU_LOOPS = 1154511960U;
+        static const AkUniqueID PLAY_AMB_MENU_OS = 1582603257U;
         static const AkUniqueID PLAY_CHAR_FS = 1806510664U;
         static const AkUniqueID PLAY_CHAR_THO_RETRACT = 3854640606U;
         static const AkUniqueID PLAY_CHAR_THO_THROW = 3990111633U;
@@ -23,11 +25,15 @@ namespace AK
         static const AkUniqueID PLAY_LM_SATT_AMBIANCE = 2151245937U;
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
+        static const AkUniqueID PLAY_PLAYER_SIZE_UP = 1820042269U;
+        static const AkUniqueID PLAY_ROUND_END = 1932934032U;
         static const AkUniqueID PLAY_UI_BACK = 1386224142U;
         static const AkUniqueID PLAY_UI_DISPLACEMENT = 1341306234U;
         static const AkUniqueID PLAY_UI_ENTER = 2982660583U;
         static const AkUniqueID PLAY_UI_LOBBY_CREATED = 4198832716U;
         static const AkUniqueID PLAY_UI_LOBBY_JOINED = 1782690879U;
+        static const AkUniqueID STOP_AMB_MAIN_MENU_LOOPS = 4172187022U;
+        static const AkUniqueID STOP_AMB_MENU_OS = 1914842139U;
         static const AkUniqueID STOP_LM_KITCHEN = 570374180U;
         static const AkUniqueID STOP_LM_OUIJ_AMB_ONESHOTS = 4032591324U;
         static const AkUniqueID STOP_LM_SATT_AMBIANCE = 3343843255U;
@@ -144,9 +150,10 @@ namespace AK
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID SB_CHAR = 2208305301U;
+        static const AkUniqueID SB_AMB = 925885567U;
         static const AkUniqueID SB_LM = 709024172U;
         static const AkUniqueID SB_MUSIC = 779753582U;
+        static const AkUniqueID SB_SFX = 1006919462U;
         static const AkUniqueID SB_UI = 289583631U;
     } // namespace BANKS
 
