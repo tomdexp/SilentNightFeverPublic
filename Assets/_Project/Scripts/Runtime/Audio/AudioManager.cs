@@ -213,7 +213,7 @@ namespace _Project.Scripts.Runtime.Audio
 
         public void RegisterListener(AkAudioListener listener)
         {
-            Logger.LogTrace("Registering listener to AudioManager...", Logger.LogType.Local, this);
+            Logger.LogTrace($"Registering listener {listener.name} to AudioManager...", Logger.LogType.Local, this);
             _listeners.Add(listener);
             BindListenersAndEmitters();
         }
@@ -234,6 +234,7 @@ namespace _Project.Scripts.Runtime.Audio
                 foreach (var akAudioListener in _listeners)
                 {
                     akAudioListener.StartListeningToEmitter(akGameObj);
+                    Logger.LogTrace($"Binding listener {akAudioListener.name} to emitter {akGameObj.name}", Logger.LogType.Local, this);
                 }
             }
         }

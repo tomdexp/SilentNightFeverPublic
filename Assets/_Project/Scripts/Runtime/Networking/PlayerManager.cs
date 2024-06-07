@@ -12,6 +12,7 @@ using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Transporting;
+using QFSW.QC;
 using Sirenix.OdinInspector;
 using Unity.Services.CloudSave.Models.Data.Player;
 using UnityEngine;
@@ -1591,7 +1592,9 @@ namespace _Project.Scripts.Runtime.Networking
         private void PossessPlayer(PlayerIndexType sourcePlayerIndexType, PlayerIndexType targetPlayerIndexType)
         {
             if (!IsServerStarted) return;
-            // TODO NETWORKING : Only the host can possess a fake player
+            // WARNING NETWORKING : Only the host can possess a fake player
+            var console = FindAnyObjectByType<QuantumConsole>();
+            if (console && console.IsActive) return;
             var sourceNetworkPlayer = GetNetworkPlayer(sourcePlayerIndexType);
             var targetNetworkPlayer = GetNetworkPlayer(targetPlayerIndexType);
             if (targetNetworkPlayer.GetRealPlayerInfo().ClientId != 255)
@@ -1628,6 +1631,8 @@ namespace _Project.Scripts.Runtime.Networking
         private void UnpossessPlayer(PlayerIndexType playerIndexType)
         {
             if (!IsServerStarted) return;
+            var console = FindAnyObjectByType<QuantumConsole>();
+            if (console && console.IsActive) return;
             var networkPlayer = GetNetworkPlayer(playerIndexType);
             if (networkPlayer.GetRealPlayerInfo().ClientId != 255)
             {

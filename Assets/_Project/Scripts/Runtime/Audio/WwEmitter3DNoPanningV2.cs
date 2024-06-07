@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
+using QFSW.QC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -33,6 +34,7 @@ namespace _Project.Scripts.Runtime.Audio
         
         private Dictionary<GameObject, AkAudioListener> _playerListeners = new Dictionary<GameObject, AkAudioListener>();
         private AkGameObj _akGameObj;
+        private bool _isSetup = false;
 
         private void Awake()
         {
@@ -42,6 +44,7 @@ namespace _Project.Scripts.Runtime.Audio
         void Start()
         {
             StartCoroutine(TrySubscribingToGameStartedEvent());
+            StartCoroutine(TryFindPlayers());
         }
 
         private IEnumerator TrySubscribingToGameStartedEvent()
@@ -71,15 +74,21 @@ namespace _Project.Scripts.Runtime.Audio
 
         private IEnumerator TryFindPlayers()
         {
+            if (_isSetup)
+            {
+                yield break;
+            }
             Logger.LogTrace("Finding players...", Logger.LogType.Local, this);
             
             while (!PlayerManager.HasInstance)
             {
+                //Logger.LogTrace("PlayerManager not found, waiting...", Logger.LogType.Local, this);
                 yield return null;
             }
 
             while (!PlayerManager.Instance.AreAllPlayerSpawnedLocally)
             {
+                //Logger.LogTrace("Not all players spawned locally, waiting...", Logger.LogType.Local, this);
                 yield return null;
             }
             
@@ -117,6 +126,7 @@ namespace _Project.Scripts.Runtime.Audio
             _players.Add(Player4);
             
             Logger.LogTrace("Players and associated AkAudioListeners found!", Logger.LogType.Local, this);
+            _isSetup = true;
 
             AkSoundEngine.RegisterGameObj(gameObject); //maintenant ce gameobject est reconnu dans Wwise
         }
