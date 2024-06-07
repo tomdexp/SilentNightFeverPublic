@@ -13,6 +13,7 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_AMB_GAME = 936017659U;
         static const AkUniqueID PLAY_AMB_MAIN_MENU_LOOPS = 1154511960U;
         static const AkUniqueID PLAY_AMB_MENU_OS = 1582603257U;
         static const AkUniqueID PLAY_CHAR_FS = 1806510664U;
@@ -27,11 +28,13 @@ namespace AK
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
         static const AkUniqueID PLAY_PLAYER_SIZE_UP = 1820042269U;
         static const AkUniqueID PLAY_ROUND_END = 1932934032U;
+        static const AkUniqueID PLAY_SFX_ROUND_WIN = 2094862661U;
         static const AkUniqueID PLAY_UI_BACK = 1386224142U;
         static const AkUniqueID PLAY_UI_DISPLACEMENT = 1341306234U;
         static const AkUniqueID PLAY_UI_ENTER = 2982660583U;
         static const AkUniqueID PLAY_UI_LOBBY_CREATED = 4198832716U;
         static const AkUniqueID PLAY_UI_LOBBY_JOINED = 1782690879U;
+        static const AkUniqueID STOP_AMB_GAME = 3205966197U;
         static const AkUniqueID STOP_AMB_MAIN_MENU_LOOPS = 4172187022U;
         static const AkUniqueID STOP_AMB_MENU_OS = 1914842139U;
         static const AkUniqueID STOP_LM_KITCHEN = 570374180U;
@@ -160,6 +163,7 @@ namespace AK
 
     namespace BUSSES
     {
+        static const AkUniqueID AMB = 1117531639U;
         static const AkUniqueID LANDMARKS = 1061412920U;
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
         static const AkUniqueID MUSIC = 3991942870U;
