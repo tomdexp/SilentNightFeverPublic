@@ -19,13 +19,6 @@ MonoBehaviour:
   - Bank:
       idInternal: 0
       valueGuidInternal: 
-      WwiseObjectReference: {fileID: 11400000, guid: 497e2bd860bd0cb4fa21a53d5ecdb10c,
-        type: 2}
-    DecodeBankOnLoad: 1
-    SaveDecodedBank: 0
-  - Bank:
-      idInternal: 0
-      valueGuidInternal: 
       WwiseObjectReference: {fileID: 11400000, guid: 82a2603d1346e1e40acf91c2c6bde8a2,
         type: 2}
     DecodeBankOnLoad: 1
@@ -56,20 +49,20 @@ MonoBehaviour:
       valueGuidInternal: 
       WwiseObjectReference: {fileID: 11400000, guid: 3f0fc36b48b82b44b8ae23c5f6fa4575,
         type: 2}
-    DecodeBankOnLoad: 0
+    DecodeBankOnLoad: 1
     SaveDecodedBank: 0
   LeftSpeakerVolumeOffset:
   - 0
-  - -40
+  - -70
   RightSpeakerVolumeOffset:
-  - -40
+  - -70
   - 0
   RTPC_GP_MUSC_SWITCH:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: c023194eaa086c1478d0471b356d3156,
       type: 2}
-  RTPC_GP_MUSC_SWITCH_MinValue: 4
+  RTPC_GP_MUSC_SWITCH_MinValue: 1
   RTPC_GP_MUSC_SWITCH_MaxValue: 4
   RTPC_GP_LM_SatelliteSpeed:
     idInternal: 0
