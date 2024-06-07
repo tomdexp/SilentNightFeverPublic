@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections;
 using _Project.Scripts.Runtime.Inputs;
+using _Project.Scripts.Runtime.Landmarks.Kitchen;
+using _Project.Scripts.Runtime.Landmarks.Voodoo;
+using _Project.Scripts.Runtime.Landmarks.Zoom;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
+using _Project.Scripts.Runtime.UI;
 using FishNet;
 using FishNet.Component.Transforming;
 using FishNet.Connection;
@@ -106,6 +110,7 @@ namespace _Project.Scripts.Runtime.Player
                     _playerStickyTongue.OnTongueRetractStart += DisablePlayerRotation;
                     _playerStickyTongue.OnTongueIn += EnablePlayerRotation;
                     _characterTongueAnchor.OnTongueBindChange += OnTongueBindChange;
+                    _playerStickyTongue.ResetTongue();
                     TriggerOnPlayerReadyLocally();
                 }
             }
@@ -326,6 +331,49 @@ namespace _Project.Scripts.Runtime.Player
                 TeleportServerRpc(Owner, position);
             }
         }
+
+        public void Teleport(string landmarkName)
+        {
+            switch (landmarkName)
+            {
+                case "kitchen":
+                    Landmark_Kitchen kitchenLandmark = FindAnyObjectByType<Landmark_Kitchen>();
+                    if (kitchenLandmark)
+                    {
+                        var offset = new Vector3(2, 1, 2);
+                        Teleport(kitchenLandmark.transform.position + offset);
+                    }
+                    else
+                    {
+                        Logger.LogInfo("Landmark_Kitchen not found", context: this);
+                    }
+                    break;
+                case "voodoo":
+                    Landmark_Voodoo voodooLandmark = FindAnyObjectByType<Landmark_Voodoo>();
+                    if (voodooLandmark)
+                    {
+                        var offset = new Vector3(2, 1, 2);
+                        Teleport(voodooLandmark.transform.position + offset);
+                    }
+                    else
+                    {
+                        Logger.LogInfo("Landmark_Voodoo not found", context: this);
+                    }
+                    break;
+                case "zoom":
+                    Landmark_Zoom zoomLandmark = FindAnyObjectByType<Landmark_Zoom>();
+                    if (zoomLandmark)
+                    {
+                        var offset = new Vector3(2, 1, 2);
+                        Teleport(zoomLandmark.transform.position + offset);
+                    }
+                    else
+                    {
+                        Logger.LogInfo("Landmark_Zoom not found", context: this);
+                    }
+                    break;
+            }
+        }
         
         [TargetRpc]
         private void TeleportTargetRpc(NetworkConnection conn, Vector3 position)
@@ -345,14 +393,16 @@ namespace _Project.Scripts.Runtime.Player
             bool rigidbodyStateBefore = _rigidbody.isKinematic;
             _rigidbody.isKinematic = true;
             _playerCollider.enabled = false;
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(0.5f);
             _rigidbody.MovePosition(position);
             _characterTongueAnchor.GetRigidbody().MovePosition(position);
-            yield return new WaitForFixedUpdate();
-            _rigidbody.isKinematic = rigidbodyStateBefore;
+            _networkPlayer.GetPlayerController().GetTongue().ResetTongue();
+            yield return new WaitForSeconds(0.5f);
             _rigidbody.velocity = Vector3.zero;
             _characterTongueAnchor.GetRigidbody().velocity = Vector3.zero;
+            yield return new WaitForSeconds(0.5f);
             _playerCollider.enabled = true;
+            _rigidbody.isKinematic = rigidbodyStateBefore;
             Logger.LogDebug("Player teleported to " + transform.position, context: this);
         }
         
