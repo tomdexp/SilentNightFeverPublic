@@ -83,7 +83,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         private void OptionsButtonClicked()
         {
-            Logger.LogWarning("Options not implemented yet", Logger.LogType.Client, this);
+            if (UIManager.HasInstance) UIManager.Instance.GoToMenu<ParametersMenu>();
         }
         
         private void CreditsButtonClicked()
