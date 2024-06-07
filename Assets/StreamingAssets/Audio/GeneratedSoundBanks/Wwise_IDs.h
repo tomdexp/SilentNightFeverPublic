@@ -21,9 +21,9 @@ namespace AK
         static const AkUniqueID PLAY_CHAR_THO_TOUCHED = 2214496751U;
         static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
         static const AkUniqueID PLAY_LM_KITCHEN_FRUIT_EATEN = 2054335947U;
-        static const AkUniqueID PLAY_LM_OUIJ_AMB_ONESHOTS = 3064999594U;
         static const AkUniqueID PLAY_LM_SATT_AMBIANCE = 2151245937U;
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
+        static const AkUniqueID PLAY_LM_VOODOO_AMBIANCE = 1931733291U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
         static const AkUniqueID PLAY_PLAYER_SIZE_UP = 1820042269U;
         static const AkUniqueID PLAY_ROUND_END = 1932934032U;
@@ -35,9 +35,9 @@ namespace AK
         static const AkUniqueID STOP_AMB_MAIN_MENU_LOOPS = 4172187022U;
         static const AkUniqueID STOP_AMB_MENU_OS = 1914842139U;
         static const AkUniqueID STOP_LM_KITCHEN = 570374180U;
-        static const AkUniqueID STOP_LM_OUIJ_AMB_ONESHOTS = 4032591324U;
         static const AkUniqueID STOP_LM_SATT_AMBIANCE = 3343843255U;
         static const AkUniqueID STOP_LM_SATT_INTERACT = 3778981049U;
+        static const AkUniqueID STOP_LM_VOODOO_AMBIANCE = 3055808089U;
         static const AkUniqueID STOP_MUSC_GLOBAL_SWITCH = 3658594925U;
     } // namespace EVENTS
 
@@ -126,6 +126,7 @@ namespace AK
         static const AkUniqueID GP_LM_SATELITTESPEED = 3546657911U;
         static const AkUniqueID GP_LM_SATTELITEMETER = 488398129U;
         static const AkUniqueID GP_LM_TOMUSIC = 1716289499U;
+        static const AkUniqueID GP_LM_VOODOO_METER = 2268227989U;
         static const AkUniqueID GP_MUSC_SPEEDREAD = 82071987U;
         static const AkUniqueID GP_MUSC_SWITCH = 1886390058U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
@@ -173,6 +174,7 @@ namespace AK
         static const AkUniqueID LDMRK_RAIN = 2156680276U;
         static const AkUniqueID LM_KITCHEN = 2768191745U;
         static const AkUniqueID LM_SATELLITE = 2698474914U;
+        static const AkUniqueID LM_VOODOO = 4239310681U;
     } // namespace AUX_BUSSES
 
     namespace AUDIO_DEVICES
