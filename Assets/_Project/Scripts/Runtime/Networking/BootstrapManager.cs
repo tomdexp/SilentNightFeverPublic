@@ -29,6 +29,7 @@ namespace _Project.Scripts.Runtime.Networking
         [field: SerializeField] public int CurrentAllocationId { get; private set; }
 
         public bool HasJoinCode => !string.IsNullOrEmpty(CurrentJoinCode);
+        public bool IsOnline => HasJoinCode;
 
         private string _inputFieldJoinCode;
 
@@ -51,6 +52,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action<string> OnJoinCodeReceived;
         public event Action<string> OnInvalidJoinCodeInput;
         public event Action OnOnlineSessionLeft;
+        public event Action OnKickedFromServer;
         
         private bool _isApplicationQuitting;
         private bool _isLeavingOnline;
@@ -85,7 +87,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void OnClientConnectionState(ClientConnectionStateArgs args)
         {
-            if (args.ConnectionState == LocalConnectionState.Stopped && HasJoinCode)
+            if (args.ConnectionState == LocalConnectionState.Stopped && HasJoinCode && !InstanceFinder.IsServerStarted)
             {
                 // it means we were kicked from the relay server because the host stopped the server
                 // so we go back to local server
@@ -95,7 +97,9 @@ namespace _Project.Scripts.Runtime.Networking
                     Logger.LogDebug("Application is quitting, not going back to local server.", Logger.LogType.Client, this);
                     return;
                 }
+                Logger.LogInfo("Kicked from server, going back to local server...", Logger.LogType.Client, this);
                 TryLeaveOnline();
+                OnKickedFromServer?.Invoke();
             }
         }
 
@@ -217,6 +221,12 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 if (!EnsureUnityGamingServicesAreInitialized()) return false;
 
+                if (string.IsNullOrEmpty(joinCode))
+                {
+                    Logger.LogError("Join code is null, cannot start client with relay.", Logger.LogType.Client, context:this);
+                    return false;
+                }
+                
                 // Stop local server
                 InstanceFinder.ServerManager.StopConnection(false);
                 OnServerMigrationStarted?.Invoke();
@@ -226,22 +236,25 @@ namespace _Project.Scripts.Runtime.Networking
                 CurrentJoinCode = joinCode;
                 // Configure transport
                 var fishyUnityTransport = InstanceFinder.TransportManager.GetTransport<FishyUnityTransport>();
-                if (fishyUnityTransport == null)
+                if (!fishyUnityTransport)
                 {
                     throw new Exception("FishyUnityTransport not found, cannot start a host with relay service.");
                 }
                 fishyUnityTransport.SetProtocol(FishyUnityTransport.ProtocolType.RelayUnityTransport);
                 fishyUnityTransport.SetRelayServerData(new RelayServerData(joinAllocation, SilentNightFeverSettings.RELAY_CONNECTION_TYPE));
                 // Start client
-                bool result = !string.IsNullOrEmpty(joinCode) && InstanceFinder.NetworkManager.ClientManager.StartConnection();
-                if (!result) throw new Exception("Couldn't start connection.");
+                bool result = InstanceFinder.NetworkManager.ClientManager.StartConnection();
+                if (!result)
+                {
+                    Logger.LogError("FATAL NetworkManager.ClientManager.StartConnection() returned false.", Logger.LogType.Client, context:this);
+                    throw new Exception("FATAL Couldn't start connection.");
+                }
                 return result;
             }
             catch (Exception ex)
             {
-                Logger.LogError("FishyUnityTransport not found, cannot start a host with relay service.", Logger.LogType.Client, context:this);
+                Logger.LogError($"FATAL There was an exception trying to start the client with relay : {ex}", Logger.LogType.Client, context:this);
                 OnServerMigrationFailed?.Invoke();
-
                 return false;
             }
 
@@ -268,7 +281,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         public async void TryJoinAsClientWithRelay(string joinCode)
         {
-            Logger.LogTrace("Trying to join as client to a relay...", Logger.LogType.Client, context:this);
+            Logger.LogTrace($"Trying to join as client to a relay with the code {joinCode}...", Logger.LogType.Client, context:this);
             if (GameManager.Instance.IsGameStarted.Value)
             {
                 Logger.LogWarning("Game already started, cannot join as client.", Logger.LogType.Client, context:this);
@@ -278,6 +291,11 @@ namespace _Project.Scripts.Runtime.Networking
             if (result)
             {
                 OnServerMigrationFinished?.Invoke();
+            }
+            else
+            {
+                Logger.LogError("Joining as client failed, disconnecting from relay and going back to local server.", Logger.LogType.Client, context:this);
+                DisconnectFromRelayAndBackToLocalServer();
             }
         }
 
@@ -329,6 +347,8 @@ namespace _Project.Scripts.Runtime.Networking
             if (success)
             {
                 Logger.LogInfo("Successfully left online session.", Logger.LogType.Client, context:this);
+                CurrentJoinCode = string.Empty;
+                Logger.LogDebug("Join code reset.", Logger.LogType.Client, context:this);
                 OnOnlineSessionLeft?.Invoke();
             }
             return success;
@@ -390,9 +410,14 @@ namespace _Project.Scripts.Runtime.Networking
             {
                 OnServerMigrationStarted?.Invoke();
                 
-                // Stop server
+                // Stop Client then Server
                 InstanceFinder.ClientManager.StopConnection();
                 Logger.LogDebug("Client connection stopped.", Logger.LogType.Client, this);
+                if (InstanceFinder.IsServerStarted)
+                {
+                    InstanceFinder.ServerManager.StopConnection(true);
+                    Logger.LogDebug("Server connection stopped.", Logger.LogType.Server, this);
+                }
                 CurrentJoinCode = string.Empty;
                 
                 // Configure transport to default

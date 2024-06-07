@@ -16,12 +16,13 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private Button _optionsButton;
         [SerializeField, Required] private Button _creditsButton;
         [SerializeField, Required] private Button _quitButton;
+        [SerializeField, Required] private Button _languageSelectionButton;
         private CanvasGroup _canvasGroup;
 
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
-            _canvasGroup.alpha = 0;
+            _canvasGroup.CloseInstant();
             if (!_playButton)
             {
                 Logger.LogError("Play Button not set", Logger.LogType.Client, this);
@@ -38,28 +39,33 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             {
                 Logger.LogError("Quit Button not set", Logger.LogType.Client, this);
             }
+            
+            BindNavigableVertical(_playButton, _optionsButton);
+            BindNavigableVertical(_optionsButton, _creditsButton);
+            BindNavigableVertical(_creditsButton, _quitButton);
+            BindNavigableVertical(_quitButton, _playButton);
+            
+            BindNavigableHorizontal(_languageSelectionButton, _playButton);
+            BindNavigableHorizontal(_languageSelectionButton, _optionsButton);
+            BindNavigableHorizontal(_languageSelectionButton, _creditsButton);
+            BindNavigableHorizontal(_languageSelectionButton, _quitButton);
         }
 
         public override void Open()
         {
             base.Open();
-            
             UIManager.Instance.SwitchToCanvasCamera();
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.Open();
             _playButton.onClick.AddListener(PlayButtonClicked);
             _optionsButton.onClick.AddListener(OptionsButtonClicked);
+            _creditsButton.onClick.AddListener(CreditsButtonClicked);
+            _quitButton.onClick.AddListener(QuitButtonClicked);
         }
-
-        
 
         public override void Close()
         {
             base.Close();
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.Close();
             _playButton.onClick.RemoveListener(PlayButtonClicked);
             _optionsButton.onClick.RemoveListener(OptionsButtonClicked);
         }
@@ -77,7 +83,17 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         private void OptionsButtonClicked()
         {
-            throw new NotImplementedException();
+            if (UIManager.HasInstance) UIManager.Instance.GoToMenu<ParametersMenu>();
+        }
+        
+        private void CreditsButtonClicked()
+        {
+            if (UIManager.HasInstance) UIManager.Instance.GoToMenu<CreditsMenu>();
+        }
+
+        private void QuitButtonClicked()
+        {
+            Logger.LogWarning("Quit not implemented yet", Logger.LogType.Client, this);
         }
     }
 }

@@ -281,6 +281,138 @@ MonoBehaviour:
       m_Action: Go To Right Team Input
       m_Flags: 0
     m_Flags: 0
+  _nextHatInputAction:
+    m_Name: Next Hat Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 47ab7566-36dc-45c9-a5b7-aaa6ecd216b3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 619240f5-64f1-48b2-891b-2d3afbb64bb8
+      m_Path: <Keyboard>/rightArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Next Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: b0edf441-d977-4bb1-ae21-4a291569bae6
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Next Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 875d22e5-4769-4cb1-8904-a601d4968adc
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Next Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 58c4b35e-573f-4ff3-aca2-bb57d1cf672f
+      m_Path: <Gamepad>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Next Hat Input
+      m_Flags: 0
+    m_Flags: 0
+  _previousHatInputAction:
+    m_Name: Previous Hat Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 84b1e412-d3af-4642-8277-084f4b31e263
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: a6752e5c-e62b-42cf-ac97-d15678dcdbbe
+      m_Path: <Keyboard>/leftArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Previous Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 34d3e229-a3eb-41b6-94ba-8a2252d79333
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Previous Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: ecfe791c-d243-482e-9ea0-bdd9da6f2805
+      m_Path: <Gamepad>/leftShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Previous Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: bf44d6a4-4266-4668-828a-fc0146a183aa
+      m_Path: <Gamepad>/dpad/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Previous Hat Input
+      m_Flags: 0
+    m_Flags: 0
+  _confirmHatInputAction:
+    m_Name: Confirm Hat Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2815ef7f-e118-434b-8a34-0a6060299d14
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 7d3d36f1-f291-4901-ae23-0fbd39ffe5c3
+      m_Path: <Keyboard>/c
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Confirm Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 55fa3aa2-a623-4aca-9910-b64ac3d88bf0
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Confirm Hat Input
+      m_Flags: 0
+    m_Flags: 0
+  _cancelHatInputAction:
+    m_Name: Cancel Hat Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: fea7ad78-054d-4949-b960-d47281a074df
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: b2b4aa38-233f-4992-85fe-6929cf39bb4f
+      m_Path: <Keyboard>/x
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cancel Hat Input
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 970484fa-6171-4b31-9aee-67e57afe0d25
+      m_Path: <Gamepad>/buttonNorth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cancel Hat Input
+      m_Flags: 0
+    m_Flags: 0
   _joinAndFullFakePlayerInputAction:
     m_Name: Join And Full Fake Player Input
     m_Type: 0
@@ -344,7 +476,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 13
+  <PrefabId>k__BackingField: 12
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0

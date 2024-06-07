@@ -20,6 +20,7 @@ namespace _Project.Scripts.Runtime.Player
         
         private Animator _animator;
         private Transform _transform;
+        private PlayerAkAudioListener _playerAkAudioListener;
         
         private Vector3 _lastPosition;
         private static readonly int IsMovingParam = Animator.StringToHash("IsMoving");
@@ -36,6 +37,11 @@ namespace _Project.Scripts.Runtime.Player
             if (!_transform)
             {
                 Logger.LogError("No Transform found on PlayerController", Logger.LogType.Local, this);
+            }
+            _playerAkAudioListener = GetComponentInParent<PlayerAkAudioListener>();
+            if (!_playerAkAudioListener)
+            {
+                Logger.LogError("No PlayerAkAudioListener found in parent !", Logger.LogType.Local, this);
             }
         }
 
@@ -58,7 +64,7 @@ namespace _Project.Scripts.Runtime.Player
             if (animationEvent.animatorClipInfo.weight < 0.5f) return;
             if (AudioManager.HasInstance)
             { 
-                AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerFootstep, gameObject);
+                AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerFootstep, _playerAkAudioListener.gameObject);
             }
         }
     }

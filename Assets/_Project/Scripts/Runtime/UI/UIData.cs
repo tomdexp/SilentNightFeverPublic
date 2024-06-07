@@ -1,6 +1,11 @@
-﻿using DG.Tweening;
+﻿using System;
+using System.Collections;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
 namespace _Project.Scripts.Runtime.UI
 {
@@ -48,5 +53,29 @@ namespace _Project.Scripts.Runtime.UI
         public float SecondsAfterAllPlayersReadyToStartCustomization = 3;
         public float PlayerTeamLabelMovementDuration = 1;
         public Ease PlayerTeamLabelMovementEase = Ease.Linear;
+        
+        [Title("Language Selection")]
+        public LanguageSelectionUI[] SupportedLanguages;
+        public float LanguageButtonFadeDuration = 0.2f;
+        public Ease LanguageButtonFadeEase = Ease.InExpo;
+        public float SecondsBetweenLanguageButtonAppearAnimation = 0.2f;
+
+        [Serializable]
+        public class LanguageSelectionUI
+        {
+            public Sprite Flag;
+            public Locale Locale;
+            
+        }
+
+        [Button, DisableInEditorMode]
+        private void PrintAllLocalesToConsole()
+        {
+            for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; ++i)
+            {
+                var locale = LocalizationSettings.AvailableLocales.Locales[i];
+                Debug.Log($"Locale {i}: {locale.LocaleName} ({locale.Identifier.Code})");
+            }
+        }
     }
 }

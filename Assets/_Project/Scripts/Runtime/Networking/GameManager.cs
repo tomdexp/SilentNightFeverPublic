@@ -96,6 +96,12 @@ namespace _Project.Scripts.Runtime.Networking
                 CameraManager.Instance.TryDisableSplitScreenCameras();
                 PlayerManager.Instance.SetPlayerJoiningEnabled(false);
             }
+            else if (currentSceneName == "TristanScene")
+            {
+                Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Special case where we disable Split Screen Cameras and Player Joining", Logger.LogType.Local, this);
+                CameraManager.Instance.TryDisableSplitScreenCameras();
+                PlayerManager.Instance.SetPlayerJoiningEnabled(false);
+            }
             else
             {
                 Logger.LogWarning("The current scene name " + currentSceneName + " is not a valid SceneType enum value ! Enabling Split Screen Cameras and Player Joining per default", Logger.LogType.Local, this);

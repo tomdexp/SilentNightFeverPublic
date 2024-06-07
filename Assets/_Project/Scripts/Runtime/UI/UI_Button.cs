@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using _Project.Scripts.Runtime.Audio;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI
 {
@@ -19,15 +21,19 @@ namespace _Project.Scripts.Runtime.UI
         
         [SerializeField] private ButtonType _buttonType;
         [SerializeField, Required] private UIData _uiData;
+        [SerializeField] private bool _keepFocusOnClicked = false;
         
         private Button _button;
         private float _originalScale;
+        private float _secondsBetweenClick = 0.1f;
+        private WaitForSeconds _waitForSeconds;
         
         private void Start()
         {
             _button = GetComponent<Button>();
             _button.onClick.AddListener(OnClick);
             _originalScale = transform.localScale.x;
+            _waitForSeconds = new WaitForSeconds(_secondsBetweenClick);
         }
 
         private void OnDestroy()
@@ -37,6 +43,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnClick()
         {
+            //StartCoroutine(DisableCooldown()); // shitty idea, making a button interatacble to true causes the button to be deselected for the gamepad
             if (_buttonType == ButtonType.Enter)
             {
                 if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickEnter, AudioManager.Instance.gameObject);
@@ -77,6 +84,7 @@ namespace _Project.Scripts.Runtime.UI
             {
                 transform.DOScale(_uiData.HoverBackScale, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
             }
+            Logger.LogTrace($"Hovering on button {name}", Logger.LogType.Client, this);
         }
         
         public void OnPointerExit(PointerEventData eventData)
@@ -100,6 +108,14 @@ namespace _Project.Scripts.Runtime.UI
             {
                 transform.DOScale(_originalScale, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
             }
+        }
+        
+        private IEnumerator DisableCooldown()
+        {
+            if (_button.interactable == false) yield break;
+            _button.interactable = false;
+            yield return _waitForSeconds;
+            _button.interactable = true;
         }
     }
 }
