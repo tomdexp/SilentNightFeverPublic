@@ -6,6 +6,7 @@ using System.Reflection;
 using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerEffects;
+using _Project.Scripts.Runtime.UI.NetworkedMenu;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet;
 using FishNet.Connection;
@@ -208,12 +209,44 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
         {
-            SetPlayerJoiningEnabled(true);
-            JoinInputActionPerformed(context);
-            AddFakePlayer();
-            AddFakePlayer();
-            AddFakePlayer();
-            GameManager.Instance.TryStartGame();
+            if (!IsServerStarted) return;
+            if (!UIManager.HasInstance) // means we are directly in game scene or in a scene without UI
+            {
+                SetPlayerJoiningEnabled(true);
+                JoinInputActionPerformed(context);
+                AddFakePlayer();
+                AddFakePlayer();
+                AddFakePlayer();
+                GameManager.Instance.TryStartGame();
+            }
+            else
+            {
+                // check if there are already 4 players
+                if (_realPlayerInfos.Count != 4)
+                {
+                    SetPlayerJoiningEnabled(true);
+                    JoinInputActionPerformed(context);
+                    AddFakePlayer();
+                    AddFakePlayer();
+                    AddFakePlayer();
+                    return;
+                }
+                // check to see if the teams are already confirmed (if not, at least 1 player is in team Z)
+                if(_playerTeamInfos.Any(x => x.PlayerTeamType == PlayerTeamType.Z))
+                {
+                    ChangeTeamServerRpc(PlayerIndexType.A, true);
+                    ConfirmTeamServerRpc(PlayerIndexType.A);
+                    ReadyAllFakePlayers();
+                }
+                else // it means we are at the hat confirmation stage
+                {
+                    // find the non fake player (which client id is not 255)
+                    RealPlayerInfo realPlayerInfo = _realPlayerInfos.Collection.First(x => x.ClientId != 255);
+                    ConfirmHatServerRpc(realPlayerInfo.PlayerIndexType, true);
+                    AllFakePlayersConfirmHat();
+                }
+            }
+            
         }
 
 
@@ -1328,6 +1361,16 @@ namespace _Project.Scripts.Runtime.Networking
         private void CancelHatInputActionOnPerformed(InputAction.CallbackContext obj)
         {
             TryConfirmHat(obj, false);
+        }
+
+        public void AllFakePlayersConfirmHat()
+        {
+            if (!IsServerStarted) return;
+            foreach (var realPlayerInfo in _realPlayerInfos.Collection)
+            {
+                if (realPlayerInfo.ClientId != 255) continue;
+                ConfirmHatServerRpc(realPlayerInfo.PlayerIndexType, true);
+            }
         }
 
         #endregion

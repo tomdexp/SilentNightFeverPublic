@@ -235,7 +235,7 @@ namespace _Project.Scripts.Runtime.Networking
         public void TryStartGame()
         {
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            if (currentSceneName == SceneType.MenuScene.ToString())
+            if (currentSceneName == SceneType.MenuScene.ToString() || currentSceneName == "MenuSceneV2")
             {
                 Logger.LogWarning("The game cannot be started from the Menu Scene !", Logger.LogType.Server, this);
                 return;

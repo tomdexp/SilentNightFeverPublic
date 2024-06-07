@@ -9,18 +9,48 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
     {
         public override string MenuName { get; } = "CustomizationMenu";
         [SerializeField] private ConfirmationPrompt _quitCustomizationPrompt;
+        [SerializeField] private float _delayBetweenHatConfirmedAndNextMenu = 1f;
 
         public override void Open()
         {
             base.Open();
             UIManager.Instance.SwitchToMetroCamera();
-            if(InstanceFinder.IsServerStarted) PlayerManager.Instance.TryStartCharacterCustomization();
+            if (InstanceFinder.IsServerStarted)
+            {
+                if(PlayerManager.HasInstance) PlayerManager.Instance.TryStartCharacterCustomization();
+                if(PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersConfirmedHat += OnAllPlayersConfirmedHat;
+            }
         }
-        
+
+        private void OnAllPlayersConfirmedHat()
+        {
+            PlayerManager.Instance.TryStopCharacterCustomization();
+            StartCoroutine(OnAllPlayersConfirmedHatCoroutine());
+        }
+
+        private IEnumerator OnAllPlayersConfirmedHatCoroutine()
+        {
+            yield return new WaitForSeconds(_delayBetweenHatConfirmedAndNextMenu);
+            UIManager.Instance.GoToMenu<GameSettingsMenu>();
+        }
+
         public override void Close()
         {
             base.Close();
-            if(InstanceFinder.IsServerStarted) PlayerManager.Instance.TryStopCharacterCustomization();
+            if (InstanceFinder.IsServerStarted)
+            {
+                if(PlayerManager.HasInstance) PlayerManager.Instance.TryStopCharacterCustomization();
+                if(PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersConfirmedHat -= OnAllPlayersConfirmedHat;
+            }
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (InstanceFinder.IsServerStarted)
+            {
+                if(PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersConfirmedHat -= OnAllPlayersConfirmedHat;
+            }
         }
 
         public override void GoBack()
