@@ -62,7 +62,19 @@ namespace _Project.Scripts.Runtime.UI
             Button startGameButton = (Button)_uiDocument.rootVisualElement.Q("start-game");
             if (startGameButton != null)
             {
-                startGameButton.clicked += () => GameManager.Instance.TryStartGame();
+                startGameButton.clicked += () =>
+                {
+                    // check if we are in the onboarding scene
+                    string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                    if (sceneName == "OnboardingScene")
+                    {
+                        GameManager.Instance.TryStartOnBoarding();
+                    }
+                    else
+                    {
+                        GameManager.Instance.TryStartGame();
+                    }
+                };
             }
         }
 

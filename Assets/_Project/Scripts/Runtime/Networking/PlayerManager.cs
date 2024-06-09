@@ -217,7 +217,16 @@ namespace _Project.Scripts.Runtime.Networking
                 AddFakePlayer();
                 AddFakePlayer();
                 AddFakePlayer();
-                GameManager.Instance.TryStartGame();
+                // check if we are in the onboarding scene or in the game scene
+                string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                if (currentSceneName == "OnBoardingScene")
+                {
+                    GameManager.Instance.TryStartOnBoarding();
+                }
+                else
+                {
+                    GameManager.Instance.TryStartGame();
+                }
             }
             else
             {
@@ -1602,6 +1611,34 @@ namespace _Project.Scripts.Runtime.Networking
             _playerControllerB = GetNetworkPlayer(PlayerIndexType.B).GetPlayerController();
             _playerControllerC = GetNetworkPlayer(PlayerIndexType.C).GetPlayerController();
             _playerControllerD = GetNetworkPlayer(PlayerIndexType.D).GetPlayerController();
+        }
+
+        public void TeleportAllPlayerToOnBoardingSpawnPoints()
+        {
+            var spawnPoints = FindObjectsByType<PlayerSpawnPoint>(FindObjectsSortMode.None).ToList();
+            if (spawnPoints.Count < 4)
+            {
+                Logger.LogError("Not enough spawn points to teleport all players.", Logger.LogType.Server, context: this);
+                return;
+            }
+            
+            // order the spawn points by Index
+            spawnPoints = spawnPoints.OrderBy(x => x.PlayerIndexType).ToList();
+            
+            GetNetworkPlayer(PlayerIndexType.A).Teleport(spawnPoints[0].SpawnPoint.transform.position);
+            GetNetworkPlayer(PlayerIndexType.B).Teleport(spawnPoints[1].SpawnPoint.transform.position);
+            GetNetworkPlayer(PlayerIndexType.C).Teleport(spawnPoints[2].SpawnPoint.transform.position);
+            GetNetworkPlayer(PlayerIndexType.D).Teleport(spawnPoints[3].SpawnPoint.transform.position);
+        }
+
+        [Button]
+        public void ForceAllPlayersCameraAngle(float angle)
+        {
+            var playerCameras = FindObjectsByType<PlayerCamera>(FindObjectsSortMode.None).ToList();
+            foreach (var camera in playerCameras)
+            {
+                camera.ForceCameraAngle(angle);
+            }
         }
 
         private void OnPlayerSpawnedLocally()
