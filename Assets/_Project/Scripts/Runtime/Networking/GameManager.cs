@@ -179,7 +179,6 @@ namespace _Project.Scripts.Runtime.Networking
             }
             stopwatch.Stop();
             Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
-            yield return TransitionManager.Instance.EndSceneChangeTransition();
             OnAfterSceneChange?.Invoke();
             switch (sceneType)
             {
@@ -192,15 +191,18 @@ namespace _Project.Scripts.Runtime.Networking
                     break;
                 case SceneType.OnBoardingScene:
                     CameraManager.Instance.TryEnableSplitScreenCameras();
+                    yield return new WaitForSeconds(1f);
                     TryStartOnBoarding();
                     break;
                 case SceneType.GameScene:
                     CameraManager.Instance.TryEnableSplitScreenCameras();
-                    DOVirtual.DelayedCall(5.0f, TryStartGame);
+                    yield return new WaitForSeconds(2f);
+                    TryStartGame();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sceneType), sceneType, null);
             }
+            yield return TransitionManager.Instance.EndSceneChangeTransition();
         }
 
         private IEnumerator UnLoadCurrentScene()

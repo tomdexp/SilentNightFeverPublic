@@ -53,7 +53,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private void OnStartGameButtonClicked()
         {
             if (!InstanceFinder.IsServerStarted) return;
-            if (GameManager.HasInstance) GameManager.Instance.LoadGameScene();
+            if (GameManager.HasInstance) GameManager.Instance.LoadOnBoardingScene();
         }
 
         private IEnumerator GoBackCoroutine()
