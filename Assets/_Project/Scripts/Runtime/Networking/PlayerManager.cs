@@ -1612,6 +1612,11 @@ namespace _Project.Scripts.Runtime.Networking
             _playerControllerC = GetNetworkPlayer(PlayerIndexType.C).GetPlayerController();
             _playerControllerD = GetNetworkPlayer(PlayerIndexType.D).GetPlayerController();
         }
+        
+        public void ResetPlayerSpawnedLocally()
+        {
+            _numberOfPlayerSpawnedLocally = 0;
+        }
 
         public void TeleportAllPlayerToOnBoardingSpawnPoints()
         {

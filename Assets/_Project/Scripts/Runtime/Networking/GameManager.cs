@@ -132,6 +132,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         public void LoadGameScene()
         {
+            PlayerManager.Instance.ResetPlayerSpawnedLocally(); // because they are destroyed when changing scene (coming from OnBoarding)
             LoadGlobalScene(SceneType.GameScene);
         }
 
