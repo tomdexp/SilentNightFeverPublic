@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using FishNet;
 using FishNet.Object;
 using FishNet.Transporting;
@@ -9,7 +10,7 @@ using Logger = _Project.Scripts.Runtime.Utils.Logger;
 namespace _Project.Scripts.Runtime.Networking
 {
     [DefaultExecutionOrder(-500)]
-    public class NetworkStartObjectSpawnerSingle : NetworkBehaviour
+    public class NetworkStartObjectSpawnerSingle : MonoBehaviour
     {
         [SerializeField] private NetworkObject networkObject;
         
@@ -27,6 +28,12 @@ namespace _Project.Scripts.Runtime.Networking
                 var go = Instantiate(networkObject, transform.position, quaternion.identity);
                 InstanceFinder.ServerManager.Spawn(go);
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(transform.position, .5f);
         }
     }
 }
