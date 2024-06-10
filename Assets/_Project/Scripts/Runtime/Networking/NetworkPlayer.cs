@@ -74,7 +74,7 @@ namespace _Project.Scripts.Runtime.Networking
            if (!Owner.IsLocalClient) return;
            // Called when the player is reset, for example when a new round starts or at the beginning of the game
            _appliedPlayerEffects.Clear();
-           TrySetSize(PlayerData.PlayerDefaultSize);
+           TrySetSize(PlayerData.PlayerDefaultSize, false);
            Logger.LogDebug($"Player {GetPlayerIndexType()} reset", Logger.LogType.Client, this);
        }
 
@@ -132,34 +132,34 @@ namespace _Project.Scripts.Runtime.Networking
            };
        }
        
-       public void TrySetSize(float newSize)
+       public void TrySetSize(float newSize, bool playAudio)
        {
            if (IsServerStarted)
            {
-               SetSize(newSize);
+               SetSize(newSize, playAudio);
            }
-           SetSizeServerRpc(newSize);
+           SetSizeServerRpc(newSize, playAudio);
        }
 
        [ServerRpc(RequireOwnership = false)]
-       private void SetSizeServerRpc(float newSize)
+       private void SetSizeServerRpc(float newSize, bool playAudio)
        {
-           SetSize(newSize);
-           SetSizeClientRpc(newSize);
+           SetSize(newSize, playAudio);
+           SetSizeClientRpc(newSize, playAudio);
        }
 
        [ObserversRpc(ExcludeServer = true)]
-       private void SetSizeClientRpc(float newSize)
+       private void SetSizeClientRpc(float newSize, bool playAudio)
        {
-           SetSize(newSize);
+           SetSize(newSize, playAudio);
        }
        
-       private void SetSize(float newSize)
+       private void SetSize(float newSize, bool playAudio)
        {
-           StartCoroutine(SetSizeCoroutine(newSize));
+           StartCoroutine(SetSizeCoroutine(newSize, playAudio));
        }
        
-       private IEnumerator SetSizeCoroutine(float newSize)
+       private IEnumerator SetSizeCoroutine(float newSize, bool playAudio)
        {
            if (newSize > PlayerData.PlayerMaxSize || newSize < PlayerData.PlayerMinSize)
            {
@@ -168,7 +168,7 @@ namespace _Project.Scripts.Runtime.Networking
            }
 
            // check if there is any change in size
-           AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerSizeChange, gameObject);
+           if(playAudio) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerSizeChange, gameObject);
            if (Mathf.Approximately(newSize, transform.localScale.x)) yield break;
 
            // check if we are scaling up or down compared to our current size, based on the scale.x

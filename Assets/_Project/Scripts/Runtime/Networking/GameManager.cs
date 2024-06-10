@@ -26,6 +26,7 @@ namespace _Project.Scripts.Runtime.Networking
         public readonly SyncList<RoundResult> RoundsResults = new SyncList<RoundResult>();
         public readonly SyncVar<byte> CurrentRoundNumber = new SyncVar<byte>(); // Starts at 1
         public readonly SyncVar<uint> CurrentRoundTimer = new SyncVar<uint>(new SyncTypeSettings(.5f));
+        public readonly SyncVar<byte> RequiredRoundsToWin = new SyncVar<byte>();
         public event Action OnGameStarted;
         public event Action<PlayerTeamType> OnGameEnded; // arg = winning team
         public event Action<byte> OnAnyRoundStarted;
@@ -497,6 +498,7 @@ namespace _Project.Scripts.Runtime.Networking
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            RequiredRoundsToWin.Value = RoundsConfig.RoundsCount;
         }
         
         private IEnumerator StartRounds()
