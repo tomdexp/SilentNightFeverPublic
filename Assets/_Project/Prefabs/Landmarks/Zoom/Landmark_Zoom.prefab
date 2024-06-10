@@ -2119,6 +2119,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -16.617
       objectReference: {fileID: 0}
+    - target: {fileID: 3828129771007679483, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 6084510879948707239, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
         type: 3}
       propertyPath: m_Name
@@ -2174,6 +2179,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8103576130478449554, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2182,6 +2192,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4293303764124198457}
+    - targetCorrespondingSourceObject: {fileID: 3985560960707069798, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7448481683377991393}
   m_SourcePrefab: {fileID: 100100000, guid: 57d3a6d1fa2e66445a4ee91f42a93d35, type: 3}
 --- !u!4 &2084470871938284861 stripped
 Transform:
@@ -2189,6 +2203,32 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8090312990326324056}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5118655845587811390 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3985560960707069798, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
+    type: 3}
+  m_PrefabInstance: {fileID: 8090312990326324056}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1818360609 &7448481683377991393
+RotationConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118655845587811390}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Weight: 1
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_RotationOffset: {x: 0, y: 0, z: 0}
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_Active: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 501001162717624788}
+    weight: 1
 --- !u!1 &7276064294192515666 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1495007197306777866, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,

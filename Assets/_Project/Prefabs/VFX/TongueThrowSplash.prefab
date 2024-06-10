@@ -51,7 +51,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4962,7 +4962,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9835,7 +9835,7 @@ GameObject:
   - component: {fileID: 5395069418528251817}
   - component: {fileID: 6353062767008020534}
   m_Layer: 0
-  m_Name: TongueHitThrow
+  m_Name: TongueThrowSplash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9849,7 +9849,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2020643194967187177}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.6889686, y: 0.6304151, z: -0.1591302, w: 0.3202761}
+  m_LocalRotation: {x: -0.6889684, y: 0.6304145, z: -0.15913068, w: 0.32027733}
   m_LocalPosition: {x: 20.331, y: 0.097, z: 2.835}
   m_LocalScale: {x: 0.5799883, y: 0.5799883, z: 0.5799883}
   m_ConstrainProportionsScale: 0
@@ -9876,7 +9876,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -14841,7 +14841,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
