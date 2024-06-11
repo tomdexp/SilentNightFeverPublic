@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Kitchen_FruitPan
+  m_Name: MAT_Zoom_Tape
   m_Shader: {fileID: -6465566751694194690, guid: 97b6cd9fc7cb9b94ebf7d80ab43a2e61,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: 4c2c68ab69452bb42bbd909243ca6972, type: 2}
+  m_Parent: {fileID: 2100000, guid: 53ad5bc3e097e24419838607f819e135, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -26,17 +26,18 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AO_Map:
-        m_Texture: {fileID: 2800000, guid: fcbbcdc944ad4484a9033ca979a59cf7, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Color_Map:
-        m_Texture: {fileID: 2800000, guid: 050e514d5045d4d43bed47e31b5e0670, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _See_Through_Distance: 1.5
-    m_Colors: []
+    - _See_Through_Distance: 2
+    m_Colors:
+    - _Albedo: {r: 0.5188679, g: 0.47261658, b: 0.43810073, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &8083697860985505425
