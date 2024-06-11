@@ -411,7 +411,7 @@
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{821FAD28-B346-AD3D-0F16-52A61CBD3DB1}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{A102A0EA-1F6B-0F0F-E6B9-AE3873FEF515}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -506,6 +506,10 @@
 				<File Id="169011874" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A2_160_Verse_Chords_V1.wav</ShortName>
 					<CachePath>SFX/SNF_FD_A2_160_Verse_Chords_V1_D8A0D580.wem</CachePath>
+				</File>
+				<File Id="170382054" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Test_Transition_SFX_Loop-001.wav</ShortName>
+					<CachePath>SFX/Test_Transition_SFX_Loop-001_241369DA.wem</CachePath>
 				</File>
 				<File Id="172120453" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_FD_A2_160_Verse_Snare_V1.wav</ShortName>
@@ -836,6 +840,10 @@
 					<ShortName>SNF_CR_A2_150_Intro_Kick_V1.wav</ShortName>
 					<CachePath>SFX/SNF_CR_A2_150_Intro_Kick_V1_D8A0D580.wem</CachePath>
 				</File>
+				<File Id="777874200" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Test_Transition_SFX_Loop-002.wav</ShortName>
+					<CachePath>SFX/Test_Transition_SFX_Loop-002_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="787472239" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_CR_A2_150_FinalRefrain_Snare_V1.wav</ShortName>
 					<CachePath>SFX/SNF_CR_A2_150_FinalRefrain_Snare_V1_D8A0D580.wem</CachePath>
@@ -1155,7 +1163,18 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="3964698704" Name="Play_MUSC_Transition" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="170382054"/>
+						<MediaRef Id="777874200"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="3658594925" Name="Stop_MUSC_GLOBAL_SWITCH" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="1244124042" Name="Stop_MUSC_Transition" DurationType="OneShot" DurationMin="0.17088541" DurationMax="0.17088541">
+					<MediaRefs>
+						<MediaRef Id="777874200"/>
+					</MediaRefs>
+				</Event>
 			</Events>
 			<GameParameters>
 				<GameParameter Id="82071987" Name="GP_MUSC_SpeedRead"/>
@@ -1343,7 +1362,7 @@
 				<Event Id="1914842139" Name="Stop_AMB_MENU_Os" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{2316111A-0260-12F0-5520-0CB1A8066615}">
+		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{7467E3B4-7255-9A96-E9EA-6BBAC7C52406}">
 			<ShortName>SB_SFX</ShortName>
 			<Path>SB_SFX.bnk</Path>
 			<Media>
@@ -1354,6 +1373,10 @@
 				<File Id="144192383" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-008.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_Player_FS_V0-008_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="285343248" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Round_End_V0-003.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Round_End_V0-003_5A0D49E1.wem</CachePath>
 				</File>
 				<File Id="313067995" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-006.wav</ShortName>
@@ -1382,10 +1405,6 @@
 				<File Id="455630233" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Eaten_V0-008.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Eaten_V0-008_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="551638140" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_SFX_OS_Round_End_V0-001.wav</ShortName>
-					<CachePath>SFX/SNF_SFX_OS_Round_End_V0-001_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="613117611" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Size_Up_V0-003.wav</ShortName>
@@ -1491,14 +1510,14 @@
 						<MediaRef Id="961089426"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2094862661" Name="Play_SFX_Round_Win" DurationType="OneShot" DurationMin="7.5" DurationMax="7.5">
+				<Event Id="2094862661" Name="Play_SFX_Round_Win" DurationType="OneShot" DurationMin="7.320513" DurationMax="7.320513">
 					<MediaRefs>
-						<MediaRef Id="551638140"/>
+						<MediaRef Id="285343248"/>
 					</MediaRefs>
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{0F602F42-3FA7-BA26-8017-156CED17BFE2}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{9ACC335D-933C-EA4F-E687-023EDF3EC593}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -1797,5 +1816,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{1ECD553E-1A44-7406-1A40-47B3051BABD0}</FileHash>
+	<FileHash>{2E6445A3-8A7A-DE71-570D-FE4EB78FA8F8}</FileHash>
 </SoundBanksInfo>

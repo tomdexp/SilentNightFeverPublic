@@ -26,6 +26,7 @@ namespace AK
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
         static const AkUniqueID PLAY_LM_VOODOO_AMBIANCE = 1931733291U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
+        static const AkUniqueID PLAY_MUSC_TRANSITION = 3964698704U;
         static const AkUniqueID PLAY_PLAYER_SIZE_UP = 1820042269U;
         static const AkUniqueID PLAY_ROUND_END = 1932934032U;
         static const AkUniqueID PLAY_SFX_ROUND_WIN = 2094862661U;
@@ -42,6 +43,7 @@ namespace AK
         static const AkUniqueID STOP_LM_SATT_INTERACT = 3778981049U;
         static const AkUniqueID STOP_LM_VOODOO_AMBIANCE = 3055808089U;
         static const AkUniqueID STOP_MUSC_GLOBAL_SWITCH = 3658594925U;
+        static const AkUniqueID STOP_MUSC_TRANSITION = 1244124042U;
     } // namespace EVENTS
 
     namespace STATES
