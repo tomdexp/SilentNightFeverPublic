@@ -69,6 +69,9 @@ namespace _Project.Scripts.Runtime.Audio
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("Called when a round end, so when a Team wins, will be called for the first and last round too")]
         public AK.Wwise.Event[] EventRoundEnd;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        [Tooltip("Called when at the start of the second fade that hides the score, before the next round start")]
+        public AK.Wwise.Event[] EventRoundHideScoreFade;
 
         [TabGroup("References", "Events", SdfIconType.MusicNote, TextColor = "lightmagenta")]
         [TabGroup("References/Events/Subgroup", "Player", SdfIconType.PeopleFill, TextColor = "lightgreen")]

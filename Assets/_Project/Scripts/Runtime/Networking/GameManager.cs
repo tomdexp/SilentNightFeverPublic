@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking.Rounds;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
@@ -529,6 +530,7 @@ namespace _Project.Scripts.Runtime.Networking
             OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
             Logger.LogInfo("Starting round " + CurrentRoundNumber.Value, Logger.LogType.Server, this);
             GetCurrentRound().StartRound();
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade, AudioManager.Instance.gameObject);
             yield return TransitionManager.Instance.EndLoadingRoundTransition();
         }
 
