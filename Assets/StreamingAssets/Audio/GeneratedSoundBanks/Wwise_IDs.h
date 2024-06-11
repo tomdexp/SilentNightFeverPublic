@@ -35,6 +35,8 @@ namespace AK
         static const AkUniqueID PLAY_UI_ENTER = 2982660583U;
         static const AkUniqueID PLAY_UI_LOBBY_CREATED = 4198832716U;
         static const AkUniqueID PLAY_UI_LOBBY_JOINED = 1782690879U;
+        static const AkUniqueID SET_LANDMARK_VOLUME_TO_0 = 3012856152U;
+        static const AkUniqueID SET_LANDMARK_VOLUME_TO_100 = 3390232705U;
         static const AkUniqueID STOP_AMB_GAME = 3205966197U;
         static const AkUniqueID STOP_AMB_MAIN_MENU_LOOPS = 4172187022U;
         static const AkUniqueID STOP_AMB_MENU_OS = 1914842139U;
@@ -124,6 +126,7 @@ namespace AK
         static const AkUniqueID DISTANCE = 1240670792U;
         static const AkUniqueID GP_ACC_HP = 756044085U;
         static const AkUniqueID GP_ACC_NOTCH = 4172717105U;
+        static const AkUniqueID GP_GLOBALLANDMARK_VOLUME = 813521875U;
         static const AkUniqueID GP_LANDMARKMETER_CITY = 823063048U;
         static const AkUniqueID GP_LANDMARKMETER_FOREST = 1268650150U;
         static const AkUniqueID GP_LANDMARKMETER_RAIN = 1311938743U;

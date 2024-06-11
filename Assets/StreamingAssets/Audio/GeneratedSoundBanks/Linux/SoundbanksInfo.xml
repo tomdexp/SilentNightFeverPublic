@@ -67,7 +67,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{8C435C0A-FF9C-2971-08D8-6411E6D09DAA}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{52A89516-DFCD-A035-966A-AD3C24BAEDEA}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -398,6 +398,8 @@
 						<AuxBusRef Id="4239310681" Name="LM_Voodoo"/>
 					</AuxBusRefs>
 				</Event>
+				<Event Id="3012856152" Name="Set_Landmark_Volume_to_0" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="3390232705" Name="Set_Landmark_Volume_to_100" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="570374180" Name="Stop_LM_Kitchen" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="3343843255" Name="Stop_LM_SATT_Ambiance" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="3778981049" Name="Stop_LM_SATT_Interact" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
@@ -405,13 +407,14 @@
 			</Events>
 			<GameParameters>
 				<GameParameter Id="488398129" Name="GP_LM_SatteliteMeter"/>
+				<GameParameter Id="813521875" Name="GP_GlobalLandMark_Volume"/>
 				<GameParameter Id="1240670792" Name="Distance"/>
 				<GameParameter Id="2256592338" Name="GP_LM_KitchenMeter"/>
 				<GameParameter Id="2268227989" Name="GP_LM_Voodoo_Meter"/>
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{A102A0EA-1F6B-0F0F-E6B9-AE3873FEF515}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{4F42C64F-393F-BC44-FF1D-CD6E9B969EC9}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -1362,7 +1365,7 @@
 				<Event Id="1914842139" Name="Stop_AMB_MENU_Os" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{7467E3B4-7255-9A96-E9EA-6BBAC7C52406}">
+		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{5521D9F1-98A9-3A95-DA21-2D65EB44CAE9}">
 			<ShortName>SB_SFX</ShortName>
 			<Path>SB_SFX.bnk</Path>
 			<Media>
@@ -1376,7 +1379,7 @@
 				</File>
 				<File Id="285343248" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Round_End_V0-003.wav</ShortName>
-					<CachePath>SFX/SNF_SFX_OS_Round_End_V0-003_5A0D49E1.wem</CachePath>
+					<CachePath>SFX/SNF_SFX_OS_Round_End_V0-003_68EE7838.wem</CachePath>
 				</File>
 				<File Id="313067995" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-006.wav</ShortName>
@@ -1517,7 +1520,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{B49E6688-D218-9440-772F-B86EE50027D7}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{7D4B2106-5378-3CA9-0978-076D50B8D8AE}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -1615,6 +1618,7 @@
 				<GameParameter Id="488398129" Name="GP_LM_SatteliteMeter"/>
 				<GameParameter Id="756044085" Name="GP_ACC_HP"/>
 				<GameParameter Id="783337961" Name="GP_SFX_toMusic"/>
+				<GameParameter Id="813521875" Name="GP_GlobalLandMark_Volume"/>
 				<GameParameter Id="822163944" Name="SS_Air_RPM"/>
 				<GameParameter Id="823063048" Name="GP_LandMarkMeter_City"/>
 				<GameParameter Id="987834118" Name="GP_PARAM_MUSC_Volume"/>
@@ -1816,5 +1820,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{1201F9B9-51E1-788E-876C-A40E1B074934}</FileHash>
+	<FileHash>{5EA997D4-ADA5-6BE3-F2D1-96BC4EB1058B}</FileHash>
 </SoundBanksInfo>
