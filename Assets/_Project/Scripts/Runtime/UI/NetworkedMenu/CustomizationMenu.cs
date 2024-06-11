@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Utils;
 using FishNet;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Project.Scripts.Runtime.UI.NetworkedMenu
@@ -8,13 +11,20 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
     public class CustomizationMenu : MenuBase
     {
         public override string MenuName { get; } = "CustomizationMenu";
-        [SerializeField] private ConfirmationPrompt _quitCustomizationPrompt;
+        [SerializeField, Required] private ConfirmationPrompt _quitCustomizationPrompt;
         [SerializeField] private float _delayBetweenHatConfirmedAndNextMenu = 1f;
+        [SerializeField, Required] private CanvasGroup _canvasGroup;
+
+        private void Awake()
+        {
+            _canvasGroup.CloseInstant();
+        }
 
         public override void Open()
         {
             base.Open();
             UIManager.Instance.SwitchToMetroCamera();
+            _canvasGroup.Open();
             if (InstanceFinder.IsServerStarted)
             {
                 if(PlayerManager.HasInstance) PlayerManager.Instance.TryStartCharacterCustomization();
@@ -37,6 +47,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void Close()
         {
             base.Close();
+            _canvasGroup.Close();
             if (InstanceFinder.IsServerStarted)
             {
                 if(PlayerManager.HasInstance) PlayerManager.Instance.TryStopCharacterCustomization();

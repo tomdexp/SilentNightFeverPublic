@@ -29,8 +29,10 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             base.Open();
             _canvasGroup.Open();
+            _timerStarted = false;
             PlayerManager.Instance.SetPlayerJoiningEnabled(true);
             PlayerManager.Instance.SetPlayerLeavingEnabled(true);
+            if(InstanceFinder.IsServerStarted) PlayerManager.Instance.ResetRealPlayerInfos();
         }
 
         private void Update()
