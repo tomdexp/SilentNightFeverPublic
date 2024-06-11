@@ -6,6 +6,7 @@ using System.Reflection;
 using _Project.Scripts.Runtime.Inputs;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerEffects;
+using _Project.Scripts.Runtime.UI.NetworkedMenu;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using FishNet;
 using FishNet.Connection;
@@ -208,12 +209,53 @@ namespace _Project.Scripts.Runtime.Networking
 
         private void JoinAndFullFakePlayerInputActionOnPerformed(InputAction.CallbackContext context)
         {
-            SetPlayerJoiningEnabled(true);
-            JoinInputActionPerformed(context);
-            AddFakePlayer();
-            AddFakePlayer();
-            AddFakePlayer();
-            GameManager.Instance.TryStartGame();
+            if (!IsServerStarted) return;
+            if (!UIManager.HasInstance) // means we are directly in game scene or in a scene without UI
+            {
+                SetPlayerJoiningEnabled(true);
+                JoinInputActionPerformed(context);
+                AddFakePlayer();
+                AddFakePlayer();
+                AddFakePlayer();
+                // check if we are in the onboarding scene or in the game scene
+                string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                if (currentSceneName == "OnBoardingScene")
+                {
+                    GameManager.Instance.TryStartOnBoarding();
+                }
+                else
+                {
+                    GameManager.Instance.TryStartGame();
+                }
+            }
+            else
+            {
+                // check if there are already 4 players
+                if (_realPlayerInfos.Count != 4)
+                {
+                    SetPlayerJoiningEnabled(true);
+                    JoinInputActionPerformed(context);
+                    AddFakePlayer();
+                    AddFakePlayer();
+                    AddFakePlayer();
+                    return;
+                }
+                // check to see if the teams are already confirmed (if not, at least 1 player is in team Z)
+                if(_playerTeamInfos.Any(x => x.PlayerTeamType == PlayerTeamType.Z))
+                {
+                    ChangeTeamServerRpc(PlayerIndexType.A, true);
+                    ConfirmTeamServerRpc(PlayerIndexType.A);
+                    ReadyAllFakePlayers();
+                }
+                else // it means we are at the hat confirmation stage
+                {
+                    // find the non fake player (which client id is not 255)
+                    RealPlayerInfo realPlayerInfo = _realPlayerInfos.Collection.First(x => x.ClientId != 255);
+                    ConfirmHatServerRpc(realPlayerInfo.PlayerIndexType, true);
+                    AllFakePlayersConfirmHat();
+                }
+            }
+            
         }
 
 
@@ -1330,6 +1372,16 @@ namespace _Project.Scripts.Runtime.Networking
             TryConfirmHat(obj, false);
         }
 
+        public void AllFakePlayersConfirmHat()
+        {
+            if (!IsServerStarted) return;
+            foreach (var realPlayerInfo in _realPlayerInfos.Collection)
+            {
+                if (realPlayerInfo.ClientId != 255) continue;
+                ConfirmHatServerRpc(realPlayerInfo.PlayerIndexType, true);
+            }
+        }
+
         #endregion
 
         public void TrySpawnPlayer()
@@ -1559,6 +1611,39 @@ namespace _Project.Scripts.Runtime.Networking
             _playerControllerB = GetNetworkPlayer(PlayerIndexType.B).GetPlayerController();
             _playerControllerC = GetNetworkPlayer(PlayerIndexType.C).GetPlayerController();
             _playerControllerD = GetNetworkPlayer(PlayerIndexType.D).GetPlayerController();
+        }
+        
+        public void ResetPlayerSpawnedLocally()
+        {
+            _numberOfPlayerSpawnedLocally = 0;
+        }
+
+        public void TeleportAllPlayerToOnBoardingSpawnPoints()
+        {
+            var spawnPoints = FindObjectsByType<PlayerSpawnPoint>(FindObjectsSortMode.None).ToList();
+            if (spawnPoints.Count < 4)
+            {
+                Logger.LogError("Not enough spawn points to teleport all players.", Logger.LogType.Server, context: this);
+                return;
+            }
+            
+            // order the spawn points by Index
+            spawnPoints = spawnPoints.OrderBy(x => x.PlayerIndexType).ToList();
+            
+            GetNetworkPlayer(PlayerIndexType.A).Teleport(spawnPoints[0].SpawnPoint.transform.position);
+            GetNetworkPlayer(PlayerIndexType.B).Teleport(spawnPoints[1].SpawnPoint.transform.position);
+            GetNetworkPlayer(PlayerIndexType.C).Teleport(spawnPoints[2].SpawnPoint.transform.position);
+            GetNetworkPlayer(PlayerIndexType.D).Teleport(spawnPoints[3].SpawnPoint.transform.position);
+        }
+
+        [Button]
+        public void ForceAllPlayersCameraAngle(float angle)
+        {
+            var playerCameras = FindObjectsByType<PlayerCamera>(FindObjectsSortMode.None).ToList();
+            foreach (var camera in playerCameras)
+            {
+                camera.ForceCameraAngle(angle);
+            }
         }
 
         private void OnPlayerSpawnedLocally()

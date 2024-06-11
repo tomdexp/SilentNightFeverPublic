@@ -117,7 +117,20 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             }
             else
             {
-                SetRigidbodyKinematic(false);
+                switch (RigidbodyBehavior)
+                {
+                    case RigidbodyAnchorBehavior.AlwaysKinematic:
+                        SetRigidbodyKinematic(true);
+                        break;
+                    case RigidbodyAnchorBehavior.AlwaysNonKinematic:
+                        SetRigidbodyKinematic(false);
+                        break;
+                    case RigidbodyAnchorBehavior.KinematicWhenNotOwner:
+                        SetRigidbodyKinematic(false);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
 

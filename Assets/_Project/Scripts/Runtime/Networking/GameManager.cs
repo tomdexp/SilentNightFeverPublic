@@ -21,6 +21,7 @@ namespace _Project.Scripts.Runtime.Networking
         [Title("References")]
         [Required] public GameManagerData GameManagerData;
         public readonly SyncVar<bool> IsGameStarted = new SyncVar<bool>();
+        public readonly SyncVar<bool> IsOnBoardingStarted = new SyncVar<bool>();
         public readonly SyncList<Round> Rounds = new SyncList<Round>();
         public readonly SyncList<RoundResult> RoundsResults = new SyncList<RoundResult>();
         public readonly SyncVar<byte> CurrentRoundNumber = new SyncVar<byte>(); // Starts at 1
@@ -82,6 +83,10 @@ namespace _Project.Scripts.Runtime.Networking
                         CameraManager.Instance.TryDisableSplitScreenCameras();
                         PlayerManager.Instance.SetPlayerJoiningEnabled(false);
                         break;
+                    case SceneType.OnBoardingScene:
+                        CameraManager.Instance.TryEnableSplitScreenCameras(); // Special condition when the Editor directly loads the GameScene
+                        PlayerManager.Instance.SetPlayerJoiningEnabled(true);
+                        break;
                     case SceneType.GameScene:
                         CameraManager.Instance.TryEnableSplitScreenCameras(); // Special condition when the Editor directly loads the GameScene
                         PlayerManager.Instance.SetPlayerJoiningEnabled(true);
@@ -120,8 +125,14 @@ namespace _Project.Scripts.Runtime.Networking
             LoadGlobalScene(SceneType.MenuScene);
         }
         
+        public void LoadOnBoardingScene()
+        {
+            LoadGlobalScene(SceneType.OnBoardingScene);
+        }
+        
         public void LoadGameScene()
         {
+            PlayerManager.Instance.ResetPlayerSpawnedLocally(); // because they are destroyed when changing scene (coming from OnBoarding)
             LoadGlobalScene(SceneType.GameScene);
         }
 
@@ -169,7 +180,6 @@ namespace _Project.Scripts.Runtime.Networking
             }
             stopwatch.Stop();
             Logger.LogInfo("Scene loaded in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
-            yield return TransitionManager.Instance.EndSceneChangeTransition();
             OnAfterSceneChange?.Invoke();
             switch (sceneType)
             {
@@ -180,13 +190,20 @@ namespace _Project.Scripts.Runtime.Networking
                 case SceneType.MenuScene:
                     PlayerManager.Instance.SetPlayerJoiningEnabled(false);
                     break;
+                case SceneType.OnBoardingScene:
+                    CameraManager.Instance.TryEnableSplitScreenCameras();
+                    yield return new WaitForSeconds(1f);
+                    TryStartOnBoarding();
+                    break;
                 case SceneType.GameScene:
                     CameraManager.Instance.TryEnableSplitScreenCameras();
-                    DOVirtual.DelayedCall(5.0f, TryStartGame);
+                    yield return new WaitForSeconds(2f);
+                    TryStartGame();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sceneType), sceneType, null);
             }
+            yield return TransitionManager.Instance.EndSceneChangeTransition();
         }
 
         private IEnumerator UnLoadCurrentScene()
@@ -235,7 +252,7 @@ namespace _Project.Scripts.Runtime.Networking
         public void TryStartGame()
         {
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            if (currentSceneName == SceneType.MenuScene.ToString())
+            if (currentSceneName == SceneType.MenuScene.ToString() || currentSceneName == "MenuSceneV2")
             {
                 Logger.LogWarning("The game cannot be started from the Menu Scene !", Logger.LogType.Server, this);
                 return;
@@ -258,12 +275,14 @@ namespace _Project.Scripts.Runtime.Networking
         
         private IEnumerator StartGame()
         {
+            if (!IsServerStarted) yield break;
+            
+            Logger.LogTrace("Attempting to start game...", Logger.LogType.Server, this);
             if (IsGameStarted.Value)
             {
                 Logger.LogDebug("Game already started !", Logger.LogType.Server, this);
                 yield break;
             }
-            Logger.LogTrace("Attempting to start game...", Logger.LogType.Server, this);
             if (!PlayerManager.HasInstance)
             {
                 Logger.LogError("No player manager instance found ! It should be spawned by the Default Spawn Objects script", Logger.LogType.Server, this);
@@ -292,10 +311,77 @@ namespace _Project.Scripts.Runtime.Networking
             PlayerManager.Instance.TrySetPlayerChangingTeamEnabled(false);
             SubscribeToTongueChangeEvents();
             SetupRounds();
+
+            yield return new WaitUntil(() => PlayerManager.Instance.AreAllPlayerSpawnedLocally);
+            
             yield return StartRounds();
             OnGameStarted?.Invoke();
             yield return TransitionManager.Instance.EndLoadingGameTransition();
             Logger.LogInfo("Game started !", Logger.LogType.Server, this);
+        }
+        
+        public void TryStartOnBoarding()
+        {
+            if (!IsServerStarted)
+            {
+                StartOnBoardingServerRpc();
+            }
+            else
+            {
+                StartCoroutine(StartOnBoarding());
+            }
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void StartOnBoardingServerRpc()
+        {
+            StartCoroutine(StartOnBoarding());
+        }
+        
+        private IEnumerator StartOnBoarding()
+        {
+            if (!IsServerStarted) yield break;
+            
+            Logger.LogTrace("Attempting to start on boarding...", Logger.LogType.Server, this);
+            if (IsGameStarted.Value)
+            {
+                Logger.LogDebug("Game already started ! Can't start the OnBoarding", Logger.LogType.Server, this);
+                yield break;
+            }
+            if (IsOnBoardingStarted.Value)
+            {
+                Logger.LogDebug("OnBoarding already started !", Logger.LogType.Server, this);
+                yield break;
+            }
+            
+            if (!PlayerManager.HasInstance)
+            {
+                Logger.LogError("No player manager instance found ! It should be spawned by the Default Spawn Objects script", Logger.LogType.Server, this);
+                yield break;
+            }
+            if (PlayerManager.Instance.NumberOfPlayers != 4)
+            {
+                Logger.LogWarning("Not enough players to start the game ! (current : " + PlayerManager.Instance.NumberOfPlayers +"/4)", Logger.LogType.Server, this);
+                yield break;
+            }
+            IsOnBoardingStarted.Value = true;
+            
+            yield return TransitionManager.Instance.BeginLoadingGameTransition();
+            yield return new WaitForSeconds(1f);
+            
+            PlayerManager.Instance.SpawnAllPlayers();
+            PlayerManager.Instance.TrySetPlayerChangingTeamEnabled(false);
+
+            yield return new WaitUntil(() => PlayerManager.Instance.AreAllPlayerSpawnedLocally);
+            
+            PlayerManager.Instance.TeleportAllPlayerToOnBoardingSpawnPoints();
+            PlayerManager.Instance.ForceAllPlayersCameraAngle(1.5f);
+            
+            yield return new WaitForSeconds(1f);
+            yield return TransitionManager.Instance.EndLoadingGameTransition();
+            
+            PlayerManager.Instance.CanPlayerUseTongue.Value = true;
+            Logger.LogInfo("OnBoarding started !", Logger.LogType.Server, this);
         }
 
         private void SubscribeToTongueChangeEvents()

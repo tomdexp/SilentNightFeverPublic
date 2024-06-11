@@ -229,6 +229,11 @@ namespace _Project.Scripts.Runtime.Audio
         {
             Logger.LogTrace("Binding listeners and emitters...", Logger.LogType.Local, this);
 
+            // Clean all null references (when changing scene from onboarding -> game, players are destroyed then re-created)
+            // but the listeners and emitters are not cleaned manually
+            _listeners.RemoveAll(item => !item);
+            _emitters.RemoveAll(item => !item);
+            
             foreach (var akGameObj in _emitters)
             {
                 foreach (var akAudioListener in _listeners)

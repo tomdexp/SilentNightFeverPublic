@@ -115,6 +115,16 @@ namespace _Project.Scripts.Runtime.Player
             ApplyCameraFollowOffset(_cameraFollowOffset.Value);
         }
         
+        [Server]
+        public void ForceCameraAngle(float angle)
+        {
+            _cameraAngle.Value = angle;
+            float x = Mathf.Cos(_cameraAngle.Value) * PlayerData.CameraOffsetRadius;
+            float y = Mathf.Sin(_cameraAngle.Value) * PlayerData.CameraOffsetRadius;
+            _cameraFollowOffset.Value = new Vector3(x, PlayerData.CameraHeight, y);
+            ApplyCameraFollowOffset(_cameraFollowOffset.Value);
+        }
+        
         private void ApplyCameraFollowOffset(Vector3 newFollowOffset)
         {
             if (!TryGetComponent(out CinemachineFollow cinemachineFollow))
