@@ -88,13 +88,17 @@ MonoBehaviour:
   _TreeParameters: {fileID: 11400000, guid: 947744e1069733a4a8e6397e521fabf6, type: 2}
   _TreePrefab: {fileID: -3039553893625661155, guid: ef68afd684d55fa428acfc7b35d93079,
     type: 3}
-  _testCubeParameters: {fileID: 11400000, guid: 293050c4bf0ee5449bc8caaf23f01d2a,
-    type: 2}
-  _testCubePrefab: {fileID: 8682220649787565702, guid: 4ef058cc48f529a4a910933f82c68b42,
+  _light0Parameters: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  _light0Prefab: {fileID: 1165876272057432398, guid: a1040698a156947458c214890570f93f,
     type: 3}
-  _testDiscParameters: {fileID: 11400000, guid: 34fdad24f7b14114e9330d36accefb2a,
-    type: 2}
-  _testDiscPrefab: {fileID: 663593535577069827, guid: 5ade7d4967fec72418fd952c78ecd958,
+  _light1Parameters: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  _light1Prefab: {fileID: 5439106779153848997, guid: 922d062b2f867d1429aede7715239337,
+    type: 3}
+  _light2Parameters: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  _light2Prefab: {fileID: 5010000105641560989, guid: a560a3d6098bd9044bd10c544fe54416,
+    type: 3}
+  _light3Parameters: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  _light3Prefab: {fileID: -77491777127621649, guid: dfdcd95ac9febe043a7b7f92c2ff6860,
     type: 3}
 --- !u!114 &608977885178213418
 MonoBehaviour:
@@ -148,7 +152,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 8
+  <PrefabId>k__BackingField: 12
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0

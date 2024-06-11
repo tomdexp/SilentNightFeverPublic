@@ -53,9 +53,9 @@ MonoBehaviour:
     SaveDecodedBank: 0
   LeftSpeakerVolumeOffset:
   - 0
-  - -70
+  - -50
   RightSpeakerVolumeOffset:
-  - -70
+  - -50
   - 0
   RTPC_GP_MUSC_SWITCH:
     idInternal: 0
@@ -94,22 +94,28 @@ MonoBehaviour:
       type: 2}
   - idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 3ea77d4b699c46549ac2f89b6451213f,
+    WwiseObjectReference: {fileID: 11400000, guid: 623e7fb26b4e40644958e30eb87ba075,
       type: 2}
   EventGameEnd:
   - idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 387688ff6efca044a862333e56ca15cc,
+      type: 2}
   - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
   - idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: d58e55dc77bd6644b8425d992720d51b,
+      type: 2}
   EventRoundStart:
   - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: e51caf919b6fb104c9b22df442c75d2e,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 6a3104d57d5f4f549b58765242c6d723,
       type: 2}
   - idInternal: 0
     valueGuidInternal: 
@@ -120,14 +126,29 @@ MonoBehaviour:
   EventRoundEnd:
   - idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 3ea77d4b699c46549ac2f89b6451213f,
+    WwiseObjectReference: {fileID: 11400000, guid: db1c94b17fa11ac4eab1f5d9da9d6254,
       type: 2}
   - idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 16109d47e305b11448ae8aa0c2e3090c,
+      type: 2}
   - idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 862f4fc55c75dd941a8ccd2aee465119,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: ee824b72cfd912941be740aa7751c476,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: f15c46a9637dd9142a7fe06f5caaaa09,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: d9cf1b8746656c44f96cac47b368035e,
+      type: 2}
+  EventRoundHideScoreFade: []
   EventPlayerTongueThrow:
     idInternal: 0
     valueGuidInternal: 

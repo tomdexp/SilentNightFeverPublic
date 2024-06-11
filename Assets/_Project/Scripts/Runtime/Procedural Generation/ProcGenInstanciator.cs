@@ -65,13 +65,25 @@ public class ProcGenInstanciator : MonoBehaviour
     //[HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testLandmarkPrefab;
     //private List<Vector2> _testLandmarkPoints;
 
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testCubeParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testCubePrefab;
-    private List<Vector2> _testCubePoints;
+    //[HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testCubeParameters;
+    //[HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testCubePrefab;
+    //private List<Vector2> _testCubePoints;
 
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testDiscParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testDiscPrefab;
-    private List<Vector2> _testDiscPoints;
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _light0Parameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _light0Prefab;
+    private List<Vector2> _light0Points;
+
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _light1Parameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _light1Prefab;
+    private List<Vector2> _light1Points;
+
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _light2Parameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _light2Prefab;
+    private List<Vector2> _light2Points;
+
+    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _light3Parameters;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _light3Prefab;
+    private List<Vector2> _light3Points;
 
     private List<List<Vector2>> _alreadySpawnedPoints = new();
     private List<float> _alreadySpawnedPointsRadius = new();
@@ -143,8 +155,10 @@ public class ProcGenInstanciator : MonoBehaviour
         _TreePoints = GeneratePoints(_TreeParameters, false, true, true);
         //_testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
 
-        _testCubePoints = GeneratePoints(_testCubeParameters, false, false, true);
-        _testDiscPoints = GeneratePoints(_testDiscParameters, false, false, true);
+        _light0Points = GeneratePoints(_light0Parameters, false, false, true);
+        _light1Points = GeneratePoints(_light1Parameters, false, false, true);
+        _light2Points = GeneratePoints(_light2Parameters, false, false, true);
+        _light3Points = GeneratePoints(_light3Parameters, false, false, true);
 
         OnLoadingProgressChanged?.Invoke(5/10f, "Generating crowd points");
         _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
@@ -372,8 +386,10 @@ public class ProcGenInstanciator : MonoBehaviour
         OnLoadingProgressChanged?.Invoke(9/10f, "Spawning environment");
         yield return SpawnPrefabs(_FernPoints, _FernPrefab);
         yield return SpawnPrefabs(_TreePoints, _TreePrefab);
-        yield return SpawnPrefabs(_testCubePoints, _testCubePrefab);
-        yield return SpawnPrefabs(_testDiscPoints, _testDiscPrefab);
+        yield return SpawnPrefabs(_light0Points, _light0Prefab);
+        yield return SpawnPrefabs(_light1Points, _light1Prefab);
+        yield return SpawnPrefabs(_light2Points, _light2Prefab);
+        yield return SpawnPrefabs(_light3Points, _light3Prefab);
         OnLoadingProgressChanged?.Invoke(10/10f, "Spawning crowd");
         yield return SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
         OnPrefabSpawned?.Invoke();
@@ -392,8 +408,10 @@ public class ProcGenInstanciator : MonoBehaviour
         if (!_FernPrefab) Logger.LogError("Fern prefab is missing");
         if (!_TreePrefab) Logger.LogError("Tree prefab is missing");
         //if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
-        if (!_testCubePrefab) Logger.LogError("Test Cube prefab is missing");
-        if (!_testDiscPrefab) Logger.LogError("Test Disc prefab is missing");
+        if (!_light0Prefab) Logger.LogError("Light 0 prefab is missing");
+        if (!_light1Prefab) Logger.LogError("Light 1 prefab is missing");
+        if (!_light2Prefab) Logger.LogError("Light 2 prefab is missing");
+        if (!_light3Prefab) Logger.LogError("Light 3 prefab is missing");
         if (!_CrowdPrefab) Logger.LogError("Crowd prefab is missing");
     }
 
