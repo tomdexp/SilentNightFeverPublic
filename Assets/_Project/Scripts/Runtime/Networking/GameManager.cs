@@ -530,7 +530,7 @@ namespace _Project.Scripts.Runtime.Networking
             OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
             Logger.LogInfo("Starting round " + CurrentRoundNumber.Value, Logger.LogType.Server, this);
             GetCurrentRound().StartRound();
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade, AudioManager.Instance.gameObject);
+            if(CurrentRoundNumber.Value != 1) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade, AudioManager.Instance.gameObject);
             yield return TransitionManager.Instance.EndLoadingRoundTransition();
         }
 
