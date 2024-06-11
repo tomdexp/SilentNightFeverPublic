@@ -56,6 +56,8 @@ namespace _Project.Scripts.Runtime.Player
         private void LateUpdate()
         {
             _movementSpeed = _speed / _playerData.PlayerMaxSpeedForAnimation;
+            _movementSpeed = Mathf.Clamp(_movementSpeed, 0, 1);
+            _movementSpeed = Mathf.Lerp(_animator.GetFloat(MovementSpeedParam), _movementSpeed, Time.deltaTime * 10);
             _animator.SetFloat(MovementSpeedParam, _movementSpeed);
         }
 
