@@ -10,12 +10,14 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
     {
         public static BoolSettingHoldButtonToAnchorTongue HoldButtonToAnchorTongue = new BoolSettingHoldButtonToAnchorTongue(false);
         public static BoolSettingUseRadialTongueSensor UseRadialTongueSensor = new BoolSettingUseRadialTongueSensor(false);
+        public static BoolSettingEpilepsyFilterEnable EpilepsyFilterEnable = new BoolSettingEpilepsyFilterEnable(false);
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Load()
         {
             HoldButtonToAnchorTongue.Load();
             UseRadialTongueSensor.Load();
+            EpilepsyFilterEnable.Load();
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -29,6 +31,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
         {
             HoldButtonToAnchorTongue.Save();
             UseRadialTongueSensor.Save();
+            EpilepsyFilterEnable.Save();
             PlayerPrefs.Save();
         }
         
@@ -51,6 +54,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             Logger.LogInfo("Localization : " + LocalizationSettings.SelectedLocale.LocaleName);
             HoldButtonToAnchorTongue.CommandGet();
             UseRadialTongueSensor.CommandGet();
+            EpilepsyFilterEnable.CommandGet();
             Logger.LogInfo("Options listed");
             
         }
@@ -61,6 +65,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)Language.English];
             HoldButtonToAnchorTongue.ResetToDefault();
             UseRadialTongueSensor.ResetToDefault();
+            EpilepsyFilterEnable.ResetToDefault();
             Save();
             Logger.LogInfo("Options reset to default");
         }

@@ -83,6 +83,7 @@ namespace _Project.Scripts.Runtime.Landmarks.Kitchen
             {
                 foreach (var spawnedFood in _spawnedFoods)
                 {
+                    if (!spawnedFood) continue;
                     ServerManager.Despawn(spawnedFood);
                 }
             }

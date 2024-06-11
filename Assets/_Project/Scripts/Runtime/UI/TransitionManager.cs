@@ -13,6 +13,8 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private TransitionCanvasGroup _transitionSceneChange;
         [SerializeField, Required] private TransitionCanvasGroup _transitionLoadingGame;
         [SerializeField, Required] private TransitionCanvasGroup _transitionLoadingRound;
+        [SerializeField, Required] private UI_TeamScore _uiTeamAScore;
+        [SerializeField, Required] private UI_TeamScore _uiTeamBScore;
         
         public IEnumerator BeginSceneChangeTransition()
         {
@@ -42,6 +44,8 @@ namespace _Project.Scripts.Runtime.UI
         {
             Logger.LogDebug("BeginLoadingRoundTransition", Logger.LogType.Server, this);
             yield return _transitionLoadingRound.BeginTransition();
+            _uiTeamAScore.UpdateUI();
+            _uiTeamBScore.UpdateUI();
         }
         
         public IEnumerator EndLoadingRoundTransition()

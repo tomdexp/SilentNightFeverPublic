@@ -13,7 +13,7 @@ namespace _Project.Scripts.Runtime.Utils
         [Command("/player.set.size", "Set the size of the player.")]
         public static void SetPlayerSize(PlayerIndexType player, float size)
         {
-            if(PlayerManager.HasInstance) PlayerManager.Instance.GetNetworkPlayer(player).TrySetSize(size);
+            if(PlayerManager.HasInstance) PlayerManager.Instance.GetNetworkPlayer(player).TrySetSize(size, true);
         }
 
         [Command("/player.teleport", "Teleport the player to the specified position.")]

@@ -15,6 +15,14 @@ namespace _Project.Scripts.Runtime.UI
     [CreateAssetMenu(fileName = nameof(UIData), menuName = "Scriptable Objects/" + nameof(UIData))]
     public class UIData : ScriptableObject
     {
+        [Title("Team A Settings")]
+        public Color TeamAColor = Color.red;
+        public Sprite TeamASprite;
+        
+        [Title("Team B Settings")]
+        public Color TeamBColor = Color.blue;
+        public Sprite TeamBSprite;
+        
         [Title("Transition Settings", "Fade")]
         public float TransitionFadeInDuration = 1.0f;
         public Ease TransitionFadeInEase = Ease.Linear;

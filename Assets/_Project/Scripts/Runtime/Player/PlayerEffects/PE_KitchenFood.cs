@@ -22,7 +22,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerEffects
         {
             var currentPlayerSize = player.transform.localScale.x;
             var newPlayerSize = currentPlayerSize * _sizeMultiplier;
-            player.TrySetSize(newPlayerSize);
+            player.TrySetSize(newPlayerSize, true);
         }
     }
 }
