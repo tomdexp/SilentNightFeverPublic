@@ -1872,6 +1872,11 @@ namespace _Project.Scripts.Runtime.Networking
             return _playerTeamInfos.Collection;
         }
         
+        public List<PlayerHatInfo> GetPlayerHatInfos()
+        {
+            return _playerHatInfos.Collection;
+        }
+        
         private IEnumerator ChangeTeamCooldownCoroutine(PlayerIndexType playerIndexType)
         {
             switch (playerIndexType)

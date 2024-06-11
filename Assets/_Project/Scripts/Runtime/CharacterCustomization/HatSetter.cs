@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using FishNet.Object;
@@ -7,6 +8,8 @@ using Sirenix.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
+using Random = UnityEngine.Random;
 
 public class HatSetter : NetworkBehaviour
 {
@@ -17,13 +20,14 @@ public class HatSetter : NetworkBehaviour
     [SerializeField, Required] private GameObject _hatContainer = null;
     private MeshRenderer[] _hats;
 
-    private readonly SyncVar<int> _randomHatIndex = new SyncVar<int>();
+    private readonly SyncVar<int> _randomHatIndex = new SyncVar<int>(0);
+    private NetworkPlayer _networkPlayer;
 
     private void Awake()
     {
-        if (_hatContainer == null)
+        if (!_hatContainer)
         {
-            Debug.LogWarning("HatSetter is missing a reference to the HatContainer Gameobject !");
+            Debug.LogWarning("HatSetter is missing a reference to the HatContainer GameObject !");
             return;
         }
 
@@ -36,17 +40,11 @@ public class HatSetter : NetworkBehaviour
 
         if (_randomHat == false)
         {
-            if (TryGetComponent(out NetworkPlayer NP))
-            {
-                _playerIndexType = NP.GetPlayerIndexType();
-            };
-
             // Is that ugly ? Tell me
             // Since we enable our mannequin after the start of the server
             // the OnStartNetwork is not called, so I do it here instead
             StartCoroutine(TrySubscribingToEvents());
         }
-
     }
 
     private void OnDisable()
@@ -60,17 +58,14 @@ public class HatSetter : NetworkBehaviour
     {
         base.OnStartServer();
 
-        if (_randomHat == true)
-        {
-            _randomHatIndex.Value = Random.Range(0, _hats.Length);
-        }
+        if (_randomHat) _randomHatIndex.Value = Random.Range(0, _hats.Length);
     }
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        SetHatByIndex(_randomHatIndex.Value);
+        if(_randomHat) SetHatByIndex(_randomHatIndex.Value); // We don't want to trigger SetHatByIndex here if "_randomHat" is false
     }
     
 
@@ -85,6 +80,23 @@ public class HatSetter : NetworkBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_randomHat) return;
+        if (Time.frameCount % 30 == 0) // only check every 30 frames
+        {
+            if (!_networkPlayer)
+            {
+                _networkPlayer = GetComponent<NetworkPlayer>();
+            }
+
+            if (_networkPlayer)
+            {
+                _playerIndexType = _networkPlayer.GetPlayerIndexType();
+                if (PlayerManager.HasInstance) OnPlayerHatInfosChanged(PlayerManager.Instance.GetPlayerHatInfos());
+            }
+        }
+    }
 
     private IEnumerator TrySubscribingToEvents()
     {
@@ -95,8 +107,13 @@ public class HatSetter : NetworkBehaviour
         PlayerManager.Instance.OnPlayerHatInfosChanged += OnPlayerHatInfosChanged;
     }
 
-    private void OnPlayerHatInfosChanged(List<_Project.Scripts.Runtime.Player.PlayerHatInfo> hatInfos)
+    private void OnPlayerHatInfosChanged(List<PlayerHatInfo> hatInfos)
     {
+        if (hatInfos.Count == 0)
+        {
+            DisableHats();
+            return; 
+        }
         foreach (var hatInfo in hatInfos)
         {
             if (hatInfo.PlayerIndexType == _playerIndexType)
@@ -119,11 +136,16 @@ public class HatSetter : NetworkBehaviour
         DisableHats();
 
         _hats[index].gameObject.SetActive(true);
+        //Logger.LogTrace("Setting hat by index, activating hat : " + _hats[index].name, Logger.LogType.Client, this);
     }
 
     private void SetHatByName(string hatName)
     {
-        if (_hats.IsNullOrEmpty()) { return; }
+        if (_hats.IsNullOrEmpty())
+        {
+            //Logger.LogWarning("No hats found in the hat container", Logger.LogType.Client, this);
+            return;
+        } 
 
         DisableHats();
 
@@ -132,6 +154,7 @@ public class HatSetter : NetworkBehaviour
             if (hat.name == hatName)
             {
                 hat.gameObject.SetActive(true);
+                //Logger.LogTrace("Setting hat: " + hatName, Logger.LogType.Client, this);
                 return;
             }
         }
@@ -142,7 +165,9 @@ public class HatSetter : NetworkBehaviour
         foreach (var hat in _hats)
         {
             hat.gameObject.SetActive(false);
+            //Logger.LogTrace($"Disabling hat {hat.name}", Logger.LogType.Client, this);
         }
+        //Logger.LogTrace("Disabling all hats", Logger.LogType.Client, this);
     }
 
 }
