@@ -1,4 +1,5 @@
-﻿using FishNet;
+﻿using System;
+using FishNet;
 using FishNet.Object;
 using FishNet.Transporting;
 using UnityEngine;
@@ -23,6 +24,14 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
+        private void OnDestroy()
+        {
+            if (InstanceFinder.ClientManager)
+            {
+                InstanceFinder.ClientManager.OnClientConnectionState -= OnClientConnectionState;
+            }
+        }
+
         private void OnClientConnectionState(ClientConnectionStateArgs args)
         {
             if (args.ConnectionState == LocalConnectionState.Started)
@@ -30,20 +39,6 @@ namespace _Project.Scripts.Runtime.Networking
                 SpawnAllNetworkObjects();
             }
             Logger.LogTrace("Client connection state changed to " + args.ConnectionState, context:this);
-        }
-
-        private void OnServerConnectionState(ServerConnectionStateArgs args)
-        {
-            if (args.ConnectionState == LocalConnectionState.Started)
-            {
-                if (InstanceFinder.IsServerStarted == false) return; // Only the server should spawn network objects
-                // Spawn network objects
-                foreach (var networkObject in _networkObjects)
-                {
-                    var go = Instantiate(networkObject);
-                    InstanceFinder.ServerManager.Spawn(go);
-                }
-            }
         }
         
         private void SpawnAllNetworkObjects()

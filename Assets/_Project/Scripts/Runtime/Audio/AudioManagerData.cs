@@ -88,13 +88,10 @@ namespace _Project.Scripts.Runtime.Audio
         
         [TabGroup("References", "Events", SdfIconType.MusicNote, TextColor = "lightmagenta")]
         [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
-        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIButtonHover;
         [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
-        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIButtonClickEnter;
         [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
-        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
         public AK.Wwise.Event EventUIButtonClickBack;
         [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
         [InfoBox("Not Implemented Yet", InfoMessageType.Error)]

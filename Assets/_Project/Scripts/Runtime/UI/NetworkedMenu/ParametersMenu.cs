@@ -43,12 +43,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void AudioButtonClicked()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         private void GraphicsButtonClicked()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         public override void Close()

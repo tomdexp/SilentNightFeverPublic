@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using _Project.Scripts.Runtime.Utils;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -27,10 +28,16 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void Open()
         {
             base.Open();
+            StartCoroutine(OpenCoroutine());
+        }
+
+        private IEnumerator OpenCoroutine()
+        {
             _canvasGroup.Open();
             _pubCanvasGroup.alpha = 1;
             UIManager.Instance.SwitchToMetroCamera();
             // Start listening.
+            yield return new WaitForSeconds(1f);
             m_EventListener = InputSystem.onAnyButtonPress.Call(OnButtonPressed);
         }
 
