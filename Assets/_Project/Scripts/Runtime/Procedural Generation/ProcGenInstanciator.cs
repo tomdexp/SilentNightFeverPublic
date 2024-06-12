@@ -13,6 +13,8 @@ using Logger = _Project.Scripts.Runtime.Utils.Logger;
 using Sirenix.Utilities;
 using UnityEngine.Profiling;
 using Random = UnityEngine.Random;
+using System.Drawing;
+using UnityEngine.Rendering;
 
 public class ProcGenInstanciator : MonoBehaviour
 {
@@ -87,6 +89,8 @@ public class ProcGenInstanciator : MonoBehaviour
 
     private List<List<Vector2>> _alreadySpawnedPoints = new();
     private List<float> _alreadySpawnedPointsRadius = new();
+    private List<float> _alreadySpawnedPointsEdgeDistance = new();
+    private List<Vector2> _alreadySpawnedPointsRegionSize = new();
     private List<NetworkObject> _spawnedObjects = new(); // used for regenerating the maps by despawning all the objects
 
     private bool _readyToSpawnPrefabs = false;
@@ -117,6 +121,8 @@ public class ProcGenInstanciator : MonoBehaviour
         
         _alreadySpawnedPoints.Clear();
         _alreadySpawnedPointsRadius.Clear();
+        _alreadySpawnedPointsEdgeDistance.Clear();
+        _alreadySpawnedPointsRegionSize.Clear();
         _readyToSpawnPrefabs = false;
         
         if (_spawnedObjects.Count > 0)
@@ -235,11 +241,13 @@ public class ProcGenInstanciator : MonoBehaviour
             {
                 tmpAlreadySpawnedPoints.Add(new List<Vector2>());
                 tmpAlreadySpawnedPointsRadius.Add(_alreadySpawnedPointsRadius[i] + parameters._distanceWithOtherObjects);
+
+                Vector2 centerOffset = newRegionSize / 2 - _alreadySpawnedPointsRegionSize[i] / 2;
                 for (int j = 0; j < _alreadySpawnedPoints[i].Count; j++)
                 {
                     Vector2 tmpPoint = _alreadySpawnedPoints[i][j];
-                    tmpPoint.x -= parameters._edgeDistance;
-                    tmpPoint.y -= parameters._edgeDistance;
+                    // We recenter every points
+                    tmpPoint += centerOffset;
                     tmpAlreadySpawnedPoints[i].Add(tmpPoint);
                 }
             }
@@ -256,6 +264,21 @@ public class ProcGenInstanciator : MonoBehaviour
             Logger.LogWarning("Not enough points, something went wrong? \n Number of spawned objects : " + points.Count, Logger.LogType.Server, this);
         }
 
+        if (addToAlreadySpawnedPoints)
+        {
+
+            List<Vector2> test = new();
+            for (int i = 0; i < points.Count; i++)
+            {
+                test.Add(points[i]);
+            }
+
+            _alreadySpawnedPoints.Add(test);
+            _alreadySpawnedPointsRadius.Add(parameters._distanceWithOtherObjects);
+            _alreadySpawnedPointsRegionSize.Add(newRegionSize);
+            _alreadySpawnedPointsEdgeDistance.Add(parameters._edgeDistance);
+        }
+ 
 
         for (int i = 0; i < points.Count; i++)
         {
@@ -264,14 +287,6 @@ public class ProcGenInstanciator : MonoBehaviour
             point.y += (parameters._edgeDistance / 100 * _regionSize.y) / 2;
             points[i] = point;
         }
-
-
-        if (addToAlreadySpawnedPoints)
-        {
-            _alreadySpawnedPoints.Add(points);
-            _alreadySpawnedPointsRadius.Add(parameters._distanceWithOtherObjects);
-        }
-
         return points;
     }
 
