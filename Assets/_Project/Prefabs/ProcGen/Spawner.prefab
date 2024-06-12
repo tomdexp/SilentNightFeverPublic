@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7134980f15aacc84e909d6f6bec96894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patxiMode: 0
-  _regionSize: {x: 75, y: 75}
+  _patxiMode: 1
+  _regionSize: {x: 100, y: 100}
   _ground: {fileID: 3599783517367289265, guid: 4d3bbb7ce2eb3004e8b4eca8014802d2, type: 3}
   _invisibleWall: {fileID: 2333613852732724448, guid: 222efa64598257b4f9b0c090110d4f9a,
     type: 3}
@@ -75,8 +75,8 @@ MonoBehaviour:
     Max: 1
   - Object: {fileID: 8088962324795935800, guid: 6ca34e787da4eee4983678d36c230bc8,
       type: 3}
-    Min: 2
-    Max: 2
+    Min: 0
+    Max: 5
   _landmarksPoints: []
   _spawnedLandmarks: []
   _CrowdParameters: {fileID: 11400000, guid: 7785665f1c25a164d9471fca17df2370, type: 2}
@@ -135,8 +135,8 @@ MonoBehaviour:
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: -144.50012, y: 104.74017, z: -88.083496}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isSpawnable: 1
