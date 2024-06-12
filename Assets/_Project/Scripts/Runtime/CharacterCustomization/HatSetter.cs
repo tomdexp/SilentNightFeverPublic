@@ -22,6 +22,8 @@ public class HatSetter : NetworkBehaviour
 
     private readonly SyncVar<int> _randomHatIndex = new SyncVar<int>(0);
     private NetworkPlayer _networkPlayer;
+    private bool _isInitialized;
+    private int _currentHatIndex;
 
     private void Awake()
     {
@@ -65,10 +67,21 @@ public class HatSetter : NetworkBehaviour
     {
         base.OnStartClient();
 
-        if(_randomHat) SetHatByIndex(_randomHatIndex.Value); // We don't want to trigger SetHatByIndex here if "_randomHat" is false
+        if (_randomHat)
+        {
+            if (!_isInitialized)
+            {
+                _isInitialized = true;
+                _currentHatIndex = _randomHatIndex.Value;
+                SetHatByIndex(_randomHatIndex.Value);
+            }
+            else
+            {
+                SetHatByIndex(_currentHatIndex);
+            }
+        }
     }
     
-
     public override void OnStopNetwork()
     {
         base.OnStopNetwork();
