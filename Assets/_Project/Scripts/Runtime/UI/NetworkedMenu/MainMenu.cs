@@ -93,7 +93,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void QuitButtonClicked()
         {
-            Logger.LogWarning("Quit not implemented yet", Logger.LogType.Client, this);
+            Application.Quit();
         }
     }
 }

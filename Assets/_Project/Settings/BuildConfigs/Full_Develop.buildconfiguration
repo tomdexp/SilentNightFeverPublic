@@ -1,37 +1,14 @@
 {
     "Show": true,
-    "Dependencies": [],
+    "Dependencies": [
+        "GlobalObjectId_V1-1-9d10a9fa3b3904e4886ed480a7168953-93214019566545601-0"
+    ],
     "Components": [
-        {
-            "$type": "Unity.Build.Common.GeneralSettings, Unity.Build",
-            "ProductName": "SilentNightFever",
-            "CompanyName": "P20",
-            "Version": "0.1"
-        },
         {
             "$type": "Unity.Build.Classic.ClassicBuildProfile, Unity.Build.Classic",
             "$version": 1,
             "Platform": "StandaloneWindows64",
             "Configuration": 2
-        },
-        {
-            "$type": "Unity.Build.Common.SceneList, Unity.Build",
-            "$version": 1,
-            "BuildCurrentScene": false,
-            "SceneInfos": [
-                {
-                    "Scene": "GlobalObjectId_V1-1-655c47a27a32cd848866ea6152c117de-102900000-0",
-                    "AutoLoad": false
-                },
-                {
-                    "Scene": "GlobalObjectId_V1-1-b961b1cb1ddf8de40ace5321a4ab9594-102900000-0",
-                    "AutoLoad": false
-                },
-                {
-                    "Scene": "GlobalObjectId_V1-1-b324f1fc4f4023f49838fee2bc42cf23-102900000-0",
-                    "AutoLoad": false
-                }
-            ]
         }
     ]
 }

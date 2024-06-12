@@ -4,7 +4,7 @@
     {
         StartScene, // The first scene that has all the singletons
         IntroScene, // The scene for the logo and the intro
-        MenuScene,
+        MenuV2Scene,
         OnBoardingScene,
         GameScene,
     }

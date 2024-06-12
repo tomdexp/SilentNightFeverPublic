@@ -81,7 +81,7 @@ namespace _Project.Scripts.Runtime.Networking
                     case SceneType.IntroScene:
                         CameraManager.Instance.TryDisableSplitScreenCameras();
                         break;
-                    case SceneType.MenuScene:
+                    case SceneType.MenuV2Scene:
                         CameraManager.Instance.TryDisableSplitScreenCameras();
                         PlayerManager.Instance.SetPlayerJoiningEnabled(false);
                         break;
@@ -124,7 +124,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         public void LoadMenuScene()
         {
-            LoadGlobalScene(SceneType.MenuScene);
+            LoadGlobalScene(SceneType.MenuV2Scene);
         }
         
         public void LoadOnBoardingScene()
@@ -189,7 +189,7 @@ namespace _Project.Scripts.Runtime.Networking
                     break;
                 case SceneType.IntroScene:
                     break;
-                case SceneType.MenuScene:
+                case SceneType.MenuV2Scene:
                     PlayerManager.Instance.SetPlayerJoiningEnabled(false);
                     break;
                 case SceneType.OnBoardingScene:
@@ -254,7 +254,7 @@ namespace _Project.Scripts.Runtime.Networking
         public void TryStartGame()
         {
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            if (currentSceneName == SceneType.MenuScene.ToString() || currentSceneName == "MenuSceneV2")
+            if (currentSceneName == SceneType.MenuV2Scene.ToString() || currentSceneName == "MenuSceneV2")
             {
                 Logger.LogWarning("The game cannot be started from the Menu Scene !", Logger.LogType.Server, this);
                 return;
