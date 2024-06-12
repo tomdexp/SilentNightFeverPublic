@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _patxiMode: 0
-  _regionSize: {x: 75, y: 75}
+  _regionSize: {x: 100, y: 100}
   _ground: {fileID: 3599783517367289265, guid: 4d3bbb7ce2eb3004e8b4eca8014802d2, type: 3}
   _invisibleWall: {fileID: 2333613852732724448, guid: 222efa64598257b4f9b0c090110d4f9a,
     type: 3}
@@ -75,18 +75,12 @@ MonoBehaviour:
     Max: 1
   - Object: {fileID: 8088962324795935800, guid: 6ca34e787da4eee4983678d36c230bc8,
       type: 3}
-    Min: 2
-    Max: 2
+    Min: 0
+    Max: 5
   _landmarksPoints: []
   _spawnedLandmarks: []
   _CrowdParameters: {fileID: 11400000, guid: 7785665f1c25a164d9471fca17df2370, type: 2}
   _CrowdPrefab: {fileID: -8035802715321130305, guid: f82863f54786b7b408b57e0fc1e46e82,
-    type: 3}
-  _FernParameters: {fileID: 11400000, guid: a0945e16741e7a941b31a85b88dd1764, type: 2}
-  _FernPrefab: {fileID: 1097100612007706204, guid: 1b928a2c79881a543aea5eaec40b67ba,
-    type: 3}
-  _TreeParameters: {fileID: 11400000, guid: 947744e1069733a4a8e6397e521fabf6, type: 2}
-  _TreePrefab: {fileID: -3039553893625661155, guid: ef68afd684d55fa428acfc7b35d93079,
     type: 3}
   _light0Parameters: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
   _light0Prefab: {fileID: 1165876272057432398, guid: a1040698a156947458c214890570f93f,
@@ -100,6 +94,32 @@ MonoBehaviour:
   _light3Parameters: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
   _light3Prefab: {fileID: -77491777127621649, guid: dfdcd95ac9febe043a7b7f92c2ff6860,
     type: 3}
+  _FernParameters: {fileID: 11400000, guid: a0945e16741e7a941b31a85b88dd1764, type: 2}
+  _FernPrefab: {fileID: 1097100612007706204, guid: 1b928a2c79881a543aea5eaec40b67ba,
+    type: 3}
+  _TreeParameters: {fileID: 11400000, guid: 947744e1069733a4a8e6397e521fabf6, type: 2}
+  _TreePrefab: {fileID: -3039553893625661155, guid: ef68afd684d55fa428acfc7b35d93079,
+    type: 3}
+  _deco0Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco0Prefab: {fileID: 0}
+  _deco1Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco1Prefab: {fileID: 0}
+  _deco2Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco2Prefab: {fileID: 0}
+  _deco3Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco3Prefab: {fileID: 0}
+  _deco4Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco4Prefab: {fileID: 0}
+  _deco5Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco5Prefab: {fileID: 0}
+  _deco6Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco6Prefab: {fileID: 0}
+  _deco7Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco7Prefab: {fileID: 0}
+  _deco8Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco8Prefab: {fileID: 0}
+  _deco9Parameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  _deco9Prefab: {fileID: 0}
 --- !u!114 &608977885178213418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,8 +155,8 @@ MonoBehaviour:
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: -144.50012, y: 104.74017, z: -88.083496}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isSpawnable: 1

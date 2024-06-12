@@ -80,6 +80,7 @@ MonoBehaviour:
   - {fileID: 2984639859622669150}
   - {fileID: 1606939090974518520}
   - {fileID: 2933752066654590117}
+  - {fileID: 302108005108309338}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
@@ -215,10 +216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ad715725ea470ab09f407e1ed71483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8930517091281739454}
-  _networkObjectCache: {fileID: 0}
-  SceneThatBelongsTo: 3
+  _networkObjectCache: {fileID: 8930517091281739454}
+  SceneToDeleteIn: 4
 --- !u!1 &8199403993483714256
 GameObject:
   m_ObjectHideFlags: 0
