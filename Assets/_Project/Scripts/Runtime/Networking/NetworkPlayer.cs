@@ -8,6 +8,7 @@ using DG.Tweening;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using Unity.Networking.Transport;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
@@ -18,6 +19,8 @@ namespace _Project.Scripts.Runtime.Networking
     {
        [field: SerializeField] public PlayerData PlayerData { get; private set; }
        public bool IsOnline => !Owner.IsHost;
+       public event Action<bool> OnSizeChanged; // arg = if play audio
+       
        private readonly SyncVar<RealPlayerInfo> _realPlayerInfo = new SyncVar<RealPlayerInfo>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
        private PlayerController _playerController;
        private List<PlayerEffect> _appliedPlayerEffects = new List<PlayerEffect>();
@@ -168,8 +171,12 @@ namespace _Project.Scripts.Runtime.Networking
            }
 
            // check if there is any change in size
-           if(playAudio) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerSizeChange, gameObject);
+           if (playAudio)
+           {
+               AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventPlayerSizeChange, gameObject);
+           }
            if (Mathf.Approximately(newSize, transform.localScale.x)) yield break;
+           OnSizeChanged?.Invoke(playAudio);
 
            // check if we are scaling up or down compared to our current size, based on the scale.x
            var currentSize = transform.localScale.x;

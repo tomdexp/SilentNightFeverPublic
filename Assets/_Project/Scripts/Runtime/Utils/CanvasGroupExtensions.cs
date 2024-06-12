@@ -15,6 +15,13 @@ namespace _Project.Scripts.Runtime.Utils
             canvasGroup.blocksRaycasts = true;
             canvasGroup.DOFade(1, _fadeDuration).SetEase(_openEase);
         }
+        
+        public static void OpenInstant(this CanvasGroup canvasGroup)
+        {
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.alpha = 1;
+        }
 
         public static void Close(this CanvasGroup canvasGroup)
         {

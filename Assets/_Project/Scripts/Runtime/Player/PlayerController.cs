@@ -225,6 +225,7 @@ namespace _Project.Scripts.Runtime.Player
             
             if(VoodooPuppetDirection.Value != Vector2.zero)
             {
+                movement *= _networkPlayer.PlayerData.LandmarkData_Voodoo.PlayerInputMultiplierWhenActive;
                 var direction = new Vector3(VoodooPuppetDirection.Value.x, 0, VoodooPuppetDirection.Value.y);
                 movement += direction * _networkPlayer.PlayerData.LandmarkData_Voodoo.ForcedMovementInfluenceFactor;
             }

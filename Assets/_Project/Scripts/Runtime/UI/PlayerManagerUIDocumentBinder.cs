@@ -25,6 +25,22 @@ namespace _Project.Scripts.Runtime.UI
 
         private void Start()
         {
+            bool activate = false; // if false, do not even register the events
+#if UNITY_EDITOR
+            activate = true;
+#else
+            if (Debug.isDebugBuild) // Is Development Build ?
+            {
+                activate = true;
+            }
+            else // Is release, so we don't use it
+            {
+                activate = false;
+            }
+#endif
+            
+            if (!activate) return;
+            
             _uiDocument = GetComponent<UIDocument>();
             _root = _uiDocument.rootVisualElement;
             if (_uiDocument == null)

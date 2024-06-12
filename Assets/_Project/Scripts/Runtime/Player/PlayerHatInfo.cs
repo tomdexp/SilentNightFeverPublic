@@ -15,9 +15,9 @@ namespace _Project.Scripts.Runtime.Player
 public enum HatType
 {
     None = 0,
-    Plant2 = 1,
-    Plant4 = 2,
-    Pan = 3,
-    Satellite = 4,
-    Puppet = 5
+    Cap01 = 1,
+    Cap02 = 2,
+    Glasses = 3,
+    Plant2 = 4,
+    Catgirl = 5,
 }
