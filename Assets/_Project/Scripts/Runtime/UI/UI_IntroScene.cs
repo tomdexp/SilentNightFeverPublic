@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.Runtime.UI
@@ -99,18 +101,18 @@ namespace _Project.Scripts.Runtime.UI
             // 4th GAME LOGO AND TITLE
             var tweenFadeInGameLogo = _gameLogo.DOFade(1.0f, _secondsFadeInDurationGameLogo).SetEase(_easeFadeInGameLogo);
             var tweenFadeInGameTitle = _gameTitle.DOFade(1.0f, _secondsFadeInDurationGameTitle).SetEase(_easeFadeInGameTitle);
-            yield return tweenFadeInGameLogo.WaitForCompletion();
+            //yield return tweenFadeInGameLogo.WaitForCompletion();
             yield return tweenFadeInGameTitle.WaitForCompletion();
             
             yield return new WaitForSeconds(_secondsBeforeFadeOutGameLogo);
             
             var tweenFadeOutGameLogo = _gameLogo.DOFade(0.0f, _secondsFadeOutDurationGameLogo).SetEase(_easeFadeOutGameLogo);
             var tweenFadeOutGameTitle = _gameTitle.DOFade(0.0f, _secondsFadeOutDurationGameTitle).SetEase(_easeFadeOutGameTitle);
-            yield return tweenFadeOutGameLogo.WaitForCompletion();
+            //yield return tweenFadeOutGameLogo.WaitForCompletion();
             yield return tweenFadeOutGameTitle.WaitForCompletion();
 
             yield return new WaitForSeconds(_secondsBeforeSceneChange);
-            GameManager.Instance.LoadMenuScene();
+            SceneManager.LoadScene(SceneType.MenuV2Scene.ToString());
         }
     }
 }

@@ -95,7 +95,7 @@ MonoBehaviour:
   FollowOffset: {x: 0, y: 6, z: -3}
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 0, y: 0, z: 0}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -145,6 +145,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 2582053150722278600}
   <PlayerData>k__BackingField: {fileID: 11400000, guid: cba28541030cc9e41bf92005e67cc6a0,
     type: 2}
+  <CinemachineCamera>k__BackingField: {fileID: 0}
   <PlayerIndexType>k__BackingField: 4
 --- !u!114 &6295709196432752803
 MonoBehaviour:

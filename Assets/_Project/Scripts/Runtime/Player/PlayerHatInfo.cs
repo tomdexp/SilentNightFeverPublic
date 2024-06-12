@@ -19,4 +19,5 @@ public enum HatType
     Cap02 = 2,
     Glasses = 3,
     Plant2 = 4,
+    Catgirl = 5,
 }
