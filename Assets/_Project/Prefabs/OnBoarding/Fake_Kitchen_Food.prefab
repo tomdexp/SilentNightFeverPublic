@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2984639859622669150}
   - component: {fileID: 1606939090974518520}
   - component: {fileID: 2933752066654590117}
+  - component: {fileID: 302108005108309338}
   m_Layer: 0
   m_Name: Fake_Kitchen_Food
   m_TagString: TongueInteractable
@@ -101,7 +102,7 @@ MonoBehaviour:
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 6
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 4128982540
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 8685286661223530608
 --- !u!114 &4514829685582767689
@@ -202,6 +203,22 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 8930517091281739454}
   <PlayerData>k__BackingField: {fileID: 11400000, guid: cba28541030cc9e41bf92005e67cc6a0,
     type: 2}
+--- !u!114 &302108005108309338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5411116179372590570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ad715725ea470ab09f407e1ed71483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 8930517091281739454}
+  _networkObjectCache: {fileID: 0}
+  SceneThatBelongsTo: 3
 --- !u!1 &8199403993483714256
 GameObject:
   m_ObjectHideFlags: 0
