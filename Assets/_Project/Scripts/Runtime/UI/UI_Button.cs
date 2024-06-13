@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
+using Vector3 = UnityEngine.Vector3;
 
 namespace _Project.Scripts.Runtime.UI
 {
@@ -22,31 +23,36 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private ButtonType _buttonType;
         [SerializeField, Required] private UIData _uiData;
         [SerializeField] private bool _keepFocusOnClicked = false;
+        [SerializeField] private bool _playScaleFeedbackOnClicked = true;
+        
+        public event Action OnHover;
+        public event Action OnUnHover;
         
         private Button _button;
         private float _originalScale;
         private float _secondsBetweenClick = 0.1f;
-        private WaitForSeconds _waitForSeconds;
+        private bool _isOpen = true;
         
         private void Start()
         {
             _button = GetComponent<Button>();
             _button.onClick.AddListener(OnClick);
             _originalScale = transform.localScale.x;
-            _waitForSeconds = new WaitForSeconds(_secondsBetweenClick);
         }
 
         private void OnDestroy()
         {
             _button.onClick.RemoveListener(OnClick);
+            DOTween.Kill(gameObject);
         }
 
         private void OnClick()
         {
-            //StartCoroutine(DisableCooldown()); // shitty idea, making a button interatacble to true causes the button to be deselected for the gamepad
             if (_buttonType == ButtonType.Enter)
             {
                 if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickEnter, AudioManager.Instance.gameObject);
+                if (!_playScaleFeedbackOnClicked) return;
+                transform.DOKill();
                 transform.DOScale(_uiData.ClickEnterScale, _uiData.ClickEnterDuration).SetEase(_uiData.ClickEnterEase).OnComplete(() =>
                 {
                     transform.DOScale(_originalScale, _uiData.ClickEnterDuration).SetEase(_uiData.ClickEnterEase);
@@ -55,6 +61,8 @@ namespace _Project.Scripts.Runtime.UI
             else
             {
                 if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickBack, AudioManager.Instance.gameObject);
+                if (!_playScaleFeedbackOnClicked) return;
+                transform.DOKill();
                 transform.DOScale(_uiData.ClickBackScale, _uiData.ClickBackDuration).SetEase(_uiData.ClickBackEase).OnComplete(() =>
                 {
                     transform.DOScale(_originalScale, _uiData.ClickBackDuration).SetEase(_uiData.ClickBackEase);
@@ -75,16 +83,18 @@ namespace _Project.Scripts.Runtime.UI
         private void PlayHoverFeedbacks()
         {
             if(!_button.interactable) return;
+            OnHover?.Invoke();
             if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonHover, AudioManager.Instance.gameObject);
             if(_buttonType == ButtonType.Enter)
             {
+                transform.DOKill();
                 transform.DOScale(_uiData.HoverEnterScale, _uiData.HoverEnterDuration).SetEase(_uiData.HoverEnterEase);
             }
             else
             {
+                transform.DOKill();
                 transform.DOScale(_uiData.HoverBackScale, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
             }
-            Logger.LogTrace($"Hovering on button {name}", Logger.LogType.Client, this);
         }
         
         public void OnPointerExit(PointerEventData eventData)
@@ -100,22 +110,43 @@ namespace _Project.Scripts.Runtime.UI
         private void PlayUnHoverFeedbacks()
         {
             if(!_button.interactable) return;
+            OnUnHover?.Invoke();
+            if(transform.localScale.x == 0) return; // to avoid the button to scale to 1 when the Close() method is called
             if(_buttonType == ButtonType.Enter)
             {
+                transform.DOKill();
                 transform.DOScale(_originalScale, _uiData.HoverEnterDuration).SetEase(_uiData.HoverEnterEase);
             }
             else
             {
+                transform.DOKill();
                 transform.DOScale(_originalScale, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
             }
         }
-        
-        private IEnumerator DisableCooldown()
+
+        [Button]
+        public void Open()
         {
-            if (_button.interactable == false) yield break;
-            _button.interactable = false;
-            yield return _waitForSeconds;
-            _button.interactable = true;
+            Vector3 scaleUpTarget = Vector3.one * _uiData.OpenAnimDurationScaleUpFactor;
+            transform.DOKill();
+            var sequence = DOTween.Sequence(gameObject);
+            sequence.Append(transform.DOScale(scaleUpTarget, _uiData.OpenAnimDurationScaleUp).SetEase(_uiData.OpenAnimEaseScaleUp));
+            sequence.Append(transform.DOScale(_originalScale, _uiData.OpenAnimDurationScaleDown).SetEase(_uiData.OpenAnimEaseScaleDown));
+            sequence.Play();
+            _isOpen = true;
+        }
+
+        [Button]
+        public void Close()
+        {
+            transform.DOKill();
+            transform.localScale = Vector3.zero;
+            _isOpen = false;
+        }
+
+        private void Update()
+        {
+            if (!_isOpen) transform.localScale = Vector3.zero;
         }
     }
 }
