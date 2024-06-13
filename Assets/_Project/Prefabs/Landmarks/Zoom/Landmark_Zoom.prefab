@@ -552,7 +552,7 @@ MonoBehaviour:
   _sliderRotationTracker: {fileID: 6742861836230300207}
   _teamAParticles: {fileID: 7718518123280764742}
   _teamBParticles: {fileID: 7256556613374596953}
-  _threshold: 5
+  _threshold: 10
 --- !u!1 &3481199698151648183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,6 +2288,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7835360789048526417}
     m_Modifications:
+    - target: {fileID: 1900225751431321243, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 2580974076453063493, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -2367,14 +2372,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1495007197306777866, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
+    - targetCorrespondingSourceObject: {fileID: 5559312122061244176, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4293303764124198457}
-    - targetCorrespondingSourceObject: {fileID: 3985560960707069798, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7448481683377991393}
+      addedObject: {fileID: 9173281690468809147}
   m_SourcePrefab: {fileID: 100100000, guid: 57d3a6d1fa2e66445a4ee91f42a93d35, type: 3}
 --- !u!4 &2084470871938284861 stripped
 Transform:
@@ -2382,19 +2383,19 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8090312990326324056}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5118655845587811390 stripped
+--- !u!1 &4422592177274305608 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 3985560960707069798, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
+  m_CorrespondingSourceObject: {fileID: 5559312122061244176, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
     type: 3}
   m_PrefabInstance: {fileID: 8090312990326324056}
   m_PrefabAsset: {fileID: 0}
---- !u!1818360609 &7448481683377991393
+--- !u!1818360609 &9173281690468809147
 RotationConstraint:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5118655845587811390}
+  m_GameObject: {fileID: 4422592177274305608}
   m_Enabled: 1
   serializedVersion: 2
   m_Weight: 1
@@ -2404,33 +2405,7 @@ RotationConstraint:
   m_AffectRotationY: 1
   m_AffectRotationZ: 1
   m_Active: 1
-  m_IsLocked: 1
-  m_Sources:
-  - sourceTransform: {fileID: 501001162717624788}
-    weight: 1
---- !u!1 &7276064294192515666 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1495007197306777866, guid: 57d3a6d1fa2e66445a4ee91f42a93d35,
-    type: 3}
-  m_PrefabInstance: {fileID: 8090312990326324056}
-  m_PrefabAsset: {fileID: 0}
---- !u!1818360609 &4293303764124198457
-RotationConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7276064294192515666}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Weight: 1
-  m_RotationAtRest: {x: 0, y: 0, z: 0}
-  m_RotationOffset: {x: 0, y: 0, z: 0}
-  m_AffectRotationX: 1
-  m_AffectRotationY: 1
-  m_AffectRotationZ: 1
-  m_Active: 1
-  m_IsLocked: 1
+  m_IsLocked: 0
   m_Sources:
   - sourceTransform: {fileID: 501001162717624788}
     weight: 1

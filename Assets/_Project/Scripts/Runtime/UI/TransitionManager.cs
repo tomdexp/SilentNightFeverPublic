@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using _Project.Scripts.Runtime.UI.Transitions;
+using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -15,7 +17,19 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private TransitionCanvasGroup _transitionLoadingRound;
         [SerializeField, Required] private UI_TeamScore _uiTeamAScore;
         [SerializeField, Required] private UI_TeamScore _uiTeamBScore;
-        
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (FindAnyObjectByType<LocalBlackFade>())
+            {
+                var canvasGroup = FindAnyObjectByType<LocalBlackFade>().CanvasGroup;
+                canvasGroup.DOFade(0, 2f).SetEase(Ease.Linear);
+                canvasGroup.blocksRaycasts = false;
+                canvasGroup.interactable = false;
+            }
+        }
+
         public IEnumerator BeginSceneChangeTransition()
         {
             Logger.LogDebug("BeginSceneChangeTransition", Logger.LogType.Server, this);

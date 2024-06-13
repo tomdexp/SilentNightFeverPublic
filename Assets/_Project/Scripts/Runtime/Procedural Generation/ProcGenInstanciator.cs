@@ -11,7 +11,6 @@ using _Project.Scripts.Runtime.Utils;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 using Sirenix.Utilities;
-using UnityEngine.Profiling;
 using Random = UnityEngine.Random;
 
 public class ProcGenInstanciator : MonoBehaviour
@@ -53,40 +52,75 @@ public class ProcGenInstanciator : MonoBehaviour
 
 
     [Title("    Environment")]
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _FernParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _FernPrefab;
-    private List<Vector2> _FernPoints;
-
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _TreeParameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _TreePrefab;
-    private List<Vector2> _TreePoints;
-
-    //[HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testLandmarkParameters;
-    //[HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testLandmarkPrefab;
-    //private List<Vector2> _testLandmarkPoints;
-
-    //[HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _testCubeParameters;
-    //[HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _testCubePrefab;
-    //private List<Vector2> _testCubePoints;
-
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _light0Parameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _light0Prefab;
+    [SerializeField] private ProcGenParameters _light0Parameters;
+    [SerializeField] private NetworkObject _light0Prefab;
     private List<Vector2> _light0Points;
-
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _light1Parameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _light1Prefab;
+    [Space]
+    [SerializeField] private ProcGenParameters _light1Parameters;
+    [SerializeField] private NetworkObject _light1Prefab;
     private List<Vector2> _light1Points;
-
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _light2Parameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _light2Prefab;
+    [Space]
+    [SerializeField] private ProcGenParameters _light2Parameters;
+    [SerializeField] private NetworkObject _light2Prefab;
     private List<Vector2> _light2Points;
-
-    [HideIf("@_patxiMode == true"), SerializeField] private ProcGenParameters _light3Parameters;
-    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _light3Prefab;
+    [Space]
+    [SerializeField] private ProcGenParameters _light3Parameters;
+    [SerializeField] private NetworkObject _light3Prefab;
     private List<Vector2> _light3Points;
+
+    [Space]
+    [SerializeField] private ProcGenParameters _FernParameters;
+    [SerializeField] private NetworkObject _FernPrefab;
+    private List<Vector2> _FernPoints;
+    [Space]
+    [SerializeField] private ProcGenParameters _TreeParameters;
+    [SerializeField] private NetworkObject _TreePrefab;
+    private List<Vector2> _TreePoints;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco0Parameters;
+    [SerializeField] private NetworkObject _deco0Prefab= null;
+    private List<Vector2> _deco0Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco1Parameters;
+    [SerializeField] private NetworkObject _deco1Prefab = null;
+    private List<Vector2> _deco1Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco2Parameters;
+    [SerializeField] private NetworkObject _deco2Prefab = null;
+    private List<Vector2> _deco2Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco3Parameters;
+    [SerializeField] private NetworkObject _deco3Prefab = null;
+    private List<Vector2> _deco3Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco4Parameters;
+    [SerializeField] private NetworkObject _deco4Prefab = null;
+    private List<Vector2> _deco4Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco5Parameters;
+    [SerializeField] private NetworkObject _deco5Prefab = null;
+    private List<Vector2> _deco5Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco6Parameters;
+    [SerializeField] private NetworkObject _deco6Prefab = null;
+    private List<Vector2> _deco6Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco7Parameters;
+    [SerializeField] private NetworkObject _deco7Prefab = null;
+    private List<Vector2> _deco7Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco8Parameters;
+    [SerializeField] private NetworkObject _deco8Prefab = null;
+    private List<Vector2> _deco8Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco9Parameters;
+    [SerializeField] private NetworkObject _deco9Prefab = null;
+    private List<Vector2> _deco9Points;
 
     private List<List<Vector2>> _alreadySpawnedPoints = new();
     private List<float> _alreadySpawnedPointsRadius = new();
+    private List<float> _alreadySpawnedPointsEdgeDistance = new();
+    private List<Vector2> _alreadySpawnedPointsRegionSize = new();
     private List<NetworkObject> _spawnedObjects = new(); // used for regenerating the maps by despawning all the objects
 
     private bool _readyToSpawnPrefabs = false;
@@ -117,6 +151,8 @@ public class ProcGenInstanciator : MonoBehaviour
         
         _alreadySpawnedPoints.Clear();
         _alreadySpawnedPointsRadius.Clear();
+        _alreadySpawnedPointsEdgeDistance.Clear();
+        _alreadySpawnedPointsRegionSize.Clear();
         _readyToSpawnPrefabs = false;
         
         if (_spawnedObjects.Count > 0)
@@ -159,6 +195,18 @@ public class ProcGenInstanciator : MonoBehaviour
         _light1Points = GeneratePoints(_light1Parameters, false, false, true);
         _light2Points = GeneratePoints(_light2Parameters, false, false, true);
         _light3Points = GeneratePoints(_light3Parameters, false, false, true);
+
+
+        _deco0Points = GeneratePoints(_deco0Parameters, false, true, true);
+        _deco1Points = GeneratePoints(_deco1Parameters, false, true, true);
+        _deco2Points = GeneratePoints(_deco2Parameters, false, true, true);
+        _deco3Points = GeneratePoints(_deco3Parameters, false, true, true);
+        _deco4Points = GeneratePoints(_deco4Parameters, false, true, true);
+        _deco5Points = GeneratePoints(_deco5Parameters, false, true, true);
+        _deco6Points = GeneratePoints(_deco6Parameters, false, true, true);
+        _deco7Points = GeneratePoints(_deco7Parameters, false, true, true);
+        _deco8Points = GeneratePoints(_deco8Parameters, false, true, true);
+        _deco9Points = GeneratePoints(_deco9Parameters, false, true, true);
 
         OnLoadingProgressChanged?.Invoke(5/10f, "Generating crowd points");
         _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
@@ -235,11 +283,13 @@ public class ProcGenInstanciator : MonoBehaviour
             {
                 tmpAlreadySpawnedPoints.Add(new List<Vector2>());
                 tmpAlreadySpawnedPointsRadius.Add(_alreadySpawnedPointsRadius[i] + parameters._distanceWithOtherObjects);
+
+                Vector2 centerOffset = newRegionSize / 2 - _alreadySpawnedPointsRegionSize[i] / 2;
                 for (int j = 0; j < _alreadySpawnedPoints[i].Count; j++)
                 {
                     Vector2 tmpPoint = _alreadySpawnedPoints[i][j];
-                    tmpPoint.x -= parameters._edgeDistance;
-                    tmpPoint.y -= parameters._edgeDistance;
+                    // We recenter every points
+                    tmpPoint += centerOffset;
                     tmpAlreadySpawnedPoints[i].Add(tmpPoint);
                 }
             }
@@ -256,6 +306,21 @@ public class ProcGenInstanciator : MonoBehaviour
             Logger.LogWarning("Not enough points, something went wrong? \n Number of spawned objects : " + points.Count, Logger.LogType.Server, this);
         }
 
+        if (addToAlreadySpawnedPoints)
+        {
+
+            List<Vector2> test = new();
+            for (int i = 0; i < points.Count; i++)
+            {
+                test.Add(points[i]);
+            }
+
+            _alreadySpawnedPoints.Add(test);
+            _alreadySpawnedPointsRadius.Add(parameters._distanceWithOtherObjects);
+            _alreadySpawnedPointsRegionSize.Add(newRegionSize);
+            _alreadySpawnedPointsEdgeDistance.Add(parameters._edgeDistance);
+        }
+ 
 
         for (int i = 0; i < points.Count; i++)
         {
@@ -264,14 +329,6 @@ public class ProcGenInstanciator : MonoBehaviour
             point.y += (parameters._edgeDistance / 100 * _regionSize.y) / 2;
             points[i] = point;
         }
-
-
-        if (addToAlreadySpawnedPoints)
-        {
-            _alreadySpawnedPoints.Add(points);
-            _alreadySpawnedPointsRadius.Add(parameters._distanceWithOtherObjects);
-        }
-
         return points;
     }
 
@@ -390,6 +447,28 @@ public class ProcGenInstanciator : MonoBehaviour
         yield return SpawnPrefabs(_light1Points, _light1Prefab);
         yield return SpawnPrefabs(_light2Points, _light2Prefab);
         yield return SpawnPrefabs(_light3Points, _light3Prefab);
+
+        if (_deco0Prefab!=null)
+          yield return SpawnPrefabs(_deco0Points, _deco0Prefab);
+        if (_deco1Prefab != null)
+            yield return SpawnPrefabs(_deco1Points, _deco1Prefab);
+        if (_deco2Prefab != null)
+            yield return SpawnPrefabs(_deco2Points, _deco2Prefab);
+        if (_deco3Prefab != null)
+            yield return SpawnPrefabs(_deco3Points, _deco3Prefab);
+        if (_deco4Prefab != null)
+            yield return SpawnPrefabs(_deco4Points, _deco4Prefab);
+        if (_deco5Prefab != null)
+            yield return SpawnPrefabs(_deco5Points, _deco5Prefab);
+        if (_deco6Prefab != null)
+            yield return SpawnPrefabs(_deco6Points, _deco6Prefab);
+        if (_deco7Prefab != null)
+            yield return SpawnPrefabs(_deco7Points, _deco7Prefab);
+        if (_deco8Prefab != null)
+            yield return SpawnPrefabs(_deco8Points, _deco8Prefab);
+        if (_deco9Prefab != null)
+            yield return SpawnPrefabs(_deco9Points, _deco9Prefab);
+
         OnLoadingProgressChanged?.Invoke(10/10f, "Spawning crowd");
         yield return SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
         OnPrefabSpawned?.Invoke();
@@ -424,11 +503,11 @@ public class ProcGenInstanciator : MonoBehaviour
 
         for (int i = 0; i < playersTeamA.Length; i++)
         {
-            playersTeamA[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamAPoints[i].x, 0, _teamAPoints[i].y));
+            playersTeamA[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamAPoints[i].x, .25f, _teamAPoints[i].y));
         }
         for (int i = 0; i < playersTeamB.Length; i++)
         {
-            playersTeamB[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamBPoints[i].x, 0, _teamBPoints[i].y));
+            playersTeamB[i].GetComponent<PlayerController>().Teleport(new Vector3(_teamBPoints[i].x, .25f, _teamBPoints[i].y));
         }
     }
 

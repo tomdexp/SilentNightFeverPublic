@@ -17,11 +17,23 @@ namespace _Project.Scripts.Runtime.UI.Transitions
 
         public override IEnumerator EndTransition()
         {
-            var tween = DOTween
-                .To(() => _fadeValue.Value, x => _fadeValue.Value = x, 0, Data.TransitionFadeOutDuration)
-                .SetEase(Data.TransitionFadeOutEase);
-            yield return tween.WaitForCompletion();
-            _fadeValue.Value = 0;
+            if (DoSyncFadeValue)
+            {
+                var tween = DOTween
+                    .To(() => _fadeValue.Value, x => _fadeValue.Value = x, 0, Data.TransitionFadeOutDuration)
+                    .SetEase(Data.TransitionFadeOutEase);
+                yield return tween.WaitForCompletion();
+                _fadeValue.Value = 0;
+            }
+            else
+            {
+                var tween = DOTween
+                    .To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, 0, Data.TransitionFadeOutDuration)
+                    .SetEase(Data.TransitionFadeOutEase);
+                yield return tween.WaitForCompletion();
+                _canvasGroup.alpha = 0;
+            }
+            
         }
     }
 }

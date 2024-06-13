@@ -18,7 +18,8 @@ namespace _Project.Scripts.Runtime.UI.Transitions
         public UIData Data;
         
         protected readonly SyncVar<float> _fadeValue = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers, .1f, Channel.Reliable));
-        private CanvasGroup _canvasGroup;
+        protected CanvasGroup _canvasGroup;
+        public bool DoSyncFadeValue = true;
 
         public abstract IEnumerator BeginTransition();
         public abstract IEnumerator EndTransition();
@@ -35,14 +36,14 @@ namespace _Project.Scripts.Runtime.UI.Transitions
             StartCoroutine(EndTransition());
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
         }
 
         protected virtual void Update()
         {
-            _canvasGroup.alpha = _fadeValue.Value;
+            if(DoSyncFadeValue) _canvasGroup.alpha = _fadeValue.Value;
         }
     }
 }

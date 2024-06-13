@@ -1,7 +1,7 @@
-﻿using System;
-using _Project.Scripts.Runtime.Networking;
+﻿using _Project.Scripts.Runtime.Networking;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
@@ -11,14 +11,42 @@ namespace _Project.Scripts.Runtime.UI
     {
         [SerializeField] private InputAction _toggleVisibilityInputAction;
         private UIDocument _uiDocument;
+        private bool _isVisible = true;
 
         private void Start()
         {
+            bool showOnStart = false;
+            bool activate = false; // if false, do not even register the events
+#if UNITY_EDITOR
+            showOnStart = true;
+            activate = true;
+#else
+            if (Debug.isDebugBuild) // Is Development Build ?
+            {
+                showOnStart = false;
+                activate = true;
+            }
+            else // Is release, so we don't use it
+            {
+                showOnStart = false;
+                activate = false;
+            }
+#endif
+
+            
+            
+            
             Logger.LogDebug("BootstrapUIDocumentBinder Start", context:this);
             _uiDocument = GetComponent<UIDocument>();
-            if (_uiDocument == null)
+            if (!_uiDocument)
             {
-                Utils.Logger.LogError("No UIDocument found on BootstrapUIDocumentBinder.", context:this);
+                Logger.LogError("No UIDocument found on BootstrapUIDocumentBinder.", context:this);
+                return;
+            }
+            
+            if (!activate)
+            {
+                _uiDocument.rootVisualElement.style.display = DisplayStyle.None;
                 return;
             }
             
@@ -27,9 +55,9 @@ namespace _Project.Scripts.Runtime.UI
             
             BootstrapManager.Instance.OnJoinCodeReceived += OnJoinCodeReceived;
             
-            if (_uiDocument == null)
+            if (!_uiDocument)
             {
-                Utils.Logger.LogError("No UIDocument found on BootstrapUIDocumentBinder.", context:this);
+                Logger.LogError("No UIDocument found on BootstrapUIDocumentBinder.", context:this);
                 return;
             }
 
@@ -65,7 +93,7 @@ namespace _Project.Scripts.Runtime.UI
                 startGameButton.clicked += () =>
                 {
                     // check if we are in the onboarding scene
-                    string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                    string sceneName = SceneManager.GetActiveScene().name;
                     if (sceneName == "OnboardingScene")
                     {
                         GameManager.Instance.TryStartOnBoarding();
@@ -75,6 +103,17 @@ namespace _Project.Scripts.Runtime.UI
                         GameManager.Instance.TryStartGame();
                     }
                 };
+            }
+
+            if (showOnStart)
+            {
+                _isVisible = true;
+                _uiDocument.rootVisualElement.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                _isVisible = false;
+                _uiDocument.rootVisualElement.style.display = DisplayStyle.None;
             }
         }
 
@@ -87,7 +126,8 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnToggleVisibilityInputAction(InputAction.CallbackContext context)
         {
-            _uiDocument.enabled = !_uiDocument.enabled;
+            _isVisible = !_isVisible;
+            _uiDocument.rootVisualElement.style.display = _isVisible ? DisplayStyle.Flex : DisplayStyle.None;
         }
         
         private void OnJoinCodeReceived(string code)
