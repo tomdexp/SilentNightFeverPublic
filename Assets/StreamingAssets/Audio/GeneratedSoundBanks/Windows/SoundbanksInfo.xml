@@ -67,7 +67,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{52A89516-DFCD-A035-966A-AD3C24BAEDEA}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{5F3D717C-EBAF-EEF8-33C8-1D3F727E39C6}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -401,9 +401,12 @@
 				<Event Id="3012856152" Name="Set_Landmark_Volume_to_0" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="3390232705" Name="Set_Landmark_Volume_to_100" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="570374180" Name="Stop_LM_Kitchen" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="2228749558" Name="Stop_LM_Kitchen_Global" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="3343843255" Name="Stop_LM_SATT_Ambiance" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="547351571" Name="Stop_LM_SATT_Ambiance_Global" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="3778981049" Name="Stop_LM_SATT_Interact" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="3055808089" Name="Stop_LM_VOODOO_Ambiance" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="2946421553" Name="Stop_LM_SATT_Interact_Global" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="2453006097" Name="Stop_LM_VOODOO_Ambiance_Global" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 			<GameParameters>
 				<GameParameter Id="488398129" Name="GP_LM_SatteliteMeter"/>
@@ -414,7 +417,7 @@
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{4F42C64F-393F-BC44-FF1D-CD6E9B969EC9}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{4ED8DDFC-5825-675B-A000-EDA681301869}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -1181,7 +1184,6 @@
 			</Events>
 			<GameParameters>
 				<GameParameter Id="82071987" Name="GP_MUSC_SpeedRead"/>
-				<GameParameter Id="783337961" Name="GP_SFX_toMusic"/>
 				<GameParameter Id="1716289499" Name="GP_LM_toMusic"/>
 				<GameParameter Id="1886390058" Name="GP_MUSC_SWITCH"/>
 			</GameParameters>
@@ -1365,7 +1367,7 @@
 				<Event Id="1914842139" Name="Stop_AMB_MENU_Os" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{5521D9F1-98A9-3A95-DA21-2D65EB44CAE9}">
+		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{7506FB8A-1C65-4FE1-2720-D4FE1616F2D4}">
 			<ShortName>SB_SFX</ShortName>
 			<Path>SB_SFX.bnk</Path>
 			<Media>
@@ -1408,10 +1410,6 @@
 				<File Id="455630233" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Eaten_V0-008.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Eaten_V0-008_EDCD4836.wem</CachePath>
-				</File>
-				<File Id="613117611" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_SFX_OS_Size_Up_V0-003.wav</ShortName>
-					<CachePath>SFX/SNF_SFX_OS_Size_Up_V0-003_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="630533137" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-001.wav</ShortName>
@@ -1503,11 +1501,6 @@
 						<MediaRef Id="857480144"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1820042269" Name="Play_PLAYER_Size_up" DurationType="OneShot" DurationMin="0.41659376" DurationMax="0.41659376">
-					<MediaRefs>
-						<MediaRef Id="613117611"/>
-					</MediaRefs>
-				</Event>
 				<Event Id="1932934032" Name="Play_Round_End" DurationType="OneShot" DurationMin="5.5" DurationMax="5.5">
 					<MediaRefs>
 						<MediaRef Id="961089426"/>
@@ -1520,7 +1513,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{AB3FE6D9-BE18-7F49-080F-4904AFD88A65}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{753F0019-2B28-6A85-158E-6A322BF59423}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -1820,5 +1813,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{C0F182C4-C32A-3035-8BBE-F76CD34DB93C}</FileHash>
+	<FileHash>{AA1CE181-CA84-ABC8-B799-C4A3ABAB40B9}</FileHash>
 </SoundBanksInfo>
