@@ -43,7 +43,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void AudioButtonClicked()
         {
-            //throw new System.NotImplementedException();
+            UIManager.Instance.GoToMenu<ParametersAudioMenu>();
         }
 
         private void GraphicsButtonClicked()
