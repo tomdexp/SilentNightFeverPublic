@@ -67,16 +67,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 84efa54ae493f1a499cacdf1d1c383bd, type: 2}
-  m_sharedMaterial: {fileID: -4752672902827963257, guid: 84efa54ae493f1a499cacdf1d1c383bd,
+  m_fontAsset: {fileID: 11400000, guid: 45bf336aa244df0488fbaee95c56c2c1, type: 2}
+  m_sharedMaterial: {fileID: -2180924228845515358, guid: 45bf336aa244df0488fbaee95c56c2c1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4292239962
-  m_fontColor: {r: 0.35248306, g: 0.3829293, b: 0.8396226, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -93,13 +93,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64
-  m_fontSizeBase: 64
+  m_fontSize: 110
+  m_fontSizeBase: 110
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontSizeMax: 110
+  m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 20, y: 0, z: 20, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -199,15 +199,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6963332, g: 0.87094474, b: 0.9056604, a: 1}
+  m_Color: {r: 0.8627451, g: 0.54509807, b: 0.5686275, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5bb753fefdf928047a14b4b7e35bff0c, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: -1307514966, guid: 590ade3ab1aedec40be4dc0410ebfe1b, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -274,6 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonType: 0
   _uiData: {fileID: 11400000, guid: b92375a8369ab2d4f97ea7d1334462b7, type: 2}
+  _keepFocusOnClicked: 0
 --- !u!114 &1711938943364530158
 MonoBehaviour:
   m_ObjectHideFlags: 0
