@@ -369,6 +369,7 @@ namespace _Project.Scripts.Runtime.Player.PlayerTongue
             _tongueTip.position = _tongueOrigin.position;
             SetTongueVisibilityServerRpc(false);
             _isTongueOut = false;
+            OnTongueIn?.Invoke();
             yield return null;
         }
 

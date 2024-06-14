@@ -28,6 +28,7 @@ namespace _Project.Scripts.Runtime.UI.Transitions
 
         public override IEnumerator EndTransition()
         {
+            yield return new WaitForSeconds(1f);
             var tween = DOTween
                 .To(() => _fadeValue.Value, x => _fadeValue.Value = x, 0, Data.TransitionLoadingGameFadeOutDuration)
                 .SetEase(Data.TransitionLoadingGameFadeOutEase);
