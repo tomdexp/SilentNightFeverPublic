@@ -30,6 +30,7 @@ namespace AK
         static const AkUniqueID PLAY_MUSC_TRANSITION = 3964698704U;
         static const AkUniqueID PLAY_ROUND_END = 1932934032U;
         static const AkUniqueID PLAY_SFX_ROUND_WIN = 2094862661U;
+        static const AkUniqueID PLAY_SNF_SFX_OS_ROUND_END_V0_004 = 661705723U;
         static const AkUniqueID PLAY_UI_BACK = 1386224142U;
         static const AkUniqueID PLAY_UI_DISPLACEMENT = 1341306234U;
         static const AkUniqueID PLAY_UI_ENTER = 2982660583U;

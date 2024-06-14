@@ -67,7 +67,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{FBF5A330-3AB8-0D92-7DE5-23A1DE5AF9C8}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{5E5B10ED-2E09-98FC-7912-E60C9D53D7E9}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -1417,7 +1417,7 @@
 				<Event Id="1914842139" Name="Stop_AMB_MENU_Os" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{5B53D39C-27CA-31A6-30F8-DF225048E6CA}">
+		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{E379DF7E-4369-90E0-A9EA-E92293A03A41}">
 			<ShortName>SB_SFX</ShortName>
 			<Path>SB_SFX.bnk</Path>
 			<Media>
@@ -1468,6 +1468,10 @@
 				<File Id="637107745" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Eaten_V0-007.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Eaten_V0-007_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="662316405" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_SFX_OS_Round_End_V0-004.wav</ShortName>
+					<CachePath>SFX/SNF_SFX_OS_Round_End_V0-004_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="786559962" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Tongue_Throw_V0.wav</ShortName>
@@ -1559,6 +1563,11 @@
 				<Event Id="2094862661" Name="Play_SFX_Round_Win" DurationType="OneShot" DurationMin="7.320513" DurationMax="7.320513">
 					<MediaRefs>
 						<MediaRef Id="285343248"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="661705723" Name="Play_SNF_SFX_OS_Round_End_V0_004" DurationType="OneShot" DurationMin="7.1930833" DurationMax="7.1930833">
+					<MediaRefs>
+						<MediaRef Id="662316405"/>
 					</MediaRefs>
 				</Event>
 			</Events>
@@ -1863,5 +1872,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{551487CE-9FAE-AC48-2E2D-B1C579BA2343}</FileHash>
+	<FileHash>{5C5F9BD2-E0BB-A6D3-BFA2-DE27E9BA299B}</FileHash>
 </SoundBanksInfo>
