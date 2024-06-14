@@ -49,6 +49,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 5e9e52a12b6965f4cae61a24c75a6e60, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Triplanar_196dbc446c874e8ba2b2d8512c92a371_Texture_1_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -63,17 +67,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AO_Strenght_A: 1
-    - _AO_Strenght_B: 0
+    - _AO_Strenght_A: 0
+    - _AO_Strenght_B: 3.26
     - _Normal_Strenght_A: 1
     - _Normal_Strenght_B: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Albedo_A: {r: 0.22921856, g: 0.9528302, b: 0.70620453, a: 0}
-    - _Albedo_B: {r: 0.735849, g: 0.6522133, b: 0.24644002, a: 0}
-    - _Tilling_A: {r: 7, g: 7, b: 0, a: 0}
-    - _Tilling_B: {r: 7, g: 7, b: 0, a: 0}
+    - _Albedo_A: {r: 1, g: 1, b: 1, a: 0}
+    - _Albedo_B: {r: 1, g: 1, b: 1, a: 0}
+    - _Tilling_A: {r: 0.25, g: 1, b: 0, a: 0}
+    - _Tilling_B: {r: 0.25, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4109378192951623082
