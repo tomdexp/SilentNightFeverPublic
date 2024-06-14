@@ -13,7 +13,11 @@ namespace _Project.Scripts.Runtime.NPC
         [Title("Reference")]
         [SerializeField, Required] private PlayerData _playerData;
         [SerializeField, ReadOnly] private Color _currentColor;
+        [SerializeField, ReadOnly] private float _currentSize;
+        [SerializeField] private float _minSize = 0.9f;
+        [SerializeField] private float _maxSize = 1.1f;
         private readonly SyncVar<Color> _color = new SyncVar<Color>();
+        private readonly SyncVar<float> _scale = new SyncVar<float>(1f);
         private SkinnedMeshRenderer _skinnedMeshRenderer;
         private bool _isInitialized;
         private Animator _animator;
@@ -32,7 +36,9 @@ namespace _Project.Scripts.Runtime.NPC
         {
             base.OnStartServer();
             _color.Value = _playerData.NPCColors[UnityEngine.Random.Range(0, _playerData.NPCColors.Length)];
+            _scale.Value = UnityEngine.Random.Range(_minSize, _maxSize);
             ApplyColor();
+            ApplyScale();
         }
 
         public override void OnStartClient()
@@ -41,18 +47,26 @@ namespace _Project.Scripts.Runtime.NPC
             if (!_isInitialized)
             {
                 _currentColor = _color.Value;
+                _currentSize = _scale.Value;
                 _isInitialized = true;
                 ApplyColor();
+                ApplyScale();
             }
             else
             {
                 ApplyColor();
+                ApplyScale();
             }
         }
 
         private void ApplyColor()
         {
             _skinnedMeshRenderer.material.SetColor(BodyColorParam, _currentColor);
+        }
+        
+        private void ApplyScale()
+        {
+            transform.localScale = Vector3.one * _scale.Value;
         }
 
         private void Update()
