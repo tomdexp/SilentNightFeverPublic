@@ -24,6 +24,7 @@ namespace AK
         static const AkUniqueID PLAY_LM_KITCHEN_FRUIT_EATEN = 2054335947U;
         static const AkUniqueID PLAY_LM_SATT_AMBIANCE = 2151245937U;
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
+        static const AkUniqueID PLAY_LM_VOOD_INTERACT = 3048117919U;
         static const AkUniqueID PLAY_LM_VOODOO_AMBIANCE = 1931733291U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
         static const AkUniqueID PLAY_MUSC_TRANSITION = 3964698704U;
@@ -45,6 +46,7 @@ namespace AK
         static const AkUniqueID STOP_LM_SATT_AMBIANCE_GLOBAL = 547351571U;
         static const AkUniqueID STOP_LM_SATT_INTERACT = 3778981049U;
         static const AkUniqueID STOP_LM_SATT_INTERACT_GLOBAL = 2946421553U;
+        static const AkUniqueID STOP_LM_VOOD_INTERACT = 1884258981U;
         static const AkUniqueID STOP_LM_VOODOO_AMBIANCE_GLOBAL = 2453006097U;
         static const AkUniqueID STOP_MUSC_GLOBAL_SWITCH = 3658594925U;
         static const AkUniqueID STOP_MUSC_TRANSITION = 1244124042U;
