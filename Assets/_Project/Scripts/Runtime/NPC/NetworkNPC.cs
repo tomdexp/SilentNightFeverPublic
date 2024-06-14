@@ -16,11 +16,16 @@ namespace _Project.Scripts.Runtime.NPC
         private readonly SyncVar<Color> _color = new SyncVar<Color>();
         private SkinnedMeshRenderer _skinnedMeshRenderer;
         private bool _isInitialized;
+        private Animator _animator;
+        
+        private static readonly int BodyColorParam = Shader.PropertyToID("_Body_Color");
+        private static readonly int OffsetParam = Animator.StringToHash("Offset");
 
         private void Awake()
         {
             _skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-            //_skinnedMeshRenderer.material = new Material(_skinnedMeshRenderer.material);
+            _animator = GetComponentInChildren<Animator>();
+            _animator.SetFloat(OffsetParam, UnityEngine.Random.Range(0f, 1f));
         }
 
         public override void OnStartServer()
@@ -47,7 +52,12 @@ namespace _Project.Scripts.Runtime.NPC
 
         private void ApplyColor()
         {
-            _skinnedMeshRenderer.material.color = _currentColor;
+            _skinnedMeshRenderer.material.SetColor(BodyColorParam, _currentColor);
+        }
+
+        private void Update()
+        {
+            _animator.cullingMode = _skinnedMeshRenderer.enabled ? AnimatorCullingMode.AlwaysAnimate : AnimatorCullingMode.CullCompletely;
         }
     }
 }
