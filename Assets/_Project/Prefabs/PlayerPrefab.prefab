@@ -3616,6 +3616,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 554684139669754785, guid: 7d255713880368d4692ed947c2220d59,
         type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: f1513243fb93f4e45b4e75db66bcdf7f, type: 3}
+    - target: {fileID: 554684139669754785, guid: 7d255713880368d4692ed947c2220d59,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 554684139669754785, guid: 7d255713880368d4692ed947c2220d59,
+        type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: ed5513323285a4643a617ceee5dcaf7f, type: 2}
@@ -3679,7 +3689,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 2f90c7029efdd3145b876ffab6a8d5dd, type: 2}
-    m_RemovedComponents: []
+    - target: {fileID: 8615578516012705515, guid: 7d255713880368d4692ed947c2220d59,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ed5513323285a4643a617ceee5dcaf7f, type: 2}
+    - target: {fileID: 8615578516012705515, guid: 7d255713880368d4692ed947c2220d59,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8615578516012705515, guid: 7d255713880368d4692ed947c2220d59, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8728943859417509565, guid: 7d255713880368d4692ed947c2220d59,

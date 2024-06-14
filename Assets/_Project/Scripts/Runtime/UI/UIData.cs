@@ -69,6 +69,10 @@ namespace _Project.Scripts.Runtime.UI
         public float PlayerTeamLabelMovementDuration = 1;
         public Ease PlayerTeamLabelMovementEase = Ease.Linear;
         
+        [Title("Controller Selection Animation Settings")]
+        public float ControllerCanvasLeftToRightAnimDuration = 0.5f;
+        public Ease ControllerCanvasLeftToRightAnimEase = Ease.OutBack;
+        
         [Title("Language Selection")]
         public LanguageSelectionUI[] SupportedLanguages;
         public float LanguageButtonFadeDuration = 0.2f;
