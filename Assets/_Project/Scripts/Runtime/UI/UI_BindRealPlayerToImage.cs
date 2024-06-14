@@ -21,21 +21,19 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private PlayerIndexType _playerIndexType;
         [SerializeField, Required] private Image _image;
         [SerializeField, Required] private TMP_Text _joinText;
+        [SerializeField, Required] private RectTransform _rectTransform;
         [SerializeField, Required] private TMP_Text _playerText;
         [SerializeField] private Color _noPlayerColor;
         [SerializeField] private Color _playerPresentColor;
         [SerializeField] private float _width;
-        [SerializeField, Required] private Transform _closeTransform;
+        [SerializeField] private Vector3 _openPosition;
+        [SerializeField] private Vector3 _closePosition;
         
-        private RectTransform _rectTransform;
-        private Vector3 _openPosition;
-        private Vector3 _closePosition;
+        
 
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
-            _openPosition = _rectTransform.localPosition;
-            _closePosition = _closeTransform.localPosition;
         }
 
         private void Start()
@@ -46,13 +44,12 @@ namespace _Project.Scripts.Runtime.UI
 
         public void Open()
         {
-            transform.DOLocalMove(_openPosition, _uiData.ControllerCanvasLeftToRightAnimDuration)
-                .SetEase(_uiData.ControllerCanvasLeftToRightAnimEase);
+            _rectTransform.DOAnchorPos(_openPosition, _uiData.ControllerCanvasLeftToRightAnimDuration).SetEase(_uiData.ControllerCanvasLeftToRightAnimEase);
         }
 
         public void Close()
         {
-            transform.localPosition = _closePosition;
+            _rectTransform.anchoredPosition = _closePosition;
         }
 
         private void OnDestroy()
@@ -112,6 +109,18 @@ namespace _Project.Scripts.Runtime.UI
                 _joinText.alpha = 1;
                 _playerText.alpha = 0;
             }
+        }
+        
+        [Button]
+        public void RegisterOpenPosition()
+        {
+            _openPosition = _rectTransform.anchoredPosition;
+        }
+        
+        [Button]
+        public void RegisterClosePosition()
+        {
+            _closePosition = _rectTransform.anchoredPosition;
         }
     }
 }
