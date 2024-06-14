@@ -36,7 +36,7 @@ namespace _Project.Scripts.Runtime.Player.Feedbacks
         private IEnumerator OnSizeChangedCoroutine(bool playAudio)
         {
             if (!playAudio) yield break; // this mean that the feedback is not wanted and it is just a reset size change
-            yield return new WaitForSeconds(0.5f); // TODO : Hardcoded feedback delay
+            yield return new WaitForSeconds(0.3f); // TODO : Hardcoded feedback delay
             _sizeChangeParticles.Play();
         }
     }
