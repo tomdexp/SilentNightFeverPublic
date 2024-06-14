@@ -10,6 +10,8 @@ namespace _Project.Scripts.Runtime.Player
         private NetworkPlayer _networkPlayer;
         [SerializeField] private MeshRenderer[] _meshRenderers;
         [SerializeField] private SkinnedMeshRenderer[] _skinnedMeshRenderers;
+        
+        private static readonly int BodyColorParam = Shader.PropertyToID("_Body_Color");
 
         private void Awake()
         {
@@ -51,7 +53,8 @@ namespace _Project.Scripts.Runtime.Player
             }
             foreach (var skinnedMeshRenderer in _skinnedMeshRenderers)
             {
-                skinnedMeshRenderer.material.color = color;
+                // set the "Color" property of the shader
+                skinnedMeshRenderer.material.SetColor(BodyColorParam, color);
             }
         }
     }

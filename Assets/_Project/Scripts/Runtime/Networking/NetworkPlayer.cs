@@ -186,15 +186,16 @@ namespace _Project.Scripts.Runtime.Networking
            if (scaleDirection == 1) // scaling up
            {
                // use dotween to scale up
-               transform.DOScale(Vector3.one * newSize, PlayerData.PlayerSizeUpChangeDuration).SetEase(PlayerData.PlayerSizeUpChangeEase);
-               transform.DOMoveY(newY, PlayerData.PlayerSizeUpChangeDuration/2);
+               transform.DOScale(Vector3.one * newSize, PlayerData.PlayerSizeUpChangeDuration)
+                   .SetEase(PlayerData.PlayerSizeUpChangeEase);
+                   //.OnComplete((() => transform.DOMoveY(newY, PlayerData.PlayerSizeUpChangeDuration / 2)));
                yield return new WaitForSeconds(PlayerData.PlayerSizeUpChangeDuration);
            }
            else
            {
                 // use dotween to scale down
                 transform.DOScale(Vector3.one * newSize, PlayerData.PlayerSizeDownChangeDuration).SetEase(PlayerData.PlayerSizeDownChangeEase);
-                transform.DOMoveY(newY, PlayerData.PlayerSizeDownChangeDuration/2);
+                //transform.DOMoveY(newY, PlayerData.PlayerSizeDownChangeDuration/2);
                 yield return new WaitForSeconds(PlayerData.PlayerSizeDownChangeDuration);
            }
            yield return null;
