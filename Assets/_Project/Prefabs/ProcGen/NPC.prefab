@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 693224060240045961}
   - component: {fileID: 3561893993571696814}
   m_Layer: 0
-  m_Name: Test NPC
+  m_Name: NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,7 +191,7 @@ MonoBehaviour:
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 15917207951011934583
+  <AssetPathHash>k__BackingField: 1821703627714659361
 --- !u!114 &471431532809524801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +262,9 @@ MonoBehaviour:
   _networkObjectCache: {fileID: -8035802715321130305}
   _playerData: {fileID: 11400000, guid: cba28541030cc9e41bf92005e67cc6a0, type: 2}
   _currentColor: {r: 0, g: 0, b: 0, a: 0}
+  _currentSize: 0
+  _minSize: 0.9
+  _maxSize: 1.1
 --- !u!114 &3561893993571696814
 MonoBehaviour:
   m_ObjectHideFlags: 0
