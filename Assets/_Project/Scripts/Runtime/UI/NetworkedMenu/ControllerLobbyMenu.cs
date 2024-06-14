@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
+using DG.Tweening;
 using FishNet;
+using GameKit.Dependencies.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -15,7 +17,16 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private ConfirmationPrompt _quitOnlineAsHostPrompt;
         [SerializeField, Required] private ConfirmationPrompt _quitOnlineAsClientPrompt;
         [SerializeField, Required] private ConfirmationPrompt _quitLocalPrompt;
+        [SerializeField, Required] private CanvasGroup _onlineCanvasGroup;
+        [SerializeField, Required] private CanvasGroup _localCanvasGroup;
+        [SerializeField, Required] private UI_BindRealPlayerToImage _playerACanvas;
+        [SerializeField, Required] private UI_BindRealPlayerToImage _playerBCanvas;
+        [SerializeField, Required] private UI_BindRealPlayerToImage _playerCCanvas;
+        [SerializeField, Required] private UI_BindRealPlayerToImage _playerDCanvas;
         [SerializeField] private float _secondsBeforeStartWhenAllControllerConnected = 2.5f;
+        [SerializeField] private Vector3 _playerCanvasOffset = new Vector3(0, 0, 0);
+        [SerializeField] private float _delayBetweenPlayerAnimation = 0.5f;
+        [SerializeField] private float _leftToRightAnimationDuration = 0.5f;
         private CanvasGroup _canvasGroup;
         private bool _timerStarted;
 
@@ -29,10 +40,32 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             base.Open();
             _canvasGroup.Open();
+            if (BootstrapManager.Instance.IsOnline)
+            {
+                Logger.LogDebug("Opening controller menu as online");
+                _onlineCanvasGroup.gameObject.SetActive(true);
+                _localCanvasGroup.gameObject.SetActive(false);
+            }
+            else
+            {
+                Logger.LogDebug("Opening controller menu as local");
+                _onlineCanvasGroup.gameObject.SetActive(false);
+                _localCanvasGroup.gameObject.SetActive(true);
+            }
             _timerStarted = false;
             PlayerManager.Instance.SetPlayerJoiningEnabled(true);
             PlayerManager.Instance.SetPlayerLeavingEnabled(true);
             if(InstanceFinder.IsServerStarted) PlayerManager.Instance.ResetRealPlayerInfos();
+            
+            var sequence = DOTween.Sequence();
+            sequence.AppendCallback((() => _playerACanvas.Open()));
+            sequence.AppendInterval(_delayBetweenPlayerAnimation);
+            sequence.AppendCallback((() => _playerBCanvas.Open()));
+            sequence.AppendInterval(_delayBetweenPlayerAnimation);
+            sequence.AppendCallback((() => _playerCCanvas.Open()));
+            sequence.AppendInterval(_delayBetweenPlayerAnimation);
+            sequence.AppendCallback((() => _playerDCanvas.Open()));
+            sequence.Play();
         }
 
         private void Update()
@@ -62,9 +95,15 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void Close()
         {
             base.Close();
+            _onlineCanvasGroup.gameObject.SetActive(false);
+            _localCanvasGroup.gameObject.SetActive(false);
             _canvasGroup.Close();
             PlayerManager.Instance.SetPlayerJoiningEnabled(false);
             PlayerManager.Instance.SetPlayerLeavingEnabled(false);
+            _playerACanvas.Close();
+            _playerBCanvas.Close();
+            _playerCCanvas.Close();
+            _playerDCanvas.Close();
         }
 
         public override void GoBack()

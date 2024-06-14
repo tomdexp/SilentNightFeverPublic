@@ -1,8 +1,10 @@
 ﻿using System;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
+using DG.Tweening;
 using FishNet;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -21,6 +23,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private CanvasGroup _canvasGroup;
         private string _lobbyCode;
         private bool _isCreatingLobby;
+        
+        private UI_Button _createLobbyButtonUI;
+        private UI_Button _joinLobbyButtonUI;
         
         private void Awake()
         {
@@ -49,6 +54,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             BindNavigableVertical(_createLobbyButton, _lobbyCodeInputField.GetComponent<Selectable>());
             BindNavigableVertical(_lobbyCodeInputField.GetComponent<Selectable>(), _joinLobbyButton);
             BindNavigableVertical(_joinLobbyButton, _createLobbyButton);
+            
+            _createLobbyButtonUI = _createLobbyButton.GetComponent<UI_Button>();
+            _joinLobbyButtonUI = _joinLobbyButton.GetComponent<UI_Button>();
         }
         
         public override void Open()
@@ -62,6 +70,16 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _lobbyCodeInputField.OnLobbyCodeChanged += LobbyCodeChanged;
             BootstrapManager.Instance.OnServerMigrationStarted += ServerMigrationStarted;
             BootstrapManager.Instance.OnServerMigrationFinished += ServerMigrationFinished;
+            
+            var sequence = DOTween.Sequence();
+            sequence.AppendInterval(0.33f);
+            sequence.AppendCallback(() => _createLobbyButtonUI.Open());
+            sequence.AppendInterval(0.33f);
+            sequence.AppendCallback(() => _joinLobbyButtonUI.Open());
+            sequence.AppendInterval(0.33f);
+            sequence.Append(_lobbyCodeInputField.transform.DOScale(Vector3.one * 1.2f, 0.33f));
+            sequence.Append(_lobbyCodeInputField.transform.DOScale(Vector3.one, 0.33f));
+            sequence.Play();
         }
 
         private void ServerMigrationStarted()
@@ -98,6 +116,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _createLobbyButton.onClick.RemoveListener(CreateLobbyButtonClicked);
             if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationStarted -= ServerMigrationStarted;
             if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationFinished -= ServerMigrationFinished;
+            _createLobbyButtonUI.Close();
+            _joinLobbyButtonUI.Close();
+            _lobbyCodeInputField.transform.localScale = Vector3.zero;
         }
 
         public override void OnDestroy()
