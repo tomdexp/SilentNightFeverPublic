@@ -173,6 +173,11 @@ namespace _Project.Scripts.Runtime.Audio
         {
             InternalSetRTPC(rtpc.Id, value, go);
         }
+
+        public void SetLocalRTPC(AK.Wwise.RTPC rtpc, float value)
+        {
+            InternalSetRPCGlobal(rtpc.Id, value);
+        }
         
         /// <summary>
         /// This method sets an RTPC value without replication over the network, beware of calling this method too often
@@ -209,6 +214,17 @@ namespace _Project.Scripts.Runtime.Audio
             }
             if(AudioManagerData.RPTCLog) Logger.LogTrace("Setting RTPC locally (ID: " + rtpcId + ") to " + value, Logger.LogType.Local, this);
             AkSoundEngine.SetRTPCValue(rtpcId, value, go);
+        }
+        
+        private void InternalSetRPCGlobal(uint rtpcId, float value)
+        {
+            if (rtpcId == 0)
+            {
+                if(AudioManagerData.RPTCLog) Logger.Log(AudioManagerData.RTPCNotFoundLogLevel, Logger.LogType.Local,
+                    $"Tried to set an RTPC with ID {rtpcId} but was not found, it means that the RTPC is probably not assigned properly in AudioManagerData", this);
+            }
+            if(AudioManagerData.RPTCLog) Logger.LogTrace("Setting Global RTPC locally (ID: " + rtpcId + ") to " + value, Logger.LogType.Local, this);
+            AkSoundEngine.SetRTPCValue(rtpcId, value);
         }
 
         public void RegisterListener(AkAudioListener listener)

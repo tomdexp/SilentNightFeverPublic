@@ -1,5 +1,6 @@
 ﻿using System;
 using _Project.Scripts.Runtime.Utils;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -17,7 +18,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private Button _creditsButton;
         [SerializeField, Required] private Button _quitButton;
         [SerializeField, Required] private Button _languageSelectionButton;
+        
         private CanvasGroup _canvasGroup;
+        private UI_Button _uiButtonPlay;
+        private UI_Button _uiButtonOptions;
+        private UI_Button _uiButtonCredits;
+        private UI_Button _uiButtonQuit;
 
         private void Awake()
         {
@@ -49,6 +55,11 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             BindNavigableHorizontal(_languageSelectionButton, _optionsButton);
             BindNavigableHorizontal(_languageSelectionButton, _creditsButton);
             BindNavigableHorizontal(_languageSelectionButton, _quitButton);
+            
+            _uiButtonPlay = _playButton.GetComponent<UI_Button>();
+            _uiButtonOptions = _optionsButton.GetComponent<UI_Button>();
+            _uiButtonCredits = _creditsButton.GetComponent<UI_Button>();
+            _uiButtonQuit = _quitButton.GetComponent<UI_Button>();
         }
 
         public override void Open()
@@ -60,6 +71,17 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _optionsButton.onClick.AddListener(OptionsButtonClicked);
             _creditsButton.onClick.AddListener(CreditsButtonClicked);
             _quitButton.onClick.AddListener(QuitButtonClicked);
+            float interval = 0.2f;
+            var sequence = DOTween.Sequence(gameObject);
+            sequence.AppendInterval(interval);
+            sequence.AppendCallback(() => _uiButtonPlay.Open());
+            sequence.AppendInterval(interval);
+            sequence.AppendCallback(() => _uiButtonOptions.Open());
+            sequence.AppendInterval(interval);
+            sequence.AppendCallback(() => _uiButtonCredits.Open());
+            sequence.AppendInterval(interval);
+            sequence.AppendCallback(() => _uiButtonQuit.Open());
+            sequence.Play();
         }
 
         public override void Close()
@@ -68,6 +90,10 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _canvasGroup.Close();
             _playButton.onClick.RemoveListener(PlayButtonClicked);
             _optionsButton.onClick.RemoveListener(OptionsButtonClicked);
+            _uiButtonPlay.Close();
+            _uiButtonOptions.Close();
+            _uiButtonCredits.Close();
+            _uiButtonQuit.Close();
         }
 
         public override void GoBack()
