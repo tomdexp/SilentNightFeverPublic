@@ -83,8 +83,8 @@ MonoBehaviour:
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: -6.98, y: 5.46, z: -1.546}
-    Rotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
+    Position: {x: -19, y: 37, z: -61}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isSpawnable: 0
@@ -212,6 +212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007840898957431277, guid: 4903701332e325b43b223d49e314f23c,
+        type: 3}
+      propertyPath: <PlayerIndexType>k__BackingField
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7786845258027487931, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
@@ -351,6 +356,11 @@ PrefabInstance:
     - target: {fileID: 5331434031878257407, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007840898957431277, guid: 4903701332e325b43b223d49e314f23c,
+        type: 3}
+      propertyPath: <PlayerIndexType>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7786845258027487931, guid: 4903701332e325b43b223d49e314f23c,
@@ -493,6 +503,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6007840898957431277, guid: 4903701332e325b43b223d49e314f23c,
+        type: 3}
+      propertyPath: <PlayerIndexType>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7786845258027487931, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}
       propertyPath: _playerIndexType
@@ -632,6 +647,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007840898957431277, guid: 4903701332e325b43b223d49e314f23c,
+        type: 3}
+      propertyPath: <PlayerIndexType>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7786845258027487931, guid: 4903701332e325b43b223d49e314f23c,
         type: 3}

@@ -56,11 +56,22 @@ namespace _Project.Scripts.Runtime.UI
         public float ClickBackScale = 0.9f;
         public float ClickBackDuration = 0.1f;
         public Ease ClickBackEase = Ease.Linear;
+        
+        [Title("Button Settings", "Open Animation")]
+        public float OpenAnimDurationScaleUp = 0.5f;
+        public Ease OpenAnimEaseScaleUp = Ease.OutBack;
+        public float OpenAnimDurationScaleUpFactor = 1.2f;
+        public float OpenAnimDurationScaleDown = 0.5f;
+        public Ease OpenAnimEaseScaleDown = Ease.OutBack;
 
         [Title("Team Selection Canvas Settings")]
         public float SecondsAfterAllPlayersReadyToStartCustomization = 3;
         public float PlayerTeamLabelMovementDuration = 1;
         public Ease PlayerTeamLabelMovementEase = Ease.Linear;
+        
+        [Title("Controller Selection Animation Settings")]
+        public float ControllerCanvasLeftToRightAnimDuration = 0.5f;
+        public Ease ControllerCanvasLeftToRightAnimEase = Ease.OutBack;
         
         [Title("Language Selection")]
         public LanguageSelectionUI[] SupportedLanguages;

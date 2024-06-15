@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Audio;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
@@ -25,6 +26,7 @@ namespace _Project.Scripts.Runtime.Player.Feedbacks
             {
                 _isVoodooActive = true;
                 _voodooParticlesLoop.Play();
+                AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.OnStartControlledByVoodoo, _playerController.gameObject);
                 Logger.LogDebug("Start playing voodoo feedbacks", Logger.LogType.Local, this);
             }
             else if (_isVoodooActive && _playerController.VoodooPuppetDirection.Value == Vector2.zero)
@@ -32,6 +34,7 @@ namespace _Project.Scripts.Runtime.Player.Feedbacks
                 _isVoodooActive = false;
                 _voodooParticlesLoop.Stop();
                 _voodooParticlesRelease.Play();
+                AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.OnEndControlledByVoodoo, _playerController.gameObject);
                 Logger.LogDebug("Stop playing voodoo feedbacks", Logger.LogType.Local, this);
             }
         }
