@@ -50,6 +50,7 @@ namespace _Project.Scripts.Runtime.Networking
         public readonly SyncVar<bool> CanPlayerUseTongue = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
         public int NumberOfPlayers => _realPlayerInfos.Count;
         public bool AreAllPlayerSpawnedLocally => _numberOfPlayerSpawnedLocally == 4;
+
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged;
         public event Action<List<PlayerReadyInfo>> OnPlayersReadyChanged;
         public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;

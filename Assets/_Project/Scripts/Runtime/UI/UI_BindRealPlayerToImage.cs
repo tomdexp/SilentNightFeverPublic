@@ -12,6 +12,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI
 {
@@ -30,6 +31,10 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private Vector3 _openPosition;
         [SerializeField] private Vector3 _closePosition;
         [SerializeField, Required] private MMF_Player _feedbacksReady;
+        [SerializeField, Required] private MMF_Player _feedbacksNotReady;
+        
+        private bool _isPlayingReadyFeedbacks;
+        private bool _isPlayingNotReadyFeedbacks;
         
         
 
@@ -87,8 +92,17 @@ namespace _Project.Scripts.Runtime.UI
                 _image.color = _noPlayerColor;
                 _joinText.alpha = 1;
                 _playerText.alpha = 0;
-                _feedbacksReady?.StopFeedbacks();
-                _feedbacksReady?.RestoreInitialValues();
+                if (_isPlayingReadyFeedbacks)
+                {
+                    _feedbacksReady?.StopFeedbacks();
+                    _feedbacksReady?.RestoreInitialValues();
+                    _isPlayingReadyFeedbacks = false;
+                }
+                if (!_isPlayingNotReadyFeedbacks)
+                {
+                    _feedbacksNotReady?.PlayFeedbacks();
+                    _isPlayingNotReadyFeedbacks = true;
+                }
                 return;
             }
             var realPlayerInfos = PlayerManager.Instance.GetRealPlayerInfos();
@@ -97,8 +111,17 @@ namespace _Project.Scripts.Runtime.UI
                 _image.color = _noPlayerColor;
                 _joinText.alpha = 1;
                 _playerText.alpha = 0;
-                _feedbacksReady?.StopFeedbacks();
-                _feedbacksReady?.RestoreInitialValues();
+                if (_isPlayingReadyFeedbacks)
+                {
+                    _feedbacksReady?.StopFeedbacks();
+                    _feedbacksReady?.RestoreInitialValues();
+                    _isPlayingReadyFeedbacks = false;
+                }
+                if (!_isPlayingNotReadyFeedbacks)
+                {
+                    _feedbacksNotReady?.PlayFeedbacks();
+                    _isPlayingNotReadyFeedbacks = true;
+                }
                 return;
             }
             bool hasFoundPlayer = false;
@@ -108,15 +131,36 @@ namespace _Project.Scripts.Runtime.UI
                 hasFoundPlayer = true;
                 _joinText.alpha = 0;
                 _playerText.alpha = 1;
-                _feedbacksReady?.PlayFeedbacks();
+
+                if (!_isPlayingReadyFeedbacks)
+                {
+                    _feedbacksReady?.PlayFeedbacks();
+                    Logger.LogDebug("Playing ready feedbacks", Logger.LogType.Local, this);
+                    _isPlayingReadyFeedbacks = true;
+                }
+                if (_isPlayingNotReadyFeedbacks)
+                {
+                    _feedbacksNotReady?.StopFeedbacks();
+                    _feedbacksNotReady?.RestoreInitialValues();
+                    _isPlayingNotReadyFeedbacks = false;
+                }
             }
             if (!hasFoundPlayer)
             {
                 _image.color = _noPlayerColor;
                 _joinText.alpha = 1;
                 _playerText.alpha = 0;
-                _feedbacksReady?.StopFeedbacks();
-                _feedbacksReady?.RestoreInitialValues();
+                if (_isPlayingReadyFeedbacks)
+                {
+                    _feedbacksReady?.StopFeedbacks();
+                    _feedbacksReady?.RestoreInitialValues();
+                    _isPlayingReadyFeedbacks = false;
+                }
+                if (!_isPlayingNotReadyFeedbacks)
+                {
+                    _feedbacksNotReady?.PlayFeedbacks();
+                    _isPlayingNotReadyFeedbacks = true;
+                }
             }
         }
         
