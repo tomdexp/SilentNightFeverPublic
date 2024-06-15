@@ -58,13 +58,18 @@ namespace _Project.Scripts.Runtime.UI
         {
             Logger.LogDebug("BeginLoadingRoundTransition", Logger.LogType.Server, this);
             yield return _transitionLoadingRound.BeginTransition();
-            _uiTeamAScore.UpdateUI();
-            _uiTeamBScore.UpdateUI();
+            _uiTeamAScore.Open();
+            yield return new WaitForSeconds(.25f);
+            _uiTeamBScore.Open();
         }
         
         public IEnumerator EndLoadingRoundTransition()
         {
             Logger.LogDebug("EndLoadingRoundTransition", Logger.LogType.Server, this);
+            _uiTeamBScore.Close();
+            yield return new WaitForSeconds(.25f);
+            _uiTeamAScore.Close();
+            //yield return new WaitForSeconds(1f);
             yield return _transitionLoadingRound.EndTransition();
         }
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Networking.Rounds;
 using _Project.Scripts.Runtime.Player;
+using DG.Tweening;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Sirenix.OdinInspector;
@@ -96,8 +97,8 @@ namespace _Project.Scripts.Runtime.UI
             }
         }
         
-        [ObserversRpc]
-        public void UpdateUI()
+        
+        private void UpdateUI()
         {
             if (_teamType == PlayerTeamType.Z)
             {
@@ -109,6 +110,33 @@ namespace _Project.Scripts.Runtime.UI
             {
                 _teamPoints[i].SetFilled(i < teamRoundWins);
             }
+        }
+
+        [ObserversRpc]
+        public void Open()
+        {
+            var sequence = DOTween.Sequence();
+            sequence.AppendInterval(0.2f);
+            foreach (var teamPoint in _teamPoints)
+            {
+                sequence.AppendCallback(() => teamPoint.Open());
+                sequence.AppendInterval(0.2f);
+            }
+            sequence.OnComplete(UpdateUI);
+            sequence.Play();
+        }
+        
+        public void Close()
+        {
+            var sequence = DOTween.Sequence();
+            // iterate in reverse order
+            for (int i = _teamPoints.Count - 1; i >= 0; i--)
+            {
+                var x = i;
+                sequence.AppendCallback(() => _teamPoints[x].Close());
+                sequence.AppendInterval(0.2f);
+            }
+            sequence.Play();
         }
     }
 }

@@ -44,14 +44,16 @@ namespace _Project.Scripts.Runtime.UI.Transitions
 
         public override IEnumerator EndTransition()
         {
-            yield return new WaitForSeconds(1f);
+            //yield return new WaitForSeconds(1f);
             _feedbackClose.PlayFeedbacksForAll();
             yield return new WaitForSeconds(_delayAfterCloseFeedback);
             var tween = DOTween
                 .To(() => _fadeValue.Value, x => _fadeValue.Value = x, 0, Data.TransitionLoadingRoundFadeOutDuration)
                 .SetEase(Data.TransitionLoadingRoundFadeOutEase);
             yield return tween.WaitForCompletion();
+            yield return new WaitForSeconds(1f);
             _fadeValue.Value = 0;
+            
         }
     }
 }
