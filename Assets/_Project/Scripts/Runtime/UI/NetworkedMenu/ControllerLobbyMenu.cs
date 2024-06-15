@@ -83,6 +83,16 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             if (InstanceFinder.IsServerStarted) PlayerManager.Instance.SetPlayerJoiningEnabledClientRpc(false);
             if (InstanceFinder.IsServerStarted) PlayerManager.Instance.SetPlayerLeavingEnabledClientRpc(false);
+            var sequence = DOTween.Sequence();
+            sequence.AppendInterval(1f);
+            sequence.AppendCallback((() => _playerDCanvas.Close()));
+            sequence.AppendInterval(_delayBetweenPlayerAnimation);
+            sequence.AppendCallback((() => _playerCCanvas.Close()));
+            sequence.AppendInterval(_delayBetweenPlayerAnimation);
+            sequence.AppendCallback((() => _playerBCanvas.Close()));
+            sequence.AppendInterval(_delayBetweenPlayerAnimation);
+            sequence.AppendCallback((() => _playerACanvas.Close()));
+            sequence.Play();
             yield return new WaitForSeconds(_secondsBeforeStartWhenAllControllerConnected);
             if (InstanceFinder.IsServerStarted)
             {

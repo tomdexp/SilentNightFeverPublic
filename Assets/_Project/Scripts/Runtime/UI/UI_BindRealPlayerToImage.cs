@@ -7,6 +7,7 @@ using _Project.Scripts.Runtime.Player;
 using DG.Tweening;
 using FishNet;
 using FishNet.Transporting;
+using MoreMountains.Feedbacks;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -28,6 +29,7 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private float _width;
         [SerializeField] private Vector3 _openPosition;
         [SerializeField] private Vector3 _closePosition;
+        [SerializeField, Required] private MMF_Player _feedbacksReady;
         
         
 
@@ -49,7 +51,7 @@ namespace _Project.Scripts.Runtime.UI
 
         public void Close()
         {
-            _rectTransform.anchoredPosition = _closePosition;
+            _rectTransform.DOAnchorPos(_closePosition, _uiData.ControllerCanvasLeftToRightAnimDuration).SetEase(_uiData.ControllerCanvasLeftToRightAnimEase);
         }
 
         private void OnDestroy()
@@ -85,6 +87,8 @@ namespace _Project.Scripts.Runtime.UI
                 _image.color = _noPlayerColor;
                 _joinText.alpha = 1;
                 _playerText.alpha = 0;
+                _feedbacksReady?.StopFeedbacks();
+                _feedbacksReady?.RestoreInitialValues();
                 return;
             }
             var realPlayerInfos = PlayerManager.Instance.GetRealPlayerInfos();
@@ -93,6 +97,8 @@ namespace _Project.Scripts.Runtime.UI
                 _image.color = _noPlayerColor;
                 _joinText.alpha = 1;
                 _playerText.alpha = 0;
+                _feedbacksReady?.StopFeedbacks();
+                _feedbacksReady?.RestoreInitialValues();
                 return;
             }
             bool hasFoundPlayer = false;
@@ -102,12 +108,15 @@ namespace _Project.Scripts.Runtime.UI
                 hasFoundPlayer = true;
                 _joinText.alpha = 0;
                 _playerText.alpha = 1;
+                _feedbacksReady?.PlayFeedbacks();
             }
             if (!hasFoundPlayer)
             {
                 _image.color = _noPlayerColor;
                 _joinText.alpha = 1;
                 _playerText.alpha = 0;
+                _feedbacksReady?.StopFeedbacks();
+                _feedbacksReady?.RestoreInitialValues();
             }
         }
         

@@ -5,6 +5,7 @@ using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using FishNet;
 using FishNet.Transporting;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,7 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private Image _image;
         [SerializeField] private Color _noPlayerColor;
         [SerializeField] private Color _playerReadyColor;
+        private MMF_Player _feedbacksReady;
         
         private void OnClientConnectionState(ClientConnectionStateArgs args)
         {
@@ -53,6 +55,8 @@ namespace _Project.Scripts.Runtime.UI
             if (!PlayerManager.HasInstance)
             {
                 _image.color = _noPlayerColor;
+                _feedbacksReady?.StopFeedbacks();
+                _feedbacksReady?.RestoreInitialValues();
                 return;
             }
 
@@ -60,6 +64,8 @@ namespace _Project.Scripts.Runtime.UI
             if (readyPlayerInfos == null)
             {
                 _image.color = _noPlayerColor;
+                _feedbacksReady?.StopFeedbacks();
+                _feedbacksReady?.RestoreInitialValues();
                 return;
             }
             
@@ -67,16 +73,24 @@ namespace _Project.Scripts.Runtime.UI
             if (readyPlayerInfo.IsPlayerReady)
             {
                 _image.color = _playerReadyColor;
+                _feedbacksReady?.PlayFeedbacks();
             }
             else
             {
                 _image.color = _noPlayerColor;
+                _feedbacksReady?.StopFeedbacks();
+                _feedbacksReady?.RestoreInitialValues();
             }
         }
         
         public void SetReadyColor(Color color)
         {
             _playerReadyColor = color;
+        }
+        
+        public void SetReadyFeedbacks(MMF_Player feedbacks)
+        {
+            _feedbacksReady = feedbacks;
         }
     }
 }

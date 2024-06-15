@@ -37,6 +37,10 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField] private Color _playerColorC;
         [SerializeField] private Color _playerColorD;
         [SerializeField, Required] private ConfirmationPrompt _quitPlayerIndexSelectionPrompt;
+        [SerializeField, Required] private MMF_Player _feedbacksPlayerReadyA;
+        [SerializeField, Required] private MMF_Player _feedbacksPlayerReadyB;
+        [SerializeField, Required] private MMF_Player _feedbacksPlayerReadyC;
+        [SerializeField, Required] private MMF_Player _feedbacksPlayerReadyD;
         
         private Vector3 _playerStartA;
         private Vector3 _playerStartB;
@@ -59,6 +63,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             base.Open();
             _canvasGroup.Open();
             UIManager.Instance.SwitchToCanvasCamera();
+            RestoreAllPlayerReadyFeedbacks();
             if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance)
             {
                 _feedbacksAllPlayersReady.RestoreFeedbacksForAll();
@@ -152,7 +157,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 }
                 else
                 {
-                    GoToPlayerEnd(playerLabel, GetPlayerEnd(playerTeamInfo.ScreenPlayerIndexType), GetPlayerColor(playerTeamInfo.ScreenPlayerIndexType));
+                    GoToPlayerEnd(playerLabel, GetPlayerEnd(playerTeamInfo.ScreenPlayerIndexType),
+                        GetPlayerColor(playerTeamInfo.ScreenPlayerIndexType),
+                        GetPlayerReadyFeedback(playerTeamInfo.ScreenPlayerIndexType));
                 }
             }
         }
@@ -172,10 +179,11 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 UIManager.Instance.GoToMenu<CustomizationMenu>();
             }
         }
-        
-        private void GoToPlayerEnd(Transform playerLabel, Transform playerEnd, Color playerColor)
+
+        private void GoToPlayerEnd(Transform playerLabel, Transform playerEnd, Color playerColor, MMF_Player playerReadyFeedback)
         {
             playerLabel.GetComponent<UI_BindPlayerReadyToImage>().SetReadyColor(playerColor);
+            playerLabel.GetComponent<UI_BindPlayerReadyToImage>().SetReadyFeedbacks(playerReadyFeedback);
             playerLabel.DOMove(playerEnd.position, _uiData.PlayerTeamLabelMovementDuration)
                 .SetEase(_uiData.PlayerTeamLabelMovementEase);
         }
@@ -252,6 +260,35 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 default:
                     return Vector3.zero;
             }
+        }
+        
+        private MMF_Player GetPlayerReadyFeedback(PlayerIndexType playerIndexType)
+        {
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    return _feedbacksPlayerReadyA;
+                case PlayerIndexType.B:
+                    return _feedbacksPlayerReadyB;
+                case PlayerIndexType.C:
+                    return _feedbacksPlayerReadyC;
+                case PlayerIndexType.D:
+                    return _feedbacksPlayerReadyD;
+                default:
+                    return null;
+            }
+        }
+        
+        private void RestoreAllPlayerReadyFeedbacks()
+        {
+            _feedbacksPlayerReadyA.StopFeedbacks();
+            _feedbacksPlayerReadyB.StopFeedbacks();
+            _feedbacksPlayerReadyC.StopFeedbacks();
+            _feedbacksPlayerReadyD.StopFeedbacks();
+            _feedbacksPlayerReadyA.RestoreInitialValues();
+            _feedbacksPlayerReadyB.RestoreInitialValues();
+            _feedbacksPlayerReadyC.RestoreInitialValues();
+            _feedbacksPlayerReadyD.RestoreInitialValues();
         }
     }
 }
