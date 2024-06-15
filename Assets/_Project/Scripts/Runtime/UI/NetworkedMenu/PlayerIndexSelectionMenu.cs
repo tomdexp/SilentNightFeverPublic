@@ -7,7 +7,9 @@ using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
 using FishNet;
+using FishNet.Object;
 using FishNet.Transporting;
+using MoreMountains.Feedbacks;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -21,6 +23,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         [Title("References")]
         [SerializeField, Required] private UIData _uiData;
+        [SerializeField, Required] private MMFPlayerReplicated _feedbacksAllPlayersReady;
         [SerializeField, Required] private Transform _playerLabelA;
         [SerializeField, Required] private Transform _playerLabelB;
         [SerializeField, Required] private Transform _playerLabelC;
@@ -29,6 +32,10 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private Transform _playerEndB;
         [SerializeField, Required] private Transform _playerEndC;
         [SerializeField, Required] private Transform _playerEndD;
+        [SerializeField] private Color _playerColorA;
+        [SerializeField] private Color _playerColorB;
+        [SerializeField] private Color _playerColorC;
+        [SerializeField] private Color _playerColorD;
         [SerializeField, Required] private ConfirmationPrompt _quitPlayerIndexSelectionPrompt;
         
         private Vector3 _playerStartA;
@@ -54,6 +61,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             UIManager.Instance.SwitchToCanvasCamera();
             if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance)
             {
+                _feedbacksAllPlayersReady.RestoreFeedbacksForAll();
                 PlayerManager.Instance.TryStartTeamManagement();
                 PlayerManager.Instance.OnAllPlayersReady += OnAllPlayersReady;
             }
@@ -144,7 +152,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 }
                 else
                 {
-                    GoToPlayerEnd(playerLabel, GetPlayerEnd(playerTeamInfo.ScreenPlayerIndexType));
+                    GoToPlayerEnd(playerLabel, GetPlayerEnd(playerTeamInfo.ScreenPlayerIndexType), GetPlayerColor(playerTeamInfo.ScreenPlayerIndexType));
                 }
             }
         }
@@ -157,6 +165,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private IEnumerator OnAllPlayersReadyCoroutine()
         {
             PlayerManager.Instance.TryEndTeamManagement();
+            if (InstanceFinder.IsServerStarted) _feedbacksAllPlayersReady.PlayFeedbacksForAll();
             yield return new WaitForSeconds(_uiData.SecondsAfterAllPlayersReadyToStartCustomization);
             if (InstanceFinder.IsServerStarted)
             {
@@ -164,8 +173,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             }
         }
         
-        private void GoToPlayerEnd(Transform playerLabel, Transform playerEnd)
+        private void GoToPlayerEnd(Transform playerLabel, Transform playerEnd, Color playerColor)
         {
+            playerLabel.GetComponent<UI_BindPlayerReadyToImage>().SetReadyColor(playerColor);
             playerLabel.DOMove(playerEnd.position, _uiData.PlayerTeamLabelMovementDuration)
                 .SetEase(_uiData.PlayerTeamLabelMovementEase);
         }
@@ -190,6 +200,23 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                     return _playerLabelD;
                 default:
                     return null;
+            }
+        }
+        
+        private Color GetPlayerColor(PlayerIndexType playerIndexType)
+        {
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    return _playerColorA;
+                case PlayerIndexType.B:
+                    return _playerColorB;
+                case PlayerIndexType.C:
+                    return _playerColorC;
+                case PlayerIndexType.D:
+                    return _playerColorD;
+                default:
+                    return Color.white;
             }
         }
 

@@ -428,9 +428,10 @@ namespace _Project.Scripts.Runtime.Networking
         private void StartTeamManagement()
         {
             SetPlayerLeavingEnabledClientRpc(false);
+            SetPlayerJoiningEnabledClientRpc(false);
             SetPlayerChangingTeamEnabledClientRpc(true);
             SetPlayerConfirmTeamEnabledClientRpc(true);
-            SetPlayerJoiningEnabledClientRpc(false);
+            
 
             List<PlayerTeamInfo> playerTeamInfos = new List<PlayerTeamInfo>();
             List<PlayerReadyInfo> playerReadyInfos = new List<PlayerReadyInfo>();
@@ -491,17 +492,18 @@ namespace _Project.Scripts.Runtime.Networking
         private void EndTeamManagement()
         {
             SetPlayerLeavingEnabledClientRpc(false);
+            SetPlayerJoiningEnabledClientRpc(false);
             SetPlayerChangingTeamEnabledClientRpc(false);
             SetPlayerConfirmTeamEnabledClientRpc(false);
-            SetPlayerJoiningEnabledClientRpc(false);
+            
         }
         
         public void ResumeTeamManagement()
         {
-            SetPlayerLeavingEnabledClientRpc(true);
+            SetPlayerLeavingEnabledClientRpc(false);
+            SetPlayerJoiningEnabledClientRpc(false);
             SetPlayerChangingTeamEnabledClientRpc(true);
             SetPlayerConfirmTeamEnabledClientRpc(true);
-            SetPlayerJoiningEnabledClientRpc(true);
         }
 
         [ObserversRpc]

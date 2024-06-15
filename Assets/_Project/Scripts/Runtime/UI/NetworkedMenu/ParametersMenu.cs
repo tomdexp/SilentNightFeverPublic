@@ -71,7 +71,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void GraphicsButtonClicked()
         {
-            //throw new System.NotImplementedException();
+            UIManager.Instance.GoToMenu<ParametersGraphicsMenu>();
         }
 
         public override void Close()

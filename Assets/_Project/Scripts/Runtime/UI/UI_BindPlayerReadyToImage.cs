@@ -73,5 +73,10 @@ namespace _Project.Scripts.Runtime.UI
                 _image.color = _noPlayerColor;
             }
         }
+        
+        public void SetReadyColor(Color color)
+        {
+            _playerReadyColor = color;
+        }
     }
 }

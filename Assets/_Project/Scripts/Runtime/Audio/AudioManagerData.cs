@@ -15,6 +15,20 @@ namespace _Project.Scripts.Runtime.Audio
         [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
         [Tooltip("If False, the AudioManager will not log any RTPC, errors or not")]
         public bool RPTCLog = false;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsMusicSliderDefaultValue = 50;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsAmbianceSliderDefaultValue = 50;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsSFXSliderDefaultValue = 50;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsLandmarksSliderDefaultValue = 50;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsHighPassSliderDefaultValue = 50;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsLowPassSliderDefaultValue = 50;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsNotchSliderDefaultValue = 50;
         
         [TabGroup("Settings","Banks", SdfIconType.SafeFill, TextColor = "orange")]
         public BankLoadConfig[] BanksToLoadOnApplicationStart;

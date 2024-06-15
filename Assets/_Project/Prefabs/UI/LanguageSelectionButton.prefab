@@ -172,7 +172,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 40, y: 40}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1901529325461563843
 CanvasRenderer:
@@ -271,6 +271,7 @@ MonoBehaviour:
   _buttonType: 0
   _uiData: {fileID: 11400000, guid: b92375a8369ab2d4f97ea7d1334462b7, type: 2}
   _keepFocusOnClicked: 0
+  _playScaleFeedbackOnClicked: 1
 --- !u!114 &177001224784114594
 MonoBehaviour:
   m_ObjectHideFlags: 0
