@@ -19,6 +19,8 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private RawImage _cnamLogo;
         [SerializeField, Required] private RawImage _magelisLogo;
         [SerializeField, Required] private RawImage _p20Logo;
+        [SerializeField, Required] private RawImage _p20LogoStressed;
+        [SerializeField, Required] private RawImage _p20LogoStressedUltra;
         [SerializeField, Required] private RawImage _wwiseLogo;
         
         [Title("Settings")]
@@ -90,12 +92,38 @@ namespace _Project.Scripts.Runtime.UI
             yield return new WaitForSeconds(_secondsBetweenLogos);
             
             // 3rd P20 LOGO
-            var tweenFadeInP20Logo = _p20Logo.DOFade(1.0f, _secondsFadeInDurationP20Logo).SetEase(_easeFadeInP20Logo);
-            yield return tweenFadeInP20Logo.WaitForCompletion();
-            yield return new WaitForSeconds(_secondsBeforeFadeOutP20Logo);
-            var tweenFadeOutP20Logo = _p20Logo.DOFade(0.0f, _secondsFadeOutDurationP20Logo).SetEase(_easeFadeOutP20Logo);
-            yield return tweenFadeOutP20Logo.WaitForCompletion();
-            
+            // Between 9h00 and 17h00 pm, the logo is normal
+            // Between 17h00 and 23h00 pm, the logo is stressed
+            // Between 23h00 and 5h00 am, the logo is ultra stressed
+            // Between 5h00 and 9h00 am, the logo is stressed
+            var now = DateTime.Now;
+            bool isStressed = now.Hour is >= 17 and < 23 or >= 5 and < 9;
+            bool isUltraStressed = now.Hour is >= 23 or < 5;
+            if (!isStressed && !isUltraStressed)
+            {
+                var tweenFadeInP20Logo = _p20Logo.DOFade(1.0f, _secondsFadeInDurationP20Logo).SetEase(_easeFadeInP20Logo);
+                yield return tweenFadeInP20Logo.WaitForCompletion();
+                yield return new WaitForSeconds(_secondsBeforeFadeOutP20Logo);
+                var tweenFadeOutP20Logo = _p20Logo.DOFade(0.0f, _secondsFadeOutDurationP20Logo).SetEase(_easeFadeOutP20Logo);
+                yield return tweenFadeOutP20Logo.WaitForCompletion();
+            }
+            else if (isStressed)
+            {
+                var tweenFadeInP20LogoStressed = _p20LogoStressed.DOFade(1.0f, _secondsFadeInDurationP20Logo).SetEase(_easeFadeInP20Logo);
+                yield return tweenFadeInP20LogoStressed.WaitForCompletion();
+                yield return new WaitForSeconds(_secondsBeforeFadeOutP20Logo);
+                var tweenFadeOutP20LogoStressed = _p20LogoStressed.DOFade(0.0f, _secondsFadeOutDurationP20Logo).SetEase(_easeFadeOutP20Logo);
+                yield return tweenFadeOutP20LogoStressed.WaitForCompletion();
+            }
+            else
+            {
+                var tweenFadeInP20LogoStressedUltra = _p20LogoStressedUltra.DOFade(1.0f, _secondsFadeInDurationP20Logo).SetEase(_easeFadeInP20Logo);
+                yield return tweenFadeInP20LogoStressedUltra.WaitForCompletion();
+                yield return new WaitForSeconds(_secondsBeforeFadeOutP20Logo);
+                var tweenFadeOutP20LogoStressedUltra = _p20LogoStressedUltra.DOFade(0.0f, _secondsFadeOutDurationP20Logo).SetEase(_easeFadeOutP20Logo);
+                yield return tweenFadeOutP20LogoStressedUltra.WaitForCompletion();
+            }
+
             yield return new WaitForSeconds(_secondsBetweenLogos);
             
             // 4th GAME LOGO AND TITLE
