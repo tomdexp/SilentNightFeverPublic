@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
@@ -80,6 +81,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.Append(_lobbyCodeInputField.transform.DOScale(Vector3.one * 1.2f, 0.33f));
             sequence.Append(_lobbyCodeInputField.transform.DOScale(Vector3.one, 0.33f));
             sequence.Play();
+            
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnlineCreateOrJoinMenuStart, AudioManager.Instance.gameObject);
         }
 
         private void ServerMigrationStarted()

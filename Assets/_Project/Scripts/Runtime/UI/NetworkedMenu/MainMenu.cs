@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -82,6 +83,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.AppendInterval(interval);
             sequence.AppendCallback(() => _uiButtonQuit.Open());
             sequence.Play();
+            
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventMainMenuStart, AudioManager.Instance.gameObject);
         }
 
         public override void Close()

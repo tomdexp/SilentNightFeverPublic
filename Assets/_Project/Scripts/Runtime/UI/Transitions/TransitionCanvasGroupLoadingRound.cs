@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using DG.Tweening;
@@ -31,10 +32,12 @@ namespace _Project.Scripts.Runtime.UI.Transitions
                 if (lastWinningTeam == PlayerTeamType.A)
                 {
                     _feedbackTeamAWin.PlayFeedbacksForAll();
+                    if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventWinningTeamRoundTeamShiningStarFruit, AudioManager.Instance.gameObject);
                 }
                 else
                 {
                     _feedbackTeamBWin.PlayFeedbacksForAll();
+                    if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventWinningTeamRoundTeamPlumsOfPassion, AudioManager.Instance.gameObject);
                 }
                 yield return new WaitForSeconds(_delayAfterTeamWinFeedback);
                 _feedbackOpen.PlayFeedbacksForAll();

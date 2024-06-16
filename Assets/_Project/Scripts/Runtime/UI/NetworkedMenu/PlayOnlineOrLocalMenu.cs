@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Utils;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -52,6 +53,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _uiButtonPlayLocal.OnUnHover += OnButtonPlayLocalUnHover;
             _uiButtonPlayLocal.Open();
             _uiButtonPlayOnline.Open();
+            
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventLocalOrOnlineMenuStart, AudioManager.Instance.gameObject);
         }
 
         public override void Close()

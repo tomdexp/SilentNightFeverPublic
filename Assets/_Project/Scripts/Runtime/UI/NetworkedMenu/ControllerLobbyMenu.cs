@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
@@ -64,6 +65,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.AppendInterval(_delayBetweenPlayerAnimation);
             sequence.AppendCallback((() => _playerDCanvas.Open()));
             sequence.Play();
+            
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventGamepadMenuStart, AudioManager.Instance.gameObject);
         }
 
         private void Update()

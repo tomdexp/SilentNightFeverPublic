@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
 using FishNet;
@@ -24,6 +25,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             base.Open();
             UIManager.Instance.SwitchToMetroCamera();
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventCharacterCustomizationStart, AudioManager.Instance.gameObject);
             _canvasGroup.Open();
             if (InstanceFinder.IsServerStarted)
             {

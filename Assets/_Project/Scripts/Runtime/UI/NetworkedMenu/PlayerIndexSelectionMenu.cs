@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils;
@@ -70,6 +71,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 PlayerManager.Instance.TryStartTeamManagement();
                 PlayerManager.Instance.OnAllPlayersReady += OnAllPlayersReady;
             }
+            
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventTeamSelectionMenuStart, AudioManager.Instance.gameObject);
         }
 
         public override void Close()

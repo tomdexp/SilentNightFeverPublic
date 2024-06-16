@@ -62,6 +62,14 @@ namespace _Project.Scripts.Runtime.Audio
             InternalPlayAudioLocal(eventRef.Id, go);
         }
         
+        public void PlayAudioLocal(IEnumerable<AK.Wwise.Event> eventsRef, GameObject go)
+        {
+            foreach (var audioEvent in eventsRef)
+            {
+                InternalPlayAudioLocal(audioEvent.Id, go);
+            }
+        }
+        
         /// <summary>
         /// This method plays an event without replication over the network
         /// </summary>

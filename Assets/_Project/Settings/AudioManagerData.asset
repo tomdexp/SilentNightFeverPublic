@@ -15,6 +15,13 @@ MonoBehaviour:
   EventNotFoundLogLevel: 3
   RTPCNotFoundLogLevel: 3
   RPTCLog: 0
+  SettingsMusicSliderDefaultValue: 50
+  SettingsAmbianceSliderDefaultValue: 50
+  SettingsSFXSliderDefaultValue: 50
+  SettingsLandmarksSliderDefaultValue: 50
+  SettingsHighPassSliderDefaultValue: 50
+  SettingsLowPassSliderDefaultValue: 50
+  SettingsNotchSliderDefaultValue: 50
   BanksToLoadOnApplicationStart:
   - Bank:
       idInternal: 0
@@ -71,18 +78,13 @@ MonoBehaviour:
       type: 2}
   RTPC_GP_LM_SatelliteSpeed_MinValue: 0
   RTPC_GP_LM_SatelliteSpeed_MaxValue: 10
-  EventApplicationStart:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  EventMainMenuStart:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  EventCharacterSelectionStart:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+  EventApplicationStart: []
+  EventMainMenuStart: []
+  EventLocalOrOnlineMenuStart: []
+  EventOnlineCreateOrJoinMenuStart: []
+  EventGamepadMenuStart: []
+  EventTeamSelectionMenuStart: []
+  EventCharacterCustomizationStart: []
   EventGameStart:
   - idInternal: 0
     valueGuidInternal: 
@@ -160,6 +162,8 @@ MonoBehaviour:
   - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
+  EventWinningTeamRoundTeamShiningStarFruit: []
+  EventWinningTeamRoundTeamPlumsOfPassion: []
   EventPlayerTongueThrow:
     idInternal: 0
     valueGuidInternal: 
@@ -228,3 +232,19 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: f15c46a9637dd9142a7fe06f5caaaa09,
       type: 2}
+  EventOnStartZoomElectricity:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  EventOnStopZoomElectricity:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  OnStartControlledByVoodoo:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  OnEndControlledByVoodoo:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
