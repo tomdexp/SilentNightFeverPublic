@@ -23,7 +23,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void OnDestroy()
         {
-            if (BootstrapManager.Instance)
+            if (BootstrapManager.HasInstance)
             {
                 BootstrapManager.Instance.OnKickedFromServer -= OnKickedFromServer;
             }
