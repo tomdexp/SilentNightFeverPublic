@@ -86,7 +86,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8620212284699080689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2261d768feb45738d4598428417ae3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultSelectedOnOpen: {fileID: 0}
 --- !u!225 &8696862066303398495
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -140,6 +141,7 @@ GameObject:
   - component: {fileID: 1730714786247870081}
   - component: {fileID: 8455592997297988553}
   - component: {fileID: 3772937663045424340}
+  - component: {fileID: 5787517738761443901}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -281,3 +283,43 @@ MonoBehaviour:
   _blinkColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   _blinkDuration: 0.5
   _blinkEase: 1
+--- !u!114 &5787517738761443901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8979575916001648933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:07dd5ae9a91e7c34d85ef6005058778c
+    m_TableEntryReference:
+      m_KeyId: 8009611506204672
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8455592997297988553}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []

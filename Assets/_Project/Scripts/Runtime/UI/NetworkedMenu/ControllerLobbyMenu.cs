@@ -24,9 +24,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private UI_BindRealPlayerToImage _playerCCanvas;
         [SerializeField, Required] private UI_BindRealPlayerToImage _playerDCanvas;
         [SerializeField] private float _secondsBeforeStartWhenAllControllerConnected = 2.5f;
-        [SerializeField] private Vector3 _playerCanvasOffset = new Vector3(0, 0, 0);
         [SerializeField] private float _delayBetweenPlayerAnimation = 0.5f;
-        [SerializeField] private float _leftToRightAnimationDuration = 0.5f;
         private CanvasGroup _canvasGroup;
         private bool _timerStarted;
 

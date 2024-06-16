@@ -273,11 +273,13 @@ MonoBehaviour:
   _playerIndexType: 4
   _image: {fileID: 3277921801832543798}
   _joinText: {fileID: 365393207405162856}
+  _rectTransform: {fileID: 994096115825594238}
   _playerText: {fileID: 8177903284984773046}
   _noPlayerColor: {r: 1, g: 1, b: 1, a: 1}
   _playerPresentColor: {r: 0.3764706, g: 0.80784315, b: 0.38431373, a: 1}
   _width: 500
-  _closeTransform: {fileID: 3290132964386095624}
+  _openPosition: {x: 0, y: 0, z: 0}
+  _closePosition: {x: -500, y: 0, z: 0}
 --- !u!1 &5623273348342611011
 GameObject:
   m_ObjectHideFlags: 0

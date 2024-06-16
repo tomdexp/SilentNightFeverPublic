@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils;
@@ -19,6 +20,8 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
 
         private float _absSignedAngle;
         private float _t;
+        private bool _isTeamVFXPlayingA;
+        private bool _isTeamVFXPlayingB;
 
         private void Awake()
         {
@@ -39,17 +42,33 @@ namespace _Project.Scripts.Runtime.Landmarks.Zoom
             {
                 if (newSignedAngle < 0)
                 {
-                    _teamAParticles.Play();
+                    if (!_isTeamVFXPlayingA)
+                    {
+                        _isTeamVFXPlayingA = true;
+                        _teamAParticles.Play();
+                        AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnStartZoomElectricity, transform.gameObject);
+                    }
                 }
                 else
                 {
-                    _teamBParticles.Play();
+                    if (!_isTeamVFXPlayingB)
+                    {
+                        _isTeamVFXPlayingB = true;
+                        _teamBParticles.Play();
+                        AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnStartZoomElectricity, transform.gameObject);
+                    }
                 }
             }
             else
             {
-                _teamAParticles.Stop();
-                _teamBParticles.Stop();
+                if (_isTeamVFXPlayingA || _isTeamVFXPlayingB)
+                {
+                    _isTeamVFXPlayingA = false;
+                    _isTeamVFXPlayingB = false;
+                    _teamAParticles.Stop();
+                    _teamBParticles.Stop();
+                    AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnStopZoomElectricity, transform.gameObject);
+                }
             }
         }
     }

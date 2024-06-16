@@ -113,6 +113,14 @@ namespace _Project.Scripts.Runtime.Audio
         public AK.Wwise.Event EventLandmarkZoomStartTurning;
         [TabGroup("References/Events/Subgroup", "Landmarks", SdfIconType.PinMapFill, TextColor = "lightorange")]
         public AK.Wwise.Event EventLandmarkZoomStopTurning;
+        [TabGroup("References/Events/Subgroup", "Landmarks", SdfIconType.PinMapFill, TextColor = "lightorange")]
+        public AK.Wwise.Event EventOnStartZoomElectricity;
+        [TabGroup("References/Events/Subgroup", "Landmarks", SdfIconType.PinMapFill, TextColor = "lightorange")]
+        public AK.Wwise.Event EventOnStopZoomElectricity;
+        [TabGroup("References/Events/Subgroup", "Landmarks", SdfIconType.PinMapFill, TextColor = "lightorange")]
+        public AK.Wwise.Event OnStartControlledByVoodoo ;
+        [TabGroup("References/Events/Subgroup", "Landmarks", SdfIconType.PinMapFill, TextColor = "lightorange")]
+        public AK.Wwise.Event OnEndControlledByVoodoo;
         
         
         [Serializable]
