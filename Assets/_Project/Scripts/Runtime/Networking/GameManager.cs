@@ -30,6 +30,7 @@ namespace _Project.Scripts.Runtime.Networking
         public readonly SyncVar<byte> RequiredRoundsToWin = new SyncVar<byte>();
         public event Action OnGameStarted;
         public event Action<PlayerTeamType> OnGameEnded; // arg = winning team
+        public readonly SyncEvent OnGameEndedSyncEvent = new SyncEvent();
         public event Action<byte> OnAnyRoundStarted;
         public event Action<byte> OnAnyRoundEnded;
         public event Action OnFirstRoundStarted;
@@ -607,6 +608,7 @@ namespace _Project.Scripts.Runtime.Networking
             Logger.LogInfo("Game finished ! The winning team is Team " + winningTeam, Logger.LogType.Server, this);
             yield return new WaitForSeconds(GameManagerData.SecondsBetweenLastRoundCompletionAndEndOfTheGame);
             OnGameEnded?.Invoke(winningTeam);
+            OnGameEndedSyncEvent.Invoke();
             Logger.LogTrace("OnGameEnded event invoked", Logger.LogType.Server, this);
         }
 

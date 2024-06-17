@@ -28,6 +28,8 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private MMF_Player _hoverFeedback;
         [SerializeField, Required] private MMF_Player _clickFeedback;
         [SerializeField, Required] private MMF_Player _unHoverFeedback;
+        [SerializeField, Required] private MMF_Player _lockFeedback;
+        [SerializeField, Required] private MMF_Player _unlockFeedback;
         
         public event Action OnHover;
         public event Action OnUnHover;
@@ -149,6 +151,18 @@ namespace _Project.Scripts.Runtime.UI
             transform.DOKill();
             transform.localScale = Vector3.zero;
             _isOpen = false;
+        }
+
+        public void Lock()
+        {
+            _lockFeedback.PlayFeedbacks();
+            _button.interactable = false;
+        }
+        
+        public void Unlock()
+        {
+            _unlockFeedback.PlayFeedbacks();
+            _button.interactable = true;
         }
 
         private void Update()
