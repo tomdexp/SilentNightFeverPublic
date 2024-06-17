@@ -230,6 +230,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private bool AreAllMenusRegistered()
         {
             var menus = FindObjectsByType<MenuBase>(FindObjectsSortMode.None);
+            // remove from the check the Menu of type EndGameMenu, because it is not registered in the UIManager, but in the UILocalManager
+            menus = menus.Where(menu => menu.GetType() != typeof(EndGameMenu)).ToArray();
             bool allMenusRegistered = true;
             foreach (var menu in menus)
             {
