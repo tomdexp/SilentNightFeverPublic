@@ -91,5 +91,37 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             selectable1.navigation = nav1;
             selectable2.navigation = nav2;
         }
+        
+        protected void BindOneWayNavigableHorizontalOnRight(Selectable from, Selectable to)
+        {
+            Navigation nav1 = from.navigation;
+            nav1.mode = Navigation.Mode.Explicit;
+            nav1.selectOnRight = to;
+            from.navigation = nav1;
+        }
+        
+        protected void BindOneWayNavigableHorizontalOnLeft(Selectable from, Selectable to)
+        {
+            Navigation nav1 = from.navigation;
+            nav1.mode = Navigation.Mode.Explicit;
+            nav1.selectOnLeft = to;
+            from.navigation = nav1;
+        }
+        
+        protected void BindOneWayNavigableVerticalOnUp(Selectable from, Selectable to)
+        {
+            Navigation nav1 = from.navigation;
+            nav1.mode = Navigation.Mode.Explicit;
+            nav1.selectOnUp = to;
+            from.navigation = nav1;
+        }
+        
+        protected void BindOneWayNavigableVerticalOnDown(Selectable from, Selectable to)
+        {
+            Navigation nav1 = from.navigation;
+            nav1.mode = Navigation.Mode.Explicit;
+            nav1.selectOnDown = to;
+            from.navigation = nav1;
+        }
     }
 }

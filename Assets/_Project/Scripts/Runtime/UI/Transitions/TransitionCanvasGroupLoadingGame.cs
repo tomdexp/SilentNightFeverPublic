@@ -10,10 +10,6 @@ namespace _Project.Scripts.Runtime.UI.Transitions
 {
     public class TransitionCanvasGroupLoadingGame : TransitionCanvasGroup
     {
-        [Title("Reference")]
-        [SerializeField] private TMP_Text _loadingText;
-        [SerializeField] private Image _progressBar;
-        
         private bool _isLoading = false;
         
         public override IEnumerator BeginTransition()
@@ -40,10 +36,10 @@ namespace _Project.Scripts.Runtime.UI.Transitions
         private void BindToLoadingTextAndProgressbar()
         {
             var procGen = FindAnyObjectByType<ProcGenInstanciator>();
-            _progressBar.fillAmount = 0;
+            //_progressBar.fillAmount = 0;
             if (!procGen) return;
             _isLoading = true;
-            procGen.OnLoadingProgressChanged += OnLoadingProgressChanged;
+            //procGen.OnLoadingProgressChanged += OnLoadingProgressChanged;
         }
         
         private void UnbindFromLoadingTextAndProgressbar()
@@ -51,16 +47,16 @@ namespace _Project.Scripts.Runtime.UI.Transitions
             var procGen = FindAnyObjectByType<ProcGenInstanciator>();
             if (!procGen) return;
             _isLoading = false;
-            procGen.OnLoadingProgressChanged -= OnLoadingProgressChanged;
+            //procGen.OnLoadingProgressChanged -= OnLoadingProgressChanged;
         }
 
         private void OnLoadingProgressChanged(float percent, string message)
         {
-            _loadingText.text = $"{message}";
-            _progressBar.fillAmount = percent;
+            //_loadingText.text = $"{message}";
+            //_progressBar.fillAmount = percent;
         }
 
-        protected override void Update()
+        /*protected override void Update()
         {
             base.Update();
             // tick less often
@@ -77,6 +73,6 @@ namespace _Project.Scripts.Runtime.UI.Transitions
                     _loadingText.text += ".";
                 }
             }
-        }
+        }*/
     }
 }

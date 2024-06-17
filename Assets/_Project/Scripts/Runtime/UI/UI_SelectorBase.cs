@@ -8,6 +8,8 @@ namespace _Project.Scripts.Runtime.UI
     {
         [SerializeField, Required] private Button _previousButton;
         [SerializeField, Required] private Button _nextButton;
+        public Button PreviousButton => _previousButton;
+        public Button NextButton => _nextButton;
 
         public virtual void Awake()
         {
@@ -22,5 +24,7 @@ namespace _Project.Scripts.Runtime.UI
         
         protected abstract void OnPreviousButtonClicked();
         protected abstract void OnNextButtonClicked();
+        
+        
     }
 }
