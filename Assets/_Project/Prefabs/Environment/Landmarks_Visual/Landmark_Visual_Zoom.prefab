@@ -596,6 +596,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6452105221668139151, guid: 544aca3664db8da4eb34826e2a492d03,
         type: 3}
+      propertyPath: m_Color.b
+      value: 0.45385456
+      objectReference: {fileID: 0}
+    - target: {fileID: 6452105221668139151, guid: 544aca3664db8da4eb34826e2a492d03,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6452105221668139151, guid: 544aca3664db8da4eb34826e2a492d03,
+        type: 3}
       propertyPath: m_Intensity
       value: 30
       objectReference: {fileID: 0}
@@ -1435,6 +1445,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f55ae11958852bb4fa937b518e145706,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.6310444
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f55ae11958852bb4fa937b518e145706,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.6310444
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f55ae11958852bb4fa937b518e145706,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.6310444
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f55ae11958852bb4fa937b518e145706,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
@@ -1483,6 +1508,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f55ae11958852bb4fa937b518e145706,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 970609a59c536234c95bc81a3b6c0c01, type: 2}
     - target: {fileID: 919132149155446097, guid: f55ae11958852bb4fa937b518e145706,
         type: 3}
       propertyPath: m_Name
@@ -1491,7 +1521,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f55ae11958852bb4fa937b518e145706,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
