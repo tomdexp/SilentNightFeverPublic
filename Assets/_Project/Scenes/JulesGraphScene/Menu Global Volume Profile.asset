@@ -96,16 +96,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558a8e2b6826cf840aae193990ba9f2e, type: 3}
   m_Name: ShadowsMidtonesHighlights
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.43309635}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.26750773}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.070411034}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.12160397}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.080601186}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.1720568}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: 80's Global Volume Profile
+  m_Name: Menu Global Volume Profile
   m_EditorClassIdentifier: 
   components:
   - {fileID: -8759058088341491516}
@@ -187,10 +187,10 @@ MonoBehaviour:
     m_Value: 0.65
   intensity:
     m_OverrideState: 1
-    m_Value: 3.5
+    m_Value: 2.88
   scatter:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 0.92
   clamp:
     m_OverrideState: 0
     m_Value: 65472
@@ -231,7 +231,7 @@ MonoBehaviour:
     m_Value: 0.5
   contrast:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 20
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Metro
+  m_Name: MAT_MetroWall
   m_Shader: {fileID: -6465566751694194690, guid: 97b6cd9fc7cb9b94ebf7d80ab43a2e61,
     type: 3}
   m_Parent: {fileID: 2100000, guid: 53ad5bc3e097e24419838607f819e135, type: 2}
@@ -30,7 +30,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Color_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5a2e27d89e773b744a7da4e9ffcd8942, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emissive:
@@ -44,9 +44,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _Emissive_Strenght: 0
-    - _See_Through_Distance: 0
+    - _See_Through_Distance: -2
     m_Colors:
-    - _Albedo: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0}
+    - _Albedo: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &8083697860985505425
