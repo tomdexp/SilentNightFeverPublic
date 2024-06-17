@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Globalization;
 using _Project.Scripts.Runtime.Audio;
+using MoreMountains.Feedbacks;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
@@ -17,6 +19,7 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private TMP_Text _valueText;
         [SerializeField, Required] private TMP_Text _minValueText;
         [SerializeField, Required] private TMP_Text _maxValueText;
+        
         
         [Title("Settings")]
         [SerializeField] private SliderType _sliderType;

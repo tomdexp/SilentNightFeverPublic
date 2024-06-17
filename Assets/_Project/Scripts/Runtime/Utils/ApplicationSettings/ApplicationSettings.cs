@@ -11,19 +11,24 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
         public static BoolSettingHoldButtonToAnchorTongue HoldButtonToAnchorTongue = new BoolSettingHoldButtonToAnchorTongue(false);
         public static BoolSettingUseRadialTongueSensor UseRadialTongueSensor = new BoolSettingUseRadialTongueSensor(false);
         public static BoolSettingEpilepsyFilterEnable EpilepsyFilterEnable = new BoolSettingEpilepsyFilterEnable(false);
-
+        public static BoolSettingHighContrastFilterEnable HighContrastFilterEnableEnable = new BoolSettingHighContrastFilterEnable(false);
+    
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Load()
         {
             HoldButtonToAnchorTongue.Load();
             UseRadialTongueSensor.Load();
             EpilepsyFilterEnable.Load();
+            HighContrastFilterEnableEnable.Load();
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void RegistrySetup()
         {
+            QuantumRegistry.RegisterObject(HoldButtonToAnchorTongue);
             QuantumRegistry.RegisterObject(UseRadialTongueSensor);
+            QuantumRegistry.RegisterObject(EpilepsyFilterEnable);
+            QuantumRegistry.RegisterObject(HighContrastFilterEnableEnable);
             Logger.LogInfo("QuantumRegistry updated");
         }
 
@@ -32,6 +37,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             HoldButtonToAnchorTongue.Save();
             UseRadialTongueSensor.Save();
             EpilepsyFilterEnable.Save();
+            HighContrastFilterEnableEnable.Save();
             PlayerPrefs.Save();
         }
         
@@ -66,6 +72,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             HoldButtonToAnchorTongue.ResetToDefault();
             UseRadialTongueSensor.ResetToDefault();
             EpilepsyFilterEnable.ResetToDefault();
+            HighContrastFilterEnableEnable.ResetToDefault();
             Save();
             Logger.LogInfo("Options reset to default");
         }

@@ -2664,8 +2664,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 270198141247170772, guid: 97f34a17c89bef44d9c68a917ffdb18f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 141376902307098778}
   m_SourcePrefab: {fileID: 100100000, guid: 97f34a17c89bef44d9c68a917ffdb18f, type: 3}
+--- !u!1 &894525837261113909 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 270198141247170772, guid: 97f34a17c89bef44d9c68a917ffdb18f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1141118544983466721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &141376902307098778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894525837261113909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b852e53e34ff45fda9dceac52ce7b05d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7326946055974811595 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7672053331913233706, guid: 97f34a17c89bef44d9c68a917ffdb18f,
@@ -2725,6 +2747,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InputRemapButton_Move_RIGHT
+      objectReference: {fileID: 0}
+    - target: {fileID: 6997806779125778989, guid: e3e0edfd8bdd04942a0465b44a81038e,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 69.95
       objectReference: {fileID: 0}
     - target: {fileID: 7434296125456074750, guid: e3e0edfd8bdd04942a0465b44a81038e,
         type: 3}
@@ -2902,6 +2929,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InputRemapButton_Move_DOWN
+      objectReference: {fileID: 0}
+    - target: {fileID: 6997806779125778989, guid: e3e0edfd8bdd04942a0465b44a81038e,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 68.5
       objectReference: {fileID: 0}
     - target: {fileID: 7434296125456074750, guid: e3e0edfd8bdd04942a0465b44a81038e,
         type: 3}
@@ -3475,7 +3507,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 270198141247170772, guid: 97f34a17c89bef44d9c68a917ffdb18f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7551101468660600284}
   m_SourcePrefab: {fileID: 100100000, guid: 97f34a17c89bef44d9c68a917ffdb18f, type: 3}
 --- !u!224 &4440136719455133922 stripped
 RectTransform:
@@ -3483,6 +3519,24 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6333770855985771976}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6078167133869759772 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 270198141247170772, guid: 97f34a17c89bef44d9c68a917ffdb18f,
+    type: 3}
+  m_PrefabInstance: {fileID: 6333770855985771976}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7551101468660600284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6078167133869759772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f4bcedcf9e4811acbc90f977dd5fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6365329017958586738
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3729,6 +3783,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputRemapButton_Move_UP
       objectReference: {fileID: 0}
+    - target: {fileID: 6997806779125778989, guid: e3e0edfd8bdd04942a0465b44a81038e,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 95.65
+      objectReference: {fileID: 0}
     - target: {fileID: 7434296125456074750, guid: e3e0edfd8bdd04942a0465b44a81038e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3905,6 +3964,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InputRemapButton_Move_LEFT
+      objectReference: {fileID: 0}
+    - target: {fileID: 6997806779125778989, guid: e3e0edfd8bdd04942a0465b44a81038e,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 78.8
       objectReference: {fileID: 0}
     - target: {fileID: 7434296125456074750, guid: e3e0edfd8bdd04942a0465b44a81038e,
         type: 3}
