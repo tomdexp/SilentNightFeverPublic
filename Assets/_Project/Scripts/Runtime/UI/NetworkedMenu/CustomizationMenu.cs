@@ -24,7 +24,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void Open()
         {
             base.Open();
-            UIManager.Instance.SwitchToMetroCamera();
+            UIManager.Instance.SwitchToCustomizationCamera();
             if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventCharacterCustomizationStart, AudioManager.Instance.gameObject);
             _canvasGroup.Open();
             if (InstanceFinder.IsServerStarted)

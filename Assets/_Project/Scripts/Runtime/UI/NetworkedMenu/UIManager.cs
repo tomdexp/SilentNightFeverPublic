@@ -5,12 +5,14 @@ using System.Linq;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
+using DG.Tweening;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Rendering;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI.NetworkedMenu
@@ -248,16 +250,46 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             var metroCamera = FindAnyObjectByType<MetroCamera>();
             var canvasCamera = FindAnyObjectByType<MetroWorldSpaceCanvasCamera>();
+            var customizationCamera = FindAnyObjectByType<CustomizationCamera>();
+            var metroVolume = FindAnyObjectByType<MetroCameraVolumeProfile>().GetComponent<Volume>();
+            var canvasVolume = FindAnyObjectByType<MetroCanvasCameraVolumeProfile>().GetComponent<Volume>();
+            FindAnyObjectByType<MetroLizardsNPC>(FindObjectsInactive.Include).Open();
             metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
             canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
+            customizationCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
+            DOTween.To(() => metroVolume.weight, x => metroVolume.weight = x, 1, 1);
+            DOTween.To(() => canvasVolume.weight, x => canvasVolume.weight = x, 0, 1);
         }
         
         public void SwitchToCanvasCamera()
         {
             var metroCamera = FindAnyObjectByType<MetroCamera>();
             var canvasCamera = FindAnyObjectByType<MetroWorldSpaceCanvasCamera>();
+            var customizationCamera = FindAnyObjectByType<CustomizationCamera>();
+            var metroVolume = FindAnyObjectByType<MetroCameraVolumeProfile>().GetComponent<Volume>();
+            var canvasVolume = FindAnyObjectByType<MetroCanvasCameraVolumeProfile>().GetComponent<Volume>();
+            FindAnyObjectByType<MetroLizardsNPC>(FindObjectsInactive.Include).Close();
             metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
+            customizationCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
             canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
+            DOTween.To(() => metroVolume.weight, x => metroVolume.weight = x, 0, 1);
+            DOTween.To(() => canvasVolume.weight, x => canvasVolume.weight = x, 1, 1);
+            // delay the activation of the npcs to avoid them being visible during the transition
+        }
+
+        public void SwitchToCustomizationCamera()
+        {
+            var metroCamera = FindAnyObjectByType<MetroCamera>();
+            var canvasCamera = FindAnyObjectByType<MetroWorldSpaceCanvasCamera>();
+            var customizationCamera = FindAnyObjectByType<CustomizationCamera>();
+            var metroVolume = FindAnyObjectByType<MetroCameraVolumeProfile>().GetComponent<Volume>();
+            var canvasVolume = FindAnyObjectByType<MetroCanvasCameraVolumeProfile>().GetComponent<Volume>();
+            FindAnyObjectByType<MetroLizardsNPC>(FindObjectsInactive.Include).Close();
+            metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
+            canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
+            customizationCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
+            DOTween.To(() => metroVolume.weight, x => metroVolume.weight = x, 1, 1);
+            DOTween.To(() => canvasVolume.weight, x => canvasVolume.weight = x, 0, 1);
         }
 
         public void RegisterConfirmationPrompt(ConfirmationPrompt confirmationPrompt)
