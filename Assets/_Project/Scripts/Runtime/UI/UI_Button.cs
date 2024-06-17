@@ -2,6 +2,7 @@
 using System.Collections;
 using _Project.Scripts.Runtime.Audio;
 using DG.Tweening;
+using MoreMountains.Feedbacks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -24,6 +25,9 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private UIData _uiData;
         [SerializeField] private bool _keepFocusOnClicked = false;
         [SerializeField] private bool _playScaleFeedbackOnClicked = true;
+        [SerializeField, Required] private MMF_Player _hoverFeedback;
+        [SerializeField, Required] private MMF_Player _clickFeedback;
+        [SerializeField, Required] private MMF_Player _unHoverFeedback;
         
         public event Action OnHover;
         public event Action OnUnHover;
@@ -48,6 +52,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnClick()
         {
+            _clickFeedback.PlayFeedbacks();
             if (_buttonType == ButtonType.Enter)
             {
                 if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickEnter, AudioManager.Instance.gameObject);
@@ -84,6 +89,7 @@ namespace _Project.Scripts.Runtime.UI
         {
             if(!_button.interactable) return;
             OnHover?.Invoke();
+            _hoverFeedback.PlayFeedbacks();
             if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonHover, AudioManager.Instance.gameObject);
             if(_buttonType == ButtonType.Enter)
             {
@@ -111,6 +117,7 @@ namespace _Project.Scripts.Runtime.UI
         {
             if(!_button.interactable) return;
             OnUnHover?.Invoke();
+            _unHoverFeedback.PlayFeedbacks();
             if(transform.localScale.x == 0) return; // to avoid the button to scale to 1 when the Close() method is called
             if(_buttonType == ButtonType.Enter)
             {
