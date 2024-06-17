@@ -11,10 +11,8 @@ GameObject:
   - component: {fileID: 5102162171548884731}
   - component: {fileID: 8088962324795935800}
   - component: {fileID: 2354553730507399244}
-  - component: {fileID: 7632004904037764623}
-  - component: {fileID: 7323197842497323483}
   m_Layer: 0
-  m_Name: Landmark_Test
+  m_Name: Landmark_Plants
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,13 +49,12 @@ MonoBehaviour:
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
-  _networkBehaviours:
-  - {fileID: 7323197842497323483}
+  _networkBehaviours: []
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField:
-  - {fileID: 6164013217542365006}
+  - {fileID: 0}
   SerializedTransformProperties:
-    Position: {x: 0.21, y: 0, z: 11.41}
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -78,7 +75,7 @@ MonoBehaviour:
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 16449977221017359480
+  <AssetPathHash>k__BackingField: 14469260855521861484
 --- !u!114 &2354553730507399244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,68 +90,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _overrideType: 3
   _updateHostVisibility: 1
-  _observerConditions: []
---- !u!23 &7632004904037764623
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2143732081231214495}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7323197842497323483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2143732081231214495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 736af1d1ea8f56b478f77d6216aa7e2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 8088962324795935800}
-  _networkObjectCache: {fileID: 8088962324795935800}
-  _randomColor:
-    _value: {r: 0, g: 0, b: 0, a: 0}
+  _observerConditions:
+  - {fileID: 11400000, guid: 30ec6a4ad02f3f2418ce91bf74ab25ba, type: 2}
 --- !u!1001 &3961348710086729830
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -185,9 +122,89 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2057176407103553752, guid: ea703e50e86d7a14ab0c61cf12d10601,
         type: 3}
-      propertyPath: <SerializedRootNetworkBehaviour>k__BackingField
+      propertyPath: <NestedRootNetworkBehaviours>k__BackingField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -2057176407103553752, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: '<NestedRootNetworkBehaviours>k__BackingField.Array.data[1]'
       value: 
-      objectReference: {fileID: 7323197842497323483}
+      objectReference: {fileID: 0}
+    - target: {fileID: 65246411982182011, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: <ComponentIndex>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 65246411982182011, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Position.x
+      value: -2.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 65246411982182011, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Position.y
+      value: -0.45328683
+      objectReference: {fileID: 0}
+    - target: {fileID: 65246411982182011, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Position.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 65246411982182011, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Rotation.w
+      value: 0.9876793
+      objectReference: {fileID: 0}
+    - target: {fileID: 65246411982182011, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Rotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 65246411982182011, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Rotation.y
+      value: -0.15649158
+      objectReference: {fileID: 0}
+    - target: {fileID: 65246411982182011, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Rotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743173926042103790, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: <ComponentIndex>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743173926042103790, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Position.x
+      value: 3.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743173926042103790, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Position.y
+      value: -0.29328686
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743173926042103790, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Position.z
+      value: -2.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743173926042103790, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Rotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743173926042103790, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Rotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743173926042103790, guid: ea703e50e86d7a14ab0c61cf12d10601,
+        type: 3}
+      propertyPath: SerializedTransformProperties.Rotation.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 3040020436178535099, guid: ea703e50e86d7a14ab0c61cf12d10601,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -241,7 +258,7 @@ PrefabInstance:
     - target: {fileID: 6762990943374622535, guid: ea703e50e86d7a14ab0c61cf12d10601,
         type: 3}
       propertyPath: m_Name
-      value: LDM_Test
+      value: Landmark_Visual_Plants
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -254,15 +271,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3961348710086729830}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6164013217542365006 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -2057176407103553752, guid: ea703e50e86d7a14ab0c61cf12d10601,
-    type: 3}
-  m_PrefabInstance: {fileID: 3961348710086729830}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
