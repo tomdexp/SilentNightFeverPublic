@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 {
@@ -54,6 +55,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             BindOneWayNavigableVerticalOnDown(_controlEffectsToggleComponent, _startGameButton);
             BindOneWayNavigableVerticalOnUp(_startGameButton, _cameraEffectsToggleComponent);
             BindOneWayNavigableVerticalOnDown(_startGameButton, _backButton);
+            
+            _cameraEffectsToggle.SetValue(true);
+            _controlEffectsToggle.SetValue(true);
         }
         
         public override void Open()
@@ -63,7 +67,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _canvasGroup.Open();
             _startGameButton.onClick.AddListener(OnStartGameButtonClicked);
             _backButton.onClick.AddListener(GoBack);
-
+            
             if (!InstanceFinder.IsServerStarted)
             {
                 _waitingForHostText.alpha = 1;
@@ -77,15 +81,34 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             else
             {
                 _waitingForHostText.alpha = 0;
+                _cameraEffectsToggle.OnValueChanged += OnCameraEffectsToggleValueChanged;
+                _controlEffectsToggle.OnValueChanged += OnControlEffectsToggleValueChanged;
             }
         }
+
+        private void OnCameraEffectsToggleValueChanged(bool newValue)
+        {
+            Logger.LogDebug($"OnCameraEffectsToggleValueChanged to {newValue}", Logger.LogType.Server, this);
+            GameManager.Instance.CanLandmarkZoomSpawnFromGameSettings = newValue;
+        }
         
+        private void OnControlEffectsToggleValueChanged(bool newValue)
+        {
+            Logger.LogDebug($"OnControlEffectsToggleValueChanged to {newValue}", Logger.LogType.Server, this);
+            GameManager.Instance.CanLandmarkVoodooSpawnFromGameSettings = newValue;
+        }
+
         public override void Close()
         {
             base.Close();
             _canvasGroup.Close();
             _startGameButton.onClick.RemoveListener(OnStartGameButtonClicked);
             _backButton.onClick.RemoveListener(GoBack);
+            if (InstanceFinder.IsServerStarted)
+            {
+                _cameraEffectsToggle.OnValueChanged -= OnCameraEffectsToggleValueChanged;
+                _controlEffectsToggle.OnValueChanged -= OnControlEffectsToggleValueChanged;
+            }
         }
         
         public override void GoBack()
@@ -100,6 +123,11 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             base.OnDestroy();
             _startGameButton.onClick.RemoveListener(OnStartGameButtonClicked);
             _backButton.onClick.RemoveListener(GoBack);
+            if (InstanceFinder.IsServerStarted)
+            {
+                _cameraEffectsToggle.OnValueChanged -= OnCameraEffectsToggleValueChanged;
+                _controlEffectsToggle.OnValueChanged -= OnControlEffectsToggleValueChanged;
+            }
         }
 
         private void OnStartGameButtonClicked()
