@@ -87,6 +87,15 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void ServerMigrationStarted()
         {
+            var menuToGoOnReset = FindAnyObjectByType<MenuToGoOnReset>();
+            if (menuToGoOnReset)
+            {
+                menuToGoOnReset.SetMenuName(nameof(ControllerLobbyMenu));
+            }
+            else
+            {
+                Logger.LogWarning("No MenuToGoOnReset found in scene, after server migration, going to correct menu is not assured", Logger.LogType.Client, this);
+            }
             if (_isCreatingLobby)
             {
                 _creatingLobbyCanvasGroup.Open();
@@ -103,6 +112,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void ServerMigrationFinished()
         {
+            Logger.LogDebug("Server Migration Finished", Logger.LogType.Client, this);
             _creatingLobbyCanvasGroup.Close();
             _joiningLobbyCanvasGroup.Close();
             _canvasGroup.interactable = true;

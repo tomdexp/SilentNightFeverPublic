@@ -90,14 +90,17 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private void OnRestartButtonClicked()
         {
             if (!InstanceFinder.IsServerStarted) return;
-            GameManager.Instance.ResetGame();
+            GameManager.Instance.ResetAndRestartGame();
             Close();
         }
 
         private void OnTeamSelectionButtonClicked()
         {
             if (!InstanceFinder.IsServerStarted) return;
-            Logger.LogError("Not implemented yet", Logger.LogType.Server, this);
+            GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(PlayerIndexSelectionMenu);
+            GameManager.Instance.LoadMenuScene();
+            GameManager.Instance.ResetGame();
+            Close();
         }
 
         private void OnMainMenuButtonClicked()
