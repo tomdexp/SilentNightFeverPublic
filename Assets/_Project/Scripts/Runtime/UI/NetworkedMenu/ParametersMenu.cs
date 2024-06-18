@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Runtime.Utils;
+﻿using _Project.Scripts.Runtime.Audio;
+using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -57,6 +58,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.AppendInterval(interval);
             sequence.AppendCallback(() => _uiButtonBack.Open());
             sequence.Play();
+            
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventSettingsMenuStart, AudioManager.Instance.gameObject);
+
         }
 
         private void ControlsButtonClicked()

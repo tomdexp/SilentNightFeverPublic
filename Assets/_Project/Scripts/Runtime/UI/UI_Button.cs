@@ -153,12 +153,14 @@ namespace _Project.Scripts.Runtime.UI
             _isOpen = false;
         }
 
+        [Button]
         public void Lock()
         {
             _lockFeedback.PlayFeedbacks();
             _button.interactable = false;
         }
         
+        [Button]
         public void Unlock()
         {
             _unlockFeedback.PlayFeedbacks();
