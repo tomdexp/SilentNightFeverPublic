@@ -49,15 +49,35 @@ namespace _Project.Scripts.Runtime.UI
             _canvasGroup.Open();
             _responseReceived = false;
             _isSuccess = false;
-            UIManager.Instance.RegisterConfirmationPrompt(this);
-            TrySelectDefault();
+            var sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            if (sceneName == SceneType.MenuV2Scene.ToString())
+            {
+                UIManager.Instance.RegisterConfirmationPrompt(this);
+                TrySelectDefault();
+            }
+            else
+            {
+                UILocalManager.Instance.RegisterConfirmationPrompt(this);
+                TrySelectDefault();
+            }
         }
         
         public void TrySelectDefault()
         {
-            if (!UIManager.Instance.IsNavigationWithMouse)
+            var sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            if (sceneName == SceneType.MenuV2Scene.ToString())
             {
-                EventSystem.current.SetSelectedGameObject(_cancelButton.gameObject);
+                if (!UIManager.Instance.IsNavigationWithMouse)
+                {
+                    EventSystem.current.SetSelectedGameObject(_cancelButton.gameObject);
+                }
+            }
+            else
+            {
+                if (!UILocalManager.Instance.IsNavigationWithMouse)
+                {
+                    EventSystem.current.SetSelectedGameObject(_cancelButton.gameObject);
+                }
             }
         }
 

@@ -5,6 +5,7 @@ using _Project.Scripts.Runtime.Networking.Rounds;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
 using _Project.Scripts.Runtime.UI;
+using _Project.Scripts.Runtime.UI.NetworkedMenu;
 using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using DG.Tweening;
@@ -13,6 +14,7 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Networking
@@ -30,6 +32,7 @@ namespace _Project.Scripts.Runtime.Networking
         public readonly SyncVar<byte> RequiredRoundsToWin = new SyncVar<byte>();
         public event Action OnGameStarted;
         public event Action<PlayerTeamType> OnGameEnded; // arg = winning team
+        public readonly SyncEvent OnGameEndedSyncEvent = new SyncEvent();
         public event Action<byte> OnAnyRoundStarted;
         public event Action<byte> OnAnyRoundEnded;
         public event Action OnFirstRoundStarted;
@@ -39,7 +42,7 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnBeforeSceneChange;
         public event Action OnAfterSceneChange;
         public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
-        
+        public string MenuToGoOnResetAfterLoadingScene;
         private bool _isSubscribedToTongueChangeEvents;
         private float _deltaTimeCounter;
         private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
@@ -191,6 +194,16 @@ namespace _Project.Scripts.Runtime.Networking
                     break;
                 case SceneType.MenuV2Scene:
                     PlayerManager.Instance.SetPlayerJoiningEnabled(false);
+                    var menuToGoOnReset = FindAnyObjectByType<MenuToGoOnReset>();
+                    if (menuToGoOnReset)
+                    {
+                        if (string.IsNullOrEmpty(MenuToGoOnResetAfterLoadingScene)) yield break;
+                        menuToGoOnReset.SetMenuName(MenuToGoOnResetAfterLoadingScene);
+                    }
+                    else
+                    {
+                        Logger.LogWarning("No MenuToGoOnReset found !", Logger.LogType.Server, this);
+                    }
                     break;
                 case SceneType.OnBoardingScene:
                     CameraManager.Instance.TryEnableSplitScreenCameras();
@@ -607,6 +620,7 @@ namespace _Project.Scripts.Runtime.Networking
             Logger.LogInfo("Game finished ! The winning team is Team " + winningTeam, Logger.LogType.Server, this);
             yield return new WaitForSeconds(GameManagerData.SecondsBetweenLastRoundCompletionAndEndOfTheGame);
             OnGameEnded?.Invoke(winningTeam);
+            OnGameEndedSyncEvent.Invoke();
             Logger.LogTrace("OnGameEnded event invoked", Logger.LogType.Server, this);
         }
 

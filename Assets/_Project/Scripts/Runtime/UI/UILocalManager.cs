@@ -198,25 +198,10 @@ namespace _Project.Scripts.Runtime.UI
             if (AreAllMenusRegistered())
             {
                 Logger.LogTrace("All menus registered", Logger.LogType.Client, this);
-                
-                // if menuToGoOnReset is empty, set it to the first menu (yes this is quite ugly but it works)
-                // We always find the object, because this script is a network behaviour and is destroyed and recreated on network reset
-                if (string.IsNullOrEmpty(FindAnyObjectByType<MenuToGoOnReset>().MenuName))
+                foreach (var menu in _menus)
                 {
-                    Logger.LogTrace("Setting MenuToGoOnReset to PressStartMenu", Logger.LogType.Client, this);
-                    FindAnyObjectByType<MenuToGoOnReset>().SetMenuName(nameof(PressStartMenu));
+                    menu.Close();
                 }
-                var newMenuName = FindAnyObjectByType<MenuToGoOnReset>().MenuName;
-                var newMenu = _menus.FirstOrDefault(menu => menu.MenuName == newMenuName);
-                // close all menus except the one we want to go to
-                for (int i = 0; i < _menus.Count; i++)
-                {
-                    if (_menus[i] != newMenu)
-                    {
-                        _menus[i].Close();
-                    }
-                }
-                _currentMenuIndex = _menus.IndexOf(newMenu);
             }
         }
         
