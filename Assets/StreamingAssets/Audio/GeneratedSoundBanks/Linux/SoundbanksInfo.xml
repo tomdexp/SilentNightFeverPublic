@@ -9,65 +9,171 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{4F65EF22-6955-209D-8AB9-5E5F3140B863}">
+		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{97323032-33EE-D206-CE39-9303E43FB0E2}">
 			<ShortName>SB_UI</ShortName>
 			<Path>SB_UI.bnk</Path>
 			<Media>
-				<File Id="336625967" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_UI_OS_Lobby_Joined_V0-001.wav</ShortName>
-					<CachePath>SFX/SNF_UI_OS_Lobby_Joined_V0-001_EDCD4836.wem</CachePath>
+				<File Id="1994410" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_QuitMenu_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_QuitMenu_V0_EDCD4836.wem</CachePath>
 				</File>
-				<File Id="388899620" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_UI_OS_Lobby_Joined_V0-002.wav</ShortName>
-					<CachePath>SFX/SNF_UI_OS_Lobby_Joined_V0-002_EDCD4836.wem</CachePath>
+				<File Id="48735342" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Displacement_V0-003.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Displacement_V0-003_EDCD4836.wem</CachePath>
 				</File>
-				<File Id="635533247" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_UI_OS_Enter_V0.wav</ShortName>
-					<CachePath>SFX/SNF_UI_OS_Enter_V0_EDCD4836.wem</CachePath>
+				<File Id="100316934" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>padIn.wav</ShortName>
+					<CachePath>SFX/padIn_EDCD4836.wem</CachePath>
 				</File>
-				<File Id="749240576" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_UI_OS_Lobby_Created_V0.wav</ShortName>
-					<CachePath>SFX/SNF_UI_OS_Lobby_Created_V0_EDCD4836.wem</CachePath>
+				<File Id="104542256" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Displacement_V0-005.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Displacement_V0-005_EDCD4836.wem</CachePath>
 				</File>
-				<File Id="794560131" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_UI_OS_Back_V0.wav</ShortName>
-					<CachePath>SFX/SNF_UI_OS_Back_V0_EDCD4836.wem</CachePath>
+				<File Id="106209170" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_LocalIn_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_LocalIn_V0_EDCD4836.wem</CachePath>
 				</File>
-				<File Id="1049734392" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SNF_UI_OS_Diplacement_V0.wav</ShortName>
-					<CachePath>SFX/SNF_UI_OS_Diplacement_V0_EDCD4836.wem</CachePath>
+				<File Id="125731151" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Displacement_V0-006.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Displacement_V0-006_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="186151648" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_LP_Menu_Loop_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_LP_Menu_Loop_V0_EC067C3C.wem</CachePath>
+				</File>
+				<File Id="218033736" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_MenuIn_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_MenuIn_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="295728392" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_ Enter_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_ Enter_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="392379305" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>padOut.wav</ShortName>
+					<CachePath>SFX/padOut_DE9F65A3.wem</CachePath>
+				</File>
+				<File Id="436107681" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Displacement_V0-002.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Displacement_V0-002_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="522731358" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_CreateLobby_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_CreateLobby_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="693225697" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_OptionIn_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_OptionIn_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="705077514" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_GraphicsIn_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_GraphicsIn_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="773916105" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_ ControlIn_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_ ControlIn_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="809096606" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Displacement_V0-001.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Displacement_V0-001_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="809343942" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_OnlineIn_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_OnlineIn_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="821375419" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_MenuOut_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_MenuOut_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="1020226895" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_Displacement_V0-004.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_Displacement_V0-004_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="1057746892" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SNF_UI_OS_AudioIn_V0.wav</ShortName>
+					<CachePath>SFX/SNF_UI_OS_AudioIn_V0_EDCD4836.wem</CachePath>
 				</File>
 			</Media>
 			<Events>
-				<Event Id="1386224142" Name="Play_UI_Back" DurationType="OneShot" DurationMin="0.19773959" DurationMax="0.19773959">
+				<Event Id="3058603544" Name="Play_UI_Control_In" DurationType="OneShot" DurationMin="1.7478229" DurationMax="1.7478229">
 					<MediaRefs>
-						<MediaRef Id="794560131"/>
+						<MediaRef Id="773916105"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1341306234" Name="Play_UI_Displacement" DurationType="OneShot" DurationMin="0.061395835" DurationMax="0.061395835">
+				<Event Id="1954286641" Name="Play_UI_CreateLobby" DurationType="OneShot" DurationMin="1.9959271" DurationMax="1.9959271">
 					<MediaRefs>
-						<MediaRef Id="1049734392"/>
+						<MediaRef Id="522731358"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2982660583" Name="Play_UI_Enter" DurationType="OneShot" DurationMin="0.13770834" DurationMax="0.13770834">
+				<Event Id="3678522872" Name="Play_UI_Displacement_01" DurationType="OneShot" DurationMin="0.33152083" DurationMax="0.33152083">
 					<MediaRefs>
-						<MediaRef Id="635533247"/>
+						<MediaRef Id="48735342"/>
+						<MediaRef Id="104542256"/>
+						<MediaRef Id="125731151"/>
+						<MediaRef Id="436107681"/>
+						<MediaRef Id="809096606"/>
+						<MediaRef Id="1020226895"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="4198832716" Name="Play_UI_Lobby_Created" DurationType="OneShot" DurationMin="0.8359375" DurationMax="0.8359375">
+				<Event Id="3994131499" Name="Play_UI_Enter_01" DurationType="OneShot" DurationMin="0.6805417" DurationMax="0.6805417">
 					<MediaRefs>
-						<MediaRef Id="749240576"/>
+						<MediaRef Id="295728392"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1782690879" Name="Play_UI_Lobby_Joined" DurationType="OneShot" DurationMin="0.27540624" DurationMax="0.49123958">
+				<Event Id="4218477666" Name="Play_UI_Local_In" DurationType="OneShot" DurationMin="3.4792187" DurationMax="3.4792187">
 					<MediaRefs>
-						<MediaRef Id="336625967"/>
-						<MediaRef Id="388899620"/>
+						<MediaRef Id="106209170"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1777911284" Name="Play_UI_Menu_In" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="186151648"/>
+						<MediaRef Id="218033736"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3180365331" Name="Play_UI_Menu_Out" DurationType="OneShot" DurationMin="0.60242707" DurationMax="0.60242707">
+					<MediaRefs>
+						<MediaRef Id="821375419"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2696058452" Name="Play_UI_Online_In" DurationType="OneShot" DurationMin="2.3743124" DurationMax="2.3743124">
+					<MediaRefs>
+						<MediaRef Id="809343942"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4218838345" Name="Play_UI_OPT_Audio_In" DurationType="OneShot" DurationMin="2.354198" DurationMax="2.354198">
+					<MediaRefs>
+						<MediaRef Id="1057746892"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1668422251" Name="Play_UI_OPT_Graph_In" DurationType="OneShot" DurationMin="2.7613125" DurationMax="2.7613125">
+					<MediaRefs>
+						<MediaRef Id="705077514"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3535966932" Name="Play_UI_OPT_In" DurationType="OneShot" DurationMin="1.0132812" DurationMax="1.0132812">
+					<MediaRefs>
+						<MediaRef Id="693225697"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2187101108" Name="Play_UI_Pad_In" DurationType="OneShot" DurationMin="1.086552" DurationMax="1.086552">
+					<MediaRefs>
+						<MediaRef Id="100316934"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3801365459" Name="Play_UI_Pad_Out" DurationType="OneShot" DurationMin="1.1231459" DurationMax="1.1231459">
+					<MediaRefs>
+						<MediaRef Id="392379305"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="794514316" Name="Play_UI_Quit_Menu" DurationType="OneShot" DurationMin="0.6559375" DurationMax="0.6559375">
+					<MediaRefs>
+						<MediaRef Id="1994410"/>
 					</MediaRefs>
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{5E5B10ED-2E09-98FC-7912-E60C9D53D7E9}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{A22393F7-B875-8218-01E4-278058055E6A}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -233,7 +339,7 @@
 				</File>
 				<File Id="711799359" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_LP_LM_Intecart_Voodoo_V0.wav</ShortName>
-					<CachePath>SFX/SNF_SFX_LP_LM_Intecart_Voodoo_V0_970541B4.wem</CachePath>
+					<CachePath>SFX/SNF_SFX_LP_LM_Intecart_Voodoo_V0_52CF34E5.wem</CachePath>
 				</File>
 				<File Id="725068715" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Dishes_V0-001.wav</ShortName>
@@ -467,7 +573,7 @@
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{4ED8DDFC-5825-675B-A000-EDA681301869}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{2E4F2E3D-7B49-E875-98E0-59BA717B831A}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -1053,6 +1159,34 @@
 				</File>
 			</Media>
 			<Events>
+				<Event Id="3315268937" Name="Play_MAIN_MENU_MUSIQUE" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="36775885"/>
+						<MediaRef Id="37990223"/>
+						<MediaRef Id="81697048"/>
+						<MediaRef Id="114994401"/>
+						<MediaRef Id="138141086"/>
+						<MediaRef Id="159927292"/>
+						<MediaRef Id="169011874"/>
+						<MediaRef Id="172120453"/>
+						<MediaRef Id="206926714"/>
+						<MediaRef Id="322168831"/>
+						<MediaRef Id="455417757"/>
+						<MediaRef Id="481575302"/>
+						<MediaRef Id="482141321"/>
+						<MediaRef Id="555772370"/>
+						<MediaRef Id="640720153"/>
+						<MediaRef Id="648543374"/>
+						<MediaRef Id="660154197"/>
+						<MediaRef Id="716825123"/>
+						<MediaRef Id="725186934"/>
+						<MediaRef Id="727047077"/>
+						<MediaRef Id="789124767"/>
+						<MediaRef Id="815559735"/>
+						<MediaRef Id="919972634"/>
+						<MediaRef Id="1070238702"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="6483615" Name="Play_MUSC_GLOBAL_SWITCH" DurationType="Infinite">
 					<SwitchContainers>
 						<SwitchContainer>
@@ -1225,6 +1359,7 @@
 						<MediaRef Id="777874200"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="1301010599" Name="Stop_MAIN_MENU_MUSIQUE" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="3658594925" Name="Stop_MUSC_GLOBAL_SWITCH" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="1244124042" Name="Stop_MUSC_Transition" DurationType="OneShot" DurationMin="0.17088541" DurationMax="0.17088541">
 					<MediaRefs>
@@ -1249,7 +1384,7 @@
 				</SwitchGroup>
 			</SwitchGroups>
 		</SoundBank>
-		<SoundBank Id="925885567" Type="User" Language="SFX" Hash="{0C37C53C-CAB2-632E-59D9-BBF8099E443A}">
+		<SoundBank Id="925885567" Type="User" Language="SFX" Hash="{453BE36C-B422-67CD-86BD-9412C05537BC}">
 			<ShortName>SB_AMB</ShortName>
 			<Path>SB_AMB.bnk</Path>
 			<Media>
@@ -1417,7 +1552,7 @@
 				<Event Id="1914842139" Name="Stop_AMB_MENU_Os" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{E379DF7E-4369-90E0-A9EA-E92293A03A41}">
+		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{873B9602-9098-A1CF-3D59-511C93B2872C}">
 			<ShortName>SB_SFX</ShortName>
 			<Path>SB_SFX.bnk</Path>
 			<Media>
@@ -1545,6 +1680,11 @@
 						<MediaRef Id="890209686"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="2790351818" Name="Play_Game_End" DurationType="OneShot" DurationMin="5.5" DurationMax="5.5">
+					<MediaRefs>
+						<MediaRef Id="961089426"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="2054335947" Name="Play_LM_Kitchen_Fruit_Eaten" DurationType="OneShot" DurationMin="1.0868465" DurationMax="3.6941855">
 					<MediaRefs>
 						<MediaRef Id="133782067"/>
@@ -1553,11 +1693,6 @@
 						<MediaRef Id="637107745"/>
 						<MediaRef Id="850218765"/>
 						<MediaRef Id="857480144"/>
-					</MediaRefs>
-				</Event>
-				<Event Id="1932934032" Name="Play_Round_End" DurationType="OneShot" DurationMin="5.5" DurationMax="5.5">
-					<MediaRefs>
-						<MediaRef Id="961089426"/>
 					</MediaRefs>
 				</Event>
 				<Event Id="2094862661" Name="Play_SFX_Round_Win" DurationType="OneShot" DurationMin="7.320513" DurationMax="7.320513">
@@ -1572,7 +1707,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{AA1B034A-A868-E20F-3826-EEB02FB70433}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{A7959649-63EA-68FA-1719-B402B921F75F}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -1610,6 +1745,7 @@
 					</PluginRefs>
 				</Bus>
 				<Bus Id="1117531639" Name="AMB"/>
+				<Bus Id="1551306167" Name="UI"/>
 				<Bus Id="3803692087" Name="Master Audio Bus">
 					<PluginRefs>
 						<ShareSets>
@@ -1672,12 +1808,9 @@
 				<GameParameter Id="783337961" Name="GP_SFX_toMusic"/>
 				<GameParameter Id="813521875" Name="GP_GlobalLandMark_Volume"/>
 				<GameParameter Id="822163944" Name="SS_Air_RPM"/>
-				<GameParameter Id="823063048" Name="GP_LandMarkMeter_City"/>
 				<GameParameter Id="987834118" Name="GP_PARAM_MUSC_Volume"/>
 				<GameParameter Id="1029930033" Name="SS_Air_Fury"/>
 				<GameParameter Id="1240670792" Name="Distance"/>
-				<GameParameter Id="1268650150" Name="GP_LandMarkMeter_Forest"/>
-				<GameParameter Id="1311938743" Name="GP_LandMarkMeter_Rain"/>
 				<GameParameter Id="1351367891" Name="SS_Air_Fear"/>
 				<GameParameter Id="1656280998" Name="RPM_FA_SSGrain"/>
 				<GameParameter Id="1716289499" Name="GP_LM_toMusic"/>
@@ -1688,13 +1821,16 @@
 				<GameParameter Id="2317409760" Name="Instrument_FA_SSGrain"/>
 				<GameParameter Id="2428833394" Name="Simulation_FA_SSGrain"/>
 				<GameParameter Id="2481728872" Name="Immersion_FA_SSGrain"/>
+				<GameParameter Id="2543063359" Name="GP_PARAM_UI"/>
 				<GameParameter Id="2648548617" Name="SS_Air_Month"/>
 				<GameParameter Id="2715217995" Name="Density_FA_SSGrain"/>
 				<GameParameter Id="3002758120" Name="SS_Air_Freefall"/>
 				<GameParameter Id="3074696722" Name="SS_Air_Size"/>
 				<GameParameter Id="3203397129" Name="SS_Air_TimeOfDay"/>
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
+				<GameParameter Id="3640199855" Name="GP_PARAM_AMB"/>
 				<GameParameter Id="3715662592" Name="SS_Air_Storm"/>
+				<GameParameter Id="3726353558" Name="GP_PARAM_SFX"/>
 				<GameParameter Id="3847924954" Name="SS_Air_Presence"/>
 				<GameParameter Id="4160247818" Name="SS_Air_Turbulence"/>
 				<GameParameter Id="4172717105" Name="GP_ACC_Notch"/>
@@ -1872,5 +2008,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{74596932-81D4-C12F-C31D-1C5E6958A150}</FileHash>
+	<FileHash>{79262F89-B2BB-2D66-109B-745EC3DED6C2}</FileHash>
 </SoundBanksInfo>

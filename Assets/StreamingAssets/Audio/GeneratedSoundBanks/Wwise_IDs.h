@@ -20,22 +20,32 @@ namespace AK
         static const AkUniqueID PLAY_CHAR_THO_RETRACT = 3854640606U;
         static const AkUniqueID PLAY_CHAR_THO_THROW = 3990111633U;
         static const AkUniqueID PLAY_CHAR_THO_TOUCHED = 2214496751U;
+        static const AkUniqueID PLAY_GAME_END = 2790351818U;
         static const AkUniqueID PLAY_LM_KITCHEN = 2140948254U;
         static const AkUniqueID PLAY_LM_KITCHEN_FRUIT_EATEN = 2054335947U;
         static const AkUniqueID PLAY_LM_SATT_AMBIANCE = 2151245937U;
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
         static const AkUniqueID PLAY_LM_VOOD_INTERACT = 3048117919U;
         static const AkUniqueID PLAY_LM_VOODOO_AMBIANCE = 1931733291U;
+        static const AkUniqueID PLAY_MAIN_MENU_MUSIQUE = 3315268937U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
         static const AkUniqueID PLAY_MUSC_TRANSITION = 3964698704U;
-        static const AkUniqueID PLAY_ROUND_END = 1932934032U;
         static const AkUniqueID PLAY_SFX_ROUND_WIN = 2094862661U;
         static const AkUniqueID PLAY_SNF_SFX_OS_ROUND_END_V0_004 = 661705723U;
-        static const AkUniqueID PLAY_UI_BACK = 1386224142U;
-        static const AkUniqueID PLAY_UI_DISPLACEMENT = 1341306234U;
-        static const AkUniqueID PLAY_UI_ENTER = 2982660583U;
-        static const AkUniqueID PLAY_UI_LOBBY_CREATED = 4198832716U;
-        static const AkUniqueID PLAY_UI_LOBBY_JOINED = 1782690879U;
+        static const AkUniqueID PLAY_UI_CONTROL_IN = 3058603544U;
+        static const AkUniqueID PLAY_UI_CREATELOBBY = 1954286641U;
+        static const AkUniqueID PLAY_UI_DISPLACEMENT_01 = 3678522872U;
+        static const AkUniqueID PLAY_UI_ENTER_01 = 3994131499U;
+        static const AkUniqueID PLAY_UI_LOCAL_IN = 4218477666U;
+        static const AkUniqueID PLAY_UI_MENU_IN = 1777911284U;
+        static const AkUniqueID PLAY_UI_MENU_OUT = 3180365331U;
+        static const AkUniqueID PLAY_UI_ONLINE_IN = 2696058452U;
+        static const AkUniqueID PLAY_UI_OPT_AUDIO_IN = 4218838345U;
+        static const AkUniqueID PLAY_UI_OPT_GRAPH_IN = 1668422251U;
+        static const AkUniqueID PLAY_UI_OPT_IN = 3535966932U;
+        static const AkUniqueID PLAY_UI_PAD_IN = 2187101108U;
+        static const AkUniqueID PLAY_UI_PAD_OUT = 3801365459U;
+        static const AkUniqueID PLAY_UI_QUIT_MENU = 794514316U;
         static const AkUniqueID SET_LANDMARK_VOLUME_TO_0 = 3012856152U;
         static const AkUniqueID SET_LANDMARK_VOLUME_TO_100 = 3390232705U;
         static const AkUniqueID STOP_AMB_GAME = 3205966197U;
@@ -49,6 +59,7 @@ namespace AK
         static const AkUniqueID STOP_LM_SATT_INTERACT_GLOBAL = 2946421553U;
         static const AkUniqueID STOP_LM_VOOD_INTERACT = 1884258981U;
         static const AkUniqueID STOP_LM_VOODOO_AMBIANCE_GLOBAL = 2453006097U;
+        static const AkUniqueID STOP_MAIN_MENU_MUSIQUE = 1301010599U;
         static const AkUniqueID STOP_MUSC_GLOBAL_SWITCH = 3658594925U;
         static const AkUniqueID STOP_MUSC_TRANSITION = 1244124042U;
     } // namespace EVENTS
@@ -132,9 +143,6 @@ namespace AK
         static const AkUniqueID GP_ACC_HP = 756044085U;
         static const AkUniqueID GP_ACC_NOTCH = 4172717105U;
         static const AkUniqueID GP_GLOBALLANDMARK_VOLUME = 813521875U;
-        static const AkUniqueID GP_LANDMARKMETER_CITY = 823063048U;
-        static const AkUniqueID GP_LANDMARKMETER_FOREST = 1268650150U;
-        static const AkUniqueID GP_LANDMARKMETER_RAIN = 1311938743U;
         static const AkUniqueID GP_LM_KITCHENMETER = 2256592338U;
         static const AkUniqueID GP_LM_SATELITTESPEED = 3546657911U;
         static const AkUniqueID GP_LM_SATTELITEMETER = 488398129U;
@@ -142,7 +150,10 @@ namespace AK
         static const AkUniqueID GP_LM_VOODOO_METER = 2268227989U;
         static const AkUniqueID GP_MUSC_SPEEDREAD = 82071987U;
         static const AkUniqueID GP_MUSC_SWITCH = 1886390058U;
+        static const AkUniqueID GP_PARAM_AMB = 3640199855U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
+        static const AkUniqueID GP_PARAM_SFX = 3726353558U;
+        static const AkUniqueID GP_PARAM_UI = 2543063359U;
         static const AkUniqueID GP_SFX_TOMUSIC = 783337961U;
         static const AkUniqueID IMMERSION_FA_SSGRAIN = 2481728872U;
         static const AkUniqueID INSTRUMENT_FA_SSGRAIN = 2317409760U;
@@ -179,6 +190,7 @@ namespace AK
         static const AkUniqueID MUSIC = 3991942870U;
         static const AkUniqueID MUTED_MASTER = 3967932291U;
         static const AkUniqueID SFX = 393239870U;
+        static const AkUniqueID UI = 1551306167U;
     } // namespace BUSSES
 
     namespace AUX_BUSSES
