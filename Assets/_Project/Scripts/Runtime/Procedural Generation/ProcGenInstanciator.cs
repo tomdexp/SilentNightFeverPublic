@@ -118,6 +118,31 @@ public class ProcGenInstanciator : MonoBehaviour
     [SerializeField] private ProcGenParameters _deco9Parameters;
     [SerializeField] private NetworkObject _deco9Prefab = null;
     private List<Vector2> _deco9Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco10Parameters;
+    [SerializeField] private NetworkObject _deco10Prefab = null;
+    private List<Vector2> _deco10Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco11Parameters;
+    [SerializeField] private NetworkObject _deco11Prefab = null;
+    private List<Vector2> _deco11Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco12Parameters;
+    [SerializeField] private NetworkObject _deco12Prefab = null;
+    private List<Vector2> _deco12Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco13Parameters;
+    [SerializeField] private NetworkObject _deco13Prefab = null;
+    private List<Vector2> _deco13Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco14Parameters;
+    [SerializeField] private NetworkObject _deco14Prefab = null;
+    private List<Vector2> _deco14Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _deco15Parameters;
+    [SerializeField] private NetworkObject _deco15Prefab = null;
+    private List<Vector2> _deco15Points;
+    
 
     private List<List<Vector2>> _alreadySpawnedPoints = new();
     private List<float> _alreadySpawnedPointsRadius = new();
@@ -232,7 +257,14 @@ public class ProcGenInstanciator : MonoBehaviour
         _deco7Points = GeneratePoints(_deco7Parameters, false, true, true);
         _deco8Points = GeneratePoints(_deco8Parameters, false, true, true);
         _deco9Points = GeneratePoints(_deco9Parameters, false, true, true);
+        _deco10Points = GeneratePoints(_deco10Parameters, false, true, true);
+        _deco11Points = GeneratePoints(_deco11Parameters, false, true, true);
+        _deco12Points = GeneratePoints(_deco12Parameters, false, true, true);
+        _deco13Points = GeneratePoints(_deco13Parameters, false, true, true);
+        _deco14Points = GeneratePoints(_deco14Parameters, false, true, true);
+        _deco15Points = GeneratePoints(_deco15Parameters, false, true, true);
 
+        
         OnLoadingProgressChanged?.Invoke(5/10f, "Generating crowd points");
         _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
 
@@ -484,6 +516,12 @@ public class ProcGenInstanciator : MonoBehaviour
         if (_deco7Prefab) yield return SpawnPrefabs(_deco7Points, _deco7Prefab);
         if (_deco8Prefab) yield return SpawnPrefabs(_deco8Points, _deco8Prefab);
         if (_deco9Prefab) yield return SpawnPrefabs(_deco9Points, _deco9Prefab);
+        if (_deco10Prefab) yield return SpawnPrefabs(_deco10Points, _deco10Prefab);
+        if (_deco11Prefab) yield return SpawnPrefabs(_deco11Points, _deco11Prefab);
+        if (_deco12Prefab) yield return SpawnPrefabs(_deco12Points, _deco12Prefab);
+        if (_deco13Prefab) yield return SpawnPrefabs(_deco13Points, _deco13Prefab);
+        if (_deco14Prefab) yield return SpawnPrefabs(_deco14Points, _deco14Prefab);
+        if (_deco15Prefab) yield return SpawnPrefabs(_deco15Points, _deco15Prefab);
 
         OnLoadingProgressChanged?.Invoke(10/10f, "Spawning crowd");
         yield return SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
