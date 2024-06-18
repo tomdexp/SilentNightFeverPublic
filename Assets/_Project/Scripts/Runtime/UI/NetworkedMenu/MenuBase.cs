@@ -1,8 +1,10 @@
 ﻿using System.Collections;
+using _Project.Scripts.Runtime.Utils;
 using FishNet;
 using FishNet.Transporting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
@@ -12,10 +14,32 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
     {
         public abstract string MenuName { get; }
         [SerializeField] private Selectable _defaultSelectedOnOpen;
-
+        private bool _isRegistered;
+        
         public virtual void Start()
         {
-            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+            int sceneCount = SceneManager.sceneCount;
+            bool isMenuV2SceneLoaded = false;
+            for (int i = 0; i < sceneCount; i++)
+            {
+                Scene scene = SceneManager.GetSceneAt(i);
+                if (scene.name == SceneType.MenuV2Scene.ToString())
+                {
+                    isMenuV2SceneLoaded = true;
+                    break;
+                }
+            }
+            if (isMenuV2SceneLoaded)
+            {
+                Logger.LogTrace($"Loaded menu scene so registering {MenuName} online", Logger.LogType.Client,this);
+                InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState; // for network reset
+                StartCoroutine(TryRegisterMenuOnline()); // for scene transitions that don't causes network reset
+            }
+            else
+            {
+                Logger.LogTrace($"Menu scene is not loaded so registering {MenuName} local", Logger.LogType.Client,this);
+                StartCoroutine(TryRegisterMenuLocal());
+            }
         }
 
         public virtual void OnDestroy()
@@ -30,14 +54,29 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             if (args.ConnectionState == LocalConnectionState.Started)
             {
-                StartCoroutine(TryRegisterMenu());
+                var currentScene = SceneManager.GetActiveScene().name;
+                if (currentScene == SceneType.MenuV2Scene.ToString())
+                {
+                    _isRegistered = false;
+                    StartCoroutine(TryRegisterMenuOnline());
+                }
             }
         }
 
-        private IEnumerator TryRegisterMenu()
+        private IEnumerator TryRegisterMenuOnline()
         {
             while(!UIManager.HasInstance) yield return null;
+            if (_isRegistered) yield break;
             UIManager.Instance.RegisterMenu(this);
+            _isRegistered = true;
+        }
+        
+        private IEnumerator TryRegisterMenuLocal()
+        {
+            while(!UILocalManager.HasInstance) yield return null;
+            if (_isRegistered) yield break;
+            UILocalManager.Instance.RegisterMenu(this);
+            _isRegistered = true;
         }
 
         public virtual void Open()
@@ -58,13 +97,28 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         public void TrySelectDefault()
         {
-            if (_defaultSelectedOnOpen && !UIManager.Instance.IsNavigationWithMouse)
+            var sceneName = SceneManager.GetActiveScene().name;
+            if (sceneName == SceneType.MenuV2Scene.ToString())
             {
-                EventSystem.current.SetSelectedGameObject(_defaultSelectedOnOpen.gameObject);
+                if (_defaultSelectedOnOpen && !UIManager.Instance.IsNavigationWithMouse)
+                {
+                    EventSystem.current.SetSelectedGameObject(_defaultSelectedOnOpen.gameObject);
+                }
+                else if (!_defaultSelectedOnOpen || UIManager.Instance.IsNavigationWithMouse)
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                }
             }
-            else if (!_defaultSelectedOnOpen || UIManager.Instance.IsNavigationWithMouse)
+            else
             {
-                EventSystem.current.SetSelectedGameObject(null);
+                if (_defaultSelectedOnOpen && !UILocalManager.Instance.IsNavigationWithMouse)
+                {
+                    EventSystem.current.SetSelectedGameObject(_defaultSelectedOnOpen.gameObject);
+                }
+                else if (!_defaultSelectedOnOpen || UILocalManager.Instance.IsNavigationWithMouse)
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                }
             }
         }
         
@@ -90,6 +144,43 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             nav2.selectOnLeft = selectable1;
             selectable1.navigation = nav1;
             selectable2.navigation = nav2;
+        }
+        
+        protected void BindOneWayNavigableHorizontalOnRight(Selectable from, Selectable to)
+        {
+            Navigation nav1 = from.navigation;
+            nav1.mode = Navigation.Mode.Explicit;
+            nav1.selectOnRight = to;
+            from.navigation = nav1;
+        }
+        
+        protected void BindOneWayNavigableHorizontalOnLeft(Selectable from, Selectable to)
+        {
+            Navigation nav1 = from.navigation;
+            nav1.mode = Navigation.Mode.Explicit;
+            nav1.selectOnLeft = to;
+            from.navigation = nav1;
+        }
+        
+        protected void BindOneWayNavigableVerticalOnUp(Selectable from, Selectable to)
+        {
+            Navigation nav1 = from.navigation;
+            nav1.mode = Navigation.Mode.Explicit;
+            nav1.selectOnUp = to;
+            from.navigation = nav1;
+        }
+        
+        protected void BindOneWayNavigableVerticalOnDown(Selectable from, Selectable to)
+        {
+            Navigation nav1 = from.navigation;
+            nav1.mode = Navigation.Mode.Explicit;
+            nav1.selectOnDown = to;
+            from.navigation = nav1;
+        }
+        
+        public void SetDefaultSelectedOnOpen(Selectable selectable)
+        {
+            _defaultSelectedOnOpen = selectable;
         }
     }
 }

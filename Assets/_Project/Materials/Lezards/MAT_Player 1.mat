@@ -55,6 +55,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Emissive_Multiplier: 0.3
+    - _High_Contrast: 0
     - _Normal_Strenght: 1
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -62,7 +64,7 @@ Material:
     - A_Albedo: {r: 0.62264144, g: 0.62264144, b: 0.62264144, a: 0}
     - A_Albedo_1: {r: 0.62352943, g: 0.62352943, b: 0.62352943, a: 0}
     - A_Albedo_2: {r: 0.62352943, g: 0.62352943, b: 0.62352943, a: 0}
-    - _Body_Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Body_Color: {r: 0.14153647, g: 1, b: 0, a: 0}
     - _Eyes_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Mouth_Color: {r: 0.77254903, g: 0.2, b: 0.2, a: 0}
   m_BuildTextureStacks: []

@@ -1,0 +1,290 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SpawnerLargePreset
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 7134980f15aacc84e909d6f6bec96894,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _patxiMode
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _regionSize.x
+    value: 125
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _regionSize.y
+    value: 125
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _ground
+    value: 
+    objectReference: {fileID: 3599783517367289265, guid: 4d3bbb7ce2eb3004e8b4eca8014802d2,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _invisibleWall
+    value: 
+    objectReference: {fileID: 2333613852732724448, guid: 222efa64598257b4f9b0c090110d4f9a,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _playerPrefab
+    value: 
+    objectReference: {fileID: 3667370609337106282, guid: 7f235897ac3e3d9428ec9334311332ea,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _teamAParameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _teamAPrefab
+    value: 
+    objectReference: {fileID: 895057600357583243, guid: a0982b0842037f64c9deacdcf4e263dc,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _teamBParameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 0d0bfd8e48edc3b4e8f37c3a0d759474, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _teamBPrefab
+    value: 
+    objectReference: {fileID: -4187093774562696749, guid: 36372f25f118bad40b56b65b4c7b7df9,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _landmarksParameters
+    value: 
+    objectReference: {fileID: 11400000, guid: a9146d958f0c92d40bbbf60e70e93375, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[0].Object
+    value: 
+    objectReference: {fileID: 5220753643757815717, guid: 29d264fd92228b24a855b66cecfcb960,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[0].Min
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[0].Max
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[1].Object
+    value: 
+    objectReference: {fileID: 203867869774115121, guid: f3f29aaf25c12d14ab40fd189173f295,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[1].Min
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[1].Max
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[2].Object
+    value: 
+    objectReference: {fileID: 1060372313705864457, guid: fc035a4505a3383488a25f70ae7fb29e,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[2].Min
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[2].Max
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[3].Object
+    value: 
+    objectReference: {fileID: 8088962324795935800, guid: 6ca34e787da4eee4983678d36c230bc8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[3].Min
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPrefabList.Array.data[3].Max
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _landmarksPoints.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _spawnedLandmarks.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _CrowdParameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 7785665f1c25a164d9471fca17df2370, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _CrowdPrefab
+    value: 
+    objectReference: {fileID: -8035802715321130305, guid: f82863f54786b7b408b57e0fc1e46e82,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _light0Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _light0Prefab
+    value: 
+    objectReference: {fileID: 1165876272057432398, guid: a1040698a156947458c214890570f93f,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _light1Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _light1Prefab
+    value: 
+    objectReference: {fileID: 5439106779153848997, guid: 922d062b2f867d1429aede7715239337,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _light2Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _light2Prefab
+    value: 
+    objectReference: {fileID: 5010000105641560989, guid: a560a3d6098bd9044bd10c544fe54416,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _light3Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _light3Prefab
+    value: 
+    objectReference: {fileID: -77491777127621649, guid: dfdcd95ac9febe043a7b7f92c2ff6860,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _FernParameters
+    value: 
+    objectReference: {fileID: 11400000, guid: a0945e16741e7a941b31a85b88dd1764, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _FernPrefab
+    value: 
+    objectReference: {fileID: 1097100612007706204, guid: 1b928a2c79881a543aea5eaec40b67ba,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _TreeParameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 947744e1069733a4a8e6397e521fabf6, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _TreePrefab
+    value: 
+    objectReference: {fileID: -3039553893625661155, guid: ef68afd684d55fa428acfc7b35d93079,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _deco0Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: bb810ca9178ddc24aafe1d0f389e6ff6, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco0Prefab
+    value: 
+    objectReference: {fileID: 526010537860818549, guid: 7658d07e2676be04a8a5ec3be2a8de30,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: _deco1Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco1Prefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _deco2Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco2Prefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _deco3Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco3Prefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _deco4Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco4Prefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _deco5Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco5Prefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _deco6Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco6Prefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _deco7Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco7Prefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _deco8Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco8Prefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _deco9Parameters
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _deco9Prefab
+    value: 
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []
+  m_CoupledType:
+    m_NativeTypeID: 0
+    m_ManagedTypePPtr: {fileID: 0}
+    m_ManagedTypeFallback: 
+  m_CoupledProperties: []

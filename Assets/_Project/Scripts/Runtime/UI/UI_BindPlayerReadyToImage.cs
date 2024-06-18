@@ -17,7 +17,18 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private Image _image;
         [SerializeField] private Color _noPlayerColor;
         [SerializeField] private Color _playerReadyColor;
+        
         private MMF_Player _feedbacksReady;
+        private bool _isRegistered;
+        
+        
+        private void Start()
+        {
+            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+            StartCoroutine(TryRegisterPlayerManagerEvents());
+            UpdateUI();
+        }
+        
         
         private void OnClientConnectionState(ClientConnectionStateArgs args)
         {
@@ -30,13 +41,9 @@ namespace _Project.Scripts.Runtime.UI
         private IEnumerator TryRegisterPlayerManagerEvents()
         {
             while(!PlayerManager.HasInstance) yield return null;
+            if (_isRegistered) yield break;
             PlayerManager.Instance.OnPlayersReadyChanged += OnPlayersReadyChanged;
-        }
-        
-        private void Start()
-        {
-            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
-            UpdateUI();
+            _isRegistered = true;
         }
 
         private void OnDestroy()

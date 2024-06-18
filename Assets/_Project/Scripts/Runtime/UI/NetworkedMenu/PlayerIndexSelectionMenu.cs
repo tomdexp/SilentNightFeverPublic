@@ -59,6 +59,14 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _playerStartD = _playerLabelD.position;
         }
         
+        public override void Start()
+        {
+            base.Start();
+            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+            StartCoroutine(TryRegisterPlayerManagerEvents());
+            UpdateUI();
+        }
+        
         public override void Open()
         {
             base.Open();
@@ -116,13 +124,6 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             while(!PlayerManager.HasInstance) yield return null;
             PlayerManager.Instance.OnPlayerTeamInfosChanged += OnPlayerTeamInfosChanged;
-        }
-
-        public override void Start()
-        {
-            base.Start();
-            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
-            UpdateUI();
         }
 
         public override void OnDestroy()

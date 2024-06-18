@@ -82,6 +82,18 @@ namespace _Project.Scripts.Runtime.Audio
         [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
         public AK.Wwise.Event[] EventCharacterCustomizationStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
+        public AK.Wwise.Event[] EventSettingsMenuStart;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
+        public AK.Wwise.Event[] EventSettingsAudioMenuStart;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
+        public AK.Wwise.Event[] EventSettingsControlsStart;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
+        public AK.Wwise.Event[] EventSettingsGraphicStart;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("Called when the whole game session start, so that the map is generated and its the first round")]
         public AK.Wwise.Event[] EventGameStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]

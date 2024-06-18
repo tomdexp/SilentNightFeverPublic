@@ -5,6 +5,7 @@ using _Project.Scripts.Runtime.Networking.Rounds;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
 using _Project.Scripts.Runtime.UI;
+using _Project.Scripts.Runtime.UI.NetworkedMenu;
 using _Project.Scripts.Runtime.Utils;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using DG.Tweening;
@@ -13,6 +14,7 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.Networking
@@ -30,6 +32,7 @@ namespace _Project.Scripts.Runtime.Networking
         public readonly SyncVar<byte> RequiredRoundsToWin = new SyncVar<byte>();
         public event Action OnGameStarted;
         public event Action<PlayerTeamType> OnGameEnded; // arg = winning team
+        public readonly SyncEvent OnGameEndedSyncEvent = new SyncEvent();
         public event Action<byte> OnAnyRoundStarted;
         public event Action<byte> OnAnyRoundEnded;
         public event Action OnFirstRoundStarted;
@@ -38,9 +41,27 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnFinalRoundEnded; // TODO : Implement
         public event Action OnBeforeSceneChange;
         public event Action OnAfterSceneChange;
-        public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
-        
+        public RoundsConfig RoundsConfig
+        {
+            get
+            {
+                return NumberOfRoundFromGameSettings switch
+                {
+                    1 => GameManagerData.RoundsConfigFT1,
+                    3 => GameManagerData.RoundsConfigFT3,
+                    5 => GameManagerData.RoundsConfigFT5,
+                    _ => GameManagerData.RoundsConfigFT3
+                };
+            }
+        }
+
+        public int NumberOfRoundFromGameSettings = 3; // can be 1, 3 or 5
+        public string MenuToGoOnResetAfterLoadingScene;
         private bool _isSubscribedToTongueChangeEvents;
+        
+        public bool CanLandmarkZoomSpawnFromGameSettings = true;
+        public bool CanLandmarkVoodooSpawnFromGameSettings = true;
+        
         private float _deltaTimeCounter;
         private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
         private byte _teamBTongueBindCount;
@@ -191,6 +212,22 @@ namespace _Project.Scripts.Runtime.Networking
                     break;
                 case SceneType.MenuV2Scene:
                     PlayerManager.Instance.SetPlayerJoiningEnabled(false);
+                    CameraManager.Instance.TryDisableSplitScreenCameras();
+                    var menuToGoOnReset = FindAnyObjectByType<MenuToGoOnReset>();
+                    if (menuToGoOnReset)
+                    {
+                        if (string.IsNullOrEmpty(MenuToGoOnResetAfterLoadingScene))
+                        {
+                            Logger.LogWarning("No MenuToGoOnResetAfterLoadingScene set while transitioning scene !", Logger.LogType.Server, this);
+                            yield break;
+                        }
+                        menuToGoOnReset.SetMenuName(MenuToGoOnResetAfterLoadingScene);
+                        Logger.LogInfo("MenuToGoOnReset set for scene transition to : " + MenuToGoOnResetAfterLoadingScene, Logger.LogType.Server, this);
+                    }
+                    else
+                    {
+                        Logger.LogWarning("No MenuToGoOnReset found while transitioning scene !", Logger.LogType.Server, this);
+                    }
                     break;
                 case SceneType.OnBoardingScene:
                     CameraManager.Instance.TryEnableSplitScreenCameras();
@@ -604,10 +641,15 @@ namespace _Project.Scripts.Runtime.Networking
 
         public IEnumerator EndGame(PlayerTeamType winningTeam)
         {
+            yield return TransitionManager.Instance.BeginLoadingRoundTransition();
+            yield return new WaitForSeconds(GameManagerData.SecondsBetweenRounds);
+            //OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
+            if(CurrentRoundNumber.Value != 1) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade, AudioManager.Instance.gameObject);
             Logger.LogInfo("Game finished ! The winning team is Team " + winningTeam, Logger.LogType.Server, this);
-            yield return new WaitForSeconds(GameManagerData.SecondsBetweenLastRoundCompletionAndEndOfTheGame);
             OnGameEnded?.Invoke(winningTeam);
+            OnGameEndedSyncEvent.Invoke();
             Logger.LogTrace("OnGameEnded event invoked", Logger.LogType.Server, this);
+            //yield return TransitionManager.Instance.EndLoadingRoundTransition();
         }
 
         public Round GetRound(byte roundNumber)
@@ -670,6 +712,12 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
+        public void ResetAndRestartGame()
+        {
+            ResetGame();
+            StartCoroutine(StartGame());
+        }
+
         public void ResetGame()
         {
             if (!IsServerStarted) return;
@@ -682,12 +730,54 @@ namespace _Project.Scripts.Runtime.Networking
             _deltaTimeCounter = 0;
             _teamATongueBindCount = 0;
             _teamBTongueBindCount = 0;
-            StartCoroutine(StartGame());
         }
         
         public int GetWinCount(PlayerTeamType teamType)
         {
             return RoundsResults.Collection.FindAll(result => result.WinningTeam == teamType).Count;
+        }
+
+        public void TryForceGameWinner(PlayerTeamType teamType)
+        {
+            if (!IsServerStarted)
+            {
+                ForceGameWinnerServerRpc(teamType);
+            }
+            else
+            {
+                StartCoroutine(ForceGameWinner(teamType));
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ForceGameWinnerServerRpc(PlayerTeamType teamType)
+        {
+            StartCoroutine(ForceGameWinner(teamType));
+        }
+
+        private IEnumerator ForceGameWinner(PlayerTeamType teamType)
+        {
+            if (teamType == PlayerTeamType.Z)
+            {
+                Logger.LogError("You can't force the Z team to win the game !", Logger.LogType.Server, this);
+                yield break;
+            }
+            if (!IsGameStarted.Value)
+            {
+                Logger.LogError("The game is not started ! The game cannot be forced to win", Logger.LogType.Server, this);
+                yield break;
+            }
+            if (CurrentRoundNumber.Value == 0)
+            {
+                Logger.LogError("No round is currently active !", Logger.LogType.Server, this);
+                yield break;
+            }
+            if (CheckIfGameIsFinished())
+            {
+                Logger.LogDebug("The game is already finished !", Logger.LogType.Server, this);
+                yield break;
+            }
+            yield return EndGame(teamType);
         }
     }
 }

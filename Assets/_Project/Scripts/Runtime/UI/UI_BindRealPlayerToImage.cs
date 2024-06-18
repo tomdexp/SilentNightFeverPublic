@@ -36,8 +36,6 @@ namespace _Project.Scripts.Runtime.UI
         private bool _isPlayingReadyFeedbacks;
         private bool _isPlayingNotReadyFeedbacks;
         
-        
-
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
@@ -46,6 +44,7 @@ namespace _Project.Scripts.Runtime.UI
         private void Start()
         {
             InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+            StartCoroutine(TryRegisterPlayerManagerEvents());
             UpdateUI();
         }
 
@@ -77,6 +76,7 @@ namespace _Project.Scripts.Runtime.UI
         {
             while(!PlayerManager.HasInstance) yield return null;
             PlayerManager.Instance.OnRealPlayerInfosChanged += OnRealPlayerInfosChanged;
+            Logger.LogDebug("PlayerManager events registered", Logger.LogType.Local, this);
         }
 
         private void OnRealPlayerInfosChanged(List<RealPlayerInfo> _)
