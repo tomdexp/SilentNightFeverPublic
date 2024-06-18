@@ -41,9 +41,27 @@ namespace _Project.Scripts.Runtime.Networking
         public event Action OnFinalRoundEnded; // TODO : Implement
         public event Action OnBeforeSceneChange;
         public event Action OnAfterSceneChange;
-        public RoundsConfig RoundsConfig => GameManagerData.RoundsConfig;
+        public RoundsConfig RoundsConfig
+        {
+            get
+            {
+                return NumberOfRoundFromGameSettings switch
+                {
+                    1 => GameManagerData.RoundsConfigFT1,
+                    3 => GameManagerData.RoundsConfigFT3,
+                    5 => GameManagerData.RoundsConfigFT5,
+                    _ => GameManagerData.RoundsConfigFT3
+                };
+            }
+        }
+
+        public int NumberOfRoundFromGameSettings = 3; // can be 1, 3 or 5
         public string MenuToGoOnResetAfterLoadingScene;
         private bool _isSubscribedToTongueChangeEvents;
+        
+        public bool CanLandmarkZoomSpawnFromGameSettings = true;
+        public bool CanLandmarkVoodooSpawnFromGameSettings = true;
+        
         private float _deltaTimeCounter;
         private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
         private byte _teamBTongueBindCount;
@@ -132,6 +150,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         public void LoadOnBoardingScene()
         {
+            PlayerManager.Instance.ResetPlayerSpawnedLocally(); // because they are destroyed when changing scene (coming from GameScene)
             LoadGlobalScene(SceneType.OnBoardingScene);
         }
         
@@ -712,6 +731,8 @@ namespace _Project.Scripts.Runtime.Networking
             _deltaTimeCounter = 0;
             _teamATongueBindCount = 0;
             _teamBTongueBindCount = 0;
+            CanLandmarkVoodooSpawnFromGameSettings = true;
+            CanLandmarkZoomSpawnFromGameSettings = true;
         }
         
         public int GetWinCount(PlayerTeamType teamType)

@@ -5,6 +5,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Runtime.Landmarks.Voodoo;
+using _Project.Scripts.Runtime.Landmarks.Zoom;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils;
@@ -126,7 +128,7 @@ public class ProcGenInstanciator : MonoBehaviour
     private bool _readyToSpawnPrefabs = false;
     private readonly int _framesBetweenSpawn = 1; // to avoid blocking the main thread, we launch the main method in a coroutine and wait between each spawn
     private List<SpawnableNetworkObject> _copyLandmarksPrefabList; // make a copy of the list to avoid modifying the original list for regenerating the map
-
+    
     // Events
     public event Action OnBeginMapGeneration;
     public event Action OnMapGenerated;
@@ -148,6 +150,29 @@ public class ProcGenInstanciator : MonoBehaviour
         
         // clone the list to avoid modifying the original list
         _landmarksPrefabList = _copyLandmarksPrefabList.Select(x => (SpawnableNetworkObject)x.Clone()).ToList();
+        
+        // Remove Landmark_Zoom if not allowed
+        if (!GameManager.Instance.CanLandmarkZoomSpawnFromGameSettings)
+        {
+            foreach (var prefab in _landmarksPrefabList.Where(prefab => prefab.Object.name == nameof(Landmark_Zoom)))
+            {
+                _landmarksPrefabList.Remove(prefab);
+                Logger.LogDebug("Landmark_Zoom removed from the list because it's not allowed to spawn", Logger.LogType.Server, this);
+                break;
+            }
+        }
+        
+        // Remove Landmark_Voodoo if not allowed
+        if (!GameManager.Instance.CanLandmarkVoodooSpawnFromGameSettings)
+        {
+            foreach (var prefab in _landmarksPrefabList.Where(prefab => prefab.Object.name == nameof(Landmark_Voodoo)))
+            {
+                _landmarksPrefabList.Remove(prefab);
+                Logger.LogDebug("Landmark_Voodoo removed from the list because it's not allowed to spawn", Logger.LogType.Server, this);
+                break;
+            }
+        }
+        
         
         _alreadySpawnedPoints.Clear();
         _alreadySpawnedPointsRadius.Clear();

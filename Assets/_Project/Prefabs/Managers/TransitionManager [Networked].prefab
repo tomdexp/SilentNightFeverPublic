@@ -135,10 +135,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5104708849514581467}
   - {fileID: 7199053181719219929}
   - {fileID: 2470563296493799154}
   - {fileID: 831086534064633254}
+  - {fileID: 5104708849514581467}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -236,9 +236,9 @@ MonoBehaviour:
   - {fileID: 5690922818130316017}
   - {fileID: 9051510787551272005}
   SerializedTransformProperties:
-    Position: {x: 960, y: 540, z: 0}
+    Position: {x: 1280, y: 720, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
-    LocalScale: {x: 1, y: 1, z: 1}
+    LocalScale: {x: 1.3333334, y: 1.3333334, z: 1.3333334}
   _isNetworked: 1
   _isSpawnable: 1
   _isGlobal: 1
@@ -513,6 +513,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LoadingRoundCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344345086448357817, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 113.1
       objectReference: {fileID: 0}
     - target: {fileID: 6012111196709732773, guid: da4ef4af9bcbebf42ad2f979c17b90be,
         type: 3}
@@ -8773,6 +8778,11 @@ PrefabInstance:
         type: 3}
       propertyPath: managedReferences[8437918671684501678].AnimatePositionTweenZ.Curve.m_Curve.Array.data[3].weightedMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975510135915690894, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 113.1
       objectReference: {fileID: 0}
     - target: {fileID: 8471730467799211425, guid: da4ef4af9bcbebf42ad2f979c17b90be,
         type: 3}

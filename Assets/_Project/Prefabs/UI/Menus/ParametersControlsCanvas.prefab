@@ -1382,7 +1382,6 @@ RectTransform:
   - {fileID: 744475618612579371}
   - {fileID: 3475922664719268696}
   - {fileID: 4513069997905701750}
-  - {fileID: 1387546359134789555}
   - {fileID: 1722871812773616116}
   - {fileID: 7326946055974811595}
   - {fileID: 4440136719455133922}
@@ -1395,6 +1394,7 @@ RectTransform:
   - {fileID: 2518606657300567224}
   - {fileID: 8403426452066726188}
   - {fileID: 870429454313455045}
+  - {fileID: 1387546359134789555}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3274,6 +3274,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputRemapButton_Tongue
       objectReference: {fileID: 0}
+    - target: {fileID: 6997806779125778989, guid: e3e0edfd8bdd04942a0465b44a81038e,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7434296125456074750, guid: e3e0edfd8bdd04942a0465b44a81038e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3697,6 +3702,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8557603146809907379, guid: f01187fde87960846869fde66d0a975a,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 170
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Utils;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -56,6 +57,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             base.Open();
             _canvasGroup.Open();
             _backButton.onClick.AddListener(GoBack);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventSettingsGraphicStart, AudioManager.Instance.gameObject);
         }
         
         public override void Close()
