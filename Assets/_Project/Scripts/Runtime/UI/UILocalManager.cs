@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.UI.NetworkedMenu;
 using _Project.Scripts.Runtime.Utils.Singletons;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace _Project.Scripts.Runtime.UI
         
         public event Action<int, int> MenuIndexChanged;
 
-        private void Start()
+        private IEnumerator Start()
         {
             MenuIndexChanged += OnCurrentMenuIndexChanged;
             _goBackAction.performed += OnGoBack;
@@ -33,6 +34,24 @@ namespace _Project.Scripts.Runtime.UI
             {
                 Logger.LogError("KickedFromServerCanvas does not have a ConfirmationPrompt component", Logger.LogType.Client, this);
             }
+            
+            yield return new WaitUntil(() => BootstrapManager.HasInstance);
+            BootstrapManager.Instance.OnKickedFromServer += OnKickedFromServer;
+        }
+
+        private void OnKickedFromServer()
+        {
+            Logger.LogTrace("Kicked from server, opening return to main menu prompt", Logger.LogType.Client,this);
+            StartCoroutine(OnKickedFromServerCoroutine());
+        }
+
+        private IEnumerator OnKickedFromServerCoroutine()
+        {
+            yield return new WaitForSeconds(1f); // don't remove this, it's necessary to wait for old instance of UIManager to be destroyed
+            yield return new WaitUntil(() => HasInstance);
+            _kickedFromServerPrompt.Open();
+            yield return _kickedFromServerPrompt.WaitForResponse();
+            GoToMenu<MainMenu>();
         }
 
         private void OnDestroy()
@@ -40,6 +59,7 @@ namespace _Project.Scripts.Runtime.UI
             MenuIndexChanged -= OnCurrentMenuIndexChanged;
             _goBackAction.Disable();
             _goBackAction.performed -= OnGoBack;
+            if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnKickedFromServer -= OnKickedFromServer;
         }
 
         private void LateUpdate()

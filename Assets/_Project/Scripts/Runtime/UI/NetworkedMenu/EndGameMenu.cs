@@ -73,7 +73,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 if (!UILocalManager.Instance.IsNavigationWithMouse) _buttonMainMenu.Select();
                 SetDefaultSelectedOnOpen(_buttonMainMenu);
             }
+            StartCoroutine(TransitionManager.Instance.EndLoadingRoundTransition());
         }
+        
 
         public override void Close()
         {
@@ -118,7 +120,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                     yield return _quitOnlineAsHostPrompt.WaitForResponse();
                     if (_quitOnlineAsHostPrompt.IsSuccess)
                     {
-                        Logger.LogError("Not implemented yet", Logger.LogType.Server, this);
+                        BootstrapManager.Instance.TryLeaveOnline();
+                        GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(MainMenu);
+                        GameManager.Instance.LoadMenuScene();
+                        GameManager.Instance.ResetGame();
+                        PlayerManager.Instance.ResetRealPlayerInfos();
+                        Close();
                     }
                 }
                 else // Local Lobby
@@ -127,7 +134,11 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                     yield return _quitLocalPrompt.WaitForResponse();
                     if (_quitLocalPrompt.IsSuccess)
                     {
-                        Logger.LogError("Not implemented yet", Logger.LogType.Server, this);
+                        GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(MainMenu);
+                        GameManager.Instance.LoadMenuScene();
+                        GameManager.Instance.ResetGame();
+                        PlayerManager.Instance.ResetRealPlayerInfos();
+                        Close();
                     }
                 }
             }
@@ -137,7 +148,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 yield return _quitOnlineAsClientPrompt.WaitForResponse();
                 if (_quitOnlineAsClientPrompt.IsSuccess)
                 {
-                    Logger.LogError("Not implemented yet", Logger.LogType.Client, this);
+                    BootstrapManager.Instance.TryLeaveOnline();
+                    GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(MainMenu);
+                    GameManager.Instance.LoadMenuScene();
+                    GameManager.Instance.ResetGame();
+                    PlayerManager.Instance.ResetRealPlayerInfos();
+                    Close();
                 }
             }
         }
