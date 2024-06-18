@@ -7,15 +7,15 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Edible
+  m_Name: MAT_Voodoo_Purple
   m_Shader: {fileID: -6465566751694194690, guid: 97b6cd9fc7cb9b94ebf7d80ab43a2e61,
     type: 3}
   m_Parent: {fileID: 2100000, guid: 53ad5bc3e097e24419838607f819e135, type: 2}
-  m_ModifiedSerializedProperties: 4
+  m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 2
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -26,24 +26,16 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AO_Map:
-        m_Texture: {fileID: 2800000, guid: 6a890a39278b9704f8a18960dec614b5, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Color_Map:
-        m_Texture: {fileID: 2800000, guid: 16e1d76e7aa9d48439719e2499828743, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Emissive:
-        m_Texture: {fileID: 2800000, guid: 010f9b0687a2981409fde8114b9f516a, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Emissive_Map:
-        m_Texture: {fileID: 2800000, guid: 010f9b0687a2981409fde8114b9f516a, type: 3}
+        m_Texture: {fileID: 2800000, guid: d7dd2acf9a4d6544e92d1204c7769d76, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Emissive_Strenght: 1
+    - _See_Through_Distance: 1.5
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
