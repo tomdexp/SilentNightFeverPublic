@@ -6,6 +6,7 @@ using _Project.Scripts.Runtime.Player;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI.Transitions
 {
@@ -28,7 +29,16 @@ namespace _Project.Scripts.Runtime.UI.Transitions
             if (IsServerStarted)
             {
                 yield return new WaitForSeconds(_delayBeforeTeamWinFeedback);
-                PlayerTeamType lastWinningTeam = GameManager.Instance.RoundsResults.Collection.Last().WinningTeam;
+                PlayerTeamType lastWinningTeam;
+                if (GameManager.Instance.RoundsResults.Collection.Count == 0)
+                {
+                    Logger.LogWarning("No rounds results found, forcing a win for team A (should only appear when forcing a win via debug)", Logger.LogType.Local, this);
+                    lastWinningTeam = PlayerTeamType.A;
+                }
+                else
+                {
+                    lastWinningTeam = GameManager.Instance.RoundsResults.Collection.Last().WinningTeam;
+                }
                 if (lastWinningTeam == PlayerTeamType.A)
                 {
                     _feedbackTeamAWin.PlayFeedbacksForAll();

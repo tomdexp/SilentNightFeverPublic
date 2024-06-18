@@ -623,11 +623,15 @@ namespace _Project.Scripts.Runtime.Networking
 
         public IEnumerator EndGame(PlayerTeamType winningTeam)
         {
+            yield return TransitionManager.Instance.BeginLoadingRoundTransition();
+            yield return new WaitForSeconds(GameManagerData.SecondsBetweenRounds);
+            //OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
+            if(CurrentRoundNumber.Value != 1) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade, AudioManager.Instance.gameObject);
             Logger.LogInfo("Game finished ! The winning team is Team " + winningTeam, Logger.LogType.Server, this);
-            yield return new WaitForSeconds(GameManagerData.SecondsBetweenLastRoundCompletionAndEndOfTheGame);
             OnGameEnded?.Invoke(winningTeam);
             OnGameEndedSyncEvent.Invoke();
             Logger.LogTrace("OnGameEnded event invoked", Logger.LogType.Server, this);
+            //yield return TransitionManager.Instance.EndLoadingRoundTransition();
         }
 
         public Round GetRound(byte roundNumber)

@@ -57,6 +57,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 var currentScene = SceneManager.GetActiveScene().name;
                 if (currentScene == SceneType.MenuV2Scene.ToString())
                 {
+                    _isRegistered = false;
                     StartCoroutine(TryRegisterMenuOnline());
                 }
             }
