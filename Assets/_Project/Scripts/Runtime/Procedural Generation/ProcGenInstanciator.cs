@@ -126,7 +126,7 @@ public class ProcGenInstanciator : MonoBehaviour
     private bool _readyToSpawnPrefabs = false;
     private readonly int _framesBetweenSpawn = 1; // to avoid blocking the main thread, we launch the main method in a coroutine and wait between each spawn
     private List<SpawnableNetworkObject> _copyLandmarksPrefabList; // make a copy of the list to avoid modifying the original list for regenerating the map
-
+    
     // Events
     public event Action OnBeginMapGeneration;
     public event Action OnMapGenerated;

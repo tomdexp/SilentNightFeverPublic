@@ -14,6 +14,10 @@ namespace _Project.Scripts.Runtime.Networking
         
         [Title("Reference")]
         [Required] public RoundsConfig RoundsConfig;
+        [Required] public RoundsConfig RoundsConfigFT1;
+        [Required] public RoundsConfig RoundsConfigFT3;
+        [Required] public RoundsConfig RoundsConfigFT5;
+        
         public MatchConfig[] MatchConfigs;
     }
 }
