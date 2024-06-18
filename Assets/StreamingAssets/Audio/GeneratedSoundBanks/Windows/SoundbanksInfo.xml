@@ -9,7 +9,7 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{27FF0B69-3485-F754-9876-290EFACF4C16}">
+		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{97323032-33EE-D206-CE39-9303E43FB0E2}">
 			<ShortName>SB_UI</ShortName>
 			<Path>SB_UI.bnk</Path>
 			<Media>
@@ -20,6 +20,10 @@
 				<File Id="48735342" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_Displacement_V0-003.wav</ShortName>
 					<CachePath>SFX/SNF_UI_OS_Displacement_V0-003_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="100316934" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>padIn.wav</ShortName>
+					<CachePath>SFX/padIn_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="104542256" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_Displacement_V0-005.wav</ShortName>
@@ -35,7 +39,7 @@
 				</File>
 				<File Id="186151648" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_LP_Menu_Loop_V0.wav</ShortName>
-					<CachePath>SFX/SNF_UI_LP_Menu_Loop_V0_DB140DDA.wem</CachePath>
+					<CachePath>SFX/SNF_UI_LP_Menu_Loop_V0_EC067C3C.wem</CachePath>
 				</File>
 				<File Id="218033736" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_MenuIn_V0.wav</ShortName>
@@ -44,6 +48,10 @@
 				<File Id="295728392" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_ Enter_V0.wav</ShortName>
 					<CachePath>SFX/SNF_UI_OS_ Enter_V0_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="392379305" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>padOut.wav</ShortName>
+					<CachePath>SFX/padOut_DE9F65A3.wem</CachePath>
 				</File>
 				<File Id="436107681" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_Displacement_V0-002.wav</ShortName>
@@ -148,6 +156,16 @@
 						<MediaRef Id="693225697"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="2187101108" Name="Play_UI_Pad_In" DurationType="OneShot" DurationMin="1.086552" DurationMax="1.086552">
+					<MediaRefs>
+						<MediaRef Id="100316934"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3801365459" Name="Play_UI_Pad_Out" DurationType="OneShot" DurationMin="1.1231459" DurationMax="1.1231459">
+					<MediaRefs>
+						<MediaRef Id="392379305"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="794514316" Name="Play_UI_Quit_Menu" DurationType="OneShot" DurationMin="0.6559375" DurationMax="0.6559375">
 					<MediaRefs>
 						<MediaRef Id="1994410"/>
@@ -155,7 +173,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{A485A350-256B-D776-D5FF-759822A7E73A}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{A22393F7-B875-8218-01E4-278058055E6A}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -555,7 +573,7 @@
 				<GameParameter Id="3546657911" Name="GP_LM_SatelitteSpeed"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{4ED8DDFC-5825-675B-A000-EDA681301869}">
+		<SoundBank Id="779753582" Type="User" Language="SFX" Hash="{2E4F2E3D-7B49-E875-98E0-59BA717B831A}">
 			<ShortName>SB_MUSIC</ShortName>
 			<Path>SB_MUSIC.bnk</Path>
 			<Media>
@@ -1141,6 +1159,34 @@
 				</File>
 			</Media>
 			<Events>
+				<Event Id="3315268937" Name="Play_MAIN_MENU_MUSIQUE" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="36775885"/>
+						<MediaRef Id="37990223"/>
+						<MediaRef Id="81697048"/>
+						<MediaRef Id="114994401"/>
+						<MediaRef Id="138141086"/>
+						<MediaRef Id="159927292"/>
+						<MediaRef Id="169011874"/>
+						<MediaRef Id="172120453"/>
+						<MediaRef Id="206926714"/>
+						<MediaRef Id="322168831"/>
+						<MediaRef Id="455417757"/>
+						<MediaRef Id="481575302"/>
+						<MediaRef Id="482141321"/>
+						<MediaRef Id="555772370"/>
+						<MediaRef Id="640720153"/>
+						<MediaRef Id="648543374"/>
+						<MediaRef Id="660154197"/>
+						<MediaRef Id="716825123"/>
+						<MediaRef Id="725186934"/>
+						<MediaRef Id="727047077"/>
+						<MediaRef Id="789124767"/>
+						<MediaRef Id="815559735"/>
+						<MediaRef Id="919972634"/>
+						<MediaRef Id="1070238702"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="6483615" Name="Play_MUSC_GLOBAL_SWITCH" DurationType="Infinite">
 					<SwitchContainers>
 						<SwitchContainer>
@@ -1313,6 +1359,7 @@
 						<MediaRef Id="777874200"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="1301010599" Name="Stop_MAIN_MENU_MUSIQUE" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="3658594925" Name="Stop_MUSC_GLOBAL_SWITCH" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 				<Event Id="1244124042" Name="Stop_MUSC_Transition" DurationType="OneShot" DurationMin="0.17088541" DurationMax="0.17088541">
 					<MediaRefs>
@@ -1337,7 +1384,7 @@
 				</SwitchGroup>
 			</SwitchGroups>
 		</SoundBank>
-		<SoundBank Id="925885567" Type="User" Language="SFX" Hash="{0C37C53C-CAB2-632E-59D9-BBF8099E443A}">
+		<SoundBank Id="925885567" Type="User" Language="SFX" Hash="{453BE36C-B422-67CD-86BD-9412C05537BC}">
 			<ShortName>SB_AMB</ShortName>
 			<Path>SB_AMB.bnk</Path>
 			<Media>
@@ -1961,5 +2008,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{F844E1D2-35AB-083F-FE7E-D04D57F1E667}</FileHash>
+	<FileHash>{39B8F8CF-323C-96E1-20C3-A439BC122BF3}</FileHash>
 </SoundBanksInfo>

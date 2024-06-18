@@ -78,13 +78,101 @@ MonoBehaviour:
       type: 2}
   RTPC_GP_LM_SatelliteSpeed_MinValue: 0
   RTPC_GP_LM_SatelliteSpeed_MaxValue: 10
-  EventApplicationStart: []
-  EventMainMenuStart: []
-  EventLocalOrOnlineMenuStart: []
-  EventOnlineCreateOrJoinMenuStart: []
-  EventGamepadMenuStart: []
-  EventTeamSelectionMenuStart: []
-  EventCharacterCustomizationStart: []
+  EventApplicationStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 0740af7ad353bca4d9709259b7318790,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 285011a41adecb042954553e88fa7418,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 9fcd3774810732148b62911eb07093d2,
+      type: 2}
+  EventMainMenuStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 4817e657b6ae69a4dbd4d55fc13bae7c,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
+  EventLocalOrOnlineMenuStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
+  EventOnlineCreateOrJoinMenuStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 4854fc51cab1d8244b8b1dfc58963fad,
+      type: 2}
+  EventGamepadMenuStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2eba88f5fe4facf4e9eb57fd7a753ca3,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: f223bc32e697ecf4e96ed04db48cf64b,
+      type: 2}
+  EventTeamSelectionMenuStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: bb4f424fcf7c20742a15330d0b2c4c48,
+      type: 2}
+  EventCharacterCustomizationStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: c510e248cb40bab4587c9bca0ecdd456,
+      type: 2}
+  EventSettingsMenuStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 0041e5da46d320f4487cd1b8305e1233,
+      type: 2}
+  EventSettingsAudioMenuStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 5c3f76eb5550f2e4ea9622e6c9e8892c,
+      type: 2}
+  EventSettingsControlsStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 330e669864b5b8442874628cb60db78a,
+      type: 2}
+  EventSettingsGraphicStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 9d60ebe81beec1f42a88bdff51a64ed8,
+      type: 2}
   EventGameStart:
   - idInternal: 0
     valueGuidInternal: 
@@ -105,9 +193,6 @@ MonoBehaviour:
       type: 2}
   - idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  - idInternal: 0
-    valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: d58e55dc77bd6644b8425d992720d51b,
       type: 2}
   EventRoundStart:
@@ -123,12 +208,6 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 22fd0a45627bfc24db5b1483aad17ee5,
       type: 2}
-  - idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  - idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
   EventRoundEnd:
   - idInternal: 0
     valueGuidInternal: 
@@ -158,12 +237,15 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: d58e55dc77bd6644b8425d992720d51b,
       type: 2}
-  EventRoundHideScoreFade:
+  EventRoundHideScoreFade: []
+  EventWinningTeamRoundTeamShiningStarFruit:
   - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
-  EventWinningTeamRoundTeamShiningStarFruit: []
-  EventWinningTeamRoundTeamPlumsOfPassion: []
+  EventWinningTeamRoundTeamPlumsOfPassion:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
   EventPlayerTongueThrow:
     idInternal: 0
     valueGuidInternal: 
@@ -192,11 +274,13 @@ MonoBehaviour:
   EventUIButtonHover:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 26c4d85704fa59b46a4271034f1ff306,
+      type: 2}
   EventUIButtonClickEnter:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
+      type: 2}
   EventUIButtonClickBack:
     idInternal: 0
     valueGuidInternal: 
@@ -235,16 +319,20 @@ MonoBehaviour:
   EventOnStartZoomElectricity:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 13c1cbaf2e8f15b46a0ac37cc822089b,
+      type: 2}
   EventOnStopZoomElectricity:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: d634005f04c67974a9412d2fc3a21186,
+      type: 2}
   OnStartControlledByVoodoo:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 0d54ce945e11b88419b8ea6975011cc6,
+      type: 2}
   OnEndControlledByVoodoo:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: d0f1d0aaec75e6045b30b0c630b6e011,
+      type: 2}

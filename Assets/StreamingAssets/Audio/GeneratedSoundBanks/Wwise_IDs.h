@@ -27,6 +27,7 @@ namespace AK
         static const AkUniqueID PLAY_LM_SATT_INTERACT = 3999988379U;
         static const AkUniqueID PLAY_LM_VOOD_INTERACT = 3048117919U;
         static const AkUniqueID PLAY_LM_VOODOO_AMBIANCE = 1931733291U;
+        static const AkUniqueID PLAY_MAIN_MENU_MUSIQUE = 3315268937U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
         static const AkUniqueID PLAY_MUSC_TRANSITION = 3964698704U;
         static const AkUniqueID PLAY_SFX_ROUND_WIN = 2094862661U;
@@ -42,6 +43,8 @@ namespace AK
         static const AkUniqueID PLAY_UI_OPT_AUDIO_IN = 4218838345U;
         static const AkUniqueID PLAY_UI_OPT_GRAPH_IN = 1668422251U;
         static const AkUniqueID PLAY_UI_OPT_IN = 3535966932U;
+        static const AkUniqueID PLAY_UI_PAD_IN = 2187101108U;
+        static const AkUniqueID PLAY_UI_PAD_OUT = 3801365459U;
         static const AkUniqueID PLAY_UI_QUIT_MENU = 794514316U;
         static const AkUniqueID SET_LANDMARK_VOLUME_TO_0 = 3012856152U;
         static const AkUniqueID SET_LANDMARK_VOLUME_TO_100 = 3390232705U;
@@ -56,6 +59,7 @@ namespace AK
         static const AkUniqueID STOP_LM_SATT_INTERACT_GLOBAL = 2946421553U;
         static const AkUniqueID STOP_LM_VOOD_INTERACT = 1884258981U;
         static const AkUniqueID STOP_LM_VOODOO_AMBIANCE_GLOBAL = 2453006097U;
+        static const AkUniqueID STOP_MAIN_MENU_MUSIQUE = 1301010599U;
         static const AkUniqueID STOP_MUSC_GLOBAL_SWITCH = 3658594925U;
         static const AkUniqueID STOP_MUSC_TRANSITION = 1244124042U;
     } // namespace EVENTS
