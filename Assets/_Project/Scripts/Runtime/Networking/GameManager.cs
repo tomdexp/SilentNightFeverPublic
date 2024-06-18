@@ -194,15 +194,21 @@ namespace _Project.Scripts.Runtime.Networking
                     break;
                 case SceneType.MenuV2Scene:
                     PlayerManager.Instance.SetPlayerJoiningEnabled(false);
+                    CameraManager.Instance.TryDisableSplitScreenCameras();
                     var menuToGoOnReset = FindAnyObjectByType<MenuToGoOnReset>();
                     if (menuToGoOnReset)
                     {
-                        if (string.IsNullOrEmpty(MenuToGoOnResetAfterLoadingScene)) yield break;
+                        if (string.IsNullOrEmpty(MenuToGoOnResetAfterLoadingScene))
+                        {
+                            Logger.LogWarning("No MenuToGoOnResetAfterLoadingScene set while transitioning scene !", Logger.LogType.Server, this);
+                            yield break;
+                        }
                         menuToGoOnReset.SetMenuName(MenuToGoOnResetAfterLoadingScene);
+                        Logger.LogInfo("MenuToGoOnReset set for scene transition to : " + MenuToGoOnResetAfterLoadingScene, Logger.LogType.Server, this);
                     }
                     else
                     {
-                        Logger.LogWarning("No MenuToGoOnReset found !", Logger.LogType.Server, this);
+                        Logger.LogWarning("No MenuToGoOnReset found while transitioning scene !", Logger.LogType.Server, this);
                     }
                     break;
                 case SceneType.OnBoardingScene:
@@ -684,6 +690,12 @@ namespace _Project.Scripts.Runtime.Networking
             }
         }
 
+        public void ResetAndRestartGame()
+        {
+            ResetGame();
+            StartCoroutine(StartGame());
+        }
+
         public void ResetGame()
         {
             if (!IsServerStarted) return;
@@ -696,12 +708,54 @@ namespace _Project.Scripts.Runtime.Networking
             _deltaTimeCounter = 0;
             _teamATongueBindCount = 0;
             _teamBTongueBindCount = 0;
-            StartCoroutine(StartGame());
         }
         
         public int GetWinCount(PlayerTeamType teamType)
         {
             return RoundsResults.Collection.FindAll(result => result.WinningTeam == teamType).Count;
+        }
+
+        public void TryForceGameWinner(PlayerTeamType teamType)
+        {
+            if (!IsServerStarted)
+            {
+                ForceGameWinnerServerRpc(teamType);
+            }
+            else
+            {
+                StartCoroutine(ForceGameWinner(teamType));
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ForceGameWinnerServerRpc(PlayerTeamType teamType)
+        {
+            StartCoroutine(ForceGameWinner(teamType));
+        }
+
+        private IEnumerator ForceGameWinner(PlayerTeamType teamType)
+        {
+            if (teamType == PlayerTeamType.Z)
+            {
+                Logger.LogError("You can't force the Z team to win the game !", Logger.LogType.Server, this);
+                yield break;
+            }
+            if (!IsGameStarted.Value)
+            {
+                Logger.LogError("The game is not started ! The game cannot be forced to win", Logger.LogType.Server, this);
+                yield break;
+            }
+            if (CurrentRoundNumber.Value == 0)
+            {
+                Logger.LogError("No round is currently active !", Logger.LogType.Server, this);
+                yield break;
+            }
+            if (CheckIfGameIsFinished())
+            {
+                Logger.LogDebug("The game is already finished !", Logger.LogType.Server, this);
+                yield break;
+            }
+            yield return EndGame(teamType);
         }
     }
 }

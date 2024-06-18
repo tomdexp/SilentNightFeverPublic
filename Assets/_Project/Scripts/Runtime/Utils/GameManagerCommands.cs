@@ -22,5 +22,16 @@ namespace _Project.Scripts.Runtime.Utils
         {
             if (GameManager.HasInstance) GameManager.Instance.ResetGame();
         }
+        
+        [Command("/game.win", "Force the team to win the game")]
+        public static void ForceGameWin(PlayerTeamType teamType)
+        {
+            if (teamType == PlayerTeamType.Z)
+            {
+                Logger.LogError("You can't force the Z team to win the game !");
+                return;
+            }
+            if(GameManager.HasInstance) GameManager.Instance.TryForceGameWinner(teamType);
+        }
     }
 }

@@ -14,16 +14,30 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
     {
         public abstract string MenuName { get; }
         [SerializeField] private Selectable _defaultSelectedOnOpen;
+        private bool _isRegistered;
         
         public virtual void Start()
         {
-            var currentScene = SceneManager.GetActiveScene().name;
-            if (currentScene == SceneType.MenuV2Scene.ToString())
+            int sceneCount = SceneManager.sceneCount;
+            bool isMenuV2SceneLoaded = false;
+            for (int i = 0; i < sceneCount; i++)
             {
-                InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
+                Scene scene = SceneManager.GetSceneAt(i);
+                if (scene.name == SceneType.MenuV2Scene.ToString())
+                {
+                    isMenuV2SceneLoaded = true;
+                    break;
+                }
+            }
+            if (isMenuV2SceneLoaded)
+            {
+                Logger.LogTrace($"Loaded menu scene so registering {MenuName} online", Logger.LogType.Client,this);
+                InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState; // for network reset
+                StartCoroutine(TryRegisterMenuOnline()); // for scene transitions that don't causes network reset
             }
             else
             {
+                Logger.LogTrace($"Menu scene is not loaded so registering {MenuName} local", Logger.LogType.Client,this);
                 StartCoroutine(TryRegisterMenuLocal());
             }
         }
@@ -51,13 +65,17 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private IEnumerator TryRegisterMenuOnline()
         {
             while(!UIManager.HasInstance) yield return null;
+            if (_isRegistered) yield break;
             UIManager.Instance.RegisterMenu(this);
+            _isRegistered = true;
         }
         
         private IEnumerator TryRegisterMenuLocal()
         {
             while(!UILocalManager.HasInstance) yield return null;
+            if (_isRegistered) yield break;
             UILocalManager.Instance.RegisterMenu(this);
+            _isRegistered = true;
         }
 
         public virtual void Open()
