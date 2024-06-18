@@ -466,33 +466,24 @@ public class ProcGenInstanciator : MonoBehaviour
         yield return SpawnPrefabs(_landmarksPoints, _landmarksPrefabList);
         //yield return SpawnPrefabs(_testLandmarkPoints, _testLandmarkPrefab);
         OnLoadingProgressChanged?.Invoke(9/10f, "Spawning environment");
-        yield return SpawnPrefabs(_FernPoints, _FernPrefab);
-        yield return SpawnPrefabs(_TreePoints, _TreePrefab);
-        yield return SpawnPrefabs(_light0Points, _light0Prefab);
-        yield return SpawnPrefabs(_light1Points, _light1Prefab);
-        yield return SpawnPrefabs(_light2Points, _light2Prefab);
-        yield return SpawnPrefabs(_light3Points, _light3Prefab);
+        
+        if (_FernPrefab) yield return SpawnPrefabs(_FernPoints, _FernPrefab);
+        if (_TreePrefab) yield return SpawnPrefabs(_TreePoints, _TreePrefab);
+        if (_light0Prefab) yield return SpawnPrefabs(_light0Points, _light0Prefab);
+        if (_light1Prefab) yield return SpawnPrefabs(_light1Points, _light1Prefab);
+        if (_light2Prefab) yield return SpawnPrefabs(_light2Points, _light2Prefab);
+        if (_light3Prefab) yield return SpawnPrefabs(_light3Points, _light3Prefab);
 
-        if (_deco0Prefab!=null)
-          yield return SpawnPrefabs(_deco0Points, _deco0Prefab);
-        if (_deco1Prefab != null)
-            yield return SpawnPrefabs(_deco1Points, _deco1Prefab);
-        if (_deco2Prefab != null)
-            yield return SpawnPrefabs(_deco2Points, _deco2Prefab);
-        if (_deco3Prefab != null)
-            yield return SpawnPrefabs(_deco3Points, _deco3Prefab);
-        if (_deco4Prefab != null)
-            yield return SpawnPrefabs(_deco4Points, _deco4Prefab);
-        if (_deco5Prefab != null)
-            yield return SpawnPrefabs(_deco5Points, _deco5Prefab);
-        if (_deco6Prefab != null)
-            yield return SpawnPrefabs(_deco6Points, _deco6Prefab);
-        if (_deco7Prefab != null)
-            yield return SpawnPrefabs(_deco7Points, _deco7Prefab);
-        if (_deco8Prefab != null)
-            yield return SpawnPrefabs(_deco8Points, _deco8Prefab);
-        if (_deco9Prefab != null)
-            yield return SpawnPrefabs(_deco9Points, _deco9Prefab);
+        if (_deco0Prefab) yield return SpawnPrefabs(_deco0Points, _deco0Prefab);
+        if (_deco1Prefab) yield return SpawnPrefabs(_deco1Points, _deco1Prefab);
+        if (_deco2Prefab) yield return SpawnPrefabs(_deco2Points, _deco2Prefab);
+        if (_deco3Prefab) yield return SpawnPrefabs(_deco3Points, _deco3Prefab);
+        if (_deco4Prefab) yield return SpawnPrefabs(_deco4Points, _deco4Prefab);
+        if (_deco5Prefab) yield return SpawnPrefabs(_deco5Points, _deco5Prefab);
+        if (_deco6Prefab) yield return SpawnPrefabs(_deco6Points, _deco6Prefab);
+        if (_deco7Prefab) yield return SpawnPrefabs(_deco7Points, _deco7Prefab);
+        if (_deco8Prefab) yield return SpawnPrefabs(_deco8Points, _deco8Prefab);
+        if (_deco9Prefab) yield return SpawnPrefabs(_deco9Points, _deco9Prefab);
 
         OnLoadingProgressChanged?.Invoke(10/10f, "Spawning crowd");
         yield return SpawnPrefabs(_CrowdPoints, _CrowdPrefab);
@@ -512,11 +503,11 @@ public class ProcGenInstanciator : MonoBehaviour
         if (!_FernPrefab) Logger.LogError("Fern prefab is missing");
         if (!_TreePrefab) Logger.LogError("Tree prefab is missing");
         //if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
-        if (!_light0Prefab) Logger.LogError("Light 0 prefab is missing");
-        if (!_light1Prefab) Logger.LogError("Light 1 prefab is missing");
-        if (!_light2Prefab) Logger.LogError("Light 2 prefab is missing");
-        if (!_light3Prefab) Logger.LogError("Light 3 prefab is missing");
-        if (!_CrowdPrefab) Logger.LogError("Crowd prefab is missing");
+        if (!_light0Prefab) Logger.LogWarning("Light 0 prefab is missing, ignore if this is intended");
+        if (!_light1Prefab) Logger.LogWarning("Light 1 prefab is missing, ignore if this is intended");
+        if (!_light2Prefab) Logger.LogWarning("Light 2 prefab is missing, ignore if this is intended");
+        if (!_light3Prefab) Logger.LogWarning("Light 3 prefab is missing, ignore if this is intended");
+        if (!_CrowdPrefab) Logger.LogError("Crowd prefab is missing, can't spawn NPCs");
     }
 
     [Button]
