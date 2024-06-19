@@ -12,7 +12,6 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
     {
         public override string MenuName { get; } = "ParametersGraphicsMenu";
         [SerializeField, Required] private UI_Toggle _highContrastToggle;
-        [SerializeField, Required] private UI_Toggle _epilepsyModeToggle;
         [SerializeField, Required] private UI_Toggle _fullScreenToggle;
         [SerializeField, Required] private UI_Toggle _vsyncToggle;
         [SerializeField, Required] private UI_SelectorBase _resolutionSlider;
@@ -20,7 +19,6 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private CanvasGroup _canvasGroup;
         
         private Toggle _highContrastToggleComponent;
-        private Toggle _epilepsyModeToggleComponent;
         private Toggle _fullScreenToggleComponent;
         private Toggle _vsyncToggleComponent;
         private Button _resolutionSliderPreviousButton;
@@ -32,15 +30,13 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _canvasGroup.CloseInstant();
 
             _highContrastToggleComponent = _highContrastToggle.GetComponentInChildren<Toggle>();
-            _epilepsyModeToggleComponent = _epilepsyModeToggle.GetComponentInChildren<Toggle>();
             _fullScreenToggleComponent = _fullScreenToggle.GetComponentInChildren<Toggle>();
             _vsyncToggleComponent = _vsyncToggle.GetComponentInChildren<Toggle>();
             _resolutionSliderPreviousButton = _resolutionSlider.PreviousButton;
             _resolutionSliderNextButton = _resolutionSlider.NextButton;
             
             BindNavigableVertical(_backButton, _highContrastToggleComponent);
-            BindNavigableVertical(_highContrastToggleComponent, _epilepsyModeToggleComponent);
-            BindNavigableVertical(_epilepsyModeToggleComponent, _fullScreenToggleComponent);
+            BindNavigableVertical(_highContrastToggleComponent, _fullScreenToggleComponent);
             BindNavigableVertical(_fullScreenToggleComponent, _vsyncToggleComponent);
             BindNavigableVertical(_vsyncToggleComponent, _resolutionSliderPreviousButton);
             
