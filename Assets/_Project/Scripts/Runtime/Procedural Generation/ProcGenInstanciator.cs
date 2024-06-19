@@ -77,9 +77,17 @@ public class ProcGenInstanciator : MonoBehaviour
     [SerializeField] private NetworkObject _FernPrefab;
     private List<Vector2> _FernPoints;
     [Space]
-    [SerializeField] private ProcGenParameters _TreeParameters;
-    [SerializeField] private NetworkObject _TreePrefab;
-    private List<Vector2> _TreePoints;
+    [SerializeField] private ProcGenParameters _Tree1Parameters;
+    [SerializeField] private NetworkObject _Tree1Prefab;
+    private List<Vector2> _Tree1Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _Tree2Parameters;
+    [SerializeField] private NetworkObject _Tree2Prefab;
+    private List<Vector2> _Tree2Points;
+    [Space]
+    [SerializeField] private ProcGenParameters _Tree3Parameters;
+    [SerializeField] private NetworkObject _Tree3Prefab;
+    private List<Vector2> _Tree3Points;
     [Space]
     [SerializeField] private ProcGenParameters _deco0Parameters;
     [SerializeField] private NetworkObject _deco0Prefab= null;
@@ -236,39 +244,56 @@ public class ProcGenInstanciator : MonoBehaviour
         _teamBPoints = GeneratePoints(_teamBParameters, true, true, true);
         OnLoadingProgressChanged?.Invoke(3/10f, "Generating landmarks points");
         _landmarksPoints = GeneratePoints(_landmarksParameters, true, true, true);
+        Logger.LogDebug("IMPORTANT STUFF generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+
+        OnLoadingProgressChanged?.Invoke(5 / 10f, "Generating crowd points");
+        _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
 
         // Decoration
         OnLoadingProgressChanged?.Invoke(4/10f, "Generating environment points");
-        _FernPoints = GeneratePoints(_FernParameters, false, false, true);
-        _TreePoints = GeneratePoints(_TreeParameters, false, true, true);
+        _FernPoints = GeneratePoints(_FernParameters, false, false, true, true);
+        _Tree1Points = GeneratePoints(_Tree1Parameters, false, true, true, true);
+        _Tree2Points = GeneratePoints(_Tree2Parameters, false, true, true, true);
+        _Tree3Points = GeneratePoints(_Tree3Parameters, false, true, true, true);
         //_testLandmarkPoints = GeneratePoints(_testLandmarkParameters, false, true, true);
 
-        _light0Points = GeneratePoints(_light0Parameters, false, false, true);
-        _light1Points = GeneratePoints(_light1Parameters, false, false, true);
-        _light2Points = GeneratePoints(_light2Parameters, false, false, true);
-        _light3Points = GeneratePoints(_light3Parameters, false, false, true);
+        _light0Points = GeneratePoints(_light0Parameters, false, false, true, true);
+        _light1Points = GeneratePoints(_light1Parameters, false, false, true, true);
+        _light2Points = GeneratePoints(_light2Parameters, false, false, true, true);
+        _light3Points = GeneratePoints(_light3Parameters, false, false, true, true) ;
+        Logger.LogDebug("Light generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
 
-
-        _deco0Points = GeneratePoints(_deco0Parameters, false, true, true);
-        _deco1Points = GeneratePoints(_deco1Parameters, false, true, true);
-        _deco2Points = GeneratePoints(_deco2Parameters, false, true, true);
-        _deco3Points = GeneratePoints(_deco3Parameters, false, true, true);
-        _deco4Points = GeneratePoints(_deco4Parameters, false, true, true);
-        _deco5Points = GeneratePoints(_deco5Parameters, false, true, true);
-        _deco6Points = GeneratePoints(_deco6Parameters, false, true, true);
-        _deco7Points = GeneratePoints(_deco7Parameters, false, true, true);
-        _deco8Points = GeneratePoints(_deco8Parameters, false, true, true);
-        _deco9Points = GeneratePoints(_deco9Parameters, false, true, true);
-        _deco10Points = GeneratePoints(_deco10Parameters, false, true, true);
-        _deco11Points = GeneratePoints(_deco11Parameters, false, true, true);
-        _deco12Points = GeneratePoints(_deco12Parameters, false, true, true);
-        _deco13Points = GeneratePoints(_deco13Parameters, false, true, true);
-        _deco14Points = GeneratePoints(_deco14Parameters, false, true, true);
-        _deco15Points = GeneratePoints(_deco15Parameters, false, true, true);
-
-        
-        OnLoadingProgressChanged?.Invoke(5/10f, "Generating crowd points");
-        _CrowdPoints = GeneratePoints(_CrowdParameters, false, false, true);
+        _deco0Points = GeneratePoints(_deco0Parameters, false, true, true, true);
+        Logger.LogDebug("Dec0 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco1Points = GeneratePoints(_deco1Parameters, false, true, true, true);
+        Logger.LogDebug("Dec1 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco2Points = GeneratePoints(_deco2Parameters, false, true, true, true);
+        Logger.LogDebug("Dec2 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco3Points = GeneratePoints(_deco3Parameters, false, true, true, true);
+        Logger.LogDebug("Dec3 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco4Points = GeneratePoints(_deco4Parameters, false, true, true, true);
+        Logger.LogDebug("Dec4 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco5Points = GeneratePoints(_deco5Parameters, false, true, true, true);
+        Logger.LogDebug("Dec5 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco6Points = GeneratePoints(_deco6Parameters, false, true, true, true);
+        Logger.LogDebug("Dec6 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco7Points = GeneratePoints(_deco7Parameters, false, true, true, true);
+        Logger.LogDebug("Dec7 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco8Points = GeneratePoints(_deco8Parameters, false, true, true, true);
+        Logger.LogDebug("Dec8 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco9Points = GeneratePoints(_deco9Parameters, false, true, true, true);
+        Logger.LogDebug("Dec9 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco10Points = GeneratePoints(_deco10Parameters, false, true, true, true);
+        Logger.LogDebug("Dec10 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco11Points = GeneratePoints(_deco11Parameters, false, true, true, true);
+        Logger.LogDebug("Dec11 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco12Points = GeneratePoints(_deco12Parameters, false, true, true, true);
+        Logger.LogDebug("Dec12 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco13Points = GeneratePoints(_deco13Parameters, false, true, true, true);
+        Logger.LogDebug("Dec13 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco14Points = GeneratePoints(_deco14Parameters, false, true, true , true);
+        Logger.LogDebug("Dec14 generated in " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Server, this);
+        _deco15Points = GeneratePoints(_deco15Parameters, false, true, true, true);
 
         _readyToSpawnPrefabs = true;
         
@@ -349,8 +374,11 @@ public class ProcGenInstanciator : MonoBehaviour
     /// <param name="addToAlreadySpawnedPoints"> If we want other objects to consider the presence of these object to be taken into consideration when spawning them</param>
     /// <param name="considerAlreadySpawnedObjects">If we want these object to not spawn on other objects (where addToAlreadySpawnedPoints was used for them) </param>
     /// <returns></returns>
-    private List<Vector2> GeneratePoints(ProcGenParameters parameters, bool forceExactNumber, bool addToAlreadySpawnedPoints, bool considerAlreadySpawnedObjects)
+    private List<Vector2> GeneratePoints(ProcGenParameters parameters, bool forceExactNumber, bool addToAlreadySpawnedPoints, bool considerAlreadySpawnedObjects, bool ignoreSafeValues = false)
     {
+        int sampleBeforeRejection = 720;
+        int maxFailAttemps = 3000;
+
         Vector2 newRegionSize = _regionSize;
         newRegionSize.x *= (100 - parameters._edgeDistance) / 100;
         newRegionSize.y *= (100 - parameters._edgeDistance) / 100;
@@ -379,11 +407,11 @@ public class ProcGenInstanciator : MonoBehaviour
                 }
             }
 
-            points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, parameters._maxDistance, newRegionSize, parameters._numOfPoints, tmpAlreadySpawnedPoints, tmpAlreadySpawnedPointsRadius, 720, 3000);
+            points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, parameters._maxDistance, newRegionSize, parameters._numOfPoints, tmpAlreadySpawnedPoints, tmpAlreadySpawnedPointsRadius, sampleBeforeRejection, maxFailAttemps);
         }
         else
         {
-            points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, parameters._maxDistance, newRegionSize, parameters._numOfPoints, 720, 3000);
+            points = PoissonDiscSampling.GenerateExactNumberOfPoints(parameters._minDistance, parameters._maxDistance, newRegionSize, parameters._numOfPoints, sampleBeforeRejection, maxFailAttemps);
         }
 
         if (points.Count < parameters._numOfPoints && forceExactNumber)
@@ -528,7 +556,9 @@ public class ProcGenInstanciator : MonoBehaviour
         OnLoadingProgressChanged?.Invoke(9/10f, "Spawning environment");
         
         if (_FernPrefab) yield return SpawnPrefabs(_FernPoints, _FernPrefab);
-        if (_TreePrefab) yield return SpawnPrefabs(_TreePoints, _TreePrefab);
+        if (_Tree1Prefab) yield return SpawnPrefabs(_Tree1Points, _Tree1Prefab);
+        if (_Tree2Prefab) yield return SpawnPrefabs(_Tree2Points, _Tree2Prefab);
+        if (_Tree3Prefab) yield return SpawnPrefabs(_Tree3Points, _Tree3Prefab);
         if (_light0Prefab) yield return SpawnPrefabs(_light0Points, _light0Prefab);
         if (_light1Prefab) yield return SpawnPrefabs(_light1Points, _light1Prefab);
         if (_light2Prefab) yield return SpawnPrefabs(_light2Points, _light2Prefab);
@@ -567,7 +597,9 @@ public class ProcGenInstanciator : MonoBehaviour
         if (!_teamBPrefab) Logger.LogError("Team B prefab is missing");
         if (_landmarksPrefabList.IsNullOrEmpty()) Logger.LogError("Landmark prefabs are missing");
         if (!_FernPrefab) Logger.LogError("Fern prefab is missing");
-        if (!_TreePrefab) Logger.LogError("Tree prefab is missing");
+        if (!_Tree1Prefab) Logger.LogError("Tree prefab is missing");
+        if (!_Tree2Prefab) Logger.LogError("Tree prefab is missing");
+        if (!_Tree3Prefab) Logger.LogError("Tree prefab is missing");
         //if (!_testLandmarkPrefab) Logger.LogError("Test Landmark prefab is missing");
         if (!_light0Prefab) Logger.LogWarning("Light 0 prefab is missing, ignore if this is intended");
         if (!_light1Prefab) Logger.LogWarning("Light 1 prefab is missing, ignore if this is intended");
