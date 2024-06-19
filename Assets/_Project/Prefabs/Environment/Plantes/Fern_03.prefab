@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7555518162748227134
 Transform:
@@ -48,7 +48,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2949069479878487644
 Transform:
@@ -102,7 +102,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 19
+  <PrefabId>k__BackingField: 41
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -191,11 +191,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Fern_03
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2a7e6baf565d94646ae41a493c3758df,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2a7e6baf565d94646ae41a493c3758df,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5688219894053710212}
   m_SourcePrefab: {fileID: 100100000, guid: 2a7e6baf565d94646ae41a493c3758df, type: 3}
+--- !u!1 &1522732732307790565 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2a7e6baf565d94646ae41a493c3758df,
+    type: 3}
+  m_PrefabInstance: {fileID: 1864697554292041652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5688219894053710212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522732732307790565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c038381c871441bb01533ee97452ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2191570725870010463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2a7e6baf565d94646ae41a493c3758df,

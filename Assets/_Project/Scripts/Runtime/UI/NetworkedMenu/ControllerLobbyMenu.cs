@@ -7,6 +7,7 @@ using FishNet;
 using GameKit.Dependencies.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI.NetworkedMenu
@@ -24,15 +25,19 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private UI_BindRealPlayerToImage _playerBCanvas;
         [SerializeField, Required] private UI_BindRealPlayerToImage _playerCCanvas;
         [SerializeField, Required] private UI_BindRealPlayerToImage _playerDCanvas;
+        [SerializeField, Required] private UI_Button _goBackButton;
         [SerializeField] private float _secondsBeforeStartWhenAllControllerConnected = 2.5f;
         [SerializeField] private float _delayBetweenPlayerAnimation = 0.5f;
         private CanvasGroup _canvasGroup;
         private bool _timerStarted;
 
+        private Button _goBackButtonComponent;
+
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
             _canvasGroup.CloseInstant();
+            _goBackButtonComponent = _goBackButton.GetComponent<Button>();
         }
 
         public override void Open()
@@ -67,6 +72,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.Play();
             
             if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventGamepadMenuStart, AudioManager.Instance.gameObject);
+            
+            _goBackButtonComponent.onClick.AddListener(GoBack);
         }
 
         private void Update()
@@ -115,6 +122,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _playerBCanvas.Close();
             _playerCCanvas.Close();
             _playerDCanvas.Close();
+            _goBackButtonComponent.onClick.RemoveListener(GoBack);
         }
 
         public override void GoBack()

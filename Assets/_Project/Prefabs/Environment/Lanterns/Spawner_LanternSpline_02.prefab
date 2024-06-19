@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 2047770034509056779}
   - component: {fileID: 1001852138526974609}
   - component: {fileID: 8748283527559080716}
+  - component: {fileID: 1594187555588394152}
   m_Layer: 0
   m_Name: Spawner_LanternSpline_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2047770034509056779
 Transform:
@@ -70,7 +71,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 42
+  <PrefabId>k__BackingField: 54
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -91,6 +92,20 @@ MonoBehaviour:
   _updateHostVisibility: 1
   _observerConditions:
   - {fileID: 11400000, guid: 30ec6a4ad02f3f2418ce91bf74ab25ba, type: 2}
+--- !u!114 &1594187555588394152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6834454589651966973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafc40fd06d240e99e912eaefef874eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenHighContrast:
+  - {fileID: 8452905200637469425}
 --- !u!1 &8452905200637469425
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +120,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4012268767898244250
 Transform:
@@ -249,10 +264,20 @@ PrefabInstance:
       propertyPath: m_Splines.Array.data[0].m_Knots.Array.data[1].Rotation.value.z
       value: 1.5623321e-24
       objectReference: {fileID: 0}
+    - target: {fileID: 7024097664767781067, guid: b31abf19308ee74448179c3d77a178c2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7811142157512836970, guid: b31abf19308ee74448179c3d77a178c2,
         type: 3}
       propertyPath: m_Name
       value: LanternSpline_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7811142157512836970, guid: b31abf19308ee74448179c3d77a178c2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -373,10 +398,20 @@ PrefabInstance:
       propertyPath: m_Splines.Array.data[0].m_Knots.Array.data[1].Rotation.value.z
       value: 0.008370911
       objectReference: {fileID: 0}
+    - target: {fileID: 7024097664767781067, guid: 878cedf32282c4e44b44ec4c7cdb3d1d,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7811142157512836970, guid: 878cedf32282c4e44b44ec4c7cdb3d1d,
         type: 3}
       propertyPath: m_Name
       value: LanternSpline_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 7811142157512836970, guid: 878cedf32282c4e44b44ec4c7cdb3d1d,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -497,10 +532,20 @@ PrefabInstance:
       propertyPath: m_Splines.Array.data[0].m_Knots.Array.data[1].Rotation.value.z
       value: -0.121050455
       objectReference: {fileID: 0}
+    - target: {fileID: 7024097664767781067, guid: 0cd53a9989abe6d43b2ac0975137e970,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7811142157512836970, guid: 0cd53a9989abe6d43b2ac0975137e970,
         type: 3}
       propertyPath: m_Name
       value: LanternSpline_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 7811142157512836970, guid: 0cd53a9989abe6d43b2ac0975137e970,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -641,10 +686,20 @@ PrefabInstance:
       propertyPath: m_Seed
       value: 1554038252
       objectReference: {fileID: 0}
+    - target: {fileID: 7024097664767781067, guid: b31abf19308ee74448179c3d77a178c2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7811142157512836970, guid: b31abf19308ee74448179c3d77a178c2,
         type: 3}
       propertyPath: m_Name
       value: LanternSpline_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7811142157512836970, guid: b31abf19308ee74448179c3d77a178c2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

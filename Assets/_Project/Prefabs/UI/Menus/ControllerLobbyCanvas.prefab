@@ -3123,6 +3123,7 @@ MonoBehaviour:
   _playerBCanvas: {fileID: 3350038215934910651}
   _playerCCanvas: {fileID: 1984460136497773509}
   _playerDCanvas: {fileID: 4029295272681340758}
+  _goBackButton: {fileID: 1082230438996538882}
   _secondsBeforeStartWhenAllControllerConnected: 2
   _delayBetweenPlayerAnimation: 0.25
 --- !u!225 &4113551019622263716
@@ -4498,6 +4499,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 501f7a04a54acab43bf802fa49701957, type: 3}
+--- !u!114 &1082230438996538882 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8281246273914594888, guid: 501f7a04a54acab43bf802fa49701957,
+    type: 3}
+  m_PrefabInstance: {fileID: 9072571017199882314}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19bea699c6fd405e82d0878c82a30d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6172150772014320441 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2904783454948629363, guid: 501f7a04a54acab43bf802fa49701957,

@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2520691762780917994
 Transform:
@@ -70,7 +70,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 0
+  <PrefabId>k__BackingField: 13
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -98,6 +98,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2520691762780917994}
     m_Modifications:
+    - target: {fileID: 39790139933289553, guid: ca7f76b343b61ad47b923f2ef8474066,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2446470087598857449, guid: ca7f76b343b61ad47b923f2ef8474066,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2520691762780917994, guid: ca7f76b343b61ad47b923f2ef8474066,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -152,6 +162,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SpawnedLights_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2968241673480461579, guid: ca7f76b343b61ad47b923f2ef8474066,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3055319468008880210, guid: ca7f76b343b61ad47b923f2ef8474066,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4088225660699608510, guid: ca7f76b343b61ad47b923f2ef8474066,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251040419717830322, guid: ca7f76b343b61ad47b923f2ef8474066,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8013567931553427977, guid: ca7f76b343b61ad47b923f2ef8474066,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
