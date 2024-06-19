@@ -51,6 +51,9 @@ MonoBehaviour:
   _ground: {fileID: 3599783517367289265, guid: 4d3bbb7ce2eb3004e8b4eca8014802d2, type: 3}
   _invisibleWall: {fileID: 2333613852732724448, guid: 222efa64598257b4f9b0c090110d4f9a,
     type: 3}
+  _outerBoundDecorations: {fileID: 988075274948626529, guid: ed5f8a5fe0b467444826dd9d0819fa71,
+    type: 3}
+  _outerBoundDecoDistance: 2
   _playerPrefab: {fileID: 3667370609337106282, guid: 7f235897ac3e3d9428ec9334311332ea,
     type: 3}
   _teamAParameters: {fileID: 11400000, guid: 9d35c4f97bebf3741b52402581da417b, type: 2}
@@ -201,7 +204,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 14
+  <PrefabId>k__BackingField: 17
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0

@@ -23,6 +23,8 @@ public class ProcGenInstanciator : MonoBehaviour
 
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _ground;
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _invisibleWall;
+    [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _outerBoundDecorations;
+    [HideIf("@_patxiMode == true"), SerializeField] private float _outerBoundDecoDistance;
 
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _playerPrefab;
 
@@ -309,7 +311,33 @@ public class ProcGenInstanciator : MonoBehaviour
         _spawnedObjects.Add(wallSouth);
         _spawnedObjects.Add(wallEast);
         _spawnedObjects.Add(wallWest);
-        
+
+        // Generate map decoratives borders
+        // North
+        NetworkObject decoNorth = Instantiate(_outerBoundDecorations, new Vector3((_regionSize.x / 2), 0, _regionSize.y +_outerBoundDecoDistance ), Quaternion.identity);
+      
+        InstanceFinder.ServerManager.Spawn(decoNorth);
+
+        // South
+        NetworkObject decoSouth = Instantiate(_outerBoundDecorations, new Vector3(_regionSize.x / 2, 0, -_outerBoundDecoDistance), Quaternion.identity);
+        decoSouth.transform.eulerAngles = new Vector3(0, 180, 0);
+        InstanceFinder.ServerManager.Spawn(decoSouth);
+
+        // East
+        NetworkObject decoEast = Instantiate(_outerBoundDecorations, new Vector3(_regionSize.y + _outerBoundDecoDistance, 0, _regionSize.y / 2), Quaternion.identity);
+        decoEast.transform.eulerAngles = new Vector3(0, 90, 0);
+        InstanceFinder.ServerManager.Spawn(decoEast);
+
+        // West
+        NetworkObject decoWest = Instantiate(_outerBoundDecorations, new Vector3(-_outerBoundDecoDistance, 0, _regionSize.y / 2), Quaternion.identity);
+        decoWest.transform.eulerAngles = new Vector3(0, 270, 0);
+        InstanceFinder.ServerManager.Spawn(decoWest);
+
+        _spawnedObjects.Add(decoNorth);
+        _spawnedObjects.Add(decoSouth);
+        _spawnedObjects.Add(decoEast);
+        _spawnedObjects.Add(decoWest);
+
         yield return new WaitForFrames(_framesBetweenSpawn);
     }
 
