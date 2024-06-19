@@ -32,11 +32,13 @@ namespace _Project.Scripts.Runtime.UI
         
         private void PlayHoverFeedbacks()
         {
+            _unHoverFeedback.StopFeedbacks();
             _hoverFeedback.PlayFeedbacks();
         }
         
         private void PlayUnHoverFeedbacks()
         {
+            _hoverFeedback.StopFeedbacks();
             _unHoverFeedback.PlayFeedbacks();
         }
     }
