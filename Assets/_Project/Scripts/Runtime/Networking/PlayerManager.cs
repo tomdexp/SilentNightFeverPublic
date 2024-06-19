@@ -71,10 +71,10 @@ namespace _Project.Scripts.Runtime.Networking
         private PlayerController _playerControllerC;
         private PlayerController _playerControllerD;
         
-        private bool _changeTeamCooldownPlayerA;
-        private bool _changeTeamCooldownPlayerB;
-        private bool _changeTeamCooldownPlayerC;
-        private bool _changeTeamCooldownPlayerD;
+        private bool _inputCooldownPlayerA;
+        private bool _inputCooldownPlayerB;
+        private bool _inputCooldownPlayerC;
+        private bool _inputCooldownPlayerD;
         
 
         public override void OnStartServer()
@@ -647,24 +647,22 @@ namespace _Project.Scripts.Runtime.Networking
             switch (playerIndexType)
             {
                 case PlayerIndexType.A:
-                    if (_changeTeamCooldownPlayerA) return;
+                    if (_inputCooldownPlayerA) return;
                     break;
                 case PlayerIndexType.B:
-                    if (_changeTeamCooldownPlayerB) return;
+                    if (_inputCooldownPlayerB) return;
                     break;
                 case PlayerIndexType.C:
-                    if (_changeTeamCooldownPlayerC) return;
+                    if (_inputCooldownPlayerC) return;
                     break;
                 case PlayerIndexType.D:
-                    if (_changeTeamCooldownPlayerD) return;
+                    if (_inputCooldownPlayerD) return;
                     break;
                 case PlayerIndexType.Z:
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
             }
 
-            StartCoroutine(ChangeTeamCooldownCoroutine(playerIndexType));
+            StartCoroutine(InputCooldownCoroutine(playerIndexType));
             
             // Player can go in the team Z (middle), A(left) or B(right)
             PlayerTeamType previousTeam = _playerTeamInfos.Collection.First(x => x.PlayerIndexType == playerIndexType).PlayerTeamType;
@@ -1242,6 +1240,24 @@ namespace _Project.Scripts.Runtime.Networking
         [ServerRpc(RequireOwnership = false)]
         private void ChangeHatServerRpc(PlayerIndexType playerIndexType, bool next)
         {
+            switch (playerIndexType)
+            {
+                case PlayerIndexType.A:
+                    if (_inputCooldownPlayerA) return;
+                    break;
+                case PlayerIndexType.B:
+                    if (_inputCooldownPlayerB) return;
+                    break;
+                case PlayerIndexType.C:
+                    if (_inputCooldownPlayerC) return;
+                    break;
+                case PlayerIndexType.D:
+                    if (_inputCooldownPlayerD) return;
+                    break;
+                case PlayerIndexType.Z:
+                    break;
+            }
+            
             // Get the current hat of the player
             var playerHatInfo = _playerHatInfos.Collection.First(x => x.PlayerIndexType == playerIndexType);
             var index = _playerHatInfos.IndexOf(playerHatInfo);
@@ -1261,6 +1277,8 @@ namespace _Project.Scripts.Runtime.Networking
 
             _playerHatInfos[index] = copy;
             Logger.LogDebug("Player " + playerIndexType + " changed hat to " + newHat.ToString(), Logger.LogType.Server, this);
+            
+            StartCoroutine(InputCooldownCoroutine(playerIndexType));
         }
 
         private void OnChangedPlayerHatInfos(SyncListOperation op, int index, PlayerHatInfo oldItem, PlayerHatInfo newItem, bool asServer)
@@ -1880,21 +1898,21 @@ namespace _Project.Scripts.Runtime.Networking
             return _playerHatInfos.Collection;
         }
         
-        private IEnumerator ChangeTeamCooldownCoroutine(PlayerIndexType playerIndexType)
+        private IEnumerator InputCooldownCoroutine(PlayerIndexType playerIndexType)
         {
             switch (playerIndexType)
             {
                 case PlayerIndexType.A:
-                    if (_changeTeamCooldownPlayerA) yield break;
+                    if (_inputCooldownPlayerA) yield break;
                     break;
                 case PlayerIndexType.B:
-                    if (_changeTeamCooldownPlayerB) yield break;
+                    if (_inputCooldownPlayerB) yield break;
                     break;
                 case PlayerIndexType.C:
-                    if (_changeTeamCooldownPlayerC) yield break;
+                    if (_inputCooldownPlayerC) yield break;
                     break;
                 case PlayerIndexType.D:
-                    if (_changeTeamCooldownPlayerD) yield break;
+                    if (_inputCooldownPlayerD) yield break;
                     break;
                 case PlayerIndexType.Z:
                     break;
@@ -1905,16 +1923,16 @@ namespace _Project.Scripts.Runtime.Networking
             switch (playerIndexType)
             {
                 case PlayerIndexType.A:
-                    _changeTeamCooldownPlayerA = true;
+                    _inputCooldownPlayerA = true;
                     break;
                 case PlayerIndexType.B:
-                    _changeTeamCooldownPlayerB = true;
+                    _inputCooldownPlayerB = true;
                     break;
                 case PlayerIndexType.C:
-                    _changeTeamCooldownPlayerC = true;
+                    _inputCooldownPlayerC = true;
                     break;
                 case PlayerIndexType.D:
-                    _changeTeamCooldownPlayerD = true;
+                    _inputCooldownPlayerD = true;
                     break;
                 case PlayerIndexType.Z:
                     break;
@@ -1925,16 +1943,16 @@ namespace _Project.Scripts.Runtime.Networking
             switch (playerIndexType)
             {
                 case PlayerIndexType.A:
-                    _changeTeamCooldownPlayerA = false;
+                    _inputCooldownPlayerA = false;
                     break;
                 case PlayerIndexType.B:
-                    _changeTeamCooldownPlayerB = false;
+                    _inputCooldownPlayerB = false;
                     break;
                 case PlayerIndexType.C:
-                    _changeTeamCooldownPlayerC = false;
+                    _inputCooldownPlayerC = false;
                     break;
                 case PlayerIndexType.D:
-                    _changeTeamCooldownPlayerD = false;
+                    _inputCooldownPlayerD = false;
                     break;
                 case PlayerIndexType.Z:
                     break;

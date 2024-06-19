@@ -53,6 +53,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         public void PlayFeedbacksForAll()
         {
+            if (!InstanceFinder.IsServerStarted) return;
             var broadcast = new MMFPlayerReplicatedBroadcast
             {
                 Id = _id,
@@ -64,6 +65,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         public void StopFeedbacksForAll()
         {
+            if (!InstanceFinder.IsServerStarted) return;
             var broadcast = new MMFPlayerReplicatedBroadcast
             {
                 Id = _id,
@@ -78,6 +80,7 @@ namespace _Project.Scripts.Runtime.Networking
         /// </summary>
         public void RestoreFeedbacksForAll()
         {
+            if (!InstanceFinder.IsServerStarted) return;
             var broadcast = new MMFPlayerReplicatedBroadcast
             {
                 Id = _id,
