@@ -12,12 +12,10 @@ using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI
 {
-    public class UI_BindSliderToRTPC : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
+    public class UI_BindSliderToRTPC : MonoBehaviour
     {
         [Title("References")]
         [SerializeField] private AK.Wwise.RTPC _rtpc;
-        [SerializeField] private AK.Wwise.Event _hoverEvent;
-        [SerializeField] private AK.Wwise.Event _unHoverEvent;
         [SerializeField] private AK.Wwise.Event _valueChangedEvent;
         [SerializeField, Required] private TMP_Text _valueText;
         [SerializeField, Required] private TMP_Text _minValueText;
@@ -91,42 +89,6 @@ namespace _Project.Scripts.Runtime.UI
             if (AudioManager.HasInstance) AudioManager.Instance.SetLocalRTPC(_rtpc, newValue);
             if (!_valueChangedEvent.IsValid()) return;
             if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_valueChangedEvent, AudioManager.Instance.gameObject);
-        }
-
-        private void PlayHoverRTPC()
-        {
-            if (_isHovered) return;
-            _isHovered = true;
-            if (!_hoverEvent.IsValid()) return;
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_hoverEvent, AudioManager.Instance.gameObject);
-        }
-        
-        private void PlayUnHoverRTPC()
-        {
-            if (!_isHovered) return;
-            _isHovered = false;
-            if (!_unHoverEvent.IsValid()) return;
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_unHoverEvent, AudioManager.Instance.gameObject);
-        }
-
-        public void OnSelect(BaseEventData eventData)
-        {
-            PlayHoverRTPC();
-        }
-
-        public void OnDeselect(BaseEventData eventData)
-        {
-            PlayUnHoverRTPC();
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            PlayHoverRTPC();
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            PlayUnHoverRTPC();
         }
     }
 }

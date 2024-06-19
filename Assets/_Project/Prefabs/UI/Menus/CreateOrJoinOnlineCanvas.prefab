@@ -771,6 +771,7 @@ MonoBehaviour:
   _defaultSelectedOnOpen: {fileID: 6955381399739879602}
   _createLobbyButton: {fileID: 6955381399739879602}
   _joinLobbyButton: {fileID: 1005140558553363129}
+  _goBackButton: {fileID: 1323646200924708271}
   _creatingLobbyCanvasGroup: {fileID: 5325529699741280200}
   _joiningLobbyCanvasGroup: {fileID: 7760086195484772452}
   _lobbyCodeInputField: {fileID: 687295672187872191}
@@ -1594,6 +1595,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2357070572487482670}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1323646200924708271 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3669156091340324993, guid: 501f7a04a54acab43bf802fa49701957,
+    type: 3}
+  m_PrefabInstance: {fileID: 2357070572487482670}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4129965242038694564
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1735,7 +1748,7 @@ PrefabInstance:
     - target: {fileID: 6810442117934890482, guid: 655c3f674cd4aa349a422d661d68fc8e,
         type: 3}
       propertyPath: m_fontSize
-      value: 93.9
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2214,12 +2227,12 @@ PrefabInstance:
     - target: {fileID: 6440537571052333959, guid: f01187fde87960846869fde66d0a975a,
         type: 3}
       propertyPath: m_fontSize
-      value: 150
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 8557603146809907379, guid: f01187fde87960846869fde66d0a975a,
         type: 3}
       propertyPath: m_fontSize
-      value: 170
+      value: 88.55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2426,12 +2439,12 @@ PrefabInstance:
     - target: {fileID: 6440537571052333959, guid: f01187fde87960846869fde66d0a975a,
         type: 3}
       propertyPath: m_fontSize
-      value: 150
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 8557603146809907379, guid: f01187fde87960846869fde66d0a975a,
         type: 3}
       propertyPath: m_fontSize
-      value: 170
+      value: 88.55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

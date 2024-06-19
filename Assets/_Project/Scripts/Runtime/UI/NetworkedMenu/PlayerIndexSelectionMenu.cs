@@ -186,6 +186,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void GoToPlayerEnd(Transform playerLabel, Transform playerEnd, Color playerColor, MMF_Player playerReadyFeedback)
         {
+            //if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove, AudioManager.Instance.gameObject);
             playerLabel.GetComponent<UI_BindPlayerReadyToImage>().SetReadyColor(playerColor);
             playerLabel.GetComponent<UI_BindPlayerReadyToImage>().SetReadyFeedbacks(playerReadyFeedback);
             playerLabel.DOMove(playerEnd.position, _uiData.PlayerTeamLabelMovementDuration)
@@ -194,6 +195,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         private void GoToPlayerStart(Transform playerLabel, Vector3 playerStart)
         {
+            //if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove, AudioManager.Instance.gameObject);
             playerLabel.DOMove(playerStart, _uiData.PlayerTeamLabelMovementDuration)
                 .SetEase(_uiData.PlayerTeamLabelMovementEase);
         }

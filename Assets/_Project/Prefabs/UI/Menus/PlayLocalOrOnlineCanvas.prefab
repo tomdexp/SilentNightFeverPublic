@@ -816,6 +816,7 @@ MonoBehaviour:
   _defaultSelectedOnOpen: {fileID: 4582864076628706082}
   _playOnlineButton: {fileID: 6943016974973672495}
   _playLocalButton: {fileID: 4582864076628706082}
+  _goBackButton: {fileID: 7655397085940557705}
   _onlineFadeCanvasGroup: {fileID: 7047776642095614078}
   _localFadeCanvasGroup: {fileID: 5481598975914367735}
 --- !u!114 &1903187336819500933
@@ -1714,6 +1715,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 501f7a04a54acab43bf802fa49701957, type: 3}
+--- !u!114 &7655397085940557705 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3669156091340324993, guid: 501f7a04a54acab43bf802fa49701957,
+    type: 3}
+  m_PrefabInstance: {fileID: 6401331479477036808}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8113731956642167931 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2904783454948629363, guid: 501f7a04a54acab43bf802fa49701957,
