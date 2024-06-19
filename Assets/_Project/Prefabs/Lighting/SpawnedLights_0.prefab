@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8174312372840038382
 Transform:
@@ -65,6 +65,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: L_SingleOrange
+      objectReference: {fileID: 0}
+    - target: {fileID: 6009671550701254814, guid: 544aca3664db8da4eb34826e2a492d03,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6452105221668139151, guid: 544aca3664db8da4eb34826e2a492d03,
         type: 3}
@@ -141,6 +146,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8358306203400983976, guid: 544aca3664db8da4eb34826e2a492d03,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -215,6 +225,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: L_SingleBlue
       objectReference: {fileID: 0}
+    - target: {fileID: 6009671550701254814, guid: 31b0c89a77380e447958a5befe2dca07,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6534477583863402077, guid: 31b0c89a77380e447958a5befe2dca07,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -264,6 +279,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8775449197262140483, guid: 31b0c89a77380e447958a5befe2dca07,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

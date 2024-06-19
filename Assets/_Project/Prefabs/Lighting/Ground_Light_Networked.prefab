@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6220715594794919593
 Transform:
@@ -72,7 +72,7 @@ MonoBehaviour:
   _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 35
+  <PrefabId>k__BackingField: 50
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -127,10 +127,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6220715594794919593}
     m_Modifications:
+    - target: {fileID: 1105541975722360403, guid: aab65f38b568b3d4da99854982122de4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2679368218085965751, guid: aab65f38b568b3d4da99854982122de4,
         type: 3}
       propertyPath: m_Name
       value: Ground_Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 2679368218085965751, guid: aab65f38b568b3d4da99854982122de4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461876531005711868, guid: aab65f38b568b3d4da99854982122de4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 5686322612399857454, guid: aab65f38b568b3d4da99854982122de4,
         type: 3}

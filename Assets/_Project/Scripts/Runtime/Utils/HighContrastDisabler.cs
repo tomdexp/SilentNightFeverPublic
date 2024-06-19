@@ -1,21 +1,12 @@
 ﻿using System;
-using GameKit.Dependencies.Utilities;
 using UnityEngine;
 
 namespace _Project.Scripts.Runtime.Utils
 {
-    [RequireComponent(typeof(Renderer))]
-    public class HighContrastRenderer : MonoBehaviour
+    public class HighContrastDisabler : MonoBehaviour
     {
-        private Renderer _renderer;
-        private static readonly int HighContrast = Shader.PropertyToID("_High_Contrast");
-        private Material[] Materials => _renderer.materials;
-        
-        private void Awake()
-        {
-            _renderer = GetComponent<Renderer>();
-        }
-        
+        [SerializeField] private GameObject[] _inactiveWhenHighContrast;
+
         private void Start()
         {
             OnHighContrastFilterEnableChanged(ApplicationSettings.ApplicationSettings.HighContrastFilterEnable.Value);
@@ -29,11 +20,9 @@ namespace _Project.Scripts.Runtime.Utils
 
         private void OnHighContrastFilterEnableChanged(bool isEnabled)
         {
-            foreach (var material in Materials)
+            foreach (var go in _inactiveWhenHighContrast)
             {
-                if (!material) continue;
-                if (!material.HasProperty(HighContrast)) continue;
-                material.SetFloat(HighContrast, isEnabled ? 1 : 0);
+                go.SetActive(!isEnabled);
             }
         }
     }
