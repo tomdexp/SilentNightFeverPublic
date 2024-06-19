@@ -12,14 +12,16 @@ using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI
 {
-    public class UI_BindSliderToRTPC : MonoBehaviour
+    public class UI_BindSliderToRTPC : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [Title("References")]
         [SerializeField] private AK.Wwise.RTPC _rtpc;
+        [SerializeField] private AK.Wwise.Event _hoverEvent;
+        [SerializeField] private AK.Wwise.Event _unHoverEvent;
+        [SerializeField] private AK.Wwise.Event _valueChangedEvent;
         [SerializeField, Required] private TMP_Text _valueText;
         [SerializeField, Required] private TMP_Text _minValueText;
         [SerializeField, Required] private TMP_Text _maxValueText;
-        
         
         [Title("Settings")]
         [SerializeField] private SliderType _sliderType;
@@ -28,13 +30,17 @@ namespace _Project.Scripts.Runtime.UI
         
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private float _currentValue;
+        
+        private bool _isHovered;
 
         private enum SliderType
         {
+            Master,
             Music,
             Ambiance,
             SFX,
             Landmarks,
+            UI,
             HighPass,
             LowPass,
             Notch
@@ -56,10 +62,12 @@ namespace _Project.Scripts.Runtime.UI
             _slider.maxValue = _maxValue;
             _currentValue = _sliderType switch
             {
+                SliderType.Master => AudioManager.Instance.AudioManagerData.SettingsMasterSliderDefaultValue,
                 SliderType.Music => AudioManager.Instance.AudioManagerData.SettingsMusicSliderDefaultValue,
                 SliderType.Ambiance => AudioManager.Instance.AudioManagerData.SettingsAmbianceSliderDefaultValue,
                 SliderType.SFX => AudioManager.Instance.AudioManagerData.SettingsSFXSliderDefaultValue,
                 SliderType.Landmarks => AudioManager.Instance.AudioManagerData.SettingsLandmarksSliderDefaultValue,
+                SliderType.UI => AudioManager.Instance.AudioManagerData.SettingsUISliderDefaultValue,
                 SliderType.HighPass => AudioManager.Instance.AudioManagerData.SettingsHighPassSliderDefaultValue,
                 SliderType.LowPass => AudioManager.Instance.AudioManagerData.SettingsLowPassSliderDefaultValue,
                 SliderType.Notch => AudioManager.Instance.AudioManagerData.SettingsNotchSliderDefaultValue,
@@ -80,7 +88,45 @@ namespace _Project.Scripts.Runtime.UI
         {
             _currentValue = newValue;
             _valueText.text = newValue.ToString(CultureInfo.InvariantCulture);
-            if(AudioManager.HasInstance) AudioManager.Instance.SetLocalRTPC(_rtpc, newValue);
+            if (AudioManager.HasInstance) AudioManager.Instance.SetLocalRTPC(_rtpc, newValue);
+            if (!_valueChangedEvent.IsValid()) return;
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_valueChangedEvent, AudioManager.Instance.gameObject);
+        }
+
+        private void PlayHoverRTPC()
+        {
+            if (_isHovered) return;
+            _isHovered = true;
+            if (!_hoverEvent.IsValid()) return;
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_hoverEvent, AudioManager.Instance.gameObject);
+        }
+        
+        private void PlayUnHoverRTPC()
+        {
+            if (!_isHovered) return;
+            _isHovered = false;
+            if (!_unHoverEvent.IsValid()) return;
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_unHoverEvent, AudioManager.Instance.gameObject);
+        }
+
+        public void OnSelect(BaseEventData eventData)
+        {
+            PlayHoverRTPC();
+        }
+
+        public void OnDeselect(BaseEventData eventData)
+        {
+            PlayUnHoverRTPC();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            PlayHoverRTPC();
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            PlayUnHoverRTPC();
         }
     }
 }
