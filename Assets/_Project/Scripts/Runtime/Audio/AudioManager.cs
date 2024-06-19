@@ -40,6 +40,11 @@ namespace _Project.Scripts.Runtime.Audio
             _akGameObj = GetComponent<AkGameObj>();
         }
 
+        private void OnDestroy()
+        {
+            AkSoundEngine.Term();
+        }
+
         private void LoadAllBanks()
         {
             OnBanksLoadStart?.Invoke();
