@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Runtime.Networking;
@@ -20,74 +21,52 @@ namespace _Project.Scripts.Runtime.UI
         
         private MMF_Player _feedbacksReady;
         private bool _isRegistered;
-        
-        
-        private void Start()
+
+        private void Update()
         {
-            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
-            StartCoroutine(TryRegisterPlayerManagerEvents());
-            UpdateUI();
-        }
-        
-        
-        private void OnClientConnectionState(ClientConnectionStateArgs args)
-        {
-            if (args.ConnectionState == LocalConnectionState.Started)
+            if (Time.frameCount % 10 == 0)
             {
-                StartCoroutine(TryRegisterPlayerManagerEvents());
+                UpdateUI();
             }
         }
 
-        private IEnumerator TryRegisterPlayerManagerEvents()
-        {
-            while(!PlayerManager.HasInstance) yield return null;
-            if (_isRegistered) yield break;
-            PlayerManager.Instance.OnPlayersReadyChanged += OnPlayersReadyChanged;
-            _isRegistered = true;
-        }
-
-        private void OnDestroy()
-        {
-            if(InstanceFinder.ClientManager) InstanceFinder.ClientManager.OnClientConnectionState -= OnClientConnectionState;
-            if (PlayerManager.HasInstance) PlayerManager.Instance.OnPlayersReadyChanged -= OnPlayersReadyChanged;
-        }
-
-        private void OnPlayersReadyChanged(List<PlayerReadyInfo> _)
-        {
-            UpdateUI();
-        }
-        
         public void UpdateUI()
         {
             if (!PlayerManager.HasInstance)
             {
-                _image.color = _noPlayerColor;
-                _feedbacksReady?.StopFeedbacks();
-                _feedbacksReady?.RestoreInitialValues();
+                NotReadyPlayer();
                 return;
             }
 
             var readyPlayerInfos = PlayerManager.Instance.GetPlayerReadyInfos();
             if (readyPlayerInfos == null)
             {
-                _image.color = _noPlayerColor;
-                _feedbacksReady?.StopFeedbacks();
-                _feedbacksReady?.RestoreInitialValues();
+                NotReadyPlayer();
                 return;
             }
             
             var readyPlayerInfo = readyPlayerInfos.FirstOrDefault(x => x.PlayerIndexType == _playerIndexType);
             if (readyPlayerInfo.IsPlayerReady)
             {
-                _image.color = _playerReadyColor;
-                _feedbacksReady?.PlayFeedbacks();
+                ReadyPlayer();
             }
             else
             {
-                _image.color = _noPlayerColor;
-                _feedbacksReady?.StopFeedbacks();
-                _feedbacksReady?.RestoreInitialValues();
+                NotReadyPlayer();
             }
+        }
+
+        private void ReadyPlayer()
+        {
+            _image.color = _playerReadyColor;
+            _feedbacksReady?.PlayFeedbacks();
+        }
+
+        private void NotReadyPlayer()
+        {
+            _image.color = _noPlayerColor;
+            _feedbacksReady?.StopFeedbacks();
+            _feedbacksReady?.RestoreInitialValues();
         }
         
         public void SetReadyColor(Color color)
