@@ -10,69 +10,35 @@ namespace _Project.Scripts.Runtime.UI.Transitions
 {
     public class TransitionCanvasGroupLoadingGame : TransitionCanvasGroup
     {
-        private bool _isLoading = false;
-        
+        private UI_BindRandomText _loadingText;
+
+        protected override void Start()
+        {
+            base.Start();
+            _loadingText = GetComponentInChildren<UI_BindRandomText>();
+        }
+
         public override IEnumerator BeginTransition()
         {
-            BindToLoadingTextAndProgressbar();
+            yield return base.BeginTransition();
+            _loadingText.PickRandomText();
             var tween = DOTween.
-                To(() => _fadeValue.Value, x => _fadeValue.Value = x, 1, Data.TransitionLoadingGameFadeInDuration)
+                To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, 1, Data.TransitionLoadingGameFadeInDuration)
                 .SetEase(Data.TransitionLoadingGameFadeInEase);
             yield return tween.WaitForCompletion();
-            _fadeValue.Value = 1;
+            _canvasGroup.alpha = 1;
         }
 
         public override IEnumerator EndTransition()
         {
+            yield return base.EndTransition();
             yield return new WaitForSeconds(1f);
             var tween = DOTween
-                .To(() => _fadeValue.Value, x => _fadeValue.Value = x, 0, Data.TransitionLoadingGameFadeOutDuration)
+                .To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, 0, Data.TransitionLoadingGameFadeOutDuration)
                 .SetEase(Data.TransitionLoadingGameFadeOutEase);
             yield return tween.WaitForCompletion();
-            UnbindFromLoadingTextAndProgressbar();
-            _fadeValue.Value = 0;
-        }
-
-        private void BindToLoadingTextAndProgressbar()
-        {
-            var procGen = FindAnyObjectByType<ProcGenInstanciator>();
-            //_progressBar.fillAmount = 0;
-            if (!procGen) return;
-            _isLoading = true;
-            //procGen.OnLoadingProgressChanged += OnLoadingProgressChanged;
+            _canvasGroup.alpha = 0;
         }
         
-        private void UnbindFromLoadingTextAndProgressbar()
-        {
-            var procGen = FindAnyObjectByType<ProcGenInstanciator>();
-            if (!procGen) return;
-            _isLoading = false;
-            //procGen.OnLoadingProgressChanged -= OnLoadingProgressChanged;
-        }
-
-        private void OnLoadingProgressChanged(float percent, string message)
-        {
-            //_loadingText.text = $"{message}";
-            //_progressBar.fillAmount = percent;
-        }
-
-        /*protected override void Update()
-        {
-            base.Update();
-            // tick less often
-            if (Time.frameCount % 10 != 0) return;
-            if (_isLoading)
-            {
-                var currentDots = _loadingText.text.Split('.').Length - 1;
-                var dots = (currentDots + 1) % 4;
-                // remove the existing dots
-                _loadingText.text = _loadingText.text.Replace(".", "");
-                // add the new dots
-                for (var i = 0; i < dots; i++)
-                {
-                    _loadingText.text += ".";
-                }
-            }
-        }*/
     }
 }

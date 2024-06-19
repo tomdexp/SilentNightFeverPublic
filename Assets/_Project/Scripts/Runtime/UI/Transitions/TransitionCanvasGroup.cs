@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
+using _Project.Scripts.Runtime.Networking;
+using FishNet;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Transporting;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI.Transitions
 {
@@ -16,13 +19,72 @@ namespace _Project.Scripts.Runtime.UI.Transitions
     {
         [Title("References")] 
         public UIData Data;
-        
-        protected readonly SyncVar<float> _fadeValue = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers, .1f, Channel.Reliable));
         protected CanvasGroup _canvasGroup;
-        public bool DoSyncFadeValue = true;
 
-        public abstract IEnumerator BeginTransition();
-        public abstract IEnumerator EndTransition();
+        protected virtual void Awake()
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+        }
+
+        protected virtual void Start()
+        {
+            InstanceFinder.ClientManager.RegisterBroadcast<TransitionBroadcast>(OnTransitionBroadcast);
+            Logger.LogTrace($"Registered broadcast for transitions of {GetType().Name}", Logger.LogType.Client, this);
+        }
+        
+        protected void OnDestroy()
+        {
+            if (InstanceFinder.ClientManager)
+            {
+                InstanceFinder.ClientManager.UnregisterBroadcast<TransitionBroadcast>(OnTransitionBroadcast);
+            }
+        }
+
+        private void OnTransitionBroadcast(TransitionBroadcast broadcast, Channel channel)
+        {
+            if (IsServerStarted) return; // Only for clients
+            if (broadcast.Id != GetType().Name) return;
+            Logger.LogTrace($"Received TransitionBroadcast (Id : {broadcast.Id}, open : {broadcast.Open})", Logger.LogType.Client, this);
+            StartCoroutine(broadcast.Open ? BeginTransition() : EndTransition());
+        }
+
+        public virtual IEnumerator BeginTransition()
+        {
+            if (IsServerStarted)
+            {
+                var broadcast = new TransitionBroadcast
+                {
+                    Id = GetType().Name,
+                    Open = true
+                };
+                InstanceFinder.ServerManager.Broadcast(broadcast);
+                Logger.LogTrace($"Server invoked TransitionBroadcast (Id : {broadcast.Id}, open : {broadcast.Open})", Logger.LogType.Server, this);
+            }
+            else
+            {
+                Logger.LogTrace("Client invoked BeginTransition", Logger.LogType.Client, this);
+            }
+            yield return null;
+        }
+
+        public virtual IEnumerator EndTransition()
+        {
+            if (IsServerStarted)
+            {
+                var broadcast = new TransitionBroadcast
+                {
+                    Id = GetType().Name,
+                    Open = false
+                };
+                InstanceFinder.ServerManager.Broadcast(broadcast);
+                Logger.LogTrace($"Server invoked TransitionBroadcast (Id : {broadcast.Id}, open : {broadcast.Open})", Logger.LogType.Server, this);
+            }
+            else
+            {
+                Logger.LogTrace("Client invoked EndTransition", Logger.LogType.Client, this);
+            }
+            yield return null;
+        }
         
         [Button(ButtonSizes.Large)]
         public void DebugBeginTransition()
@@ -34,16 +96,6 @@ namespace _Project.Scripts.Runtime.UI.Transitions
         public void DebugEndTransition()
         {
             StartCoroutine(EndTransition());
-        }
-
-        protected virtual void Awake()
-        {
-            _canvasGroup = GetComponent<CanvasGroup>();
-        }
-
-        protected virtual void Update()
-        {
-            if(DoSyncFadeValue) _canvasGroup.alpha = _fadeValue.Value;
         }
     }
 }

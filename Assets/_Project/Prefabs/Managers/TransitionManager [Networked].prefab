@@ -82,7 +82,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4092197078513171837}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -98,11 +98,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86ea02084d8a46278273e0374252253e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 1
+  _componentIndexCache: 3
   _addedNetworkObject: {fileID: 6893299460936660107}
   _networkObjectCache: {fileID: 6893299460936660107}
   Data: {fileID: 11400000, guid: b92375a8369ab2d4f97ea7d1334462b7, type: 2}
-  DoSyncFadeValue: 1
 --- !u!1 &6294817369148981062
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +115,7 @@ GameObject:
   - component: {fileID: 8087557416835408330}
   - component: {fileID: 2679585646044609324}
   - component: {fileID: 6893299460936660107}
+  - component: {fileID: 561496794052430809}
   m_Layer: 5
   m_Name: 'TransitionManager [Networked]'
   m_TagString: Untagged
@@ -211,8 +211,6 @@ MonoBehaviour:
   _transitionSceneChange: {fileID: 2902892717285480742}
   _transitionLoadingGame: {fileID: 6843058052123331930}
   _transitionLoadingRound: {fileID: 7064409897820544242}
-  _uiTeamAScore: {fileID: 343159360682884361}
-  _uiTeamBScore: {fileID: 2012720148657580662}
 --- !u!114 &6893299460936660107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,11 +228,13 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 2679585646044609324}
+  - {fileID: 6843058052123331930}
+  - {fileID: 7064409897820544242}
   - {fileID: 2902892717285480742}
+  - {fileID: 343159360682884361}
+  - {fileID: 2012720148657580662}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
-  <NestedRootNetworkBehaviours>k__BackingField:
-  - {fileID: 5690922818130316017}
-  - {fileID: 9051510787551272005}
+  <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
     Position: {x: 1280, y: 720, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
@@ -258,6 +258,21 @@ MonoBehaviour:
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7531257206370475251
+--- !u!114 &561496794052430809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294817369148981062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideType: 3
+  _updateHostVisibility: 1
+  _observerConditions: []
 --- !u!1001 &1288297671938681238
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -320,7 +335,12 @@ PrefabInstance:
         type: 3}
       propertyPath: _networkObjectCache
       value: 
-      objectReference: {fileID: 5690922818130316017}
+      objectReference: {fileID: 6893299460936660107}
+    - target: {fileID: 5699198551170360524, guid: c90148e3db3883b47b2efad922bc8216,
+        type: 3}
+      propertyPath: _componentIndexCache
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6853013871138743143, guid: c90148e3db3883b47b2efad922bc8216,
         type: 3}
       propertyPath: <IsNested>k__BackingField
@@ -441,23 +461,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6853013871138743143, guid: c90148e3db3883b47b2efad922bc8216, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c90148e3db3883b47b2efad922bc8216, type: 3}
---- !u!114 &5690922818130316017 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6853013871138743143, guid: c90148e3db3883b47b2efad922bc8216,
-    type: 3}
-  m_PrefabInstance: {fileID: 1288297671938681238}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6843058052123331930 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5699198551170360524, guid: c90148e3db3883b47b2efad922bc8216,
@@ -501,9 +510,29 @@ PrefabInstance:
       objectReference: {fileID: 2679585646044609324}
     - target: {fileID: 3877958392790108065, guid: da4ef4af9bcbebf42ad2f979c17b90be,
         type: 3}
+      propertyPath: _uiTeamAScore
+      value: 
+      objectReference: {fileID: 343159360682884361}
+    - target: {fileID: 3877958392790108065, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _uiTeamBScore
+      value: 
+      objectReference: {fileID: 2012720148657580662}
+    - target: {fileID: 3877958392790108065, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
       propertyPath: _addedNetworkObject
       value: 
       objectReference: {fileID: 6893299460936660107}
+    - target: {fileID: 3877958392790108065, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 6893299460936660107}
+    - target: {fileID: 3877958392790108065, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _componentIndexCache
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3877958392790108065, guid: da4ef4af9bcbebf42ad2f979c17b90be,
         type: 3}
       propertyPath: _delayAfterCloseFeedback
@@ -518,6 +547,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 113.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5491589494126063909, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _addedNetworkObject
+      value: 
+      objectReference: {fileID: 6893299460936660107}
+    - target: {fileID: 5491589494126063909, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 6893299460936660107}
+    - target: {fileID: 5491589494126063909, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _componentIndexCache
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5988574047267284570, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _addedNetworkObject
+      value: 
+      objectReference: {fileID: 6893299460936660107}
+    - target: {fileID: 5988574047267284570, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 6893299460936660107}
+    - target: {fileID: 5988574047267284570, guid: da4ef4af9bcbebf42ad2f979c17b90be,
+        type: 3}
+      propertyPath: _componentIndexCache
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6012111196709732773, guid: da4ef4af9bcbebf42ad2f979c17b90be,
         type: 3}
@@ -8884,7 +8943,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3046114336431605526, guid: da4ef4af9bcbebf42ad2f979c17b90be, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -8995,18 +9055,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &9051510787551272005 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3046114336431605526, guid: da4ef4af9bcbebf42ad2f979c17b90be,
-    type: 3}
-  m_PrefabInstance: {fileID: 6329973941769542483}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8395546225781503148

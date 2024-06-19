@@ -259,6 +259,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
             canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
             customizationCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
+            var activeWhenMetroCustomization =
+                FindObjectsByType<ActiveWhenMetroCustomization>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var obj in activeWhenMetroCustomization)
+            {
+                obj.gameObject.SetActive(false);
+            }
             DOTween.To(() => metroVolume.weight, x => metroVolume.weight = x, 1, 1);
             DOTween.To(() => canvasVolume.weight, x => canvasVolume.weight = x, 0, 1);
         }
@@ -274,6 +280,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
             customizationCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
             canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
+            var activeWhenMetroCustomization =
+                FindObjectsByType<ActiveWhenMetroCustomization>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var obj in activeWhenMetroCustomization)
+            {
+                obj.gameObject.SetActive(false);
+            }
             DOTween.To(() => metroVolume.weight, x => metroVolume.weight = x, 0, 1);
             DOTween.To(() => canvasVolume.weight, x => canvasVolume.weight = x, 1, 1);
             // delay the activation of the npcs to avoid them being visible during the transition
@@ -290,6 +302,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             metroCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
             canvasCamera.GetComponent<CinemachineCamera>().Priority.Value = 0;
             customizationCamera.GetComponent<CinemachineCamera>().Priority.Value = 10;
+            var activeWhenMetroCustomization =
+                FindObjectsByType<ActiveWhenMetroCustomization>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var obj in activeWhenMetroCustomization)
+            {
+                obj.gameObject.SetActive(true);
+            }
             DOTween.To(() => metroVolume.weight, x => metroVolume.weight = x, 1, 1);
             DOTween.To(() => canvasVolume.weight, x => canvasVolume.weight = x, 0, 1);
         }
