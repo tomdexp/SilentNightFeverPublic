@@ -12,6 +12,8 @@ namespace _Project.Scripts.Runtime.UI.Transitions
 {
     public class TransitionCanvasGroupLoadingRound : TransitionCanvasGroup
     {
+        [SerializeField, Required] private UI_TeamScore _uiTeamAScore;
+        [SerializeField, Required] private UI_TeamScore _uiTeamBScore;
         [SerializeField, Required] private MMFPlayerReplicated _feedbackTeamAWin;
         [SerializeField, Required] private MMFPlayerReplicated _feedbackTeamBWin;
         [SerializeField, Required] private MMFPlayerReplicated _feedbackOpen;
@@ -22,8 +24,9 @@ namespace _Project.Scripts.Runtime.UI.Transitions
         
         public override IEnumerator BeginTransition()
         {
+            yield return base.BeginTransition();
             var tween = DOTween.
-                To(() => _fadeValue.Value, x => _fadeValue.Value = x, 1, Data.TransitionLoadingRoundFadeInDuration)
+                To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, 1, Data.TransitionLoadingRoundFadeInDuration)
                 .SetEase(Data.TransitionLoadingRoundFadeInEase);
             yield return tween.WaitForCompletion();
             if (IsServerStarted)
@@ -52,21 +55,27 @@ namespace _Project.Scripts.Runtime.UI.Transitions
                 yield return new WaitForSeconds(_delayAfterTeamWinFeedback);
                 _feedbackOpen.PlayFeedbacksForAll();
             }
-            _fadeValue.Value = 1;
+            _canvasGroup.alpha = 1;
+            _uiTeamAScore.Open();
+            yield return new WaitForSeconds(.25f);
+            _uiTeamBScore.Open();
         }
 
         public override IEnumerator EndTransition()
         {
+            _uiTeamBScore.Close();
+            yield return new WaitForSeconds(.25f);
+            _uiTeamAScore.Close();
+            yield return base.EndTransition();
             //yield return new WaitForSeconds(1f);
             _feedbackClose.PlayFeedbacksForAll();
             yield return new WaitForSeconds(_delayAfterCloseFeedback);
             var tween = DOTween
-                .To(() => _fadeValue.Value, x => _fadeValue.Value = x, 0, Data.TransitionLoadingRoundFadeOutDuration)
+                .To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, 0, Data.TransitionLoadingRoundFadeOutDuration)
                 .SetEase(Data.TransitionLoadingRoundFadeOutEase);
             yield return tween.WaitForCompletion();
             yield return new WaitForSeconds(1f);
-            _fadeValue.Value = 0;
-            
+            _canvasGroup.alpha = 0;
         }
     }
 }

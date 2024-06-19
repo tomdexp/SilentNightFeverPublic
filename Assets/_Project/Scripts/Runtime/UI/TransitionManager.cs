@@ -15,8 +15,8 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private TransitionCanvasGroup _transitionSceneChange;
         [SerializeField, Required] private TransitionCanvasGroup _transitionLoadingGame;
         [SerializeField, Required] private TransitionCanvasGroup _transitionLoadingRound;
-        [SerializeField, Required] private UI_TeamScore _uiTeamAScore;
-        [SerializeField, Required] private UI_TeamScore _uiTeamBScore;
+        //[SerializeField, Required] private UI_TeamScore _uiTeamAScore;
+        //[SerializeField, Required] private UI_TeamScore _uiTeamBScore;
 
         protected override void Awake()
         {
@@ -58,17 +58,17 @@ namespace _Project.Scripts.Runtime.UI
         {
             Logger.LogDebug("BeginLoadingRoundTransition", Logger.LogType.Server, this);
             yield return _transitionLoadingRound.BeginTransition();
-            _uiTeamAScore.Open();
+            //_uiTeamAScore.Open();
             yield return new WaitForSeconds(.25f);
-            _uiTeamBScore.Open();
+            //_uiTeamBScore.Open();
         }
         
         public IEnumerator EndLoadingRoundTransition()
         {
             Logger.LogDebug("EndLoadingRoundTransition", Logger.LogType.Server, this);
-            _uiTeamBScore.Close();
+            //_uiTeamBScore.Close();
             yield return new WaitForSeconds(.25f);
-            _uiTeamAScore.Close();
+            //_uiTeamAScore.Close();
             //yield return new WaitForSeconds(1f);
             yield return _transitionLoadingRound.EndTransition();
         }
