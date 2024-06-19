@@ -11,7 +11,7 @@ namespace _Project.Scripts.Runtime.UI
         private void Start()
         {
             _toggle = GetComponent<UI_Toggle>();
-            _toggle.SetValue(ApplicationSettings.HighContrastFilterEnableEnable.Value);
+            _toggle.SetValue(ApplicationSettings.HighContrastFilterEnable.Value);
             _toggle.OnValueChanged += OnValueChanged;
         }
         
@@ -22,7 +22,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnValueChanged(bool newValue)
         {
-            ApplicationSettings.HighContrastFilterEnableEnable.Set(newValue);
+            ApplicationSettings.HighContrastFilterEnable.Set(newValue);
         }
     }
 }

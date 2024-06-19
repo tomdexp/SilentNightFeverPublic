@@ -11,7 +11,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
         public static BoolSettingHoldButtonToAnchorTongue HoldButtonToAnchorTongue = new BoolSettingHoldButtonToAnchorTongue(false);
         public static BoolSettingUseRadialTongueSensor UseRadialTongueSensor = new BoolSettingUseRadialTongueSensor(false);
         public static BoolSettingEpilepsyFilterEnable EpilepsyFilterEnable = new BoolSettingEpilepsyFilterEnable(false);
-        public static BoolSettingHighContrastFilterEnable HighContrastFilterEnableEnable = new BoolSettingHighContrastFilterEnable(false);
+        public static BoolSettingHighContrastFilterEnable HighContrastFilterEnable = new BoolSettingHighContrastFilterEnable(false);
     
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Load()
@@ -19,7 +19,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             HoldButtonToAnchorTongue.Load();
             UseRadialTongueSensor.Load();
             EpilepsyFilterEnable.Load();
-            HighContrastFilterEnableEnable.Load();
+            HighContrastFilterEnable.Load();
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -28,7 +28,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             QuantumRegistry.RegisterObject(HoldButtonToAnchorTongue);
             QuantumRegistry.RegisterObject(UseRadialTongueSensor);
             QuantumRegistry.RegisterObject(EpilepsyFilterEnable);
-            QuantumRegistry.RegisterObject(HighContrastFilterEnableEnable);
+            QuantumRegistry.RegisterObject(HighContrastFilterEnable);
             Logger.LogInfo("QuantumRegistry updated");
         }
 
@@ -37,7 +37,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             HoldButtonToAnchorTongue.Save();
             UseRadialTongueSensor.Save();
             EpilepsyFilterEnable.Save();
-            HighContrastFilterEnableEnable.Save();
+            HighContrastFilterEnable.Save();
             PlayerPrefs.Save();
         }
         
@@ -61,6 +61,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             HoldButtonToAnchorTongue.CommandGet();
             UseRadialTongueSensor.CommandGet();
             EpilepsyFilterEnable.CommandGet();
+            HighContrastFilterEnable.CommandGet();
             Logger.LogInfo("Options listed");
             
         }
@@ -72,7 +73,7 @@ namespace _Project.Scripts.Runtime.Utils.ApplicationSettings
             HoldButtonToAnchorTongue.ResetToDefault();
             UseRadialTongueSensor.ResetToDefault();
             EpilepsyFilterEnable.ResetToDefault();
-            HighContrastFilterEnableEnable.ResetToDefault();
+            HighContrastFilterEnable.ResetToDefault();
             Save();
             Logger.LogInfo("Options reset to default");
         }
