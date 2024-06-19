@@ -151,6 +151,7 @@ namespace AK
         static const AkUniqueID GP_MUSC_SPEEDREAD = 82071987U;
         static const AkUniqueID GP_MUSC_SWITCH = 1886390058U;
         static const AkUniqueID GP_PARAM_AMB = 3640199855U;
+        static const AkUniqueID GP_PARAM_MASTER = 1556266735U;
         static const AkUniqueID GP_PARAM_MUSC_VOLUME = 987834118U;
         static const AkUniqueID GP_PARAM_SFX = 3726353558U;
         static const AkUniqueID GP_PARAM_UI = 2543063359U;

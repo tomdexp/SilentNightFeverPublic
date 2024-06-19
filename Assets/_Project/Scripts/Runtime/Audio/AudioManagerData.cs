@@ -16,6 +16,8 @@ namespace _Project.Scripts.Runtime.Audio
         [Tooltip("If False, the AudioManager will not log any RTPC, errors or not")]
         public bool RPTCLog = false;
         [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsMasterSliderDefaultValue = 50;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
         [Range(0,100)] public int SettingsMusicSliderDefaultValue = 50;
         [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
         [Range(0,100)] public int SettingsAmbianceSliderDefaultValue = 50;
@@ -23,6 +25,8 @@ namespace _Project.Scripts.Runtime.Audio
         [Range(0,100)] public int SettingsSFXSliderDefaultValue = 50;
         [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
         [Range(0,100)] public int SettingsLandmarksSliderDefaultValue = 50;
+        [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
+        [Range(0,100)] public int SettingsUISliderDefaultValue = 50;
         [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
         [Range(0,100)] public int SettingsHighPassSliderDefaultValue = 50;
         [TabGroup("Settings","Global", SdfIconType.GearFill, TextColor = "green")]
