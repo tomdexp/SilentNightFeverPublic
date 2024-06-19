@@ -9,7 +9,7 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{97323032-33EE-D206-CE39-9303E43FB0E2}">
+		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{1BFC4FB3-EA85-03E0-C82E-F1E4DFA1CB54}">
 			<ShortName>SB_UI</ShortName>
 			<Path>SB_UI.bnk</Path>
 			<Media>
@@ -23,7 +23,7 @@
 				</File>
 				<File Id="100316934" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>padIn.wav</ShortName>
-					<CachePath>SFX/padIn_EDCD4836.wem</CachePath>
+					<CachePath>SFX/padIn_14D233C4.wem</CachePath>
 				</File>
 				<File Id="104542256" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_Displacement_V0-005.wav</ShortName>
@@ -51,7 +51,7 @@
 				</File>
 				<File Id="392379305" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>padOut.wav</ShortName>
-					<CachePath>SFX/padOut_DE9F65A3.wem</CachePath>
+					<CachePath>SFX/padOut_B90CF70B.wem</CachePath>
 				</File>
 				<File Id="436107681" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_Displacement_V0-002.wav</ShortName>
@@ -156,12 +156,12 @@
 						<MediaRef Id="693225697"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2187101108" Name="Play_UI_Pad_In" DurationType="OneShot" DurationMin="1.086552" DurationMax="1.086552">
+				<Event Id="2187101108" Name="Play_UI_Pad_In" DurationType="OneShot" DurationMin="0.19629821" DurationMax="0.19629821">
 					<MediaRefs>
 						<MediaRef Id="100316934"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3801365459" Name="Play_UI_Pad_Out" DurationType="OneShot" DurationMin="1.1231459" DurationMax="1.1231459">
+				<Event Id="3801365459" Name="Play_UI_Pad_Out" DurationType="OneShot" DurationMin="0.13461009" DurationMax="0.13461009">
 					<MediaRefs>
 						<MediaRef Id="392379305"/>
 					</MediaRefs>
@@ -2044,5 +2044,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{1314DDC4-245C-8052-52BE-E7013DBD91D4}</FileHash>
+	<FileHash>{58784B6D-F3C0-D58A-BDDE-FA4D3E27BADF}</FileHash>
 </SoundBanksInfo>
