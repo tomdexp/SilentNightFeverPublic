@@ -85,11 +85,13 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         private void PlayOnlineButtonClicked()
         {
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnClickedOnlineGame, AudioManager.Instance.gameObject);
             if (UIManager.HasInstance) UIManager.Instance.GoToMenu<CreateOrJoinOnlineMenu>();
         }
         
         private void PlayLocalButtonClicked()
         {
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnClickedLocalGame, AudioManager.Instance.gameObject);
             if (UIManager.HasInstance) UIManager.Instance.GoToMenu<ControllerLobbyMenu>();
         }
         

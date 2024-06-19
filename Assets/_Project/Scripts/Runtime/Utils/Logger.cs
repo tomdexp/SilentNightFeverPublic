@@ -48,7 +48,6 @@ namespace _Project.Scripts.Runtime.Utils
         {
             // Since trace is performance heavy, we only log it in development builds.
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            //LogInternal(logType, LogLevel.Trace, message, networkObject);
             LogInternal(LogLevel.Trace, logType, message, networkObject?.OwnerId, networkObject?.gameObject);
 #endif
         }
@@ -60,7 +59,6 @@ namespace _Project.Scripts.Runtime.Utils
         {
             // Since debug is performance heavy, we only log it in development builds.
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            //LogInternal(logType, LogLevel.Debug, message, networkObject);
             LogInternal(LogLevel.Debug, logType, message, networkObject?.OwnerId, networkObject?.gameObject);
 #endif
         }
@@ -97,12 +95,16 @@ namespace _Project.Scripts.Runtime.Utils
         
         public static void LogTrace<T>(string message, LogType type = LogType.Local, T context = default)
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             LogInternal(LogLevel.Trace, type, message, context);
+#endif
         }
 
         public static void LogDebug<T>(string message, LogType type = LogType.Local, T context = default)
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             LogInternal(LogLevel.Debug, type, message, context);
+#endif
         }
 
         public static void LogInfo<T>(string message, LogType type = LogType.Local, T context = default)

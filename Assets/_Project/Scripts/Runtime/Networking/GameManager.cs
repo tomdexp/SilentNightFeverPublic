@@ -150,6 +150,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         public void LoadOnBoardingScene()
         {
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventOnBoardingStart, AudioManager.Instance.gameObject);
             PlayerManager.Instance.ResetPlayerSpawnedLocally(); // because they are destroyed when changing scene (coming from GameScene)
             LoadGlobalScene(SceneType.OnBoardingScene);
         }

@@ -42,7 +42,11 @@ namespace _Project.Scripts.Runtime.Audio
 
         private void OnDestroy()
         {
-            AkSoundEngine.Term();
+            if (Instance == this)
+            {
+                Logger.LogInfo("Destroying AudioManager and terminating AkSoundEngine...", Logger.LogType.Local, this);
+                AkSoundEngine.Term();
+            }
         }
 
         private void LoadAllBanks()

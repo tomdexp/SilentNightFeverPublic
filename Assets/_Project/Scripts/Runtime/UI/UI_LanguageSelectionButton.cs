@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
@@ -15,6 +18,8 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private UIData _uiData;
         [SerializeField, Required] private GridLayoutGroup _gridLayoutGroup;
         [SerializeField, Required] private UI_LanguageButton _languageButtonPrefab;
+        [SerializeField, Required] private TMP_Text _languageNameText;
+        [SerializeField, Required] private TMP_Text _languageCodeText;
         
         private List<UI_LanguageButton> _languageButtons = new List<UI_LanguageButton>();
         private Coroutine _hoverCoroutine;
@@ -34,6 +39,29 @@ namespace _Project.Scripts.Runtime.UI
             BindNavigations();
             
             OnUnHover();
+        }
+
+        private void Start()
+        {
+            OnSelectedLocaleChanged(LocalizationSettings.SelectedLocale);
+            LocalizationSettings.Instance.OnSelectedLocaleChanged += OnSelectedLocaleChanged;
+        }
+
+        private void OnDestroy()
+        {
+            LocalizationSettings.Instance.OnSelectedLocaleChanged -= OnSelectedLocaleChanged;
+        }
+
+        private void OnSelectedLocaleChanged(Locale newLocale)
+        {
+            string languageName = newLocale.LocaleName;
+            // remove the Identifier from the language name
+            if (languageName.Contains("("))
+            {
+                languageName = languageName.Substring(0, languageName.IndexOf("(", StringComparison.Ordinal));
+            }
+            _languageNameText.text = languageName;
+            _languageCodeText.text = newLocale.Identifier.Code;
         }
 
         private void BindNavigations()

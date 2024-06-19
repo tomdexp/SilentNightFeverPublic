@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using DG.Tweening;
@@ -39,6 +40,7 @@ namespace _Project.Scripts.Runtime.UI
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
+            Close();
         }
 
         private void Start()
@@ -50,11 +52,13 @@ namespace _Project.Scripts.Runtime.UI
 
         public void Open()
         {
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove, AudioManager.Instance.gameObject);
             _rectTransform.DOAnchorPos(_openPosition, _uiData.ControllerCanvasLeftToRightAnimDuration).SetEase(_uiData.ControllerCanvasLeftToRightAnimEase);
         }
 
         public void Close()
         {
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove, AudioManager.Instance.gameObject);
             _rectTransform.DOAnchorPos(_closePosition, _uiData.ControllerCanvasLeftToRightAnimDuration).SetEase(_uiData.ControllerCanvasLeftToRightAnimEase);
         }
 

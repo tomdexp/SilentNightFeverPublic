@@ -112,9 +112,15 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 2a564e9d6f82a61418bfea3b0ec36e59,
       type: 2}
+  EventOnClickedOnlineGame:
   - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 4854fc51cab1d8244b8b1dfc58963fad,
+      type: 2}
+  EventOnClickedLocalGame:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 9fa7b1d827d7ec54295f61362ff3dfea,
       type: 2}
   EventGamepadMenuStart:
   - idInternal: 0
@@ -174,6 +180,15 @@ MonoBehaviour:
   - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 9d60ebe81beec1f42a88bdff51a64ed8,
+      type: 2}
+  EventOnBoardingStart:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 0a7e6821f5278bc4c93428c8ce78aa08,
+      type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 9569178d6e08094489158550931634ee,
       type: 2}
   EventGameStart:
   - idInternal: 0
@@ -291,22 +306,11 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 0}
-  EventUIOnlineLobbyCreated:
+  EventUIPlayerButtonMove:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  EventUIOnlineLobbyPlayerJoin:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  EventUIPlayerJoinWithController:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  EventUIPlayerLeftWithController:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
+    WwiseObjectReference: {fileID: 11400000, guid: 26c4d85704fa59b46a4271034f1ff306,
+      type: 2}
   EventLandmarkKitchenFoodEaten:
     idInternal: 0
     valueGuidInternal: 
