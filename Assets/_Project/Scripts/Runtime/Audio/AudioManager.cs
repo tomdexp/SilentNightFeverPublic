@@ -27,6 +27,7 @@ namespace _Project.Scripts.Runtime.Audio
         
         private List<AkAudioListener> _listeners = new List<AkAudioListener>();
         private List<AkGameObj> _emitters = new List<AkGameObj>();
+        private bool _banksLoaded;
 
         private void Start()
         {
@@ -52,6 +53,7 @@ namespace _Project.Scripts.Runtime.Audio
         private void LoadAllBanks()
         {
             OnBanksLoadStart?.Invoke();
+            _banksLoaded = false;
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             Logger.LogDebug("Loading all Wwise banks...", Logger.LogType.Local, this);
             foreach (var bank in AudioManagerData.BanksToLoadOnApplicationStart)
@@ -60,6 +62,7 @@ namespace _Project.Scripts.Runtime.Audio
             }
             stopwatch.Stop();
             OnBanksLoadComplete?.Invoke();
+            _banksLoaded = true;
             Logger.LogDebug("All Wwise banks loaded ! Took " + stopwatch.ElapsedMilliseconds + "ms", Logger.LogType.Local, this);
         }
         
@@ -172,6 +175,13 @@ namespace _Project.Scripts.Runtime.Audio
                 }
                 return;
             }
+            
+            if (!_banksLoaded)
+            {
+                Logger.LogWarning($"Tried to play and audio event with id {eventId}, but the banks are not loaded yet", Logger.LogType.Local, this);
+                return;
+            }
+            
             Logger.LogTrace("Playing audio event locally : " + eventId, Logger.LogType.Local, this);
             AkSoundEngine.PostEvent(eventId, go);
         }
