@@ -9,7 +9,7 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{1BFC4FB3-EA85-03E0-C82E-F1E4DFA1CB54}">
+		<SoundBank Id="289583631" Type="User" Language="SFX" Hash="{24973E62-E681-9909-C4CE-A009FE0888C4}">
 			<ShortName>SB_UI</ShortName>
 			<Path>SB_UI.bnk</Path>
 			<Media>
@@ -23,7 +23,7 @@
 				</File>
 				<File Id="100316934" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>padIn.wav</ShortName>
-					<CachePath>SFX/padIn_14D233C4.wem</CachePath>
+					<CachePath>SFX/padIn_B643CF89.wem</CachePath>
 				</File>
 				<File Id="104542256" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_Displacement_V0-005.wav</ShortName>
@@ -51,7 +51,7 @@
 				</File>
 				<File Id="392379305" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>padOut.wav</ShortName>
-					<CachePath>SFX/padOut_B90CF70B.wem</CachePath>
+					<CachePath>SFX/padOut_5619D7E4.wem</CachePath>
 				</File>
 				<File Id="436107681" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_UI_OS_Displacement_V0-002.wav</ShortName>
@@ -173,7 +173,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{73AAE4C2-A2B0-75FE-873D-F5F516333BE9}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{EB568DA1-198D-40F4-DA51-5D98CC6EE56C}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -235,7 +235,7 @@
 				</File>
 				<File Id="235025266" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>LANDMAKR_ZOOM_LP.wav</ShortName>
-					<CachePath>SFX/LANDMAKR_ZOOM_LP_69705048.wem</CachePath>
+					<CachePath>SFX/LANDMAKR_ZOOM_LP_D8C4B892.wem</CachePath>
 				</File>
 				<File Id="242589726" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SATELLITE CLICS OS-008.wav</ShortName>
@@ -1419,7 +1419,7 @@
 				</SwitchGroup>
 			</SwitchGroups>
 		</SoundBank>
-		<SoundBank Id="925885567" Type="User" Language="SFX" Hash="{453BE36C-B422-67CD-86BD-9412C05537BC}">
+		<SoundBank Id="925885567" Type="User" Language="SFX" Hash="{BEB0EEB7-E5CA-3F57-6895-FD7CF2E8E5A3}">
 			<ShortName>SB_AMB</ShortName>
 			<Path>SB_AMB.bnk</Path>
 			<Media>
@@ -1587,7 +1587,7 @@
 				<Event Id="1914842139" Name="Stop_AMB_MENU_Os" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{873B9602-9098-A1CF-3D59-511C93B2872C}">
+		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{017F7C75-92C2-9DA9-248A-786A10178038}">
 			<ShortName>SB_SFX</ShortName>
 			<Path>SB_SFX.bnk</Path>
 			<Media>
@@ -1595,9 +1595,17 @@
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Eaten_V0-012.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Eaten_V0-012_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="138238886" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Red WinV2.wav</ShortName>
+					<CachePath>SFX/Red WinV2_EDCD4836.wem</CachePath>
+				</File>
 				<File Id="144192383" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-008.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_Player_FS_V0-008_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="172556499" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Yellow Win.wav</ShortName>
+					<CachePath>SFX/Yellow Win_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="285343248" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Round_End_V0-003.wav</ShortName>
@@ -1619,6 +1627,10 @@
 					<ShortName>SNF_SFX_OS_Player_FS_V0-009.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_Player_FS_V0-009_EDCD4836.wem</CachePath>
 				</File>
+				<File Id="416244857" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Round End tape.wav</ShortName>
+					<CachePath>SFX/Round End tape_D2EABAFA.wem</CachePath>
+				</File>
 				<File Id="450050098" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-010.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_Player_FS_V0-010_EDCD4836.wem</CachePath>
@@ -1638,6 +1650,10 @@
 				<File Id="637107745" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Eaten_V0-007.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Eaten_V0-007_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="639195618" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Yellow WinV2.wav</ShortName>
+					<CachePath>SFX/Yellow WinV2_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="662316405" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Round_End_V0-004.wav</ShortName>
@@ -1678,6 +1694,10 @@
 				<File Id="1019923888" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-002.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_Player_FS_V0-002_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="1048435335" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Red Win.wav</ShortName>
+					<CachePath>SFX/Red Win_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="1058481339" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-004.wav</ShortName>
@@ -1730,9 +1750,25 @@
 						<MediaRef Id="857480144"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="901799184" Name="Play_Red_Win" DurationType="OneShot" DurationMin="4.1465836" DurationMax="4.1465836">
+					<MediaRefs>
+						<MediaRef Id="1048435335"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3980137886" Name="Play_RoundEndRed" DurationType="OneShot" DurationMin="7.203781" DurationMax="7.203781">
+					<MediaRefs>
+						<MediaRef Id="138238886"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3053725413" Name="Play_RoundEndYellow" DurationType="OneShot" DurationMin="7.203781" DurationMax="7.203781">
+					<MediaRefs>
+						<MediaRef Id="639195618"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="2094862661" Name="Play_SFX_Round_Win" DurationType="OneShot" DurationMin="7.320513" DurationMax="7.320513">
 					<MediaRefs>
 						<MediaRef Id="285343248"/>
+						<MediaRef Id="416244857"/>
 					</MediaRefs>
 				</Event>
 				<Event Id="661705723" Name="Play_SNF_SFX_OS_Round_End_V0_004" DurationType="OneShot" DurationMin="7.1930833" DurationMax="7.1930833">
@@ -1740,9 +1776,14 @@
 						<MediaRef Id="662316405"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="2339177009" Name="Play_Yellow_Win" DurationType="OneShot" DurationMin="4.1046042" DurationMax="4.1046042">
+					<MediaRefs>
+						<MediaRef Id="172556499"/>
+					</MediaRefs>
+				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{FAD88A72-EC34-E0D7-C584-493BBE62BEE5}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{EAD78C2A-F1B8-E6A3-1FD3-E014FD48AB4A}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -2044,5 +2085,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{C17234CF-F7D4-31EE-4041-3C28CE1D3A28}</FileHash>
+	<FileHash>{9BEB3033-10B2-095A-1AA3-8DEDA69DD7F9}</FileHash>
 </SoundBanksInfo>

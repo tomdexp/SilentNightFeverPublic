@@ -30,6 +30,9 @@ namespace AK
         static const AkUniqueID PLAY_MAIN_MENU_MUSIQUE = 3315268937U;
         static const AkUniqueID PLAY_MUSC_GLOBAL_SWITCH = 6483615U;
         static const AkUniqueID PLAY_MUSC_TRANSITION = 3964698704U;
+        static const AkUniqueID PLAY_RED_WIN = 901799184U;
+        static const AkUniqueID PLAY_ROUNDENDRED = 3980137886U;
+        static const AkUniqueID PLAY_ROUNDENDYELLOW = 3053725413U;
         static const AkUniqueID PLAY_SFX_ROUND_WIN = 2094862661U;
         static const AkUniqueID PLAY_SNF_SFX_OS_ROUND_END_V0_004 = 661705723U;
         static const AkUniqueID PLAY_UI_CONTROL_IN = 3058603544U;
@@ -46,6 +49,7 @@ namespace AK
         static const AkUniqueID PLAY_UI_PAD_IN = 2187101108U;
         static const AkUniqueID PLAY_UI_PAD_OUT = 3801365459U;
         static const AkUniqueID PLAY_UI_QUIT_MENU = 794514316U;
+        static const AkUniqueID PLAY_YELLOW_WIN = 2339177009U;
         static const AkUniqueID SET_LANDMARK_VOLUME_TO_0 = 3012856152U;
         static const AkUniqueID SET_LANDMARK_VOLUME_TO_100 = 3390232705U;
         static const AkUniqueID STOP_AMB_GAME = 3205966197U;
