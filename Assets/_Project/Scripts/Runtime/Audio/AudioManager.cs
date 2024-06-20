@@ -40,7 +40,7 @@ namespace _Project.Scripts.Runtime.Audio
             _akGameObj = GetComponent<AkGameObj>();
         }
 
-        private void OnDestroy()
+        private void OnApplicationQuit()
         {
             if (Instance == this)
             {
