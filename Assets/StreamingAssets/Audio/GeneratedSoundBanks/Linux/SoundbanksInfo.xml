@@ -173,7 +173,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{EB568DA1-198D-40F4-DA51-5D98CC6EE56C}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{F88F1258-0AB8-C5F6-EA98-D0762B058EA2}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -482,6 +482,11 @@
 					<CachePath>SFX/SATELLITE CLICS OS-026_EDCD4836.wem</CachePath>
 				</File>
 			</Media>
+			<Plugins>
+				<ShareSets>
+					<Plugin Id="215266303" Name="New_Meter_01" LibName="Wwise Meter" LibId="8454147"/>
+				</ShareSets>
+			</Plugins>
 			<Events>
 				<Event Id="2140948254" Name="Play_LM_Kitchen" DurationType="Infinite">
 					<MediaRefs>
@@ -571,6 +576,11 @@
 						<MediaRef Id="1049537295"/>
 						<MediaRef Id="1063746593"/>
 					</MediaRefs>
+					<PluginRefs>
+						<ShareSets>
+							<PluginRef Id="215266303"/>
+						</ShareSets>
+					</PluginRefs>
 				</Event>
 				<Event Id="1931733291" Name="Play_LM_VOODOO_Ambiance" DurationType="Infinite">
 					<MediaRefs>
@@ -602,6 +612,7 @@
 			<GameParameters>
 				<GameParameter Id="488398129" Name="GP_LM_SatteliteMeter"/>
 				<GameParameter Id="813521875" Name="GP_GlobalLandMark_Volume"/>
+				<GameParameter Id="996378066" Name="Voodoo_activation"/>
 				<GameParameter Id="1240670792" Name="Distance"/>
 				<GameParameter Id="2256592338" Name="GP_LM_KitchenMeter"/>
 				<GameParameter Id="2268227989" Name="GP_LM_Voodoo_Meter"/>
@@ -1587,7 +1598,7 @@
 				<Event Id="1914842139" Name="Stop_AMB_MENU_Os" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{6C1DE8D9-2553-4D69-B6E4-D45492195B66}">
+		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{51D453AA-7DC8-9F06-1EEB-9ECC6E77C502}">
 			<ShortName>SB_SFX</ShortName>
 			<Path>SB_SFX.bnk</Path>
 			<Media>
@@ -1783,7 +1794,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{5BBB5AE2-8A80-9934-17D6-3353EC9FB76E}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{3B7698B2-7D47-B8B4-51E9-8F53FC8E4E08}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -1885,6 +1896,7 @@
 				<GameParameter Id="813521875" Name="GP_GlobalLandMark_Volume"/>
 				<GameParameter Id="822163944" Name="SS_Air_RPM"/>
 				<GameParameter Id="987834118" Name="GP_PARAM_MUSC_Volume"/>
+				<GameParameter Id="996378066" Name="Voodoo_activation"/>
 				<GameParameter Id="1029930033" Name="SS_Air_Fury"/>
 				<GameParameter Id="1240670792" Name="Distance"/>
 				<GameParameter Id="1351367891" Name="SS_Air_Fear"/>
@@ -2085,5 +2097,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{2C5B8EF2-32F3-26AD-B60B-DC912E3AD753}</FileHash>
+	<FileHash>{212FCD77-C949-D11F-4966-4B6BFAE99C85}</FileHash>
 </SoundBanksInfo>
