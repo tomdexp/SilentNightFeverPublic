@@ -173,7 +173,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{48CF015A-26BC-BC4A-A8EB-9600D3ED23F8}">
+		<SoundBank Id="709024172" Type="User" Language="SFX" Hash="{EB568DA1-198D-40F4-DA51-5D98CC6EE56C}">
 			<ShortName>SB_LM</ShortName>
 			<Path>SB_LM.bnk</Path>
 			<Media>
@@ -1419,7 +1419,7 @@
 				</SwitchGroup>
 			</SwitchGroups>
 		</SoundBank>
-		<SoundBank Id="925885567" Type="User" Language="SFX" Hash="{453BE36C-B422-67CD-86BD-9412C05537BC}">
+		<SoundBank Id="925885567" Type="User" Language="SFX" Hash="{BEB0EEB7-E5CA-3F57-6895-FD7CF2E8E5A3}">
 			<ShortName>SB_AMB</ShortName>
 			<Path>SB_AMB.bnk</Path>
 			<Media>
@@ -1587,13 +1587,17 @@
 				<Event Id="1914842139" Name="Stop_AMB_MENU_Os" MaxAttenuation="0" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{DC52B4DD-94C7-4028-438B-4D193104B05C}">
+		<SoundBank Id="1006919462" Type="User" Language="SFX" Hash="{017F7C75-92C2-9DA9-248A-786A10178038}">
 			<ShortName>SB_SFX</ShortName>
 			<Path>SB_SFX.bnk</Path>
 			<Media>
 				<File Id="133782067" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Eaten_V0-012.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Eaten_V0-012_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="138238886" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Red WinV2.wav</ShortName>
+					<CachePath>SFX/Red WinV2_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="144192383" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Player_FS_V0-008.wav</ShortName>
@@ -1646,6 +1650,10 @@
 				<File Id="637107745" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_LM_Kitchen_Eaten_V0-007.wav</ShortName>
 					<CachePath>SFX/SNF_SFX_OS_LM_Kitchen_Eaten_V0-007_EDCD4836.wem</CachePath>
+				</File>
+				<File Id="639195618" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Yellow WinV2.wav</ShortName>
+					<CachePath>SFX/Yellow WinV2_EDCD4836.wem</CachePath>
 				</File>
 				<File Id="662316405" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SNF_SFX_OS_Round_End_V0-004.wav</ShortName>
@@ -1747,6 +1755,16 @@
 						<MediaRef Id="1048435335"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="3980137886" Name="Play_RoundEndRed" DurationType="OneShot" DurationMin="7.203781" DurationMax="7.203781">
+					<MediaRefs>
+						<MediaRef Id="138238886"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3053725413" Name="Play_RoundEndYellow" DurationType="OneShot" DurationMin="7.203781" DurationMax="7.203781">
+					<MediaRefs>
+						<MediaRef Id="639195618"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="2094862661" Name="Play_SFX_Round_Win" DurationType="OneShot" DurationMin="7.320513" DurationMax="7.320513">
 					<MediaRefs>
 						<MediaRef Id="285343248"/>
@@ -1765,7 +1783,7 @@
 				</Event>
 			</Events>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{B5F78A46-5612-CE22-CAB0-7C70787FF964}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{D06D1758-A037-E5D3-3774-73BF8F72E1BB}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -2067,5 +2085,5 @@
 			</AcousticTextures>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{AE763AE6-2D12-FC7A-C245-D9CEBF1BBA2E}</FileHash>
+	<FileHash>{42FF3486-1F55-06B1-ECCE-DFAD3E881D8E}</FileHash>
 </SoundBanksInfo>
