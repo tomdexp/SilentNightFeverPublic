@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2699315350597051232}
   - component: {fileID: 4801548145770823078}
   - component: {fileID: 6542990571224102104}
-  - component: {fileID: 5245057347884846252}
   m_Layer: 0
   m_Name: Arrow 1 (1)
   m_TagString: Untagged
@@ -64,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e331989691a22af409eff6a4874fdc45, type: 2}
+  - {fileID: 2100000, guid: 61fe931d350790e468ea04667ba2b7b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,28 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5245057347884846252
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 583634063544801698}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &936154615387823534
 GameObject:
   m_ObjectHideFlags: 0
@@ -4996,7 +4973,6 @@ GameObject:
   - component: {fileID: 5823896585105568668}
   - component: {fileID: 6673777745203109486}
   - component: {fileID: 4698037249224840021}
-  - component: {fileID: 686570673801597267}
   m_Layer: 0
   m_Name: Arrow 1 (4)
   m_TagString: Untagged
@@ -5049,7 +5025,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e331989691a22af409eff6a4874fdc45, type: 2}
+  - {fileID: 2100000, guid: 61fe931d350790e468ea04667ba2b7b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5071,28 +5047,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &686570673801597267
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059819211953789718}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1336389937188178634
 GameObject:
   m_ObjectHideFlags: 0
@@ -5183,7 +5137,6 @@ GameObject:
   - component: {fileID: 7318322091329718685}
   - component: {fileID: 2112581819379286532}
   - component: {fileID: 6710675123862120352}
-  - component: {fileID: 7364215411593761030}
   m_Layer: 0
   m_Name: Arrow 1 (2)
   m_TagString: Untagged
@@ -5236,7 +5189,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e331989691a22af409eff6a4874fdc45, type: 2}
+  - {fileID: 2100000, guid: 61fe931d350790e468ea04667ba2b7b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5258,28 +5211,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7364215411593761030
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1832728164796940980}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &2598147778627108572
 GameObject:
   m_ObjectHideFlags: 0
@@ -5408,7 +5339,6 @@ GameObject:
   - component: {fileID: 4020619467827569639}
   - component: {fileID: 5568624631151190679}
   - component: {fileID: 8411042029108149634}
-  - component: {fileID: 2286933138808884648}
   m_Layer: 0
   m_Name: Arrow 1
   m_TagString: Untagged
@@ -5461,7 +5391,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e331989691a22af409eff6a4874fdc45, type: 2}
+  - {fileID: 2100000, guid: 61fe931d350790e468ea04667ba2b7b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5483,28 +5413,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2286933138808884648
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3593032849023881487}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &3674698892426156317
 GameObject:
   m_ObjectHideFlags: 0
@@ -5516,7 +5424,6 @@ GameObject:
   - component: {fileID: 7755548360446252426}
   - component: {fileID: 7912402580295131500}
   - component: {fileID: 8958359610776046047}
-  - component: {fileID: 6581385227994785721}
   m_Layer: 0
   m_Name: Arrow 1 (5)
   m_TagString: Untagged
@@ -5569,7 +5476,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e331989691a22af409eff6a4874fdc45, type: 2}
+  - {fileID: 2100000, guid: 61fe931d350790e468ea04667ba2b7b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5591,28 +5498,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6581385227994785721
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3674698892426156317}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &3970184224653860926
 GameObject:
   m_ObjectHideFlags: 0
@@ -5624,7 +5509,6 @@ GameObject:
   - component: {fileID: 3619889865154184454}
   - component: {fileID: 3641710185848912353}
   - component: {fileID: 4893781525225008208}
-  - component: {fileID: 1599846756589060656}
   m_Layer: 0
   m_Name: Arrow 1 (6)
   m_TagString: Untagged
@@ -5677,7 +5561,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e331989691a22af409eff6a4874fdc45, type: 2}
+  - {fileID: 2100000, guid: 61fe931d350790e468ea04667ba2b7b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5699,28 +5583,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1599846756589060656
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3970184224653860926}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &4195350437651282069
 GameObject:
   m_ObjectHideFlags: 0
@@ -5790,7 +5652,6 @@ GameObject:
   - component: {fileID: 3645608008093396316}
   - component: {fileID: 6000901673751130306}
   - component: {fileID: 4578433503177020579}
-  - component: {fileID: 1175715153723991515}
   m_Layer: 0
   m_Name: Arrow 1 (3)
   m_TagString: Untagged
@@ -5843,7 +5704,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e331989691a22af409eff6a4874fdc45, type: 2}
+  - {fileID: 2100000, guid: 61fe931d350790e468ea04667ba2b7b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5865,28 +5726,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1175715153723991515
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4345126162797404919}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &5317077224273935914
 GameObject:
   m_ObjectHideFlags: 0
