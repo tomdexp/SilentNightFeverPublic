@@ -714,6 +714,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1285726905103977696}
     m_Modifications:
+    - target: {fileID: 1480776946239259403, guid: ab46d1d9d7c187445bfd833bcdedf376,
+        type: 3}
+      propertyPath: Collider
+      value: 
+      objectReference: {fileID: 8065526665913999683}
     - target: {fileID: 1693811501062868473, guid: ab46d1d9d7c187445bfd833bcdedf376,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -777,6 +782,12 @@ PrefabInstance:
 --- !u!4 &1775677321527261800 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1693811501062868473, guid: ab46d1d9d7c187445bfd833bcdedf376,
+    type: 3}
+  m_PrefabInstance: {fileID: 1091517678751561617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &8065526665913999683 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 6974765543101634258, guid: ab46d1d9d7c187445bfd833bcdedf376,
     type: 3}
   m_PrefabInstance: {fileID: 1091517678751561617}
   m_PrefabAsset: {fileID: 0}

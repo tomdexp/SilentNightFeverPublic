@@ -171,5 +171,12 @@ namespace _Project.Scripts.Runtime.UI
         {
             if (!_isOpen) transform.localScale = Vector3.zero;
         }
+
+        public void ResetButton()
+        {
+            Logger.LogDebug($"Button reset : {name}", Logger.LogType.Local, this);
+            transform.localScale = new Vector3(_originalScale, _originalScale, _originalScale);
+            _button.interactable = true;
+        }
     }
 }

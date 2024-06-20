@@ -71,6 +71,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EventEnterZoneAtLeastOnePlayer: {fileID: 7549713969443628828}
   EventExitZoneNoPlayer: {fileID: 9147176689266855027}
+  Collider: {fileID: 2410484843128416693}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 64
   _isInCollider: 0
   _currentNumberPlayer: 0
   _players: []

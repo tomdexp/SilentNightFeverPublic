@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Project.Scripts.Runtime.Landmarks;
+using _Project.Scripts.Runtime.Landmarks.Kitchen;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player;
 using QFSW.QC;
@@ -18,6 +20,8 @@ namespace _Project.Scripts.Runtime.Audio
         [Title("References")]
         public AkEvent EventEnterZoneAtLeastOnePlayer;
         public AkEvent EventExitZoneNoPlayer;
+        public SphereCollider Collider;
+        public LayerMask PlayerLayer;
         
         [Title("Debug (Read-Only)")]
         [SerializeField, ReadOnly] private bool _isInCollider = false;
@@ -35,10 +39,16 @@ namespace _Project.Scripts.Runtime.Audio
         private Dictionary<GameObject, AkAudioListener> _playerListeners = new Dictionary<GameObject, AkAudioListener>();
         private AkGameObj _akGameObj;
         private bool _isSetup = false;
+        private Landmark _landmark;
 
         private void Awake()
         {
             _akGameObj = GetComponent<AkGameObj>();
+            _landmark = GetComponentInParent<Landmark>();
+            if (!_landmark)
+            {
+                Logger.LogError("No Landmark found in parent!", Logger.LogType.Local, this);
+            }
         }
 
         void Start()
@@ -54,8 +64,10 @@ namespace _Project.Scripts.Runtime.Audio
                 yield return null;
             }
             GameManager.Instance.IsGameStarted.OnChange += OnGameStarted;
+            GameManager.Instance.OnAnyRoundStarted += OnAnyRoundStarted;
+            GameManager.Instance.OnAnyRoundEnded += OnAnyRoundEnded;
         }
-
+        
         private void OnGameStarted(bool prev, bool next, bool asserver)
         {
             if (next == true && prev == false)
@@ -63,12 +75,35 @@ namespace _Project.Scripts.Runtime.Audio
                 StartCoroutine(TryFindPlayers());
             }
         }
+        
+        private void OnAnyRoundStarted(byte _)
+        {
+            var radius = Collider.radius;
+            // do an overlap sphere to check if there is a player in the collider
+            Collider[] results = new Collider[4];
+            var size = Physics.OverlapSphereNonAlloc(transform.position, radius, results, PlayerLayer);
+            Logger.LogDebug($"Landmark {_landmark.gameObject.name} ambiance emitter detected " + size + " player(s) in the zone on round start", Logger.LogType.Local, this);
+            if (size > 0)
+            {
+                _currentNumberPlayer = size;
+                if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(EventEnterZoneAtLeastOnePlayer.data, gameObject);
+                Logger.LogDebug($"Started playing the Landmark {_landmark.gameObject.name} ambiance", Logger.LogType.Local, this);
+            }
+        }
+        
+        private void OnAnyRoundEnded(byte _)
+        {
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(EventExitZoneNoPlayer.data, gameObject);
+            Logger.LogDebug($"Stopped playing the Landmark {_landmark.gameObject.name} ambiance", Logger.LogType.Local, this);
+            _currentNumberPlayer = 0;
+        }
 
         private void OnDestroy()
         {
             if (GameManager.HasInstance)
             {
                 GameManager.Instance.IsGameStarted.OnChange -= OnGameStarted;
+                GameManager.Instance.OnAnyRoundEnded -= OnAnyRoundEnded;
             }
         }
 
@@ -167,10 +202,12 @@ namespace _Project.Scripts.Runtime.Audio
             if (other.TryGetComponent(out PlayerController _))
             {
                 _currentNumberPlayer += 1;
-                Logger.LogTrace("Player entered the zone, there is now " + _currentNumberPlayer + " player(s) in the zone", Logger.LogType.Local, this);
+                Logger.LogTrace($"Player entered the zone of landmark {_landmark.gameObject.name}, there is now " + _currentNumberPlayer + " player(s) in the zone", Logger.LogType.Local, this);
                 if (_currentNumberPlayer == 1)
                 {
-                    EventEnterZoneAtLeastOnePlayer.data.Post(gameObject);
+                    //EventEnterZoneAtLeastOnePlayer.data.Post(gameObject);
+                    if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(EventEnterZoneAtLeastOnePlayer.data, gameObject);
+                    Logger.LogDebug($"Started playing the Landmark {_landmark.gameObject.name} ambiance", Logger.LogType.Local, this);
                 }
             }
         }
@@ -181,10 +218,12 @@ namespace _Project.Scripts.Runtime.Audio
             {
                 _currentNumberPlayer -= 1;
                 Debug.Log(_currentNumberPlayer);
-                Logger.LogTrace("Player exited the zone, there is now " + _currentNumberPlayer + " player(s) in the zone", Logger.LogType.Local, this);
+                Logger.LogTrace($"Player exited the zone of landmark {_landmark.gameObject.name}, there is now " + _currentNumberPlayer + " player(s) in the zone", Logger.LogType.Local, this);
                 if (_currentNumberPlayer == 0)
                 {
-                    EventExitZoneNoPlayer.data.Post(gameObject);
+                    //EventExitZoneNoPlayer.data.Post(gameObject);
+                    if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(EventExitZoneNoPlayer.data, gameObject);
+                    Logger.LogDebug($"Stopped playing the Landmark {_landmark.gameObject.name} ambiance", Logger.LogType.Local, this);
                 }
             }
         }
