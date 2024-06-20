@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Runtime.Networking;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void Start()
         {
+            if (GameManager.HasInstance) GameManager.Instance.CanCameraHaveRandomAngleFromGameSettings = DoChangeCameraAngleEveryRound;
             UpdateText();
             LocalizationSettings.Instance.OnSelectedLocaleChanged += OnSelectedLocaleChanged;
         }
@@ -35,12 +37,14 @@ namespace _Project.Scripts.Runtime.UI
         protected override void OnPreviousButtonClicked()
         {
             DoChangeCameraAngleEveryRound = !DoChangeCameraAngleEveryRound;
+            if (GameManager.HasInstance) GameManager.Instance.CanCameraHaveRandomAngleFromGameSettings = DoChangeCameraAngleEveryRound;
             UpdateText();
         }
 
         protected override void OnNextButtonClicked()
         {
             DoChangeCameraAngleEveryRound = !DoChangeCameraAngleEveryRound;
+            if (GameManager.HasInstance) GameManager.Instance.CanCameraHaveRandomAngleFromGameSettings = DoChangeCameraAngleEveryRound;
             UpdateText();
         }
         

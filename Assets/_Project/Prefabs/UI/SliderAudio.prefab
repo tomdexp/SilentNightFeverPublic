@@ -1871,6 +1871,7 @@ GameObject:
   - component: {fileID: 1456951346231920513}
   - component: {fileID: 6492772127250060520}
   - component: {fileID: 753561594412851236}
+  - component: {fileID: 5439607825620197617}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -1965,6 +1966,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hoverFeedback: {fileID: 8738542050322638263}
   _unHoverFeedback: {fileID: 4211613155216054426}
+--- !u!114 &5439607825620197617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3930668009797781608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 250fc1351a4042cc91f76cf2aa6f7f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  _unHoverEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
 --- !u!1 &4214267059515411320
 GameObject:
   m_ObjectHideFlags: 0

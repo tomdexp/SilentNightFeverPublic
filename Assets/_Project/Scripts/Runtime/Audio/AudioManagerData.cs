@@ -68,6 +68,8 @@ namespace _Project.Scripts.Runtime.Audio
         [Tooltip("Called at the start of the application, will only be called ONCE, when the application start, not when the game start, or a round start")]
         public AK.Wwise.Event[] EventApplicationStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        public AK.Wwise.Event[] EventMenuSceneStart;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
         public AK.Wwise.Event[] EventMainMenuStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
@@ -76,6 +78,10 @@ namespace _Project.Scripts.Runtime.Audio
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
         public AK.Wwise.Event[] EventOnlineCreateOrJoinMenuStart;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        public AK.Wwise.Event[] EventOnClickedOnlineGame;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        public AK.Wwise.Event[] EventOnClickedLocalGame;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
         public AK.Wwise.Event[] EventGamepadMenuStart;
@@ -97,6 +103,8 @@ namespace _Project.Scripts.Runtime.Audio
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
         public AK.Wwise.Event[] EventSettingsGraphicStart;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        public AK.Wwise.Event[] EventOnBoardingStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("Called when the whole game session start, so that the map is generated and its the first round")]
         public AK.Wwise.Event[] EventGameStart;
@@ -142,17 +150,7 @@ namespace _Project.Scripts.Runtime.Audio
         [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
         public AK.Wwise.Event EventUIButtonClickBack;
         [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
-        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
-        public AK.Wwise.Event EventUIOnlineLobbyCreated;
-        [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
-        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
-        public AK.Wwise.Event EventUIOnlineLobbyPlayerJoin;
-        [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
-        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
-        public AK.Wwise.Event EventUIPlayerJoinWithController;
-        [TabGroup("References/Events/Subgroup", "UI", SdfIconType.CursorFill, TextColor = "lightblue")]
-        [InfoBox("Not Implemented Yet", InfoMessageType.Error)]
-        public AK.Wwise.Event EventUIPlayerLeftWithController;
+        public AK.Wwise.Event EventUIPlayerButtonMove;
         
         [TabGroup("References", "Events", SdfIconType.MusicNote, TextColor = "lightmagenta")]
         [TabGroup("References/Events/Subgroup", "Landmarks", SdfIconType.PinMapFill, TextColor = "lightorange")]

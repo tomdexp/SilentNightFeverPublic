@@ -40,6 +40,15 @@ namespace _Project.Scripts.Runtime.Audio
             _akGameObj = GetComponent<AkGameObj>();
         }
 
+        private void OnApplicationQuit()
+        {
+            if (Instance == this)
+            {
+                Logger.LogInfo("Destroying AudioManager and terminating AkSoundEngine...", Logger.LogType.Local, this);
+                AkSoundEngine.Term();
+            }
+        }
+
         private void LoadAllBanks()
         {
             OnBanksLoadStart?.Invoke();

@@ -14,6 +14,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override string MenuName { get; } = "PlayOnlineOrLocalMenu";
         [SerializeField, Required] private Button _playOnlineButton;
         [SerializeField, Required] private Button _playLocalButton;
+        [SerializeField, Required] private Button _goBackButton;
         [SerializeField, Required] private CanvasGroup _onlineFadeCanvasGroup;
         [SerializeField, Required] private CanvasGroup _localFadeCanvasGroup;
         private CanvasGroup _canvasGroup;
@@ -33,6 +34,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             {
                 Logger.LogError("Play Local Button not set", context:this);
             }
+            
+            BindNavigableVertical(_goBackButton, _playOnlineButton);
+            BindNavigableHorizontal(_goBackButton, _playOnlineButton);
             BindNavigableHorizontal(_playOnlineButton, _playLocalButton);
             BindNavigableHorizontal(_playLocalButton, _playOnlineButton); // Loop back
             
@@ -47,6 +51,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             UIManager.Instance.SwitchToCanvasCamera();
             _playOnlineButton.onClick.AddListener(PlayOnlineButtonClicked);
             _playLocalButton.onClick.AddListener(PlayLocalButtonClicked);
+            _goBackButton.onClick.AddListener(GoBack);
             _uiButtonPlayOnline.OnHover += OnButtonPlayOnlineHover;
             _uiButtonPlayOnline.OnUnHover += OnButtonPlayOnlineUnHover;
             _uiButtonPlayLocal.OnHover += OnButtonPlayLocalHover;
@@ -63,6 +68,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _canvasGroup.Close();
             _playOnlineButton.onClick.RemoveListener(PlayOnlineButtonClicked);
             _playLocalButton.onClick.RemoveListener(PlayLocalButtonClicked);
+            _goBackButton.onClick.RemoveListener(GoBack);
             _uiButtonPlayOnline.OnHover -= OnButtonPlayOnlineHover;
             _uiButtonPlayOnline.OnUnHover -= OnButtonPlayOnlineUnHover;
             _uiButtonPlayLocal.OnHover -= OnButtonPlayLocalHover;
@@ -79,11 +85,13 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         private void PlayOnlineButtonClicked()
         {
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnClickedOnlineGame, AudioManager.Instance.gameObject);
             if (UIManager.HasInstance) UIManager.Instance.GoToMenu<CreateOrJoinOnlineMenu>();
         }
         
         private void PlayLocalButtonClicked()
         {
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnClickedLocalGame, AudioManager.Instance.gameObject);
             if (UIManager.HasInstance) UIManager.Instance.GoToMenu<ControllerLobbyMenu>();
         }
         

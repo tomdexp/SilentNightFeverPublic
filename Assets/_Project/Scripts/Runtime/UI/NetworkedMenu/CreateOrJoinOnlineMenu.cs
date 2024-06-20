@@ -18,6 +18,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override string MenuName { get; } = "CreateOrJoinOnlineMenu";
         [SerializeField, Required] private Button _createLobbyButton;
         [SerializeField, Required] private Button _joinLobbyButton;
+        [SerializeField, Required] private Button _goBackButton;
         [SerializeField, Required] private CanvasGroup _creatingLobbyCanvasGroup;
         [SerializeField, Required] private CanvasGroup _joiningLobbyCanvasGroup;
         [SerializeField, Required] private UI_InputFieldLobbyCode _lobbyCodeInputField;
@@ -52,9 +53,11 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             {
                 Logger.LogError("Joining Lobby Canvas Group not set");
             }
-            BindNavigableVertical(_createLobbyButton, _lobbyCodeInputField.GetComponent<Selectable>());
-            BindNavigableVertical(_lobbyCodeInputField.GetComponent<Selectable>(), _joinLobbyButton);
-            BindNavigableVertical(_joinLobbyButton, _createLobbyButton);
+            
+            BindNavigableVertical(_goBackButton, _createLobbyButton);
+            BindNavigableVertical(_createLobbyButton, _goBackButton);
+            BindNavigableHorizontal(_goBackButton, _createLobbyButton);
+            BindNavigableHorizontal(_createLobbyButton, _goBackButton);
             
             _createLobbyButtonUI = _createLobbyButton.GetComponent<UI_Button>();
             _joinLobbyButtonUI = _joinLobbyButton.GetComponent<UI_Button>();
@@ -68,6 +71,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _joinLobbyButton.interactable = false;
             _joinLobbyButton.onClick.AddListener(JoinLobbyButtonClicked);
             _createLobbyButton.onClick.AddListener(CreateLobbyButtonClicked);
+            _goBackButton.onClick.AddListener(GoBack);
             _lobbyCodeInputField.OnLobbyCodeChanged += LobbyCodeChanged;
             BootstrapManager.Instance.OnServerMigrationStarted += ServerMigrationStarted;
             BootstrapManager.Instance.OnServerMigrationFinished += ServerMigrationFinished;
@@ -127,6 +131,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _lobbyCodeInputField.OnLobbyCodeChanged -= LobbyCodeChanged;
             _joinLobbyButton.onClick.RemoveListener(JoinLobbyButtonClicked);
             _createLobbyButton.onClick.RemoveListener(CreateLobbyButtonClicked);
+            _goBackButton.onClick.RemoveListener(GoBack);
             if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationStarted -= ServerMigrationStarted;
             if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationFinished -= ServerMigrationFinished;
             _createLobbyButtonUI.Close();

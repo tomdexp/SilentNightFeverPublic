@@ -18,6 +18,7 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private TMP_Text _gameTitle;
         [SerializeField, Required] private RawImage _cnamLogo;
         [SerializeField, Required] private RawImage _magelisLogo;
+        [SerializeField, Required] private RawImage _poitiersLogo;
         [SerializeField, Required] private RawImage _p20Logo;
         [SerializeField, Required] private RawImage _p20LogoStressed;
         [SerializeField, Required] private RawImage _p20LogoStressedUltra;
@@ -78,16 +79,17 @@ namespace _Project.Scripts.Runtime.UI
             
             yield return new WaitForSeconds(_secondsBetweenLogos);
             
-            // 2nd CNAM AND MAGELIS LOGOS
+            // 2nd CNAM AND MAGELIS LOGOS AND POITIERS LOGO
             var tweenFadeInCnamLogo = _cnamLogo.DOFade(1.0f, _secondsFadeInDurationCnamLogo).SetEase(_easeFadeInCnamLogo);
             var tweenFadeInMagelisLogo = _magelisLogo.DOFade(1.0f, _secondsFadeInDurationMagelisLogo).SetEase(_easeFadeInMagelisLogo);
+            var tweenFadeInPoitiersLogo = _poitiersLogo.DOFade(1.0f, _secondsFadeInDurationMagelisLogo).SetEase(_easeFadeInMagelisLogo);
             yield return tweenFadeInCnamLogo.WaitForCompletion();
-            yield return tweenFadeInMagelisLogo.WaitForCompletion();
             yield return new WaitForSeconds(_secondsBeforeFadeOutCnamAndMagelisLogo);
             var tweenFadeOutCnamLogo = _cnamLogo.DOFade(0.0f, _secondsFadeOutDurationCnamLogo).SetEase(_easeFadeOutCnamLogo);
             var tweenFadeOutMagelisLogo = _magelisLogo.DOFade(0.0f, _secondsFadeOutDurationMagelisLogo).SetEase(_easeFadeOutMagelisLogo);
+            var tweenFadeOutPoitiersLogo = _poitiersLogo.DOFade(0.0f, _secondsFadeOutDurationMagelisLogo).SetEase(_easeFadeOutMagelisLogo);
             yield return tweenFadeOutCnamLogo.WaitForCompletion();
-            yield return tweenFadeOutMagelisLogo.WaitForCompletion();
+            
             
             yield return new WaitForSeconds(_secondsBetweenLogos);
             

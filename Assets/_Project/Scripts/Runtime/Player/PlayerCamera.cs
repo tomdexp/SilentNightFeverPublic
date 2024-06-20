@@ -109,6 +109,13 @@ namespace _Project.Scripts.Runtime.Player
         {
             Logger.LogTrace("Randomly rotating camera around player " + PlayerIndexType, Logger.LogType.Server, this);
             _cameraAngle.Value = Random.Range(0, 3.14f);
+            if (GameManager.HasInstance)
+            {
+                if (!GameManager.Instance.CanCameraHaveRandomAngleFromGameSettings)
+                {
+                    _cameraAngle.Value = 1;
+                }
+            }
             float x = Mathf.Cos(_cameraAngle.Value) * PlayerData.CameraOffsetRadius;
             float y = Mathf.Sin(_cameraAngle.Value) * PlayerData.CameraOffsetRadius;
             _cameraFollowOffset.Value = new Vector3(x, PlayerData.CameraHeight, y);

@@ -110,7 +110,9 @@ namespace _Project.Scripts.Runtime.Inputs
             _inputActions.Player.Interact.canceled += OnInteractInputActionCanceled;
             _inputActions.Player.Move.performed += OnMoveInputAction;
             _inputActions.Player.Move.canceled += OnMoveInputAction;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             _inputActions.Player.DebugPossess.performed += OnDebugPossess;
+#endif
             _inputActions.Enable();
             Logger.LogTrace("Bound input provider with device: " + deviceName + " for clientID: " + _playerInfo.ClientId, context:this);
         }
