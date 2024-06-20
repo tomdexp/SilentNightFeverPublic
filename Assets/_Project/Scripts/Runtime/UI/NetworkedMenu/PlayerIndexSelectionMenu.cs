@@ -14,6 +14,7 @@ using MoreMountains.Feedbacks;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 {
@@ -24,6 +25,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         [Title("References")]
         [SerializeField, Required] private UIData _uiData;
+        [SerializeField, Required] private Button _goBackButton;
         [SerializeField, Required] private MMFPlayerReplicated _feedbacksAllPlayersReady;
         [SerializeField, Required] private Transform _playerLabelA;
         [SerializeField, Required] private Transform _playerLabelB;
@@ -78,6 +80,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 _feedbacksAllPlayersReady.RestoreFeedbacksForAll();
                 PlayerManager.Instance.TryStartTeamManagement();
                 PlayerManager.Instance.OnAllPlayersReady += OnAllPlayersReady;
+                _goBackButton.onClick.AddListener(GoBack);
             }
             
             if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventTeamSelectionMenuStart, AudioManager.Instance.gameObject);
@@ -87,7 +90,11 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             base.Close();
             _canvasGroup.Close();
-            if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;
+            if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance)
+            {
+                PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;
+                _goBackButton.onClick.RemoveListener(GoBack);
+            }
         }
 
         public override void GoBack()

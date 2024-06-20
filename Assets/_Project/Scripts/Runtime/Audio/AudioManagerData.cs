@@ -68,6 +68,8 @@ namespace _Project.Scripts.Runtime.Audio
         [Tooltip("Called at the start of the application, will only be called ONCE, when the application start, not when the game start, or a round start")]
         public AK.Wwise.Event[] EventApplicationStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
+        public AK.Wwise.Event[] EventMenuSceneStart;
+        [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]
         [Tooltip("It can be called MULTIPLE times, everytime this menu opens")]
         public AK.Wwise.Event[] EventMainMenuStart;
         [TabGroup("References/Events/Subgroup", "Application", SdfIconType.Bullseye, TextColor = "magenta")]

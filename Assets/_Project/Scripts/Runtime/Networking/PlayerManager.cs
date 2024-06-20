@@ -151,7 +151,9 @@ namespace _Project.Scripts.Runtime.Networking
             //_cancelHatInputAction.Enable();
             //_nextHatInputAction.Enable();
             //_previousHatInputAction.Enable();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             _joinAndFullFakePlayerInputAction.Enable();
+#endif
         }
 
         public override void OnStopClient()
@@ -173,7 +175,9 @@ namespace _Project.Scripts.Runtime.Networking
             // _cancelHatInputAction.Disable();
             //_nextHatInputAction.Disable();
             //_previousHatInputAction.Disable();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             _joinAndFullFakePlayerInputAction.Disable();
+#endif
             _joinInputAction.performed -= JoinInputActionPerformed;
             _leaveInputAction.performed -= LeaveInputActionPerformed;
             _readyInputAction.performed -= ConfirmTeamInputActionPerformed;

@@ -99,10 +99,10 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         private void OnTeamSelectionButtonClicked()
         {
             if (!InstanceFinder.IsServerStarted) return;
+            Close();
             GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(PlayerIndexSelectionMenu);
             GameManager.Instance.LoadMenuScene();
             GameManager.Instance.ResetGame();
-            Close();
         }
 
         private void OnMainMenuButtonClicked()
@@ -134,11 +134,13 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                     yield return _quitLocalPrompt.WaitForResponse();
                     if (_quitLocalPrompt.IsSuccess)
                     {
+                        Close();
+                        yield return new WaitUntil((() => GameManager.HasInstance));
                         GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(MainMenu);
                         GameManager.Instance.LoadMenuScene();
                         GameManager.Instance.ResetGame();
+                        yield return new WaitUntil((() => PlayerManager.HasInstance));
                         PlayerManager.Instance.ResetRealPlayerInfos();
-                        Close();
                     }
                 }
             }

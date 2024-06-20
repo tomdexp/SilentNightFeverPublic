@@ -169,7 +169,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72.45
+  m_fontSize: 18
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2308,7 +2308,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 92
+  m_fontSize: 18
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3364,7 +3364,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 18
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3792,6 +3792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultSelectedOnOpen: {fileID: 0}
   _uiData: {fileID: 11400000, guid: b92375a8369ab2d4f97ea7d1334462b7, type: 2}
+  _goBackButton: {fileID: 8667696407095212386}
   _feedbacksAllPlayersReady: {fileID: 1961113811735104626}
   _playerLabelA: {fileID: 1303209488210544282}
   _playerLabelB: {fileID: 478551479577977087}
@@ -5460,7 +5461,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 18
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5598,7 +5599,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 78.55
+  m_fontSize: 18
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7869,6 +7870,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5378038970554513891}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8667696407095212386 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3669156091340324993, guid: 501f7a04a54acab43bf802fa49701957,
+    type: 3}
+  m_PrefabInstance: {fileID: 5378038970554513891}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5498509173924407321
 PrefabInstance:
   m_ObjectHideFlags: 0

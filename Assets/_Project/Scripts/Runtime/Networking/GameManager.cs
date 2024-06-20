@@ -61,6 +61,7 @@ namespace _Project.Scripts.Runtime.Networking
         
         public bool CanLandmarkZoomSpawnFromGameSettings = true;
         public bool CanLandmarkVoodooSpawnFromGameSettings = true;
+        public bool CanCameraHaveRandomAngleFromGameSettings = true;
         
         private float _deltaTimeCounter;
         private byte _teamATongueBindCount; // Count of players from team A that have their tongue binded to another player's anchor of the same team
@@ -145,6 +146,7 @@ namespace _Project.Scripts.Runtime.Networking
 
         public void LoadMenuScene()
         {
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventMenuSceneStart, AudioManager.Instance.gameObject);
             LoadGlobalScene(SceneType.MenuV2Scene);
         }
         
@@ -734,6 +736,7 @@ namespace _Project.Scripts.Runtime.Networking
             _teamBTongueBindCount = 0;
             CanLandmarkVoodooSpawnFromGameSettings = true;
             CanLandmarkZoomSpawnFromGameSettings = true;
+            CanCameraHaveRandomAngleFromGameSettings = true;
         }
         
         public int GetWinCount(PlayerTeamType teamType)
