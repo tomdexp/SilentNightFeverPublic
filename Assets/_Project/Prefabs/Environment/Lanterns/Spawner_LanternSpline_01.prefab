@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7727702139181010463}
   - component: {fileID: 3759066194341161397}
   - component: {fileID: 3422089529219753694}
+  - component: {fileID: 4426312981783076579}
   m_Layer: 0
   m_Name: Spawner_LanternSpline_01
   m_TagString: Untagged
@@ -54,7 +55,7 @@ MonoBehaviour:
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: 0, y: -1, z: 0}
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -91,7 +92,7 @@ MonoBehaviour:
   _overrideType: 3
   _updateHostVisibility: 1
   _observerConditions:
-  - {fileID: 11400000, guid: 5f33eb0e5b83b5546822cfe42a305657, type: 2}
+  - {fileID: 11400000, guid: 30ec6a4ad02f3f2418ce91bf74ab25ba, type: 2}
 --- !u!114 &3422089529219753694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +106,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inactiveWhenHighContrast:
+  - {fileID: 8452905200637469425}
+--- !u!114 &4426312981783076579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6834454589651966973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb250d26ccb4fc69058afe7b2c1a42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenEpilespyFilterEnabled:
   - {fileID: 8452905200637469425}
 --- !u!1 &8452905200637469425
 GameObject:

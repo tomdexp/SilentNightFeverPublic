@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5686322612399857454}
   - component: {fileID: 430039684312237770}
+  - component: {fileID: 16349800656062032}
   m_Layer: 0
   m_Name: Ground_Light
   m_TagString: Untagged
@@ -55,6 +56,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &16349800656062032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2679368218085965751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb250d26ccb4fc69058afe7b2c1a42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenEpilespyFilterEnabled:
+  - {fileID: 3461876531005711868}
 --- !u!1 &3461876531005711868
 GameObject:
   m_ObjectHideFlags: 0
