@@ -38,7 +38,19 @@ namespace _Project.Scripts.Runtime.UI
         private float _originalScale;
         private float _secondsBetweenClick = 0.1f;
         private bool _isOpen = true;
-        
+
+        private void Awake()
+        {
+            // check if current scale is not 1,1,1
+            if (Mathf.Approximately(transform.localScale.x, 1) 
+                || Mathf.Approximately(transform.localScale.y, 1) 
+                || Mathf.Approximately(transform.localScale.z, 1))
+            {
+                Logger.LogWarning($"The scale of the button is not 1,1,1 (current is {transform.localScale}) on {gameObject.name}. This can cause issues with the animations. Please set the scale to 1,1,1.", Logger.LogType.Local, this);
+            }
+            transform.localScale = Vector3.one;
+        }
+
         private void Start()
         {
             _button = GetComponent<Button>();
@@ -170,13 +182,6 @@ namespace _Project.Scripts.Runtime.UI
         private void Update()
         {
             if (!_isOpen) transform.localScale = Vector3.zero;
-        }
-
-        public void ResetButton()
-        {
-            Logger.LogDebug($"Button reset : {name}", Logger.LogType.Local, this);
-            transform.localScale = new Vector3(_originalScale, _originalScale, _originalScale);
-            _button.interactable = true;
         }
     }
 }
