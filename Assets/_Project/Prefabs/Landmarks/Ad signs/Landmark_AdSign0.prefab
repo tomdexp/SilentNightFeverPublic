@@ -313,6 +313,7 @@ GameObject:
   - component: {fileID: 4411903295707101381}
   - component: {fileID: 8390771467933294356}
   - component: {fileID: 7108816694654842327}
+  - component: {fileID: 7841906252494001237}
   m_Layer: 0
   m_Name: Landmark_AdSign0
   m_TagString: Untagged
@@ -454,6 +455,20 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 5220753643757815717}
   _networkObjectCache: {fileID: 5220753643757815717}
+--- !u!114 &7841906252494001237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7617323471708696508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafc40fd06d240e99e912eaefef874eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenHighContrast:
+  - {fileID: 2807222961414458134}
 --- !u!1001 &3221717732365247292
 PrefabInstance:
   m_ObjectHideFlags: 0

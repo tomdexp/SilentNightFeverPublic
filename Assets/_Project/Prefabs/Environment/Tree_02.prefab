@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: -3039553893625661155}
   - component: {fileID: 4828283480317733206}
   - component: {fileID: 5900398032575084347}
+  - component: {fileID: 4131024934522463015}
   m_Layer: 0
   m_Name: Tree_02
   m_TagString: Untagged
@@ -272,6 +273,25 @@ CapsuleCollider:
   m_Height: 10.25
   m_Direction: 1
   m_Center: {x: 0, y: 5.73, z: 0}
+--- !u!114 &4131024934522463015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2394349204268883231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafc40fd06d240e99e912eaefef874eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenHighContrast:
+  - {fileID: 5376649114231050252}
+  - {fileID: 8775644382185687854}
+  - {fileID: 3363192491633235599}
+  - {fileID: 4255750929482888928}
+  - {fileID: 5772865661696472617}
+  - {fileID: 4594329781120853234}
 --- !u!1 &4349624761366125736
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,6 +826,12 @@ PrefabInstance:
 --- !u!4 &3754120073421096105 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2949069479878487644, guid: 74abc0b8ab4553f459855dab5699ae3f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2086401654486723317}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8775644382185687854 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7295049995108180443, guid: 74abc0b8ab4553f459855dab5699ae3f,
     type: 3}
   m_PrefabInstance: {fileID: 2086401654486723317}
   m_PrefabAsset: {fileID: 0}
@@ -1602,6 +1628,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3431893206332764631}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5376649114231050252 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7295049995108180443, guid: cf6f789b060272247b4a954159f05a31,
+    type: 3}
+  m_PrefabInstance: {fileID: 3431893206332764631}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3697512046426965900
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1837,6 +1869,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3828182735761217522}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5772865661696472617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7295049995108180443, guid: 23ada13d9b38d364c989fb08f33f0bdc,
+    type: 3}
+  m_PrefabInstance: {fileID: 3828182735761217522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5445217611567347540
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1920,6 +1958,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 876917885eadcaf469d5aba2d8499d7a, type: 3}
+--- !u!1 &3363192491633235599 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7295049995108180443, guid: 876917885eadcaf469d5aba2d8499d7a,
+    type: 3}
+  m_PrefabInstance: {fileID: 5445217611567347540}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7168744896616356104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2949069479878487644, guid: 876917885eadcaf469d5aba2d8499d7a,
@@ -1988,7 +2032,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 45bc87a9dcea080458798eb6d8b1b783, type: 2}
+      objectReference: {fileID: 2100000, guid: d41ed11e02e701b4abf0901092d03478, type: 2}
     - target: {fileID: 919132149155446097, guid: fad54ba0c0a232146aa4f33b27fc2209,
         type: 3}
       propertyPath: m_Name
@@ -2135,6 +2179,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 377133231703bef46bb7f440efd15735, type: 3}
+--- !u!1 &4255750929482888928 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7295049995108180443, guid: 377133231703bef46bb7f440efd15735,
+    type: 3}
+  m_PrefabInstance: {fileID: 6787575265821120315}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8565702098004785511 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2949069479878487644, guid: 377133231703bef46bb7f440efd15735,
