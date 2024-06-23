@@ -43,7 +43,11 @@ public class GameRecorder : NetworkBehaviour
 
     private void OnDestroy()
     {
-        if (GameManager.HasInstance) GameManager.Instance.OnAnyRoundStarted -= StartRegisteringPlayerLocation;
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnAnyRoundStarted -= StartRegisteringPlayerLocation;
+            GameManager.Instance.OnGameEnded -= SaveGameInfosToJSON;
+        }
         if (_procGenInstanciator != null)
         {
             _procGenInstanciator.OnMapGenerated -= RegisterLandmarksLocation;
@@ -129,6 +133,7 @@ public class GameRecorder : NetworkBehaviour
 
     public void SaveGameInfosToJSON(PlayerTeamType winningTeam)
     {
+#if !UNITY_EDITOR 
         string json = JsonUtility.ToJson(_gameInfos);
         DateTime dt = DateTime.Now;
         File.WriteAllText(Application.dataPath + "/GameInfos" + dt.ToString("HHmmss") + ".json", json);
@@ -136,6 +141,7 @@ public class GameRecorder : NetworkBehaviour
         string name = "GameInfos" + dt.ToString("HHmmss") + ".json";
         Logger.LogInfo($"GameInfos file {name} saved to {path}", Logger.LogType.Server, this);
         SaveJSONToCloud(json, name);
+#endif
     }
 
     [Button(ButtonStyle.FoldoutButton)]

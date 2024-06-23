@@ -390,7 +390,7 @@ namespace _Project.Scripts.Runtime.Player
 
         private IEnumerator TeleportCoroutine(Vector3 position)
         {
-            Logger.LogInfo("Teleporting player to " + position, context: this);
+            Logger.LogInfo($"Teleporting player {_networkPlayer.GetPlayerIndexType()} to " + position, context: this);
             bool rigidbodyStateBefore = _rigidbody.isKinematic;
             _rigidbody.isKinematic = true;
             _playerCollider.enabled = false;
@@ -404,7 +404,7 @@ namespace _Project.Scripts.Runtime.Player
             yield return new WaitForSeconds(0.5f);
             _playerCollider.enabled = true;
             _rigidbody.isKinematic = rigidbodyStateBefore;
-            Logger.LogDebug("Player teleported to " + transform.position, context: this);
+            Logger.LogDebug($"Player {_networkPlayer.GetPlayerIndexType()} teleported to " + transform.position, context: this);
         }
         
         public TongueAnchor GetCharacterTongueAnchor()

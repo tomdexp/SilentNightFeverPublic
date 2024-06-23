@@ -1,7 +1,6 @@
 ﻿using FishNet.Broadcast;
-using Unity.Collections;
 
-namespace _Project.Scripts.Runtime.Networking
+namespace _Project.Scripts.Runtime.Networking.Broadcast
 {
     public struct MMFPlayerReplicatedBroadcast : IBroadcast
     {

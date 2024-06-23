@@ -31,12 +31,12 @@ public class ProcGenInstanciator : MonoBehaviour
     [Title("    Team A")]
     [SerializeField] private ProcGenParameters _teamAParameters;
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _teamAPrefab;
-    private List<Vector2> _teamAPoints;
+    [HideInInspector] public List<Vector2> _teamAPoints;
 
     [Title("    Team B")]
     [SerializeField] private ProcGenParameters _teamBParameters;
     [HideIf("@_patxiMode == true"), SerializeField] private NetworkObject _teamBPrefab;
-    private List<Vector2> _teamBPoints;
+    [HideInInspector] public List<Vector2> _teamBPoints;
 
     [Title("    Landmarks")]
     [SerializeField] private ProcGenParameters _landmarksParameters;

@@ -35,27 +35,24 @@ namespace _Project.Scripts.Runtime.UI
         public event Action OnUnHover;
         
         private Button _button;
-        private float _originalScale;
         private float _secondsBetweenClick = 0.1f;
         private bool _isOpen = true;
 
         private void Awake()
         {
             // check if current scale is not 1,1,1
-            if (Mathf.Approximately(transform.localScale.x, 1) 
-                || Mathf.Approximately(transform.localScale.y, 1) 
-                || Mathf.Approximately(transform.localScale.z, 1))
+            if (!Mathf.Approximately(transform.localScale.x, 1) 
+                || !Mathf.Approximately(transform.localScale.y, 1) 
+                || !Mathf.Approximately(transform.localScale.z, 1))
             {
                 Logger.LogWarning($"The scale of the button is not 1,1,1 (current is {transform.localScale}) on {gameObject.name}. This can cause issues with the animations. Please set the scale to 1,1,1.", Logger.LogType.Local, this);
             }
-            transform.localScale = Vector3.one;
         }
 
         private void Start()
         {
             _button = GetComponent<Button>();
             _button.onClick.AddListener(OnClick);
-            _originalScale = transform.localScale.x;
         }
 
         private void OnDestroy()
@@ -74,7 +71,7 @@ namespace _Project.Scripts.Runtime.UI
                 transform.DOKill();
                 transform.DOScale(_uiData.ClickEnterScale, _uiData.ClickEnterDuration).SetEase(_uiData.ClickEnterEase).OnComplete(() =>
                 {
-                    transform.DOScale(_originalScale, _uiData.ClickEnterDuration).SetEase(_uiData.ClickEnterEase);
+                    transform.DOScale(1f, _uiData.ClickEnterDuration).SetEase(_uiData.ClickEnterEase);
                 });
             }
             else
@@ -84,7 +81,7 @@ namespace _Project.Scripts.Runtime.UI
                 transform.DOKill();
                 transform.DOScale(_uiData.ClickBackScale, _uiData.ClickBackDuration).SetEase(_uiData.ClickBackEase).OnComplete(() =>
                 {
-                    transform.DOScale(_originalScale, _uiData.ClickBackDuration).SetEase(_uiData.ClickBackEase);
+                    transform.DOScale(1f, _uiData.ClickBackDuration).SetEase(_uiData.ClickBackEase);
                 });
             }
         }
@@ -136,12 +133,12 @@ namespace _Project.Scripts.Runtime.UI
             if(_buttonType == ButtonType.Enter)
             {
                 transform.DOKill();
-                transform.DOScale(_originalScale, _uiData.HoverEnterDuration).SetEase(_uiData.HoverEnterEase);
+                transform.DOScale(1f, _uiData.HoverEnterDuration).SetEase(_uiData.HoverEnterEase);
             }
             else
             {
                 transform.DOKill();
-                transform.DOScale(_originalScale, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
+                transform.DOScale(1f, _uiData.HoverBackDuration).SetEase(_uiData.HoverBackEase);
             }
         }
 
@@ -152,7 +149,7 @@ namespace _Project.Scripts.Runtime.UI
             transform.DOKill();
             var sequence = DOTween.Sequence(gameObject);
             sequence.Append(transform.DOScale(scaleUpTarget, _uiData.OpenAnimDurationScaleUp).SetEase(_uiData.OpenAnimEaseScaleUp));
-            sequence.Append(transform.DOScale(_originalScale, _uiData.OpenAnimDurationScaleDown).SetEase(_uiData.OpenAnimEaseScaleDown));
+            sequence.Append(transform.DOScale(1f, _uiData.OpenAnimDurationScaleDown).SetEase(_uiData.OpenAnimEaseScaleDown));
             sequence.Play();
             _isOpen = true;
         }

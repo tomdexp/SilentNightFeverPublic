@@ -722,10 +722,18 @@ namespace _Project.Scripts.Runtime.Networking
             StartCoroutine(StartGame());
         }
 
+        public void RestoreDefaultGameSettings()
+        {
+            CanLandmarkVoodooSpawnFromGameSettings = true;
+            CanLandmarkZoomSpawnFromGameSettings = true;
+            CanCameraHaveRandomAngleFromGameSettings = true;
+        }
+
         public void ResetGame()
         {
             if (!IsServerStarted) return;
             
+            IsOnBoardingStarted.Value = false;
             IsGameStarted.Value = false;
             Rounds.Clear();
             RoundsResults.Clear();
@@ -734,9 +742,6 @@ namespace _Project.Scripts.Runtime.Networking
             _deltaTimeCounter = 0;
             _teamATongueBindCount = 0;
             _teamBTongueBindCount = 0;
-            CanLandmarkVoodooSpawnFromGameSettings = true;
-            CanLandmarkZoomSpawnFromGameSettings = true;
-            CanCameraHaveRandomAngleFromGameSettings = true;
         }
         
         public int GetWinCount(PlayerTeamType teamType)

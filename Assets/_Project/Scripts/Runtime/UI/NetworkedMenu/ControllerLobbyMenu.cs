@@ -62,6 +62,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             if(InstanceFinder.IsServerStarted) PlayerManager.Instance.ResetRealPlayerInfos();
             
             var sequence = DOTween.Sequence();
+            sequence.AppendInterval(_delayBetweenPlayerAnimation);
             sequence.AppendCallback((() => _playerACanvas.Open()));
             sequence.AppendInterval(_delayBetweenPlayerAnimation);
             sequence.AppendCallback((() => _playerBCanvas.Open()));

@@ -102,6 +102,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             Close();
             GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(PlayerIndexSelectionMenu);
             GameManager.Instance.LoadMenuScene();
+            GameManager.Instance.RestoreDefaultGameSettings();
             GameManager.Instance.ResetGame();
         }
 
@@ -123,6 +124,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                         BootstrapManager.Instance.TryLeaveOnline();
                         GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(MainMenu);
                         GameManager.Instance.LoadMenuScene();
+                        GameManager.Instance.RestoreDefaultGameSettings();
                         GameManager.Instance.ResetGame();
                         PlayerManager.Instance.ResetRealPlayerInfos();
                         Close();
@@ -138,6 +140,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                         yield return new WaitUntil((() => GameManager.HasInstance));
                         GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(MainMenu);
                         GameManager.Instance.LoadMenuScene();
+                        GameManager.Instance.RestoreDefaultGameSettings();
                         GameManager.Instance.ResetGame();
                         yield return new WaitUntil((() => PlayerManager.HasInstance));
                         PlayerManager.Instance.ResetRealPlayerInfos();
@@ -153,6 +156,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                     BootstrapManager.Instance.TryLeaveOnline();
                     GameManager.Instance.MenuToGoOnResetAfterLoadingScene = nameof(MainMenu);
                     GameManager.Instance.LoadMenuScene();
+                    GameManager.Instance.RestoreDefaultGameSettings();
                     GameManager.Instance.ResetGame();
                     PlayerManager.Instance.ResetRealPlayerInfos();
                     Close();

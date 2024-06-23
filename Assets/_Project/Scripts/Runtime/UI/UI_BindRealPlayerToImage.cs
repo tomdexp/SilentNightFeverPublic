@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Networking.Broadcast;
 using _Project.Scripts.Runtime.Player;
 using DG.Tweening;
 using FishNet;
@@ -29,8 +30,8 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private Color _noPlayerColor;
         [SerializeField] private Color _playerPresentColor;
         [SerializeField] private float _width;
-        [SerializeField] private Vector3 _openPosition;
-        [SerializeField] private Vector3 _closePosition;
+        [SerializeField, Required] private MMF_Player _feedbacksOpen;
+        [SerializeField, Required] private MMF_Player _feedbacksClose;
         [SerializeField, Required] private MMF_Player _feedbacksReady;
         [SerializeField, Required] private MMF_Player _feedbacksNotReady;
         
@@ -45,46 +46,30 @@ namespace _Project.Scripts.Runtime.UI
 
         private void Start()
         {
-            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
-            StartCoroutine(TryRegisterPlayerManagerEvents());
             UpdateUI();
+            InstanceFinder.ClientManager.RegisterBroadcast<RealPlayersInfoChangedBroadcast>(OnRealPlayerInfosChanged);
+        }
+
+        private void OnDestroy()
+        {
+            if (InstanceFinder.ClientManager) InstanceFinder.ClientManager.UnregisterBroadcast<RealPlayersInfoChangedBroadcast>(OnRealPlayerInfosChanged);
         }
 
         public void Open()
         {
             if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove, AudioManager.Instance.gameObject);
-            _rectTransform.DOAnchorPos(_openPosition, _uiData.ControllerCanvasLeftToRightAnimDuration).SetEase(_uiData.ControllerCanvasLeftToRightAnimEase);
+            _feedbacksOpen?.PlayFeedbacks();
         }
 
         public void Close()
         {
             if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove, AudioManager.Instance.gameObject);
-            _rectTransform.DOAnchorPos(_closePosition, _uiData.ControllerCanvasLeftToRightAnimDuration).SetEase(_uiData.ControllerCanvasLeftToRightAnimEase);
+            _feedbacksClose?.PlayFeedbacks();
         }
 
-        private void OnDestroy()
+        private void OnRealPlayerInfosChanged(RealPlayersInfoChangedBroadcast realPlayersInfoChangedBroadcast, Channel channel)
         {
-            if(InstanceFinder.ClientManager) InstanceFinder.ClientManager.OnClientConnectionState -= OnClientConnectionState;
-            if (PlayerManager.HasInstance) PlayerManager.Instance.OnRealPlayerInfosChanged -= OnRealPlayerInfosChanged;
-        }
-
-        private void OnClientConnectionState(ClientConnectionStateArgs args)
-        {
-            if (args.ConnectionState == LocalConnectionState.Started)
-            {
-                StartCoroutine(TryRegisterPlayerManagerEvents());
-            }
-        }
-
-        private IEnumerator TryRegisterPlayerManagerEvents()
-        {
-            while(!PlayerManager.HasInstance) yield return null;
-            PlayerManager.Instance.OnRealPlayerInfosChanged += OnRealPlayerInfosChanged;
-            Logger.LogDebug("PlayerManager events registered", Logger.LogType.Local, this);
-        }
-
-        private void OnRealPlayerInfosChanged(List<RealPlayerInfo> _)
-        {
+            Logger.LogDebug("Received RealPlayersInfoChangedBroadcast", Logger.LogType.Local, this);
             UpdateUI();
         }
         
@@ -99,7 +84,6 @@ namespace _Project.Scripts.Runtime.UI
                 if (_isPlayingReadyFeedbacks)
                 {
                     _feedbacksReady?.StopFeedbacks();
-                    _feedbacksReady?.RestoreInitialValues();
                     _isPlayingReadyFeedbacks = false;
                 }
                 if (!_isPlayingNotReadyFeedbacks)
@@ -118,7 +102,6 @@ namespace _Project.Scripts.Runtime.UI
                 if (_isPlayingReadyFeedbacks)
                 {
                     _feedbacksReady?.StopFeedbacks();
-                    _feedbacksReady?.RestoreInitialValues();
                     _isPlayingReadyFeedbacks = false;
                 }
                 if (!_isPlayingNotReadyFeedbacks)
@@ -145,7 +128,6 @@ namespace _Project.Scripts.Runtime.UI
                 if (_isPlayingNotReadyFeedbacks)
                 {
                     _feedbacksNotReady?.StopFeedbacks();
-                    _feedbacksNotReady?.RestoreInitialValues();
                     _isPlayingNotReadyFeedbacks = false;
                 }
             }
@@ -157,7 +139,6 @@ namespace _Project.Scripts.Runtime.UI
                 if (_isPlayingReadyFeedbacks)
                 {
                     _feedbacksReady?.StopFeedbacks();
-                    _feedbacksReady?.RestoreInitialValues();
                     _isPlayingReadyFeedbacks = false;
                 }
                 if (!_isPlayingNotReadyFeedbacks)
@@ -166,18 +147,6 @@ namespace _Project.Scripts.Runtime.UI
                     _isPlayingNotReadyFeedbacks = true;
                 }
             }
-        }
-        
-        [Button]
-        public void RegisterOpenPosition()
-        {
-            _openPosition = _rectTransform.anchoredPosition;
-        }
-        
-        [Button]
-        public void RegisterClosePosition()
-        {
-            _closePosition = _rectTransform.anchoredPosition;
         }
     }
 }

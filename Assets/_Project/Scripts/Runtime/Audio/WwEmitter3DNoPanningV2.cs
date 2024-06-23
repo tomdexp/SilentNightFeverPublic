@@ -20,7 +20,6 @@ namespace _Project.Scripts.Runtime.Audio
         [Title("References")]
         public AkEvent EventEnterZoneAtLeastOnePlayer;
         public AkEvent EventExitZoneNoPlayer;
-        public SphereCollider Collider;
         public LayerMask PlayerLayer;
         
         [Title("Debug (Read-Only)")]
@@ -40,14 +39,20 @@ namespace _Project.Scripts.Runtime.Audio
         private AkGameObj _akGameObj;
         private bool _isSetup = false;
         private Landmark _landmark;
+        private SphereCollider _collider;
 
         private void Awake()
         {
             _akGameObj = GetComponent<AkGameObj>();
             _landmark = GetComponentInParent<Landmark>();
+            _collider = GetComponent<SphereCollider>();
             if (!_landmark)
             {
                 Logger.LogError("No Landmark found in parent!", Logger.LogType.Local, this);
+            }
+            if (!_collider)
+            {
+                Logger.LogError("No SphereCollider found!", Logger.LogType.Local, this);
             }
         }
 
@@ -78,7 +83,7 @@ namespace _Project.Scripts.Runtime.Audio
         
         private void OnAnyRoundStarted(byte _)
         {
-            var radius = Collider.radius;
+            var radius = _collider.radius;
             // do an overlap sphere to check if there is a player in the collider
             Collider[] results = new Collider[4];
             var size = Physics.OverlapSphereNonAlloc(transform.position, radius, results, PlayerLayer);

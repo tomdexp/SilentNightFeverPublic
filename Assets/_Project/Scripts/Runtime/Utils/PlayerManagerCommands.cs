@@ -38,5 +38,16 @@ namespace _Project.Scripts.Runtime.Utils
             }
             if(PlayerManager.HasInstance) PlayerManager.Instance.ReadyAllFakePlayers();
         }
+
+        [Command("/player.infos", "Get the player infos")]
+        public static void GetPlayerPositions()
+        {
+            if (!InstanceFinder.IsServerStarted)
+            {
+                Logger.LogError("Only the server can know these informations !");
+                return;
+            }
+            if(PlayerManager.HasInstance) PlayerManager.Instance.LogPlayerPositionsAndDistance();
+        }
     }
 }

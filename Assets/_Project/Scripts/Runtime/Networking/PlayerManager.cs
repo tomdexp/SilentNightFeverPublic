@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using _Project.Scripts.Runtime.Inputs;
+using _Project.Scripts.Runtime.Networking.Broadcast;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Player.PlayerEffects;
 using _Project.Scripts.Runtime.UI.NetworkedMenu;
@@ -50,7 +51,6 @@ namespace _Project.Scripts.Runtime.Networking
         public readonly SyncVar<bool> CanPlayerUseTongue = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly, ReadPermission.Observers));
         public int NumberOfPlayers => _realPlayerInfos.Count;
         public bool AreAllPlayerSpawnedLocally => _numberOfPlayerSpawnedLocally == 4;
-
         public event Action<List<RealPlayerInfo>> OnRealPlayerInfosChanged;
         public event Action<List<PlayerReadyInfo>> OnPlayersReadyChanged;
         public event Action<List<PlayerTeamInfo>> OnPlayerTeamInfosChanged;
@@ -85,6 +85,9 @@ namespace _Project.Scripts.Runtime.Networking
             _playerHatInfos.Clear();
             InstanceFinder.ServerManager.OnRemoteConnectionState += OnRemoteConnectionState;
             StartCoroutine(TrySubscribeToGameManagerEvents());
+            
+            _realPlayerInfos.OnChange += BroadcastRealPlayerInfosChanged;
+            _playerTeamInfos.OnChange += BroadcastPlayerTeamInfosChanged;
         }
 
         private IEnumerator TrySubscribeToGameManagerEvents()
@@ -112,11 +115,15 @@ namespace _Project.Scripts.Runtime.Networking
 
         public override void OnStopServer()
         {
+            _realPlayerInfos.OnChange -= BroadcastRealPlayerInfosChanged;
+            _playerTeamInfos.OnChange -= BroadcastPlayerTeamInfosChanged;
+            
             _realPlayerInfos.Clear();
             _playerTeamInfos.Clear();
             _playerReadyInfos.Clear();
             _playerHatInfos.Clear();
             InstanceFinder.ServerManager.OnRemoteConnectionState -= OnRemoteConnectionState;
+            
             if (GameManager.HasInstance)
             {
                 GameManager.Instance.OnAnyRoundStarted -= OnAnyRoundStarted;
@@ -1002,6 +1009,8 @@ namespace _Project.Scripts.Runtime.Networking
                 {
                     MapPlayerTeams();
                     OnAllPlayersReady?.Invoke();
+                    var broadcast = new AllPlayerReadyBroadcast();
+                    ServerManager.Broadcast(broadcast);
                 }
             }
         }
@@ -1836,6 +1845,18 @@ namespace _Project.Scripts.Runtime.Networking
         {
             return FindObjectsByType<NetworkPlayer>(FindObjectsSortMode.None).Where(x => x.GetPlayerTeamType() == teamType);
         }
+        
+        private void BroadcastRealPlayerInfosChanged(SyncListOperation op, int index, RealPlayerInfo oldItem, RealPlayerInfo newItem, bool asServer)
+        {
+            var broadcast = new RealPlayersInfoChangedBroadcast();
+            ServerManager.Broadcast(broadcast);
+        }
+        
+        private void BroadcastPlayerTeamInfosChanged(SyncListOperation op, int index, PlayerTeamInfo oldItem, PlayerTeamInfo newItem, bool asServer)
+        {
+            var broadcast = new PlayerTeamInfosChangedBroadcast();
+            ServerManager.Broadcast(broadcast);
+        }
 
         private bool IsPlayerTeamsInfoValid()
         {
@@ -1963,6 +1984,40 @@ namespace _Project.Scripts.Runtime.Networking
                 default:
                     throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
             }
+        }
+        public void LogPlayerPositionsAndDistance()
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            var teamADistance = Vector3.Distance(_playerControllerA.transform.position, _playerControllerC.transform.position);
+            var teamBDistance = Vector3.Distance(_playerControllerB.transform.position, _playerControllerD.transform.position);
+            var procGen = FindAnyObjectByType<ProcGenInstanciator>();
+            if (!procGen)
+            {
+                Logger.LogDebug("ProcGenInstanciator not found will not log player positions compared to their teleportation points", Logger.LogType.Server, this);
+                return;
+            }
+            Vector3 playerATeleportPointLocation = new Vector3(procGen._teamAPoints[0].x, 0, procGen._teamAPoints[0].y);
+            Vector3 playerBTeleportPointLocation = new Vector3(procGen._teamBPoints[0].x, 0, procGen._teamBPoints[0].y);
+            Vector3 playerCTeleportPointLocation = new Vector3(procGen._teamAPoints[1].x, 0, procGen._teamAPoints[1].y);
+            Vector3 playerDTeleportPointLocation = new Vector3(procGen._teamBPoints[1].x, 0, procGen._teamBPoints[1].y);
+            var playerADistanceToTeleportPoint = Vector3.Distance(_playerControllerA.transform.position, playerATeleportPointLocation);
+            var playerBDistanceToTeleportPoint = Vector3.Distance(_playerControllerB.transform.position, playerBTeleportPointLocation);
+            var playerCDistanceToTeleportPoint = Vector3.Distance(_playerControllerC.transform.position, playerCTeleportPointLocation);
+            var playerDDistanceToTeleportPoint = Vector3.Distance(_playerControllerD.transform.position, playerDTeleportPointLocation);
+            Logger.LogDebug("Team A distance: " + teamADistance + " | Team B distance: " + teamBDistance, Logger.LogType.Server, this);
+            Logger.LogDebug("Player A teleport point: " + playerATeleportPointLocation, Logger.LogType.Server, this);
+            Logger.LogDebug("Player B teleport point: " + playerBTeleportPointLocation, Logger.LogType.Server, this);
+            Logger.LogDebug("Player C teleport point: " + playerCTeleportPointLocation, Logger.LogType.Server, this);
+            Logger.LogDebug("Player D teleport point: " + playerDTeleportPointLocation, Logger.LogType.Server, this);
+            Logger.LogDebug("Player A position: " + _playerControllerA.transform.position, Logger.LogType.Server, this);
+            Logger.LogDebug("Player B position: " + _playerControllerB.transform.position, Logger.LogType.Server, this);
+            Logger.LogDebug("Player C position: " + _playerControllerC.transform.position, Logger.LogType.Server, this);
+            Logger.LogDebug("Player D position: " + _playerControllerD.transform.position, Logger.LogType.Server, this);
+            Logger.LogDebug("Player A distance to teleport point: " + playerADistanceToTeleportPoint, Logger.LogType.Server, this);
+            Logger.LogDebug("Player B distance to teleport point: " + playerBDistanceToTeleportPoint, Logger.LogType.Server, this);
+            Logger.LogDebug("Player C distance to teleport point: " + playerCDistanceToTeleportPoint, Logger.LogType.Server, this);
+            Logger.LogDebug("Player D distance to teleport point: " + playerDDistanceToTeleportPoint, Logger.LogType.Server, this);
+#endif
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
+using _Project.Scripts.Runtime.Networking.Broadcast;
 using _Project.Scripts.Runtime.Player;
 using _Project.Scripts.Runtime.Utils;
 using DG.Tweening;
@@ -15,6 +16,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Logger = _Project.Scripts.Runtime.Utils.Logger;
 
 namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 {
@@ -64,8 +66,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void Start()
         {
             base.Start();
-            InstanceFinder.ClientManager.OnClientConnectionState += OnClientConnectionState;
-            StartCoroutine(TryRegisterPlayerManagerEvents());
+            InstanceFinder.ClientManager.RegisterBroadcast<PlayerTeamInfosChangedBroadcast>(OnPlayerTeamInfosChanged);
+            InstanceFinder.ClientManager.RegisterBroadcast<AllPlayerReadyBroadcast>(OnAllPlayersReady);
             UpdateUI();
         }
         
@@ -79,7 +81,6 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             {
                 _feedbacksAllPlayersReady.RestoreFeedbacksForAll();
                 PlayerManager.Instance.TryStartTeamManagement();
-                PlayerManager.Instance.OnAllPlayersReady += OnAllPlayersReady;
                 _goBackButton.onClick.AddListener(GoBack);
             }
             
@@ -92,7 +93,6 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _canvasGroup.Close();
             if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance)
             {
-                PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;
                 _goBackButton.onClick.RemoveListener(GoBack);
             }
         }
@@ -119,30 +119,19 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             }
         }
         
-        private void OnClientConnectionState(ClientConnectionStateArgs args)
-        {
-            if (args.ConnectionState == LocalConnectionState.Started)
-            {
-                StartCoroutine(TryRegisterPlayerManagerEvents());
-            }
-        }
-
-        private IEnumerator TryRegisterPlayerManagerEvents()
-        {
-            while(!PlayerManager.HasInstance) yield return null;
-            PlayerManager.Instance.OnPlayerTeamInfosChanged += OnPlayerTeamInfosChanged;
-        }
-
         public override void OnDestroy()
         {
             base.OnDestroy();
-            if(InstanceFinder.ClientManager) InstanceFinder.ClientManager.OnClientConnectionState -= OnClientConnectionState;
-            if (PlayerManager.HasInstance) PlayerManager.Instance.OnPlayerTeamInfosChanged -= OnPlayerTeamInfosChanged;
-            if (InstanceFinder.IsServerStarted && PlayerManager.HasInstance) PlayerManager.Instance.OnAllPlayersReady -= OnAllPlayersReady;
+            if (InstanceFinder.ClientManager)
+            {
+                InstanceFinder.ClientManager.UnregisterBroadcast<PlayerTeamInfosChangedBroadcast>(OnPlayerTeamInfosChanged);
+                InstanceFinder.ClientManager.UnregisterBroadcast<AllPlayerReadyBroadcast>(OnAllPlayersReady);
+            }
         }
 
-        private void OnPlayerTeamInfosChanged(List<PlayerTeamInfo> _)
+        private void OnPlayerTeamInfosChanged(PlayerTeamInfosChangedBroadcast playerTeamInfosChangedBroadcast, Channel channel)
         {
+            Logger.LogDebug("Received PlayerTeamInfosChangedBroadcast", Logger.LogType.Local, this);
             UpdateUI();
         }
 
@@ -175,8 +164,9 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             }
         }
         
-        private void OnAllPlayersReady()
+        private void OnAllPlayersReady(AllPlayerReadyBroadcast allPlayerReadyBroadcast, Channel channel)
         {
+            Logger.LogDebug("Received AllPlayerReadyBroadcast", Logger.LogType.Local, this);
             StartCoroutine(OnAllPlayersReadyCoroutine());
         }
 
