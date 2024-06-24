@@ -25,7 +25,8 @@ namespace _Project.Scripts.Runtime.Inputs
         public event Action<InputAction.CallbackContext> OnActionInteractStarted;
         public event Action<InputAction.CallbackContext> OnActionInteractPerformed;
         public event Action<InputAction.CallbackContext> OnActionInteractCanceled;
-        
+        public event Action OnActionPausePerformed;
+
         private PlayerInputActions _inputActions;
         private Vector2 _movementInput;
         private RealPlayerInfo _playerInfo;
@@ -110,11 +111,17 @@ namespace _Project.Scripts.Runtime.Inputs
             _inputActions.Player.Interact.canceled += OnInteractInputActionCanceled;
             _inputActions.Player.Move.performed += OnMoveInputAction;
             _inputActions.Player.Move.canceled += OnMoveInputAction;
+            _inputActions.Player.Pause.performed += OnPauseInputAction;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             _inputActions.Player.DebugPossess.performed += OnDebugPossess;
 #endif
             _inputActions.Enable();
             Logger.LogTrace("Bound input provider with device: " + deviceName + " for clientID: " + _playerInfo.ClientId, context:this);
+        }
+
+        private void OnPauseInputAction(InputAction.CallbackContext context)
+        {
+            OnActionPausePerformed?.Invoke();
         }
 
         private void OnDebugPossess(InputAction.CallbackContext context)

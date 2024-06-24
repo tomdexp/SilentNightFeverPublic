@@ -65,17 +65,20 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
 
         private void ControlsButtonClicked()
         {
-            UIManager.Instance.GoToMenu<ParametersControlsMenu>();
+            //UIManager.Instance.GoToMenu<ParametersControlsMenu>();
+            UI.GoToMenu<ParametersControlsMenu>();
         }
 
         private void AudioButtonClicked()
         {
-            UIManager.Instance.GoToMenu<ParametersAudioMenu>();
+            //UIManager.Instance.GoToMenu<ParametersAudioMenu>();
+            UI.GoToMenu<ParametersAudioMenu>();
         }
 
         private void GraphicsButtonClicked()
         {
-            UIManager.Instance.GoToMenu<ParametersGraphicsMenu>();
+            //UIManager.Instance.GoToMenu<ParametersGraphicsMenu>();
+            UI.GoToMenu<ParametersGraphicsMenu>();
         }
 
         public override void Close()
@@ -104,7 +107,14 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void GoBack()
         {
             base.GoBack();
-            UIManager.Instance.GoToMenu<MainMenu>();
+            if (UI.IsMenuV2SceneLoaded())
+            {
+                UI.GoToMenu<MainMenu>();
+            }
+            else
+            {
+                UI.GoToMenu<InGameMenu>();
+            }
         }
     }
 }

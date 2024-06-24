@@ -25,6 +25,7 @@ namespace _Project.Scripts.Runtime.Inputs
         /// When the action is canceled, this is useful for when you want to cancel an action, like when you want to cancel a charge
         /// </summary>
         public event Action<InputAction.CallbackContext> OnActionInteractCanceled;
+        public event Action OnActionPausePerformed;
         
         /// <summary>
         /// To Get the movement input, scripts should provide their own implementation

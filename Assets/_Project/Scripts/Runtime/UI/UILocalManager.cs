@@ -152,7 +152,11 @@ namespace _Project.Scripts.Runtime.UI
                 }
             }
             _menus[next].Open();
-            FindAnyObjectByType<MenuToGoOnReset>().SetMenuName(_menus[next].MenuName);
+            var menuToGoOnReset = FindAnyObjectByType<MenuToGoOnReset>();
+            if (menuToGoOnReset)
+            {
+                menuToGoOnReset.SetMenuName(_menus[next].MenuName);
+            }
         }
         
         

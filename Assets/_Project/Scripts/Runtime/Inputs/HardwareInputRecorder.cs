@@ -218,7 +218,8 @@ namespace _Project.Scripts.Runtime.Inputs
         public event Action<InputAction.CallbackContext> OnActionInteractStarted;
         public event Action<InputAction.CallbackContext> OnActionInteractPerformed;
         public event Action<InputAction.CallbackContext> OnActionInteractCanceled;
-        
+        public event Action OnActionPausePerformed;
+
         public Vector2 GetMovementInput()
         {
             return _lastMovementInput;

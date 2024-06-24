@@ -7,6 +7,7 @@ using _Project.Scripts.Runtime.Landmarks.Zoom;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Player.PlayerTongue;
 using _Project.Scripts.Runtime.UI;
+using _Project.Scripts.Runtime.UI.NetworkedMenu;
 using FishNet;
 using FishNet.Component.Transforming;
 using FishNet.Connection;
@@ -128,6 +129,8 @@ namespace _Project.Scripts.Runtime.Player
             if (_inputProvider != null)
             {
                 _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
+                _inputProvider.OnActionInteractCanceled -= OnInteractCanceled;
+                _inputProvider.OnActionPausePerformed -= OnPausePerformed;
             }
 
             if (IsOwner)
@@ -249,6 +252,7 @@ namespace _Project.Scripts.Runtime.Player
             _inputProvider = inputProvider;
             _inputProvider.OnActionInteractPerformed += OnInteractPerformed;
             _inputProvider.OnActionInteractCanceled += OnInteractCanceled;
+            _inputProvider.OnActionPausePerformed += OnPausePerformed;
 
             Logger.LogDebug("Bound input provider : " + _inputProvider.GetType().Name, context: this);
         }
@@ -259,6 +263,7 @@ namespace _Project.Scripts.Runtime.Player
             {
                 _inputProvider.OnActionInteractPerformed -= OnInteractPerformed;
                 _inputProvider.OnActionInteractCanceled -= OnInteractCanceled;
+                _inputProvider.OnActionPausePerformed -= OnPausePerformed;
                 _inputProvider = null;
                 Logger.LogDebug("Cleared input provider.", context: this);
             }
@@ -279,6 +284,18 @@ namespace _Project.Scripts.Runtime.Player
         {
             Logger.LogTrace("Interact canceled locally !", context: this);
             _playerStickyTongue.TryRetractTongue();
+        }
+        
+        private void OnPausePerformed()
+        {
+            if (UILocalManager.HasInstance)
+            {
+                UILocalManager.Instance.GoToMenu<InGameMenu>();
+            }
+            else
+            {
+                Logger.LogWarning("UILocalManager not found", Logger.LogType.Client,context: this);
+            }
         }
 
         public void SetRealPlayerInfo(RealPlayerInfo realPlayerInfo)

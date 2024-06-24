@@ -70,7 +70,8 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         public override void GoBack()
         {
             base.GoBack();
-            UIManager.Instance.GoToMenu<ParametersMenu>();
+            //UIManager.Instance.GoToMenu<ParametersMenu>();
+            UI.GoToMenu<ParametersMenu>();
         }
     }
 }
