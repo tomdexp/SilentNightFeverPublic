@@ -280,6 +280,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7830378740372162149}
+  - component: {fileID: 7658217191273822744}
+  - component: {fileID: 2818414973231952297}
   m_Layer: 0
   m_Name: Landmark_Visual_Zoom
   m_TagString: Untagged
@@ -304,6 +306,34 @@ Transform:
   - {fileID: 4341743972563310407}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7658217191273822744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6084510879948707239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafc40fd06d240e99e912eaefef874eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenHighContrast:
+  - {fileID: 3556298140985453924}
+--- !u!114 &2818414973231952297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6084510879948707239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb250d26ccb4fc69058afe7b2c1a42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenEpilespyFilterEnabled:
+  - {fileID: 3556298140985453924}
 --- !u!1 &6627380903474913997
 GameObject:
   m_ObjectHideFlags: 0

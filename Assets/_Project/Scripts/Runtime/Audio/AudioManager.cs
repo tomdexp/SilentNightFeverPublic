@@ -28,14 +28,16 @@ namespace _Project.Scripts.Runtime.Audio
         private List<AkAudioListener> _listeners = new List<AkAudioListener>();
         private List<AkGameObj> _emitters = new List<AkGameObj>();
         private bool _banksLoaded;
+        private GameObject _localPlayer;
 
         private void Start()
         {
             // Avoid playing the application start event multiple times or loading the banks multiple times
+            CleanLocalPlayer();
+            LoadAllBanks();
             if (!LocalStaticValues.HasApplicationStartWwiseEventFired)
             {
-                LoadAllBanks();
-                PlayAudioLocal(AudioManagerData.EventApplicationStart, gameObject);
+                PlayAudioLocal(AudioManagerData.EventApplicationStart);
                 LocalStaticValues.HasApplicationStartWwiseEventFired = true;
             }
             _akGameObj = GetComponent<AkGameObj>();
@@ -52,6 +54,11 @@ namespace _Project.Scripts.Runtime.Audio
 
         private void LoadAllBanks()
         {
+            if (_banksLoaded)
+            {
+                Logger.LogDebug("Audio Banks already loaded, skipping...", Logger.LogType.Local, this);
+                return;
+            }
             OnBanksLoadStart?.Invoke();
             _banksLoaded = false;
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -79,6 +86,19 @@ namespace _Project.Scripts.Runtime.Audio
             foreach (var audioEvent in eventsRef)
             {
                 InternalPlayAudioLocal(audioEvent.Id, go);
+            }
+        }
+        
+        public void PlayAudioLocal(AK.Wwise.Event eventRef)
+        {
+            InternalPlayAudioLocal(eventRef.Id, GetLocalPlayer());
+        }
+        
+        public void PlayAudioLocal(IEnumerable<AK.Wwise.Event> eventsRef)
+        {
+            foreach (var audioEvent in eventsRef)
+            {
+                InternalPlayAudioLocal(audioEvent.Id, GetLocalPlayer());
             }
         }
         
@@ -114,6 +134,19 @@ namespace _Project.Scripts.Runtime.Audio
             }
         }
         
+        public void PlayAudioNetworked(AK.Wwise.Event eventRef)
+        {
+            ReplicateAudio(eventRef.Id);
+        }
+
+        public void PlayAudioNetworked(IEnumerable<AK.Wwise.Event> eventsRef)
+        {
+            foreach (var audioEvent in eventsRef)
+            {
+                ReplicateAudio(audioEvent.Id);
+            }
+        }
+        
         /// <summary>
         /// This method plays an event with replication over the network, beware of calling this method too often
         /// </summary>
@@ -138,6 +171,14 @@ namespace _Project.Scripts.Runtime.Audio
             PlayAudioForClients(eventId, go, conn);
         }
         
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        private void ReplicateAudio(uint eventId, NetworkConnection conn = null)
+        {
+            Logger.LogTrace("Playing audio event over the network : " + eventId, Logger.LogType.Local, this);
+            InternalPlayAudioLocal(eventId, GetLocalPlayer());
+            PlayAudioForClients(eventId, conn);
+        }
+        
         [ObserversRpc(ExcludeServer = true)]
         private void PlayAudioForClients(uint eventId, GameObject go, NetworkConnection conn = null)
         {
@@ -146,6 +187,16 @@ namespace _Project.Scripts.Runtime.Audio
                 return;
             }
             InternalPlayAudioLocal(eventId, go);
+        }
+        
+        [ObserversRpc(ExcludeServer = true)]
+        private void PlayAudioForClients(uint eventId, NetworkConnection conn = null)
+        {
+            if (conn != null && conn == InstanceFinder.ClientManager.Connection)
+            {
+                return;
+            }
+            InternalPlayAudioLocal(eventId, GetLocalPlayer());
         }
         
         /// <summary>
@@ -214,12 +265,25 @@ namespace _Project.Scripts.Runtime.Audio
             ReplicateRTPC(rtpcId, value, go);
         }
         
+        public void SetNetworkedRTPC(uint rtpcId, float value)
+        {
+            ReplicateRTPC(rtpcId, value);
+        }
+        
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         private void ReplicateRTPC(uint rtpcId, float value, GameObject go, NetworkConnection conn = null)
         {
             Logger.LogTrace("Setting RTPC over the network with ID: " + rtpcId + " to " + value, Logger.LogType.Local, this);
             InternalSetRTPC(rtpcId, value, go);
             SetRTPCForClients(rtpcId, value, go, conn);
+        }
+        
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        private void ReplicateRTPC(uint rtpcId, float value, NetworkConnection conn = null)
+        {
+            Logger.LogTrace("Setting RTPC over the network with ID: " + rtpcId + " to " + value, Logger.LogType.Local, this);
+            InternalSetRTPC(rtpcId, value, GetLocalPlayer());
+            SetRTPCForClients(rtpcId, value, conn);
         }
         
         [ObserversRpc(ExcludeServer = true)]
@@ -230,6 +294,16 @@ namespace _Project.Scripts.Runtime.Audio
                 return;
             }
             InternalSetRTPC(rtpcId, value, go);
+        }
+        
+        [ObserversRpc(ExcludeServer = true)]
+        private void SetRTPCForClients(uint rtpcId, float value, NetworkConnection conn = null)
+        {
+            if (conn != null && conn == InstanceFinder.ClientManager.Connection)
+            {
+                return;
+            }
+            InternalSetRTPC(rtpcId, value, GetLocalPlayer());
         }
 
         private void InternalSetRTPC(uint rtpcId, float value, GameObject go)
@@ -285,6 +359,41 @@ namespace _Project.Scripts.Runtime.Audio
                     Logger.LogTrace($"Binding listener {akAudioListener.name} to emitter {akGameObj.name}", Logger.LogType.Local, this);
                 }
             }
+        }
+        
+        public GameObject GetLocalPlayer()
+        {
+            if (!_localPlayer)
+            {
+                _localPlayer = FindAnyObjectByType<AudioManagerLocal>().gameObject;
+                if (!AkSoundEngine.IsGameObjectRegistered(_localPlayer))
+                {
+                    var result = AkSoundEngine.RegisterGameObj(_localPlayer);
+                    if (result != AKRESULT.AK_Success)
+                    {
+                        Logger.LogError("Failed to register local player to Wwise", Logger.LogType.Local, this);
+                        return null;
+                    }
+                    Logger.LogTrace("Local Audio Player registered to Wwise !", Logger.LogType.Local, this);
+                }
+                if (!_localPlayer)
+                {
+                    Logger.LogError("No AudioManagerLocal found in scene", Logger.LogType.Local, this);
+                    return null;
+                }
+                
+                Logger.LogDebug("LocalPlayer wwise id is " + AkSoundEngine.GetAkGameObjectID(_localPlayer), Logger.LogType.Local, this);
+                return _localPlayer;
+            }
+            
+            Logger.LogDebug("LocalPlayer wwise id is " + AkSoundEngine.GetAkGameObjectID(_localPlayer), Logger.LogType.Local, this);
+            return _localPlayer;
+        }
+        
+        private void CleanLocalPlayer()
+        {
+            _localPlayer = null;
+            Logger.LogTrace("Local Audio Player cleaned !", Logger.LogType.Local, this);
         }
     }
 }

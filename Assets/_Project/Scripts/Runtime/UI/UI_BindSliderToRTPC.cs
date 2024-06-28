@@ -88,7 +88,7 @@ namespace _Project.Scripts.Runtime.UI
             _valueText.text = newValue.ToString(CultureInfo.InvariantCulture);
             if (AudioManager.HasInstance) AudioManager.Instance.SetLocalRTPC(_rtpc, newValue);
             if (!_valueChangedEvent.IsValid()) return;
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_valueChangedEvent, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_valueChangedEvent);
         }
     }
 }

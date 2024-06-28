@@ -66,7 +66,7 @@ namespace _Project.Scripts.Runtime.UI
             _clickFeedback.PlayFeedbacks();
             if (_buttonType == ButtonType.Enter)
             {
-                if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickEnter, AudioManager.Instance.gameObject);
+                if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickEnter);
                 if (!_playScaleFeedbackOnClicked) return;
                 transform.DOKill();
                 transform.DOScale(_uiData.ClickEnterScale, _uiData.ClickEnterDuration).SetEase(_uiData.ClickEnterEase).OnComplete(() =>
@@ -76,7 +76,7 @@ namespace _Project.Scripts.Runtime.UI
             }
             else
             {
-                if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickBack, AudioManager.Instance.gameObject);
+                if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonClickBack);
                 if (!_playScaleFeedbackOnClicked) return;
                 transform.DOKill();
                 transform.DOScale(_uiData.ClickBackScale, _uiData.ClickBackDuration).SetEase(_uiData.ClickBackEase).OnComplete(() =>
@@ -101,7 +101,7 @@ namespace _Project.Scripts.Runtime.UI
             if(!_button.interactable) return;
             OnHover?.Invoke();
             _hoverFeedback.PlayFeedbacks();
-            if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonHover, AudioManager.Instance.gameObject);
+            if(AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIButtonHover);
             if(_buttonType == ButtonType.Enter)
             {
                 transform.DOKill();

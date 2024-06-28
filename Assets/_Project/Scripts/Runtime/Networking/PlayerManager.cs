@@ -1858,37 +1858,6 @@ namespace _Project.Scripts.Runtime.Networking
             ServerManager.Broadcast(broadcast);
         }
 
-        private bool IsPlayerTeamsInfoValid()
-        {
-            // check that there is 4 players
-            if (_playerTeamInfos.Count != 4)
-            {
-                Logger.LogWarning("PlayerTeamInfos count is not 4.", context: this);
-                return false;
-            }
-            // check that there is no duplicate PlayerIndexType
-            foreach (PlayerTeamInfo playerTeamInfo in _playerTeamInfos.Collection)
-            {
-                if (_playerTeamInfos.Collection.Count(x => x.PlayerIndexType == playerTeamInfo.PlayerIndexType) > 1)
-                {
-                    Logger.LogWarning("Duplicate PlayerIndexType " + playerTeamInfo.PlayerIndexType, context: this);
-                    return false;
-                }
-            }
-            // check that there is 2 players in each team
-            if (_playerTeamInfos.Collection.Count(x => x.PlayerTeamType == PlayerTeamType.A) != 2)
-            {
-                Logger.LogWarning("Team A count is not 2.", context: this);
-                return false;
-            }
-            if (_playerTeamInfos.Collection.Count(x => x.PlayerTeamType == PlayerTeamType.B) != 2)
-            {
-                Logger.LogWarning("Team B count is not 2.", context: this);
-                return false;
-            }
-            return true;
-        }
-
         [Server]
         public void SetVoodooPuppetDirection(PlayerIndexType playerIndexType, Vector2 direction)
         {
@@ -1985,9 +1954,33 @@ namespace _Project.Scripts.Runtime.Networking
                     throw new ArgumentOutOfRangeException(nameof(playerIndexType), playerIndexType, null);
             }
         }
+
+        public void DisablePlayerInputs(byte clientId)
+        {
+            // disable all player inputs of a client
+            foreach (var networkPlayer in GetNetworkPlayers())
+            {
+                if (networkPlayer.GetRealPlayerInfo().ClientId == clientId)
+                {
+                    networkPlayer.DisableInputs();
+                }
+            }
+        }
+        
+        public void EnablePlayerInputs(byte clientId)
+        {
+            // enable all player inputs of a client
+            foreach (var networkPlayer in GetNetworkPlayers())
+            {
+                if (networkPlayer.GetRealPlayerInfo().ClientId == clientId)
+                {
+                    networkPlayer.EnableInputs();
+                }
+            }
+        }
+        
         public void LogPlayerPositionsAndDistance()
         {
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
             var teamADistance = Vector3.Distance(_playerControllerA.transform.position, _playerControllerC.transform.position);
             var teamBDistance = Vector3.Distance(_playerControllerB.transform.position, _playerControllerD.transform.position);
             var procGen = FindAnyObjectByType<ProcGenInstanciator>();
@@ -2017,7 +2010,6 @@ namespace _Project.Scripts.Runtime.Networking
             Logger.LogDebug("Player B distance to teleport point: " + playerBDistanceToTeleportPoint, Logger.LogType.Server, this);
             Logger.LogDebug("Player C distance to teleport point: " + playerCDistanceToTeleportPoint, Logger.LogType.Server, this);
             Logger.LogDebug("Player D distance to teleport point: " + playerDDistanceToTeleportPoint, Logger.LogType.Server, this);
-#endif
         }
     }
 }

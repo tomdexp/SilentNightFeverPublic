@@ -9,6 +9,7 @@ namespace _Project.Scripts.Runtime.Utils
     public class CinemachineImpulseLoop : MonoBehaviour
     {
         [SerializeField] private bool _useStartDelay = false;
+        [SerializeField] private Vector3 _velocity = Vector3.zero;
         private CinemachineImpulseSource _cinemachineImpulseSource;
         private WaitForSeconds _wait;
 
@@ -23,7 +24,7 @@ namespace _Project.Scripts.Runtime.Utils
             if (_useStartDelay) yield return _wait; // Wait a bit to avoid directly playing the first impulse
             while (true)
             {
-                _cinemachineImpulseSource.GenerateImpulse();
+                _cinemachineImpulseSource.GenerateImpulseWithVelocity(_velocity);
                 yield return _wait;
             }
         }

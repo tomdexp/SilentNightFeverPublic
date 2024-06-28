@@ -38,26 +38,26 @@ namespace _Project.Scripts.Runtime.Audio.Bindings
         private void OnGameStarted()
         {
             Logger.LogTrace("GameManagerAudio: OnGameStarted", Logger.LogType.Server, this);
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventGameStart, AudioManager.Instance.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventGameStart);
         }
 
         [Server]
         private void OnAnyRoundStarted(byte _)
         {
             Logger.LogTrace("GameManagerAudio: OnAnyRoundStarted", Logger.LogType.Server, this);
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundStart, AudioManager.Instance.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundStart);
             // pick a new track number
             int randomTrackNumber = UnityEngine.Random.Range(
                 AudioManager.Instance.AudioManagerData.RTPC_GP_MUSC_SWITCH_MinValue, 
                 AudioManager.Instance.AudioManagerData.RTPC_GP_MUSC_SWITCH_MaxValue+1); // we do +1 because Random.Range is exclusive on the max value
-            AudioManager.Instance.SetNetworkedRTPC(AudioManager.Instance.AudioManagerData.RTPC_GP_MUSC_SWITCH.Id, randomTrackNumber, AudioManager.Instance.gameObject);
+            AudioManager.Instance.SetNetworkedRTPC(AudioManager.Instance.AudioManagerData.RTPC_GP_MUSC_SWITCH.Id, randomTrackNumber);
         }
 
         [Server]
         private void OnAnyRoundEnded(byte _)
         {
             Logger.LogTrace("GameManagerAudio: OnAnyRoundEnded", Logger.LogType.Server, this);
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundEnd, AudioManager.Instance.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundEnd);
         }
 
         [Server]

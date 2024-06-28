@@ -72,7 +72,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.AppendCallback((() => _playerDCanvas.Open()));
             sequence.Play();
             
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventGamepadMenuStart, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventGamepadMenuStart);
             
             _goBackButtonComponent.onClick.AddListener(GoBack);
         }

@@ -59,7 +59,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _uiButtonPlayLocal.Open();
             _uiButtonPlayOnline.Open();
             
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventLocalOrOnlineMenuStart, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventLocalOrOnlineMenuStart);
         }
 
         public override void Close()
@@ -85,13 +85,13 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         
         private void PlayOnlineButtonClicked()
         {
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnClickedOnlineGame, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnClickedOnlineGame);
             if (UIManager.HasInstance) UIManager.Instance.GoToMenu<CreateOrJoinOnlineMenu>();
         }
         
         private void PlayLocalButtonClicked()
         {
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnClickedLocalGame, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnClickedLocalGame);
             if (UIManager.HasInstance) UIManager.Instance.GoToMenu<ControllerLobbyMenu>();
         }
         

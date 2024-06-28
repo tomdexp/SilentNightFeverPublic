@@ -113,6 +113,7 @@ namespace _Project.Scripts.Runtime.UI
 
         private void OnGoBack(InputAction.CallbackContext context)
         {
+            Logger.LogTrace("Go back action triggered", Logger.LogType.Client,this);
             if (_currentConfirmationPrompt)
             {
                 _currentConfirmationPrompt.OnCancel();

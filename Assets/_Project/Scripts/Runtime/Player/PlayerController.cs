@@ -290,6 +290,8 @@ namespace _Project.Scripts.Runtime.Player
         {
             if (UILocalManager.HasInstance)
             {
+                if (!FindAnyObjectByType<InGameMenu>().CanOpen) return;
+                if (UILocalManager.Instance.GetCurrentMenuName() == nameof(InGameMenu)) return;
                 UILocalManager.Instance.GoToMenu<InGameMenu>();
             }
             else
@@ -444,6 +446,16 @@ namespace _Project.Scripts.Runtime.Player
         {
             Logger.LogTrace("EnablePlayerRotation", context: this);
             _canRotate = true;
+        }
+
+        public void DisableInputs()
+        {
+            _inputProvider.DisableInput();
+        }
+        
+        public void EnableInputs()
+        {
+            _inputProvider.EnableInput();
         }
     }
 }

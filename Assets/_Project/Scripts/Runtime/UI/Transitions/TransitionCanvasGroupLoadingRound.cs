@@ -45,12 +45,12 @@ namespace _Project.Scripts.Runtime.UI.Transitions
                 if (lastWinningTeam == PlayerTeamType.A)
                 {
                     _feedbackTeamAWin.PlayFeedbacksForAll();
-                    if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventWinningTeamRoundTeamShiningStarFruit, AudioManager.Instance.gameObject);
+                    if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventWinningTeamRoundTeamShiningStarFruit);
                 }
                 else
                 {
                     _feedbackTeamBWin.PlayFeedbacksForAll();
-                    if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventWinningTeamRoundTeamPlumsOfPassion, AudioManager.Instance.gameObject);
+                    if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventWinningTeamRoundTeamPlumsOfPassion);
                 }
                 yield return new WaitForSeconds(_delayAfterTeamWinFeedback);
                 _feedbackOpen.PlayFeedbacksForAll();

@@ -84,7 +84,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.AppendCallback(() => _uiButtonQuit.Open());
             sequence.Play();
             
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventMainMenuStart, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventMainMenuStart);
         }
 
         public override void Close()

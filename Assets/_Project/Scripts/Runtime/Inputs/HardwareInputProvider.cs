@@ -77,7 +77,27 @@ namespace _Project.Scripts.Runtime.Inputs
             _playerInfo = playerInfo;
             BindWithRealPlayerInfo();
         }
-        
+
+        public void DisableInput()
+        {
+            if (_inputActions != null)
+            {
+                _inputActions.Player.Move.Disable();
+                _inputActions.Player.Interact.Disable();
+                Logger.LogTrace("Disabled input provider for clientID: " + _playerInfo.ClientId, context:this);
+            }
+        }
+
+        public void EnableInput()
+        {
+            if (_inputActions != null)
+            {
+                _inputActions.Player.Move.Enable();
+                _inputActions.Player.Interact.Enable();
+                Logger.LogTrace("Enabled input provider for clientID: " + _playerInfo.ClientId, context:this);
+            }
+        }
+
         public Vector2 GetMovementInput()
         {
             return _movementInput;

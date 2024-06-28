@@ -227,7 +227,17 @@ namespace _Project.Scripts.Runtime.Inputs
 
         public void SetRealPlayerInfo(RealPlayerInfo realPlayerInfo)
         {
-            throw new NotImplementedException();
+            
+        }
+
+        public void DisableInput()
+        {
+            
+        }
+
+        public void EnableInput()
+        {
+            
         }
     }
 }

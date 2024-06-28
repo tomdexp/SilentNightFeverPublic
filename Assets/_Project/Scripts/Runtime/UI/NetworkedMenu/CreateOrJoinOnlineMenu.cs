@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using _Project.Scripts.Runtime.Audio;
 using _Project.Scripts.Runtime.Networking;
 using _Project.Scripts.Runtime.Utils;
@@ -21,10 +22,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         [SerializeField, Required] private Button _goBackButton;
         [SerializeField, Required] private CanvasGroup _creatingLobbyCanvasGroup;
         [SerializeField, Required] private CanvasGroup _joiningLobbyCanvasGroup;
+        [SerializeField, Required] private ConfirmationPrompt _joinOrCreateFailedPrompt;
         [SerializeField, Required] private UI_InputFieldLobbyCode _lobbyCodeInputField;
         private CanvasGroup _canvasGroup;
         private string _lobbyCode;
         private bool _isCreatingLobby;
+        private bool _isBusy = false;
         
         private UI_Button _createLobbyButtonUI;
         private UI_Button _joinLobbyButtonUI;
@@ -62,7 +65,15 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _createLobbyButtonUI = _createLobbyButton.GetComponent<UI_Button>();
             _joinLobbyButtonUI = _joinLobbyButton.GetComponent<UI_Button>();
         }
-        
+
+        public override void Start()
+        {
+            base.Start();
+            BootstrapManager.Instance.OnServerMigrationStarted += ServerMigrationStarted;
+            BootstrapManager.Instance.OnServerMigrationFinished += ServerMigrationFinished;
+            BootstrapManager.Instance.OnServerMigrationFailed += ServerMigrationFailed;
+        }
+
         public override void Open()
         {
             base.Open();
@@ -73,8 +84,6 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _createLobbyButton.onClick.AddListener(CreateLobbyButtonClicked);
             _goBackButton.onClick.AddListener(GoBack);
             _lobbyCodeInputField.OnLobbyCodeChanged += LobbyCodeChanged;
-            BootstrapManager.Instance.OnServerMigrationStarted += ServerMigrationStarted;
-            BootstrapManager.Instance.OnServerMigrationFinished += ServerMigrationFinished;
             
             var sequence = DOTween.Sequence();
             sequence.AppendInterval(0.33f);
@@ -86,11 +95,12 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.Append(_lobbyCodeInputField.transform.DOScale(Vector3.one, 0.33f));
             sequence.Play();
             
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnlineCreateOrJoinMenuStart, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventOnlineCreateOrJoinMenuStart);
         }
 
         private void ServerMigrationStarted()
         {
+            _isBusy = true;
             var menuToGoOnReset = FindAnyObjectByType<MenuToGoOnReset>();
             if (menuToGoOnReset)
             {
@@ -122,6 +132,20 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
             if(InstanceFinder.IsServerStarted) UIManager.Instance.GoToMenu<ControllerLobbyMenu>();
+            _isBusy = false;
+            _isCreatingLobby = false;
+        }
+        
+        private void ServerMigrationFailed()
+        {
+            StartCoroutine(ServerMigrationFailedCoroutine());
+        }
+        
+        private IEnumerator ServerMigrationFailedCoroutine()
+        {
+            _isCreatingLobby = false;
+            _joinOrCreateFailedPrompt.Open();
+            yield return _joinOrCreateFailedPrompt.WaitForResponse();
         }
 
         public override void Close()
@@ -132,8 +156,6 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _joinLobbyButton.onClick.RemoveListener(JoinLobbyButtonClicked);
             _createLobbyButton.onClick.RemoveListener(CreateLobbyButtonClicked);
             _goBackButton.onClick.RemoveListener(GoBack);
-            if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationStarted -= ServerMigrationStarted;
-            if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationFinished -= ServerMigrationFinished;
             _createLobbyButtonUI.Close();
             _joinLobbyButtonUI.Close();
             _lobbyCodeInputField.transform.localScale = Vector3.zero;
@@ -147,11 +169,18 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             _createLobbyButton.onClick.RemoveListener(CreateLobbyButtonClicked);
             if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationStarted -= ServerMigrationStarted;
             if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationFinished -= ServerMigrationFinished;
+            if (BootstrapManager.HasInstance) BootstrapManager.Instance.OnServerMigrationFailed -= ServerMigrationFailed;
+
         }
 
         public override void GoBack()
         {
             base.GoBack();
+            if (_isBusy)
+            {
+                Logger.LogDebug("Can't go back, busy because creating or joining a lobby", Logger.LogType.Client, this);
+                return;
+            }
             if (UIManager.HasInstance) UIManager.Instance.GoToMenu<PlayOnlineOrLocalMenu>();
         }
         

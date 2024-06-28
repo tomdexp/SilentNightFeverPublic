@@ -15,13 +15,13 @@ namespace _Project.Scripts.Runtime.UI
         private void PlayHoverEvent()
         {
             if (!_hoverEvent.IsValid()) return;
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_hoverEvent, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_hoverEvent);
         }
         
         private void PlayUnHoverEvent()
         {
             if (!_unHoverEvent.IsValid()) return;
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_unHoverEvent, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(_unHoverEvent);
         }
 
         public void OnSelect(BaseEventData eventData)

@@ -59,7 +59,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             sequence.AppendCallback(() => _uiButtonBack.Open());
             sequence.Play();
             
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventSettingsMenuStart, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventSettingsMenuStart);
 
         }
 

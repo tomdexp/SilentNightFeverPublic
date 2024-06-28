@@ -57,7 +57,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
             base.Open();
             _canvasGroup.Open();
             _backButton.onClick.AddListener(GoBack);
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventSettingsGraphicStart, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventSettingsGraphicStart);
         }
         
         public override void Close()

@@ -84,7 +84,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
                 _goBackButton.onClick.AddListener(GoBack);
             }
             
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventTeamSelectionMenuStart, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventTeamSelectionMenuStart);
         }
 
         public override void Close()

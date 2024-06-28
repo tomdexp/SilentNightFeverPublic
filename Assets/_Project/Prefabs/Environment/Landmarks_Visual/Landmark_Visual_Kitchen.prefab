@@ -5593,6 +5593,8 @@ GameObject:
   m_Component:
   - component: {fileID: 112613104577846217}
   - component: {fileID: 848498931736140355}
+  - component: {fileID: 3652610093593737075}
+  - component: {fileID: 7065827889620751140}
   m_Layer: 0
   m_Name: Landmark_Visual_Kitchen
   m_TagString: Untagged
@@ -5641,6 +5643,34 @@ CapsuleCollider:
   m_Height: 15
   m_Direction: 1
   m_Center: {x: 0, y: 2.5, z: 0}
+--- !u!114 &3652610093593737075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4195350437651282069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafc40fd06d240e99e912eaefef874eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenHighContrast:
+  - {fileID: 8093771458138838815}
+--- !u!114 &7065827889620751140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4195350437651282069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb250d26ccb4fc69058afe7b2c1a42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveWhenEpilespyFilterEnabled:
+  - {fileID: 8093771458138838815}
 --- !u!1 &4345126162797404919
 GameObject:
   m_ObjectHideFlags: 0

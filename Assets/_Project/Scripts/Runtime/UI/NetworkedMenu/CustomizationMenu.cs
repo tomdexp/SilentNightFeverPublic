@@ -26,7 +26,7 @@ namespace _Project.Scripts.Runtime.UI.NetworkedMenu
         {
             base.Open();
             UIManager.Instance.SwitchToCustomizationCamera();
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventCharacterCustomizationStart, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventCharacterCustomizationStart);
             _canvasGroup.Open();
             var characterCustomizer = FindAnyObjectByType<CharacterCustomizer>();
             if (characterCustomizer)

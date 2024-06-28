@@ -33,5 +33,7 @@ namespace _Project.Scripts.Runtime.Inputs
         public Vector2 GetMovementInput();
         
         public void SetRealPlayerInfo(RealPlayerInfo realPlayerInfo);
+        public void DisableInput();
+        public void EnableInput();
     }
 }

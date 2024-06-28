@@ -910,6 +910,7 @@ GameObject:
   - component: {fileID: 8190123110020755864}
   - component: {fileID: 8694301439937802262}
   - component: {fileID: 4825299354194293105}
+  - component: {fileID: 6752037384739122762}
   m_Layer: 5
   m_Name: CanvasInGameGlobal
   m_TagString: Untagged
@@ -1014,8 +1015,37 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Go Back
       m_Flags: 0
+    - m_Name: 
+      m_Id: 075472e4-2d21-4ac4-a892-9180ee9425d5
+      m_Path: <Keyboard>/escape
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go Back
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 3faa7aad-d28a-4a57-94a5-9f04ae1dbd8b
+      m_Path: <Gamepad>/start
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Go Back
+      m_Flags: 0
     m_Flags: 0
   _menus: []
+--- !u!114 &6752037384739122762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528841190378465942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6822e458f2f34f4ea4ddc3164cef3b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultSelectedOnOpen: {fileID: 0}
 --- !u!1 &8066868031356788135
 GameObject:
   m_ObjectHideFlags: 0

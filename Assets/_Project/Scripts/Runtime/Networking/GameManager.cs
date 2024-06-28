@@ -146,13 +146,13 @@ namespace _Project.Scripts.Runtime.Networking
 
         public void LoadMenuScene()
         {
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventMenuSceneStart, AudioManager.Instance.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventMenuSceneStart);
             LoadGlobalScene(SceneType.MenuV2Scene);
         }
         
         public void LoadOnBoardingScene()
         {
-            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventOnBoardingStart, AudioManager.Instance.gameObject);
+            AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventOnBoardingStart);
             PlayerManager.Instance.ResetPlayerSpawnedLocally(); // because they are destroyed when changing scene (coming from GameScene)
             LoadGlobalScene(SceneType.OnBoardingScene);
         }
@@ -571,7 +571,7 @@ namespace _Project.Scripts.Runtime.Networking
             OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
             Logger.LogInfo("Starting round " + CurrentRoundNumber.Value, Logger.LogType.Server, this);
             GetCurrentRound().StartRound();
-            if(CurrentRoundNumber.Value != 1) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade, AudioManager.Instance.gameObject);
+            if(CurrentRoundNumber.Value != 1) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade);
             yield return TransitionManager.Instance.EndLoadingRoundTransition();
         }
 
@@ -648,7 +648,7 @@ namespace _Project.Scripts.Runtime.Networking
             yield return TransitionManager.Instance.BeginLoadingRoundTransition();
             yield return new WaitForSeconds(GameManagerData.SecondsBetweenRounds);
             //OnAnyRoundStarted?.Invoke(CurrentRoundNumber.Value);
-            if(CurrentRoundNumber.Value != 1) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade, AudioManager.Instance.gameObject);
+            if(CurrentRoundNumber.Value != 1) AudioManager.Instance.PlayAudioNetworked(AudioManager.Instance.AudioManagerData.EventRoundHideScoreFade);
             Logger.LogInfo("Game finished ! The winning team is Team " + winningTeam, Logger.LogType.Server, this);
             OnGameEnded?.Invoke(winningTeam);
             OnGameEndedSyncEvent.Invoke();

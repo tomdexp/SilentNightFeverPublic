@@ -57,13 +57,13 @@ namespace _Project.Scripts.Runtime.UI
 
         public void Open()
         {
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove);
             _feedbacksOpen?.PlayFeedbacks();
         }
 
         public void Close()
         {
-            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove, AudioManager.Instance.gameObject);
+            if (AudioManager.HasInstance) AudioManager.Instance.PlayAudioLocal(AudioManager.Instance.AudioManagerData.EventUIPlayerButtonMove);
             _feedbacksClose?.PlayFeedbacks();
         }
 

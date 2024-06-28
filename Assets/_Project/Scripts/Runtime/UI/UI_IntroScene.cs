@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.Runtime.UI
@@ -23,6 +24,7 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField, Required] private RawImage _p20LogoStressed;
         [SerializeField, Required] private RawImage _p20LogoStressedUltra;
         [SerializeField, Required] private RawImage _wwiseLogo;
+        [SerializeField, Required] private CanvasGroup _warningEpilepsyText;
         
         [Title("Settings")]
         [SerializeField] private float _secondsBeforeFirstLogo = 1.0f;
@@ -66,9 +68,25 @@ namespace _Project.Scripts.Runtime.UI
         [SerializeField] private float _secondsFadeOutDurationWwiseLogo = 1.0f;
         [SerializeField] private Ease _easeFadeInWwiseLogo = Ease.Linear;
         [SerializeField] private Ease _easeFadeOutWwiseLogo = Ease.Linear;
+        
+        [Title("Settings", "Epilepsy Warning")]
+        [SerializeField] private float _secondsBeforeWarningEpilepsyText = 1.0f;
+        [SerializeField] private float _secondsFadeInDurationWarningEpilepsyText = 1.0f;
+        [SerializeField] private float _secondsBeforeFadeOutWarningEpilepsyText = 5.0f;
+        [SerializeField] private float _secondsFadeOutDurationWarningEpilepsyText = 1.0f;
+        [SerializeField] private Ease _easeFadeInWarningEpilepsyText = Ease.Linear;
+        [SerializeField] private Ease _easeFadeOutWarningEpilepsyText = Ease.Linear;
 
         private IEnumerator Start()
         {
+            yield return new WaitForSeconds(_secondsBeforeWarningEpilepsyText);
+            // Before everything, we fade in the epilepsy warning text
+            var tweenFadeInWarningEpilepsyText = _warningEpilepsyText.DOFade(1.0f, _secondsFadeInDurationWarningEpilepsyText).SetEase(_easeFadeInWarningEpilepsyText);
+            yield return tweenFadeInWarningEpilepsyText.WaitForCompletion();
+            yield return new WaitForSeconds(_secondsBeforeFadeOutWarningEpilepsyText);
+            var tweenFadeOutWarningEpilepsyText = _warningEpilepsyText.DOFade(0.0f, _secondsFadeOutDurationWarningEpilepsyText).SetEase(_easeFadeOutWarningEpilepsyText);
+            yield return tweenFadeOutWarningEpilepsyText.WaitForCompletion();
+            
             // 1st WWISE LOGO
             yield return new WaitForSeconds(_secondsBeforeFirstLogo);
             var tweenFadeInWwiseLogo = _wwiseLogo.DOFade(1.0f, _secondsFadeInDurationWwiseLogo).SetEase(_easeFadeInWwiseLogo);

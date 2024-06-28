@@ -216,5 +216,15 @@ namespace _Project.Scripts.Runtime.Networking
        { 
            _playerController.Teleport(position);
        }
+
+       public void DisableInputs()
+       {
+            _playerController.DisableInputs();
+       }
+       
+       public void EnableInputs()
+       {
+           _playerController.EnableInputs();
+       }
     }
 }
