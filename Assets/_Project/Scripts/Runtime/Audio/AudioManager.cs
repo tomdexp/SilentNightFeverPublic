@@ -233,8 +233,8 @@ namespace _Project.Scripts.Runtime.Audio
                 return;
             }
             
-            Logger.LogTrace("Playing audio event locally : " + eventId, Logger.LogType.Local, this);
-            AkSoundEngine.PostEvent(eventId, go);
+            var result = AkSoundEngine.PostEvent(eventId, go);
+            Logger.LogTrace("Played audio event locally : " + eventId, Logger.LogType.Local, this);
         }
         
         public void SetLocalRTPC(string rtpcName, float value, GameObject go)
@@ -314,7 +314,12 @@ namespace _Project.Scripts.Runtime.Audio
                     $"Tried to set an RTPC with ID {rtpcId} but was not found, it means that the RTPC is probably not assigned properly in AudioManagerData", this);
             }
             if(AudioManagerData.RPTCLog) Logger.LogTrace("Setting RTPC locally (ID: " + rtpcId + ") to " + value, Logger.LogType.Local, this);
-            AkSoundEngine.SetRTPCValue(rtpcId, value, go);
+            var result = AkSoundEngine.SetRTPCValue(rtpcId, value, go);
+            var resultString = Enum.GetName(typeof(AKRESULT), result);
+            if (result != AKRESULT.AK_Success)
+            {
+                Logger.LogError("Failed to set RTPC locally (ID: " + rtpcId + ") to " + value + " with result " + resultString, Logger.LogType.Local, this);
+            }
         }
         
         private void InternalSetRPCGlobal(uint rtpcId, float value)
@@ -325,7 +330,12 @@ namespace _Project.Scripts.Runtime.Audio
                     $"Tried to set an RTPC with ID {rtpcId} but was not found, it means that the RTPC is probably not assigned properly in AudioManagerData", this);
             }
             if(AudioManagerData.RPTCLog) Logger.LogTrace("Setting Global RTPC locally (ID: " + rtpcId + ") to " + value, Logger.LogType.Local, this);
-            AkSoundEngine.SetRTPCValue(rtpcId, value);
+            var result = AkSoundEngine.SetRTPCValue(rtpcId, value);
+            var resultString = Enum.GetName(typeof(AKRESULT), result);
+            if (result != AKRESULT.AK_Success)
+            {
+                Logger.LogError("Failed to set Global RTPC locally (ID: " + rtpcId + ") to " + value + " with result " + resultString, Logger.LogType.Local, this);
+            }
         }
 
         public void RegisterListener(AkAudioListener listener)

@@ -183,9 +183,12 @@ namespace _Project.Scripts.Runtime.Audio
 
             public void Load()
             {
-                Logger.LogDebug("Loading Wwise bank: " + Bank.Name + "...", Logger.LogType.Local, this);
-                Bank.Load(DecodeBankOnLoad, SaveDecodedBank);
-                Logger.LogDebug("Wwise bank loaded: " + Bank.Name, Logger.LogType.Local, this);
+                Logger.LogInfo("Loading Wwise bank: " + Bank.Name + "...", Logger.LogType.Local, this);
+                //Bank.Load(DecodeBankOnLoad, SaveDecodedBank);
+                //Logger.LogDebug("Wwise bank loaded: " + Bank.Name, Logger.LogType.Local, this);
+                var result = AkSoundEngine.LoadAndDecodeBank(Bank.Name, false, out _);
+                var resultString = Enum.GetName(typeof(AKRESULT), result);
+                Logger.LogInfo("Wwise bank loaded: " + Bank.Name + " with result: " + resultString, Logger.LogType.Local, this);
             }
         }
     }
