@@ -7,6 +7,8 @@ IT WON'T COMPILE (Because there is a lot of missings plugins)
 ## What did I do on this project ?
 I was the Online and Gameplay Programmer of this project, but I also did the UI. I did not code the Procedural Generations, but I contributed to networking it.
 
+You can find all of my scripts at the path `Assets/_Project/Scripts`
+
 ## Features
 - Networking with Fishnet
 - Local, Online and both at the same time gameplay
