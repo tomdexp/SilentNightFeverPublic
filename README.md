@@ -14,6 +14,9 @@ You can find all of my scripts at the path `Assets/_Project/Scripts`
   - Networking with Fishnet
   - Local, Online and both at the same time gameplay
   - Tools for testing multiplayer features locally
+    -  Inputs are provided via an interface IInputProvider
+    -  In editor, the developer can possess other characters by switching the character that is provided by the inputs
+    -  There is a class that can record inputs and replay them as if it was a real player for multiplayer interactions testing on the same computer
   - Unity Gaming Services integration (with Unity Relay and Player Authentication)
 - Procedural Generation
 - Character's tongue are physics-based
