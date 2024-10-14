@@ -5,7 +5,7 @@ This repository is the public version of the source code of my Master 1 Game : D
 IT WON'T COMPILE (Because there is a lot of missings plugins)
 
 ## What did I do on this project ?
-I was the Online and Gameplay Programmer of this project, but I also did the UI. I did code the Procedural Generations, but I contributed to networking it.
+I was the Online and Gameplay Programmer of this project, but I also did the UI. I did not code the Procedural Generations, but I contributed to networking it.
 
 ## Features
 - Networking with Fishnet
