@@ -10,8 +10,10 @@ I was the Online and Gameplay Programmer of this project, but I also did the UI.
 You can find all of my scripts at the path `Assets/_Project/Scripts`
 
 ## Features
-- Networking with Fishnet
-- Local, Online and both at the same time gameplay
-- Unity Gaming Services integration (with Unity Relay and Player Authentication)
+- Multiplayer
+  - Networking with Fishnet
+  - Local, Online and both at the same time gameplay
+  - Tools for testing multiplayer features locally
+  - Unity Gaming Services integration (with Unity Relay and Player Authentication)
 - Procedural Generation
 - Character's tongue are physics-based
