@@ -5,6 +5,23 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/tomdexp/SilentNightFeverPublic?authorFilter=tomdexp&style=for-the-badge)
 
 ## Disco-Gecko
+## Table of contents
+- [What is this repository ?](#what-is-this-repository-)
+- [General](#general)
+  - [The pitch](#the-pitch)
+  - [Context](#context)
+  - [Credits](#credits)
+- [My work on this project](#my-work-on-this-project)
+  - [Features](#features)
+- [Challenges](#challenges)
+  - [Challenge 1 : Local, Online and both at the same time gameplay](#challenge-1--local-online-and-both-at-the-same-time-gameplay)
+  - [Challenge 2 : A large crowd that the player has to navigate](#challenge-2--a-large-crowd-that-the-player-has-to-navigate)
+  - [Challenge 3 : A physics-based tongue for interactions](#challenge-3--a-physics-based-tongue-for-interactions)
+    - [The sensors of the tongue system](#the-sensors-of-the-tongue-system)
+    - [Showcase of the tongue's features](#showcase-of-the-tongues-features)
+- [What could be improved](#what-could-be-improved)
+- [Gallery](#gallery)
+
 ## What is this repository ?
 This repository is the public version of the source code of my Master 1 Game : Disco-Gecko (was SilentNightFever), it's the public version because I have trimmed all paid Plugins that should not be in the public repository.
 
@@ -135,11 +152,26 @@ and since our game was online it meant replicating all of this NPCs, due to time
 
 Since the NPCs were not directly interacting with the players anymore, I tried to scrap the most amount of performance as possible with :
 - Asking our artistic team for a version of the Character with less bone and less polys than the Player's one (it worked quite well, now our frame time was ~30 ms so 33 FPS)
-- Implementing distance based culling that would totally disable the NPC's gameobject (frame time was now 28.2ms so 35.4 FPS)
+- Implementing distance based culling that would totally disable the NPC's gameobject (frame time was now  ~28.2ms so 35.4 FPS)
 
 Due to time constraints, this is the only optimisations we tried, with more time we could have explored solutions with DOTS ECS, or making the animations with shader instead of using the built-in animator.
 
 ### Challenge 3 : A physics-based tongue for interactions
 What's one of the worst thing you can combine with an online game ? Physics !
+Early in the development, the team decided that the main characters of the game would be Geckos, and thus,
+the idea of having the Gecko interacting with its environment with their tongue was suggested.
+One of the first thing I tested was to make a real physics-based tongue using an Unity plugin to simulate a rope ([Obi Rope](https://assetstore.unity.com/packages/tools/physics/obi-rope-55579?srsltid=AfmBOorwtYpKUIvK3BSZdcTCxvMs7aaQw_ISrfTv7nVd5xGT993HV4Bj)).
+It worked well locally, but things started to get complicated when networking this system. First let's see the final version of this system.
+#### The sensors of the tongue system
+The system is composed of 3 sensors :
+1. FOV Sensor : This is a sensor that is always facing in front of the player, it goes far and require the player to be precise
+2. Aim Assist Sensor : This is the sensor that replace the FOV Sensor when the accessibility feature "Aim Assist" is activated _(or ApplicationSettings.UseRadialTongueSensor in the code)_, it enables the player to be less precise
+3. Close Sensor : This is a sensor that is always activated, and is used to make it easier to kiss your ally when you are close to them, it only detects your ally
+![Tongue System Sensors](Content/discogecko-tongue-sensors.jpg)
 
-To be continued...
+#### Showcase of the tongue's features
+[![Disco Gecko Tongue System Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731239582/video_to_markdown/images/youtube--0vD_-j-0rPU-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/0vD_-j-0rPU "Disco Gecko Tongue System Showcase")
+
+## What could be improved
+
+## Gallery
