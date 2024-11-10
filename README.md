@@ -19,8 +19,13 @@
   - [Challenge 3 : A physics-based tongue for interactions](#challenge-3--a-physics-based-tongue-for-interactions)
     - [The sensors of the tongue system](#the-sensors-of-the-tongue-system)
     - [Showcase of the tongue's features](#showcase-of-the-tongues-features)
+    - [The replication of the tongue system](#the-replication-of-the-tongue-system)
 - [What could be improved](#what-could-be-improved)
 - [Gallery](#gallery)
+  - [UI Video Showcase](#ui-video-showcase)
+  - [Fake Players and Possession Video Showcase](#fake-players-and-possession-video-showcase)
+  - [Input Record and Replay for testing Video Showcase](#input-record-and-replay-for-testing-video-showcase)
+  - [Custom Logger Video Showcase](#custom-logger-video-showcase)
 
 ## What is this repository ?
 This repository is the public version of the source code of my Master 1 Game : Disco-Gecko (was SilentNightFever), it's the public version because I have trimmed all paid Plugins that should not be in the public repository.
@@ -35,7 +40,7 @@ DISCO GECKO is a 2v2 party game where you’re lost in a huge jungle night club 
 
 DISCO GECKO is playable only with 4 players, ON SITE or ONLINE !
 
-After a short onboarding phase, the game will start. In order to win, a team has to succed 3 rounds (you can change the number of rounds in the settings menu!). The first duo to find eachother and kiss win the round !
+After a short onboarding phase, the game will start. In order to win, a team has to succeed 3 rounds (you can change the number of rounds in the settings menu!). The first duo to find each other and kiss win the round !
 
 But be careful ! The north can't help you : all cameras angles are randomized every round. Some usable landmarks will help you, while others will allow you to sabotage the other team...
 
@@ -88,6 +93,7 @@ Here is a non-exhaustive list of features I made :
   - Players can pull each other
   - Players can stick their tongue at objects to interact with them (pull, push, press)
 - World-Space UI with replicated menus for the lobby
+- An ApplicationSettings system that uses Unity's Player Pref but enable strongly typed variables that auto-load on start and auto-save when changed
 
 ## Challenges
 Disco Gecko was a technical challenges on multiple features 
@@ -162,16 +168,80 @@ Early in the development, the team decided that the main characters of the game 
 the idea of having the Gecko interacting with its environment with their tongue was suggested.
 One of the first thing I tested was to make a real physics-based tongue using an Unity plugin to simulate a rope ([Obi Rope](https://assetstore.unity.com/packages/tools/physics/obi-rope-55579?srsltid=AfmBOorwtYpKUIvK3BSZdcTCxvMs7aaQw_ISrfTv7nVd5xGT993HV4Bj)).
 It worked well locally, but things started to get complicated when networking this system. First let's see the final version of this system.
+
 #### The sensors of the tongue system
 The system is composed of 3 sensors :
 1. FOV Sensor : This is a sensor that is always facing in front of the player, it goes far and require the player to be precise
 2. Aim Assist Sensor : This is the sensor that replace the FOV Sensor when the accessibility feature "Aim Assist" is activated _(or ApplicationSettings.UseRadialTongueSensor in the code)_, it enables the player to be less precise
 3. Close Sensor : This is a sensor that is always activated, and is used to make it easier to kiss your ally when you are close to them, it only detects your ally
+
 ![Tongue System Sensors](Content/discogecko-tongue-sensors.jpg)
 
 #### Showcase of the tongue's features
 [![Disco Gecko Tongue System Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731239582/video_to_markdown/images/youtube--0vD_-j-0rPU-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/0vD_-j-0rPU "Disco Gecko Tongue System Showcase")
 
+#### The replication of the tongue system
+Some issues started to reveal themselves when working on the replication of the tongue system.
+The first issue was that for non-host players to move objects that have a NetworkTransform component, they would have to take ownership, 
+this is not really an issue itself, but that would later enforce the fact that anchors can only be interacted with 1 tongue at once,
+because multiples clients taking ownership over the same object was not a technical challenge I could solve with the project time constraints.
+However this issue HAD to be solved when starting to work on Player To Player tongue interaction with different clients. 
+Here is my attempt to solve this (this code run inside the Player Controller Update):
+
+```cs
+// This code is only run on the locally controlled player
+
+if (_otherPlayerAttachedFromTongue) // Is another player grabbing us with their tongue ?
+{
+    if (_otherPlayerAttachedFromTongue.GetNetworkPlayer().IsOnline) // Is the other player a remote client ?
+    {
+        _distanceToAttachedPlayer = Vector3.Distance(transform.position, _otherPlayerAttachedFromTongue.transform.position);
+        // Should we be affected by the other player tongue ?
+        _influencedByAttachedTongue = _distanceToAttachedPlayer > _networkPlayer.PlayerData.OtherTongueMinDistance; 
+        if (_influencedByAttachedTongue) 
+        {
+            var direction = _otherPlayerAttachedFromTongue.transform.position - transform.position;
+            direction.y = 0;
+            direction.Normalize();
+            // Add the direction to the movement
+            movement += direction * _networkPlayer.PlayerData.OtherTongueAttachedForce;
+        }
+    }
+    else // The other player is not a remote client, then just let the local physic do it's job
+    {
+        _influencedByAttachedTongue = false;
+        _distanceToAttachedPlayer = 0;
+    }
+}
+else // No player is grabbing us
+{
+    _influencedByAttachedTongue = false;
+    _distanceToAttachedPlayer = 0;
+}
+```
+
+Basically what this code does it that, in the case of a local player being grabbed by a 
+Tongue that was belonging to an "Online Player" (which means another client connected to the server), 
+then we try to simulate locally the force.
+It does not work really well and the interaction feels quite laggy compared to the local version of this interaction. 
+However, given the time we had, we decided it was "ok", since "player-to-player" tongue interaction is not the most frequent
+interaction (player-to-object is almost 90 % of the interactions a player will do).
+
+
 ## What could be improved
+- Use service lobbies instead of having the the lobby directly connecting the players into the same scene
+- The replication of the physic interactions can be messy on non-host players
+- Optimize the crowd
 
 ## Gallery
+### UI Video Showcase
+[![Disco Gecko UI Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731259320/video_to_markdown/images/youtube--P2-A9gy5t08-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/P2-A9gy5t08 "Disco Gecko UI Video Showcase")
+
+### Fake Players and Possession Video Showcase
+[![Disco Gecko Fake Players and Possession Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731259588/video_to_markdown/images/youtube--a56EZIJLckk-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/a56EZIJLckk "Disco Gecko Fake Players and Possession Video Showcase")
+
+### Input Record and Replay for testing Video Showcase
+[![Disco Gecko Input Record and Replay](https://res.cloudinary.com/marcomontalbano/image/upload/v1731260170/video_to_markdown/images/youtube--72La3kHCXA8-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/72La3kHCXA8 "Disco Gecko Input Record and Replay Video Showcase")
+
+### Custom Logger Video Showcase
+[![DiscoGecko Custom Logger Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731260479/video_to_markdown/images/youtube--loiA8GbgSHo-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/loiA8GbgSHo "DiscoGecko Custom Logger Video Showcase")
