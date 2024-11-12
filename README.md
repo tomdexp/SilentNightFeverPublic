@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/10574142-a33e-455a-9216-953cf178eeef
 ![Unity](https://img.shields.io/badge/unity-%23000000.svg?style=for-the-badge&logo=unity&logoColor=white)
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)
@@ -178,7 +180,9 @@ The system is composed of 3 sensors :
 ![Tongue System Sensors](Content/discogecko-tongue-sensors.jpg)
 
 #### Showcase of the tongue's features
-[![Disco Gecko Tongue System Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731239582/video_to_markdown/images/youtube--0vD_-j-0rPU-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/0vD_-j-0rPU "Disco Gecko Tongue System Showcase")
+https://github.com/user-attachments/assets/fe524b04-6d95-47fa-98c8-c516242745e1
+> Video that showcase the tongue's features, the grabbing player takes network ownership of the object they move for smooth interaction.
+
 
 #### The replication of the tongue system
 Some issues started to reveal themselves when working on the replication of the tongue system.
@@ -235,13 +239,13 @@ interaction (player-to-object is almost 90 % of the interactions a player will d
 
 ## Gallery
 ### UI Video Showcase
-[![Disco Gecko UI Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731259320/video_to_markdown/images/youtube--P2-A9gy5t08-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/P2-A9gy5t08 "Disco Gecko UI Video Showcase")
+https://github.com/user-attachments/assets/8d0e35dd-b050-4b08-ba3f-95da0a8889f6
 
 ### Fake Players and Possession Video Showcase
-[![Disco Gecko Fake Players and Possession Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731259588/video_to_markdown/images/youtube--a56EZIJLckk-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/a56EZIJLckk "Disco Gecko Fake Players and Possession Video Showcase")
+https://github.com/user-attachments/assets/9e6258be-797b-4300-a006-acb21d0e1049
 
 ### Input Record and Replay for testing Video Showcase
-[![Disco Gecko Input Record and Replay](https://res.cloudinary.com/marcomontalbano/image/upload/v1731260170/video_to_markdown/images/youtube--72La3kHCXA8-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/72La3kHCXA8 "Disco Gecko Input Record and Replay Video Showcase")
+https://github.com/user-attachments/assets/7e68ce10-31ac-46dc-b5a3-5f3c93585a6d
 
 ### Custom Logger Video Showcase
-[![DiscoGecko Custom Logger Showcase](https://res.cloudinary.com/marcomontalbano/image/upload/v1731260479/video_to_markdown/images/youtube--loiA8GbgSHo-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/loiA8GbgSHo "DiscoGecko Custom Logger Video Showcase")
+https://github.com/user-attachments/assets/f3e698d1-69df-4a8a-904c-42869106d9f3
